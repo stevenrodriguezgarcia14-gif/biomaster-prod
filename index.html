@@ -3019,7 +3019,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
                 <option value="full" selected>Semestre Completo (180 días)</option>
                 <option value="mensual">Mensual (30 días)</option>
               </select>
-              <input type="text" id="adminGrantNote" placeholder="Nota interna (ej: SINPE 8888-9999)" style="padding:.55rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:200px">
+              <input type="text" id="adminGrantNote" placeholder="Nota: SINPE 8713 7782 · Pase X · ₡X.XXX · YYYY-MM-DD" style="padding:.55rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:200px">
               <button class="btn primary" onclick="A.adminGrantPlan()">✓ Activar plan</button>
             </div>
           </div>
@@ -7292,21 +7292,24 @@ window.selectPwPlan = function(plan){
 }
 
 window.confirmPaywall = function(){
-  // Cuando Stripe esté conectado, esto redirige al Payment Link correspondiente.
-  // El mapeo PRICE_LINKS abajo se actualiza con las URLs reales de Stripe.
+  // ═══ FLUJO SINPE MÓVIL MANUAL ═══
+  // Si Stripe está conectado (window.STRIPE_LINK_<plan> definido), redirige a Stripe.
+  // Si no, muestra instrucciones SINPE con el monto correcto del plan elegido.
   const PRICE_LINKS = {
-    p1:       window.STRIPE_LINK_P1       || null,  // Pase P1 ₡6.900
-    p2:       window.STRIPE_LINK_P2       || null,  // Pase P2 ₡6.900
-    semestre: window.STRIPE_LINK_SEMESTRE || null,  // Pase Semestre ₡9.900
-    mensual:  window.STRIPE_LINK_MENSUAL  || null   // Mensual ₡3.500
+    p1:       window.STRIPE_LINK_P1       || null,
+    p2:       window.STRIPE_LINK_P2       || null,
+    semestre: window.STRIPE_LINK_SEMESTRE || null,
+    mensual:  window.STRIPE_LINK_MENSUAL  || null
   }
-  const planNames = {
-    p1:       'Pase Primer Parcial (₡6.900 · 60 días)',
-    p2:       'Pase Segundo Parcial (₡6.900 · 60 días)',
-    semestre: 'Pase Semestre Completo (₡9.900 · 6 meses)',
-    mensual:  'Pase Mensual (₡3.500 / mes)'
+  // Catálogo único de planes: nombre, monto numérico, monto formateado
+  const PLAN_CATALOG = {
+    p1:       { nombre:'Pase Primer Parcial',  duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
+    p2:       { nombre:'Pase Segundo Parcial', duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
+    semestre: { nombre:'Pase Semestre Completo', duracion:'6 meses', monto:9900, montoFmt:'₡9.900' },
+    mensual:  { nombre:'Pase Mensual Completo', duracion:'recurring/mes', monto:3500, montoFmt:'₡3.500' }
   }
-  const link = PRICE_LINKS[_pwSelectedPlan]
+  const plan = _pwSelectedPlan || 'semestre'
+  const link = PRICE_LINKS[plan]
   if (link){
     // Stripe activo: redirigir directamente al checkout
     const sep = link.includes('?') ? '&' : '?'
@@ -7315,13 +7318,73 @@ window.confirmPaywall = function(){
     window.location.href = finalUrl
     return
   }
-  // Stripe no activo todavía: abre el modal informativo
+  // Stripe no activo: mostrar instrucciones SINPE con monto dinámico
+  window._showSinpeInstructions(plan)
+  document.getElementById('paywallModal').classList.remove('show')
+}
+
+// ═══ INSTRUCCIONES SINPE MÓVIL ═══
+// Reusable: lo llaman tanto confirmPaywall como los botones data-plan-cta de la landing.
+window._showSinpeInstructions = function(plan){
+  const PLAN_CATALOG = {
+    p1:       { nombre:'Pase Primer Parcial',  duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
+    p2:       { nombre:'Pase Segundo Parcial', duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
+    semestre: { nombre:'Pase Semestre Completo', duracion:'6 meses', monto:9900, montoFmt:'₡9.900' },
+    mensual:  { nombre:'Pase Mensual Completo', duracion:'recurring/mes', monto:3500, montoFmt:'₡3.500' }
+  }
+  const cfg = PLAN_CATALOG[plan] || PLAN_CATALOG.semestre
+  const userEmail = (typeof currentSession !== 'undefined' && currentSession?.user?.email) ? currentSession.user.email : ''
+  const emailLabel = userEmail
+    ? `<code style="background:var(--soft);padding:.15rem .4rem;border-radius:6px;font-size:.85rem">${userEmail}</code>`
+    : '<em>(creá tu cuenta primero y usá ese email)</em>'
+  const waMessage = encodeURIComponent(
+    `Hola, hice el SINPE Móvil para BioMaster.\n\n` +
+    `Plan: ${cfg.nombre} (${cfg.montoFmt})\n` +
+    `Email registrado: ${userEmail || '(completar)'}\n\n` +
+    `Adjunto la captura del SMS.`
+  )
   const modal = document.getElementById('pricingModal')
   const msg = document.getElementById('pricingModalMsg')
   if (msg){
-    msg.innerHTML = 'Plan elegido: <strong>' + (planNames[_pwSelectedPlan] || planNames.semestre) + '</strong><br><br>Estamos preparando la pasarela de pago. Apenas se active te avisamos por correo. Mientras tanto podés crear tu cuenta para reservar tu lugar.'
+    msg.innerHTML = `
+      <div style="text-align:left">
+        <div style="background:var(--greenSoft);border-left:4px solid var(--green);padding:.7rem .9rem;border-radius:8px;margin-bottom:.9rem">
+          <strong>Plan elegido:</strong> ${cfg.nombre}<br>
+          <strong>Monto a pagar:</strong> <span style="font-family:Merriweather,serif;font-size:1.2rem;color:var(--green)">${cfg.montoFmt}</span> · ${cfg.duracion}
+        </div>
+        <p style="font-weight:800;margin-bottom:.4rem">📱 Cómo pagar (3 pasos):</p>
+        <ol style="padding-left:1.2rem;line-height:1.7;font-size:.92rem">
+          <li>Hacé un <strong>SINPE Móvil de ${cfg.montoFmt}</strong> al número <strong style="font-size:1.05rem">8713 7782</strong>.<br>
+            <small style="color:var(--muted)">En el detalle/concepto del SINPE escribí: tu email registrado en BioMaster.</small></li>
+          <li>Tu email registrado: ${emailLabel}</li>
+          <li>Mandá la <strong>captura del SMS</strong> de confirmación al WhatsApp <strong style="font-size:1.05rem">8713 7782</strong>.</li>
+        </ol>
+        <div style="background:var(--blueSoft);padding:.6rem .8rem;border-radius:8px;margin-top:.7rem;font-size:.85rem">
+          ⏱ Activamos tu plan en menos de 24 horas. Te avisamos por correo y WhatsApp en cuanto esté listo.
+        </div>
+      </div>
+    `
   }
-  document.getElementById('paywallModal').classList.remove('show')
+  // Reemplazar los dos botones por uno que abre WhatsApp directo
+  const modalCard = modal?.querySelector('.lp-modal-card') || modal?.firstElementChild
+  if (modalCard){
+    // Quitar botones viejos del modal y poner los nuevos
+    modalCard.querySelectorAll('button').forEach(b => b.remove())
+    const btnWa = document.createElement('a')
+    btnWa.href = `https://wa.me/50687137782?text=${waMessage}`
+    btnWa.target = '_blank'
+    btnWa.rel = 'noopener'
+    btnWa.className = 'lp-btn-primary'
+    btnWa.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:100%;text-decoration:none;margin-top:.6rem'
+    btnWa.innerHTML = '💬 Abrir WhatsApp con la plantilla'
+    modalCard.appendChild(btnWa)
+    const btnClose = document.createElement('button')
+    btnClose.className = 'lp-btn-secondary'
+    btnClose.style.cssText = 'width:100%;margin-top:.5rem;justify-content:center'
+    btnClose.textContent = 'Cerrar'
+    btnClose.onclick = () => modal.classList.remove('show')
+    modalCard.appendChild(btnClose)
+  }
   if (modal) modal.classList.add('show')
 }
 
@@ -9932,9 +9995,9 @@ window.openPricingModal = function(){
   document.getElementById('pricingModal').classList.add('show')
 }
 
-// ═══ Conectar botones data-plan-cta de la landing a Stripe ═══
+// ═══ Conectar botones data-plan-cta de la landing ═══
 // Si window.STRIPE_LINK_<PLAN> está definido, redirige al checkout.
-// Si no, abre el modal informativo "estamos preparando los pagos".
+// Si no, abre el modal con instrucciones SINPE Móvil con el monto del plan.
 document.querySelectorAll('[data-plan-cta]').forEach(btn => {
   btn.addEventListener('click', () => {
     const plan = btn.dataset.planCta
@@ -9944,22 +10007,18 @@ document.querySelectorAll('[data-plan-cta]').forEach(btn => {
       semestre: window.STRIPE_LINK_SEMESTRE || null,
       mensual:  window.STRIPE_LINK_MENSUAL  || null
     }
-    const planNames = {
-      p1:       'Pase Primer Parcial (₡6.900 · 60 días)',
-      p2:       'Pase Segundo Parcial (₡6.900 · 60 días)',
-      semestre: 'Pase Semestre Completo (₡9.900 · 6 meses)',
-      mensual:  'Pase Mensual (₡3.500 / mes)'
-    }
     const link = links[plan]
     if (link){
       window.location.href = link
       return
     }
-    // Stripe no activo: modal informativo
-    const modal = document.getElementById('pricingModal')
-    const msg = document.getElementById('pricingModalMsg')
-    if (msg) msg.innerHTML = 'Plan elegido: <strong>' + (planNames[plan] || planNames.semestre) + '</strong><br><br>Estamos preparando la pasarela de pago. Apenas se active te avisamos por correo. Mientras tanto podés crear tu cuenta para reservar tu lugar.'
-    modal.classList.add('show')
+    // Stripe no activo: instrucciones SINPE con monto correcto
+    if (typeof window._showSinpeInstructions === 'function'){
+      window._showSinpeInstructions(plan)
+    } else {
+      const modal = document.getElementById('pricingModal')
+      if (modal) modal.classList.add('show')
+    }
   })
 })
 
