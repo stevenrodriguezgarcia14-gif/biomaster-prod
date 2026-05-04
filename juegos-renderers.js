@@ -147,7 +147,7 @@ export function registerAll(R, ctx){
           const isCorrect = (typeof opt === 'object' ? opt.ok : i === q.a)
           if (isCorrect){ ok++; b.style.background='var(--greenSoft)'; b.style.borderColor='var(--green)' }
           else b.style.background='var(--redSoft)'
-          [...optsDiv.children].forEach(x => x.disabled = true)
+          ;[...optsDiv.children].forEach(x => x.disabled = true)
           if (q.exp || (typeof opt === 'object' && opt.exp)){
             const exp = document.createElement('div')
             exp.style.cssText = `margin-top:.6rem;padding:.7rem;background:${isCorrect?'var(--greenSoft)':'var(--redSoft)'};border-radius:8px;font-size:.85rem`
