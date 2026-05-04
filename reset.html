@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Restablecer contraseña · BioMaster</title>
+<meta name="description" content="Restablece la contraseña de tu cuenta de BioMaster, la plataforma de estudio para Biología General del TEC.">
+<meta name="theme-color" content="#2f8b4d">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2f8b4d;--red:#c45252;--bg:#f5faf6;--surface:#fff;
+  --text:#183526;--muted:#667c70;--border:rgba(24,53,38,.12);
+  --shadow:0 16px 42px rgba(18,46,32,.08);--greenSoft:rgba(47,139,77,.14)
+}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);
+  display:grid;place-items:center;min-height:100vh;padding:1rem}
+.box{background:var(--surface);padding:2rem;border-radius:24px;
+  box-shadow:var(--shadow);width:min(440px,95vw);
+  border:1px solid var(--border);position:relative}
+.brand{display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem}
+.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(145deg,var(--green),#b4e8c4);font-size:1.2rem;
+  box-shadow:0 8px 20px rgba(47,139,77,.25)}
+.brand strong{display:block;font-size:1rem;font-family:Merriweather,serif}
+.brand small{color:var(--muted);font-size:.75rem}
+h1{font-family:Merriweather,serif;font-size:1.3rem;margin-bottom:.3rem;line-height:1.25}
+.sub{color:var(--muted);font-size:.88rem;margin-bottom:1.4rem;line-height:1.5}
+.field{margin-bottom:.7rem}
+.field label{display:block;font-size:.78rem;font-weight:700;margin-bottom:.3rem;color:var(--muted)}
+input{width:100%;padding:.75rem .9rem;border-radius:12px;border:1px solid var(--border);
+  font-family:inherit;font-size:.95rem;background:#f8fbf8;color:var(--text);transition:all .2s}
+input:focus{outline:2px solid var(--green);outline-offset:1px;background:#fff}
+.hint{font-size:.74rem;color:var(--muted);margin-top:.3rem}
+button{width:100%;padding:.85rem;border-radius:12px;border:none;
+  background:var(--green);color:#fff;font-weight:800;cursor:pointer;font-size:1rem;
+  transition:all .2s;box-shadow:0 8px 20px rgba(47,139,77,.25)}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.msg{margin-top:.9rem;padding:.7rem .9rem;border-radius:10px;font-size:.86rem;
+  display:none;line-height:1.5}
+.good{background:#dcfce7;color:#166534;display:block;border:1px solid #86efac}
+.bad{background:#fee2e2;color:#991b1b;display:block;border:1px solid #fca5a5}
+.back{color:var(--green);text-decoration:none;display:flex;align-items:center;
+  justify-content:center;gap:.4rem;margin-top:1.2rem;text-align:center;font-size:.86rem;
+  font-weight:600;padding:.5rem;border-radius:8px;transition:background .2s}
+.back:hover{background:var(--greenSoft)}
+.password-strength{height:4px;border-radius:99px;background:#eee;margin-top:.4rem;overflow:hidden}
+.password-strength-fill{height:100%;width:0%;background:var(--red);transition:all .3s}
+.password-strength-fill.medium{background:#c89a12}
+.password-strength-fill.strong{background:var(--green)}
+</style>
+<script>
+// Reemplazá con los mismos valores que en index.html
+window.BIOMASTER_CONFIG = {
+  SUPABASE_URL:  'https://TU-PROYECTO.supabase.co',
+  SUPABASE_ANON: 'TU-ANON-KEY-AQUI'
+}
+</script>
+</head>
+<body>
+<div class="box">
+  <div class="brand">
+    <div class="logo">🧬</div>
+    <div><strong>BioMaster</strong><small>Biología General · TEC</small></div>
+  </div>
+
+  <h1>🔐 Establecer nueva contraseña</h1>
+  <p class="sub">Escribí tu nueva contraseña dos veces. Mínimo 8 caracteres, te recomendamos mezclar letras y números.</p>
+
+  <div class="field">
+    <label for="p1">Nueva contraseña</label>
+    <input type="password" id="p1" placeholder="••••••••" autocomplete="new-password">
+    <div class="password-strength"><div class="password-strength-fill" id="strengthFill"></div></div>
+    <div class="hint" id="strengthHint">Escribí al menos 8 caracteres.</div>
+  </div>
+
+  <div class="field">
+    <label for="p2">Confirmar nueva contraseña</label>
+    <input type="password" id="p2" placeholder="••••••••" autocomplete="new-password">
+  </div>
+
+  <button id="btn">Guardar contraseña</button>
+  <div id="msg" class="msg"></div>
+
+  <a href="index.html" class="back">← Volver al inicio</a>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0'
+
+// La config viene de window.BIOMASTER_CONFIG (definí los valores
+// en un <script> antes de este, igual que en index.html).
+const _CFG = window.BIOMASTER_CONFIG || {}
+const SUPABASE_URL  = _CFG.SUPABASE_URL  || 'https://TU-PROYECTO.supabase.co'
+const SUPABASE_ANON = _CFG.SUPABASE_ANON || 'TU-ANON-KEY-AQUI'
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+})
+
+const msg = document.getElementById('msg')
+const p1  = document.getElementById('p1')
+const p2  = document.getElementById('p2')
+const btn = document.getElementById('btn')
+const strengthFill = document.getElementById('strengthFill')
+const strengthHint = document.getElementById('strengthHint')
+
+function showMsg(kind, txt){
+  msg.className = 'msg ' + kind
+  msg.textContent = txt
+}
+
+// Indicador visual de fortaleza de contraseña
+p1.addEventListener('input', () => {
+  const v = p1.value
+  let score = 0
+  if (v.length >= 8)  score++
+  if (v.length >= 12) score++
+  if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++
+  if (/\d/.test(v)) score++
+  if (/[^A-Za-z0-9]/.test(v)) score++
+  const pct = Math.min(100, score * 22)
+  strengthFill.style.width = pct + '%'
+  strengthFill.classList.remove('medium', 'strong')
+  if (score >= 4){
+    strengthFill.classList.add('strong')
+    strengthHint.textContent = '✓ Contraseña fuerte.'
+  } else if (score >= 2){
+    strengthFill.classList.add('medium')
+    strengthHint.textContent = 'Contraseña aceptable. Podrías mezclar mayúsculas y números para mejorarla.'
+  } else {
+    strengthHint.textContent = v.length < 8 ? 'Mínimo 8 caracteres.' : 'Mejorá agregando mayúsculas, números o símbolos.'
+  }
+})
+
+btn.addEventListener('click', async () => {
+  const v1 = p1.value
+  const v2 = p2.value
+  if (v1.length < 8) return showMsg('bad', 'La contraseña debe tener al menos 8 caracteres.')
+  if (v1 !== v2)     return showMsg('bad', 'Las contraseñas no coinciden.')
+
+  btn.disabled = true
+  showMsg('good', '🔄 Actualizando contraseña…')
+  const { error } = await sb.auth.updateUser({ password: v1 })
+  btn.disabled = false
+  if (error) return showMsg('bad', 'Error: ' + error.message)
+  showMsg('good', '✅ Contraseña actualizada. Redirigiendo al inicio…')
+  // BUG FIX: el original apuntaba a "bioV6_fixed.html" / "index.html.html". Usamos "index.html" que es el archivo real.
+  setTimeout(() => { window.location.href = 'index.html' }, 1800)
+})
+
+// Permitir enviar con Enter
+p2.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click() })
+p1.addEventListener('keydown', e => { if (e.key === 'Enter') p2.focus() })
+</script>
+</body>
+</html>
