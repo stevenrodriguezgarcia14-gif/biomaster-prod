@@ -4027,6 +4027,7 @@ async function _renderAdminUsers(){
                     : u.plan_p2 ? '<span class="fb-status fb-leido">📗 P2</span>'
                     : '<span class="fb-status fb-pendiente">free</span>'
       const expIcon = u.plan_expires_at && new Date(u.plan_expires_at) < new Date() ? ' ⏰' : ''
+      const hasAnyPlan = u.plan_full || u.plan_p1 || u.plan_p2
       return `<div class="reco-item">
       <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
         <div>
@@ -4037,6 +4038,8 @@ async function _renderAdminUsers(){
           <br><small class="muted">${escapeHtml(u.email)} · ${new Date(u.created_at).toLocaleDateString()}${u.plan_expires_at?' · vence '+new Date(u.plan_expires_at).toLocaleDateString():''}</small>
         </div>
         <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+          <button class="btn primary" onclick="A.adminQuickGrant('${safeEmail}')">⬆ Mejorar plan</button>
+          ${hasAnyPlan?`<button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar plan</button>`:''}
           ${u.role==='admin'
             ? `<button class="btn" onclick="A.adminRowAction('demote','${safeEmail}')">👤 a user</button>`
             : `<button class="btn warn" onclick="A.adminRowAction('promote','${safeEmail}')">👑 a admin</button>`}
@@ -4111,20 +4114,114 @@ async function _renderAdminPlans(){
   }
 }
 
-// Activar plan manualmente desde el panel admin (vía Edge Function admin-grant-plan)
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — Activar/Revocar planes
+//
+//  Estrategia:
+//  1. Intentar Edge Function `admin-grant-plan` (lo más seguro
+//     y limpio cuando esté deployada).
+//  2. Si no está deployada (404 / FunctionsHttpError), hacer
+//     fallback a UPDATE directo desde el cliente. Esto solo
+//     funciona si:
+//       - el usuario logueado es admin (lo verificamos),
+//       - hay una policy RLS específica que permite a admins
+//         modificar plan_* de OTROS usuarios (ver SQL_DELTA_v8.sql).
+// ═══════════════════════════════════════════════════════════
+
+const PLAN_DURATIONS = { p1: 60, p2: 60, full: 180, mensual: 30 }
+const PLAN_AMOUNTS_CRC = { p1: 6900, p2: 6900, full: 9900, mensual: 3500 }
+const PLAN_LABELS = { p1:'Pase P1', p2:'Pase P2', full:'Pase Semestre', mensual:'Pase Mensual' }
+
+// Escribir el plan directamente en BD (fallback si Edge Function no está)
+async function _grantPlanDirectDB(email, plan, note){
+  // Buscar usuario destino
+  const { data: target, error: findErr } = await sb
+    .from('profiles')
+    .select('id, email, plan_p1, plan_p2, plan_full, plan_expires_at')
+    .eq('email', email)
+    .single()
+  if (findErr) throw new Error('Usuario no encontrado: ' + email)
+
+  let updates = {}
+  if (plan === 'revoke'){
+    updates = {
+      plan_p1: false, plan_p2: false, plan_full: false,
+      plan_expires_at: new Date().toISOString()
+    }
+  } else {
+    const days = PLAN_DURATIONS[plan]
+    if (!days) throw new Error('Plan inválido: ' + plan)
+    const expiresAt = new Date(Date.now() + days * 86400000)
+    const hasActiveFull = target.plan_full && (!target.plan_expires_at || new Date(target.plan_expires_at) > new Date())
+    if (hasActiveFull && plan !== 'full' && plan !== 'mensual'){
+      const currentExp = target.plan_expires_at ? new Date(target.plan_expires_at) : new Date(0)
+      updates.plan_expires_at = (expiresAt > currentExp ? expiresAt : currentExp).toISOString()
+    } else if (plan === 'full' || plan === 'mensual'){
+      updates.plan_p1 = true; updates.plan_p2 = true; updates.plan_full = true
+      updates.plan_expires_at = expiresAt.toISOString()
+    } else if (plan === 'p1'){
+      updates.plan_p1 = true
+      updates.plan_p2 = target.plan_p2 || false
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2) ? true : (target.plan_full || false)
+      updates.plan_expires_at = expiresAt.toISOString()
+    } else if (plan === 'p2'){
+      updates.plan_p2 = true
+      updates.plan_p1 = target.plan_p1 || false
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2) ? true : (target.plan_full || false)
+      updates.plan_expires_at = expiresAt.toISOString()
+    }
+    updates.last_payment_at = new Date().toISOString()
+  }
+
+  // 1. UPDATE profile
+  const { error: updErr } = await sb.from('profiles').update(updates).eq('id', target.id)
+  if (updErr) throw new Error('No se pudo actualizar el profile: ' + updErr.message)
+
+  // 2. Log del pago
+  const logEntry = {
+    user_id: target.id,
+    email: target.email,
+    plan,
+    source: 'manual',
+    note: note || null,
+    performed_by_admin: currentSession?.user?.id || null
+  }
+  if (plan !== 'revoke'){
+    logEntry.amount_crc = PLAN_AMOUNTS_CRC[plan] || null
+    logEntry.expires_at = updates.plan_expires_at
+  }
+  const { error: logErr } = await sb.from('payments_log').insert(logEntry)
+  if (logErr) console.warn('[grantPlan] log falló (no bloqueante):', logErr.message)
+
+  return { ok:true }
+}
+
+// Wrapper: intenta Edge Function, si falla usa BD directo
+async function _grantPlanWithFallback(email, plan, note, source = 'manual'){
+  try {
+    const { data, error } = await sb.functions.invoke('admin-grant-plan', {
+      body: { email, plan, note, source }
+    })
+    if (error) throw error
+    return { ok:true, via:'edge' }
+  } catch(edgeErr){
+    console.warn('[grantPlan] Edge Function falló, usando fallback directo:', edgeErr.message || edgeErr)
+    await _grantPlanDirectDB(email, plan, note)
+    return { ok:true, via:'direct' }
+  }
+}
+
+// Activar plan desde el formulario grande (pestaña Planes y pagos)
 async function adminGrantPlan(){
   if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
   const email = document.getElementById('adminGrantEmail').value.trim()
   const plan  = document.getElementById('adminGrantPlan').value
   const note  = document.getElementById('adminGrantNote').value.trim()
   if (!email){ toast('Pegá un email.', true); return }
-  if (!confirm(`Activar plan ${plan.toUpperCase()} para ${email}?\nEsto registra un pago manual. Solo confirmá si verificaste que el pago llegó.`)) return
+  if (!confirm(`Activar ${PLAN_LABELS[plan]||plan} para ${email}?\nSolo confirmá si verificaste que el pago llegó.`)) return
   try {
-    const { data, error } = await sb.functions.invoke('admin-grant-plan', {
-      body: { email, plan, note, source: 'manual' }
-    })
-    if (error) throw error
-    toast(`✅ Plan ${plan} activado para ${email}.`, false)
+    const r = await _grantPlanWithFallback(email, plan, note)
+    toast(`✅ ${PLAN_LABELS[plan]||plan} activado para ${email}${r.via==='direct'?' (vía SQL)':''}.`, false)
     document.getElementById('adminGrantEmail').value = ''
     document.getElementById('adminGrantNote').value = ''
     await renderAdminPanel()
@@ -4134,15 +4231,51 @@ async function adminGrantPlan(){
   }
 }
 
+// Activar plan rápido desde la lista de usuarios (botón "⬆ Mejorar plan" por fila)
+async function adminQuickGrant(email){
+  if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
+  // Mini selector inline
+  const planOptions = [
+    { v:'p1',       l:'Pase P1 · ₡6.900 · 60 días' },
+    { v:'p2',       l:'Pase P2 · ₡6.900 · 60 días' },
+    { v:'full',     l:'Pase Semestre · ₡9.900 · 6 meses' },
+    { v:'mensual',  l:'Mensual · ₡3.500 · 30 días' }
+  ]
+  const optionsText = planOptions.map((o,i) => `${i+1}. ${o.l}`).join('\n')
+  const pick = prompt(
+    `Activar plan para: ${email}\n\nElegí qué plan (escribí el número 1-4):\n\n${optionsText}\n\nO cancelá.`
+  )
+  if (!pick) return
+  const idx = parseInt(pick.trim()) - 1
+  if (isNaN(idx) || idx < 0 || idx >= planOptions.length){
+    toast('Opción inválida. Cancelado.', true)
+    return
+  }
+  const plan = planOptions[idx].v
+  const note = prompt(
+    `Nota interna para ${email} · ${PLAN_LABELS[plan]}\n\n` +
+    `Ejemplos:\n` +
+    `· SINPE 8713 7782 · ${PLAN_LABELS[plan]} · ₡${PLAN_AMOUNTS_CRC[plan]} · ${new Date().toISOString().slice(0,10)}\n` +
+    `· Beca · ${PLAN_LABELS[plan]} · 100% · ${new Date().toISOString().slice(0,10)}\n` +
+    `· Cortesía admin · ${PLAN_LABELS[plan]} · sin cobro · ${new Date().toISOString().slice(0,10)}`
+  )
+  if (note === null) return  // cancel
+  try {
+    const r = await _grantPlanWithFallback(email, plan, note || `Activación rápida ${new Date().toISOString().slice(0,10)}`)
+    toast(`✅ ${PLAN_LABELS[plan]} activado para ${email}${r.via==='direct'?' (vía SQL)':''}.`, false)
+    await renderAdminPanel()
+  } catch(e){
+    toast('⚠ Error: ' + (e.message || e), true)
+    console.error('[adminQuickGrant]', e)
+  }
+}
+
 async function adminRevokePlan(email){
   if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
   if (!confirm(`Revocar TODOS los planes activos de ${email}?\nEsto les quita acceso premium inmediatamente.`)) return
   try {
-    const { data, error } = await sb.functions.invoke('admin-grant-plan', {
-      body: { email, plan: 'revoke', source: 'manual' }
-    })
-    if (error) throw error
-    toast(`✅ Planes revocados para ${email}.`, false)
+    const r = await _grantPlanWithFallback(email, 'revoke', `Revocado por admin ${new Date().toISOString().slice(0,10)}`)
+    toast(`✅ Planes revocados para ${email}${r.via==='direct'?' (vía SQL)':''}.`, false)
     await renderAdminPanel()
   } catch(e){
     toast('⚠ Error: ' + (e.message || e), true)
@@ -8126,7 +8259,7 @@ const A = {
   // admin
   openAdmin, closeAdmin, adminTab, setFbStatus, promoteUser,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
-  adminGrantPlan, adminRevokePlan,
+  adminGrantPlan, adminRevokePlan, adminQuickGrant,
   // cobertura/dominio
   syncTopic, saveST, filterDomain, showDomainDetail,
   // juego
