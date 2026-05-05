@@ -3500,6 +3500,8 @@ async function onSessionChanged(){
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.remove('show')
     try { initApp() } catch(e){ console.error('[initApp]', e); toast('⚠ Error al cargar la app, recarga la página.', true) }
+    // Iniciar auto-refresh del profile mientras la sesión esté activa
+    _startProfilePolling()
   } else {
     // No hay sesión → volver a la landing (no al overlay directo)
     document.getElementById('authOverlay').style.display = 'none'
@@ -3512,7 +3514,82 @@ async function onSessionChanged(){
     document.getElementById('userBarWrap').innerHTML = ''
     document.getElementById('guestBanner').style.display = 'none'
     closeAdmin()
+    _stopProfilePolling()
   }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  REFRESH DE PROFILE (cuando admin activa plan, etc.)
+//
+//  Tres mecanismos:
+//   A) Botón manual "🔄 Sincronizar" en la zona de cuenta.
+//   B) Auto-poll cada 60 segundos mientras la app está abierta.
+//   C) Re-fetch al cambiar de pestaña (visibilitychange) — más
+//      barato que el poll y más rápido para el caso típico de
+//      "el usuario abre WhatsApp para mandarte el SINPE y vuelve".
+// ═══════════════════════════════════════════════════════════
+
+let _profilePollTimer = null
+let _profilePolling = false
+
+async function refreshMyProfile(showToast = false){
+  if (!currentSession || currentSession.isGuest) return
+  if (_profilePolling) return
+  _profilePolling = true
+  try {
+    const userId = currentSession.user.id
+    const { data: fresh, error } = await sb.from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single()
+    if (error) throw error
+    if (!fresh) return
+    // Detectar si hubo upgrade real (cambió algún flag de plan o role)
+    const oldP = currentSession.profile || {}
+    const upgraded = (
+      (!oldP.plan_full && fresh.plan_full) ||
+      (!oldP.plan_p1 && fresh.plan_p1) ||
+      (!oldP.plan_p2 && fresh.plan_p2) ||
+      (oldP.role !== fresh.role)
+    )
+    currentSession.profile = fresh
+    // Re-renderizar UI dependiente del plan
+    try { renderSessionUI() } catch(e){}
+    try { applyPremiumGating() } catch(e){}
+    if (typeof renderHero === 'function'){ try { renderHero() } catch(e){} }
+    if (showToast){
+      if (upgraded) toast('🎉 ¡Tu cuenta se actualizó! Plan activo.', false)
+      else toast('✓ Cuenta sincronizada. No hay cambios pendientes.', false)
+    } else if (upgraded){
+      toast('🎉 ¡Tu plan se activó! Disfrutá del acceso completo.', false)
+    }
+  } catch(e){
+    console.warn('[refreshMyProfile]', e.message || e)
+    if (showToast) toast('⚠ No se pudo sincronizar: ' + (e.message||''), true)
+  } finally {
+    _profilePolling = false
+  }
+}
+
+function _startProfilePolling(){
+  _stopProfilePolling()
+  // Cada 60 segundos refrescamos el profile silenciosamente
+  _profilePollTimer = setInterval(() => {
+    if (document.visibilityState === 'visible') refreshMyProfile(false)
+  }, 60000)
+  // Cuando vuelve la pestaña al foco, refrescar de inmediato
+  if (!window._profileVisHandlerAttached){
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && currentSession && !currentSession.isGuest){
+        refreshMyProfile(false)
+      }
+    })
+    window._profileVisHandlerAttached = true
+  }
+}
+
+function _stopProfilePolling(){
+  if (_profilePollTimer){ clearInterval(_profilePollTimer); _profilePollTimer = null }
 }
 
 function renderSessionUI(){
@@ -3556,7 +3633,20 @@ function renderSessionUI(){
     ? '<span class="account-badge badge-tec">🏫 TEC</span>'
     : '<span class="account-badge badge-personal">✉️ Personal</span>'
   const adminBadge = isAdmin ? ' <span class="account-badge badge-admin">👑 Admin</span>' : ''
-  userInfo.innerHTML = `<strong>${escapeHtml(p.name)}</strong>${adminBadge}<br>${escapeHtml(p.email)} ${typeBadge}`
+  // Indicador de plan actual + botón sincronizar
+  const planBadge = p.plan_full ? '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ Pase Semestre/Mensual</span>'
+                  : (p.plan_p1 && p.plan_p2) ? '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ P1 + P2</span>'
+                  : p.plan_p1 ? '<span class="account-badge" style="background:var(--blueSoft);color:var(--blue)">📘 Pase P1</span>'
+                  : p.plan_p2 ? '<span class="account-badge" style="background:var(--blueSoft);color:var(--blue)">📗 Pase P2</span>'
+                  : '<span class="account-badge" style="background:var(--soft);color:var(--muted)">Vista previa gratuita</span>'
+  const expIcon = p.plan_expires_at && new Date(p.plan_expires_at) > new Date()
+    ? `<small class="muted" style="display:block;margin-top:.2rem">Vence: ${new Date(p.plan_expires_at).toLocaleDateString()}</small>` : ''
+  userInfo.innerHTML = `<strong>${escapeHtml(p.name)}</strong>${adminBadge}<br>${escapeHtml(p.email)} ${typeBadge}<br>
+    <div style="margin-top:.4rem;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap">
+      ${planBadge}
+      <button class="btn" style="font-size:.72rem;padding:.25rem .5rem" onclick="A.refreshMyProfile(true)" title="Recargar tu cuenta desde el servidor (si pagaste y aún no ves tu plan)">🔄 Sincronizar</button>
+    </div>
+    ${expIcon}`
   // Reconstruir feedback box (puede haberse reemplazado por el modo invitado anterior)
  renderFeedbackForm()
   loadMyFeedback()
@@ -8343,7 +8433,7 @@ const A = {
   // ranking & feedback
   loadRanking, submitFeedback,
   // admin
-  openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser,
+  openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser, refreshMyProfile,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
   adminGrantPlan, adminRevokePlan, adminQuickGrant,
   // cobertura/dominio
