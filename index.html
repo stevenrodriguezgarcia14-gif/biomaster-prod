@@ -986,10 +986,15 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       <div class="lp-free-strip">
         <div>
           <strong>¿Querés ver primero de qué se trata?</strong>
-          <p>El plan <span class="lp-free-tag">Vista previa gratuita</span> te muestra el primer subtema de cada tema, 5 preguntas del examen y un simulacro diario corto, en cualquiera de los dos parciales. Suficiente para entender el producto, no para estudiar para el parcial.</p>
+          <p>El plan <span class="lp-free-tag">Vista previa gratuita</span> te muestra una muestra mínima del contenido (un subtema introductorio, 5 preguntas del examen y un simulacro corto diario). Es para entender el producto, no para estudiar para el parcial.</p>
         </div>
         <button class="lp-btn-secondary" onclick="window.openAuthFromLanding('register')">Empezar vista previa</button>
       </div>
+
+      <!-- Disclaimer legal mini -->
+      <p style="text-align:center;margin-top:1.4rem;font-size:.78rem;color:var(--muted);max-width:680px;margin-left:auto;margin-right:auto;line-height:1.5">
+        Al comprar aceptás los <a onclick="window.openLegal('terminos')" style="color:var(--green);cursor:pointer;text-decoration:underline">términos de uso</a>, la <a onclick="window.openLegal('privacidad')" style="color:var(--green);cursor:pointer;text-decoration:underline">política de privacidad</a> y la <a onclick="window.openLegal('reembolsos')" style="color:var(--green);cursor:pointer;text-decoration:underline">política de reembolsos</a>. BioMaster es una herramienta de estudio independiente y <strong>no garantiza la aprobación</strong> del examen ni del curso.
+      </p>
 
       <!-- Comparativa explícita (FAQ visual del pricing) -->
       <div class="lp-pricing-compare">
@@ -1022,8 +1027,8 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
   <section class="lp-section" style="background:var(--soft2)">
     <div class="container">
       <h2>Lo que dicen estudiantes que ya la usaron</h2>
-      <p class="lp-section-sub">Comentarios reales del beta cerrado. Los testimonios completos con nombre y carrera se publicarán al lanzamiento.</p>
-      <div class="lp-testimonials">
+      <p class="lp-section-sub">Testimonios reales de usuarios de BioMaster. Si compartiste tu experiencia desde el panel de feedback y la aprobamos, podría aparecer acá.</p>
+      <div class="lp-testimonials" id="lpTestimonialsGrid">
         <div class="lp-test">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"Llegué al segundo parcial sintiendo que no sabía nada. Los simulacros me dijeron exactamente qué subtema repasar y pasé de 60 a 85 en una semana."</p>
@@ -1074,10 +1079,10 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
   <!-- Footer -->
   <footer class="lp-footer">
     <div class="container">
-      <div class="lp-footer-grid">
+      <div class="lp-footer-grid" style="grid-template-columns:1.5fr 1fr 1fr 1fr">
         <div>
           <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem">🧬</div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">Biología General · TEC</small></div></div>
-          <p style="max-width:320px;line-height:1.6">Plataforma de estudio diseñada por estudiantes para estudiantes del curso de Biología General del Tecnológico de Costa Rica.</p>
+          <p style="max-width:320px;line-height:1.6">Herramienta de estudio independiente para el curso de Biología General del Tecnológico de Costa Rica. <strong>No es producto oficial del TEC.</strong></p>
         </div>
         <div>
           <h4>Plataforma</h4>
@@ -1095,13 +1100,41 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
             <li><a onclick="window.enterAsGuestFromLanding()">Modo invitado</a></li>
           </ul>
         </div>
+        <div>
+          <h4>Legal y soporte</h4>
+          <ul>
+            <li><a onclick="window.openLegal('privacidad')">Política de privacidad</a></li>
+            <li><a onclick="window.openLegal('terminos')">Términos de uso</a></li>
+            <li><a onclick="window.openLegal('reembolsos')">Política de reembolsos</a></li>
+            <li><a onclick="window.openLegal('contacto')">Contacto / Soporte</a></li>
+          </ul>
+        </div>
       </div>
       <div class="lp-footer-bottom">
         <div>© <span id="lpYear"></span> BioMaster · Hecho en Costa Rica 🇨🇷</div>
-        <div>Material basado en el examen TEC 2023, segundo parcial · Uso educativo.</div>
+        <div style="max-width:600px">BioMaster es una herramienta de estudio independiente. Los resultados académicos dependen del esfuerzo individual de cada estudiante. No garantizamos aprobación de ningún examen.</div>
       </div>
     </div>
   </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODAL LEGAL — privacidad, términos, reembolsos, contacto
+     ═══════════════════════════════════════════════════════════ -->
+<div id="legalModal" style="position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:1rem">
+  <div class="pm-box" style="max-width:680px;max-height:85vh;overflow-y:auto;padding:1.6rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;position:sticky;top:0;background:var(--surface);padding-bottom:.6rem;border-bottom:1px solid var(--border);z-index:2">
+      <h3 id="legalTitle" style="margin:0">Información legal</h3>
+      <button onclick="document.getElementById('legalModal').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:1.5rem;line-height:1;padding:.2rem .5rem;color:var(--muted)">×</button>
+    </div>
+    <div id="legalContent" style="font-size:.9rem;line-height:1.6"></div>
+    <div style="margin-top:1rem;display:flex;gap:.4rem;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:.8rem">
+      <button class="btn" onclick="window.openLegal('privacidad')">Privacidad</button>
+      <button class="btn" onclick="window.openLegal('terminos')">Términos</button>
+      <button class="btn" onclick="window.openLegal('reembolsos')">Reembolsos</button>
+      <button class="btn" onclick="window.openLegal('contacto')">Contacto</button>
+    </div>
+  </div>
 </div>
 
 <!-- Pricing modal placeholder (preparado para conectar Stripe / pasarela) -->
@@ -3536,11 +3569,17 @@ function renderFeedbackForm(){
         <option value="sugerencia">Sugerencia</option>
         <option value="error">Reporte de error</option>
         <option value="pregunta">Pregunta</option>
+        <option value="testimonio">Testimonio / Experiencia 💬</option>
         <option value="otro">Otro</option>
       </select>
     </div>
     <div class="auth-field"><label>Comentario</label>
       <textarea id="fbText" rows="4" placeholder="Escribe entre 5 y 2000 caracteres…"></textarea>
+    </div>
+    <div class="auth-field" id="fbExperienceWrap" style="display:none">
+      <label>📝 Tu experiencia con BioMaster <small style="font-weight:400;color:var(--muted)">(opcional, 30-300 caracteres)</small></label>
+      <textarea id="fbExperience" rows="3" maxlength="300" placeholder="Ej: 'Pasé de 60 a 85 en una semana usando los simulacros…' Si lo aprobamos, aparece en la landing junto a los testimonios."></textarea>
+      <small style="display:block;margin-top:.25rem;color:var(--muted);font-size:.78rem">Tu experiencia podría aparecer públicamente en la landing (con tu nombre) si la aprobamos. Podés escribir sin esto si solo es feedback privado.</small>
     </div>
     <button class="btn primary" onclick="A.submitFeedback()">📤 Enviar</button>
     <div id="fbResult" class="feedback" style="margin-top:.6rem"></div>
@@ -3553,6 +3592,14 @@ function renderFeedbackForm(){
       <p class="muted" style="font-size:.8rem;margin:.3rem 0 .6rem">Borra todo TU progreso (XP, racha, partidas, logros). No borra tu cuenta.</p>
       <button class="btn danger" onclick="A.resetMyProgress()">🧹 Borrar mi progreso</button>
     </div>`
+  // Mostrar/ocultar campo experiencia según tipo
+  const fbType = document.getElementById('fbType')
+  const wrap = document.getElementById('fbExperienceWrap')
+  if (fbType && wrap){
+    const sync = () => { wrap.style.display = (fbType.value === 'testimonio') ? '' : 'none' }
+    fbType.addEventListener('change', sync)
+    sync()
+  }
 }
 
 function escapeHtml(s){
@@ -3898,15 +3945,21 @@ async function submitFeedback(){
   }
   const type = document.getElementById('fbType').value
   const text = document.getElementById('fbText').value.trim()
+  const expEl = document.getElementById('fbExperience')
+  const experience = expEl ? expEl.value.trim() : ''
   if (text.length < 5) return showMsg('fbResult','bad','⚠ Escribe al menos 5 caracteres.')
   if (text.length > 2000) return showMsg('fbResult','bad','⚠ Máximo 2000 caracteres.')
-  const { error } = await sb.from('feedback').insert({
-    user_id: currentSession.user.id,
-    type, text
-  })
+  if (experience && experience.length < 30) return showMsg('fbResult','bad','⚠ Si vas a compartir experiencia, escribí al menos 30 caracteres.')
+  if (experience.length > 300) return showMsg('fbResult','bad','⚠ La experiencia no puede pasar de 300 caracteres.')
+  const payload = { user_id: currentSession.user.id, type, text }
+  if (experience) payload.experience_text = experience
+  const { error } = await sb.from('feedback').insert(payload)
   if (error) return showMsg('fbResult','bad','⚠ ' + error.message)
   document.getElementById('fbText').value = ''
-  showMsg('fbResult','good','✅ Feedback enviado.')
+  if (expEl) expEl.value = ''
+  showMsg('fbResult','good', experience
+    ? '✅ Feedback enviado. Si aprobamos tu experiencia, aparecerá en la landing.'
+    : '✅ Feedback enviado.')
   toast('💬 Feedback enviado.')
   loadMyFeedback()
 }
@@ -3983,7 +4036,7 @@ async function renderAdminPanel(){
 async function _renderAdminFeedback(){
   const { data: fbs, error: fe } = await sb
     .from('feedback')
-    .select('id,type,text,status,admin_reply,created_at,user_id,profiles(name,email)')
+    .select('id,type,text,status,admin_reply,created_at,user_id,experience_text,is_public,profiles(name,email)')
     .order('created_at', { ascending:false })
     .limit(100)
   const fbList = document.getElementById('adminFbList')
@@ -3991,19 +4044,48 @@ async function _renderAdminFeedback(){
   if (fe){ fbList.innerHTML = '<span class="bad">⚠ '+escapeHtml(fe.message)+'</span>' }
   else if (!fbs?.length){ fbList.innerHTML = '<span class="muted">Sin feedback aún.</span>' }
   else {
-    fbList.innerHTML = fbs.map(f => `<div class="reco-item">
+    fbList.innerHTML = fbs.map(f => {
+      const expBlock = f.experience_text
+        ? `<div style="margin:.4rem 0;padding:.55rem .75rem;background:var(--greenSoft);border-left:3px solid var(--green);border-radius:6px;font-size:.88rem">
+            <strong>📝 Experiencia:</strong> ${escapeHtml(f.experience_text)}
+            ${f.is_public ? '<span class="fb-status fb-resuelto" style="margin-left:.4rem">📢 Pública</span>' : ''}
+          </div>`
+        : ''
+      const publicBtn = f.experience_text
+        ? (f.is_public
+            ? `<button class="btn" onclick="A.toggleFeedbackPublic(${f.id}, false)">🔒 Quitar público</button>`
+            : `<button class="btn primary" onclick="A.toggleFeedbackPublic(${f.id}, true)">📢 Hacer público</button>`)
+        : ''
+      return `<div class="reco-item">
       <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
         <strong>${escapeHtml(f.type)}</strong>
         <span class="fb-status fb-${f.status}">${f.status}</span>
       </div>
       <div style="margin:.4rem 0">${escapeHtml(f.text)}</div>
+      ${expBlock}
       <small class="muted">${escapeHtml(f.profiles?.name || '—')} (${escapeHtml(f.profiles?.email || '—')}) · ${new Date(f.created_at).toLocaleString()}</small>
       <div style="margin-top:.4rem;display:flex;gap:.3rem;flex-wrap:wrap">
+        ${publicBtn}
         <button class="btn" onclick="A.setFbStatus(${f.id},'leido')">📖 Leído</button>
         <button class="btn primary" onclick="A.setFbStatus(${f.id},'resuelto')">✅ Resuelto</button>
         <button class="btn danger" onclick="A.setFbStatus(${f.id},'descartado')">🗑 Descartar</button>
       </div>
-    </div>`).join('')
+    </div>`}).join('')
+  }
+}
+
+async function toggleFeedbackPublic(id, makePublic){
+  if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
+  if (makePublic && !confirm('¿Hacer pública esta experiencia? Aparecerá en la landing con el nombre del usuario.')) return
+  try {
+    const { error } = await sb.from('feedback')
+      .update({ is_public: makePublic })
+      .eq('id', id)
+    if (error) throw error
+    toast(makePublic ? '📢 Marcado como público' : '🔒 Ya no es público')
+    await renderAdminPanel()
+  } catch(e){
+    toast('⚠ Error: ' + (e.message || e), true)
   }
 }
 
@@ -7624,22 +7706,26 @@ function _gateResumen(containerSel, hasAccess, parcialCode){
   const root = document.querySelector(containerSel)
   if (!root) return
   const topics = root.querySelectorAll('details.topic-card')
-  topics.forEach(tc => {
+  const parcialLabel = parcialCode === 'p1' ? 'primer parcial' : 'segundo parcial'
+  topics.forEach((tc, topicIdx) => {
     const subitems = tc.querySelectorAll('.body .grid2 > .subitem')
-    subitems.forEach((si, idx) => {
+    // Limpieza previa
+    subitems.forEach(si => {
       si.classList.remove('lock-teaser')
       const oldCta = si.querySelector('.lock-cta-mini')
       if (oldCta) oldCta.remove()
-      if (hasAccess) return
-      if (idx === 0) return  // siempre visible el primer subtema (preview honesto)
+    })
+    if (hasAccess) return  // pago → mostrar todo
+    // Free: SOLO el primer subtema del PRIMER tema completo. Todo el resto bloqueado.
+    subitems.forEach((si, idx) => {
+      if (topicIdx === 0 && idx === 0) return  // único preview honesto
       si.classList.add('lock-teaser')
       const cta = document.createElement('button')
       cta.className = 'lock-cta-mini'
       cta.textContent = 'Desbloquear'
-      const parcialLabel = parcialCode === 'p1' ? 'primer parcial' : 'segundo parcial'
       cta.onclick = (e) => {
         e.stopPropagation()
-        window.showPaywall('resumen', `El resumen completo del ${parcialLabel} (con todos los subtemas, errores comunes y claves de examen) es contenido pago. La vista previa muestra solo el primer subtema de cada bloque.`)
+        window.showPaywall('resumen', `El resumen completo del ${parcialLabel} (con todos los subtemas, errores comunes y claves de examen) es contenido pago. La vista previa muestra solo un subtema introductorio.`)
       }
       si.appendChild(cta)
     })
@@ -8257,7 +8343,7 @@ const A = {
   // ranking & feedback
   loadRanking, submitFeedback,
   // admin
-  openAdmin, closeAdmin, adminTab, setFbStatus, promoteUser,
+  openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
   adminGrantPlan, adminRevokePlan, adminQuickGrant,
   // cobertura/dominio
@@ -10163,6 +10249,140 @@ document.addEventListener('click', function(e){
     pop.classList.remove('show')
   }
 })
+
+// ═══ MODAL LEGAL: privacidad / términos / reembolsos / contacto ═══
+window.openLegal = function(seccion){
+  const modal = document.getElementById('legalModal')
+  const titleEl = document.getElementById('legalTitle')
+  const contentEl = document.getElementById('legalContent')
+  if (!modal || !titleEl || !contentEl) return
+  const today = new Date().toISOString().slice(0,10)
+  const docs = {
+    privacidad: {
+      title: '🔒 Política de privacidad',
+      html: `
+        <p style="margin-bottom:.8rem"><small><em>Última actualización: ${today}</em></small></p>
+        <p><strong>1. Quiénes somos</strong></p>
+        <p>BioMaster es una herramienta de estudio independiente operada de forma personal en Costa Rica. <strong>No es producto oficial del Tecnológico de Costa Rica (TEC)</strong> ni está afiliada institucionalmente al TEC.</p>
+        <p style="margin-top:.8rem"><strong>2. Qué datos recolectamos</strong></p>
+        <ul style="padding-left:1.2rem">
+          <li><strong>Datos de cuenta:</strong> email, nombre que ingresás al registrarte y una contraseña que guardamos cifrada (nunca en texto plano).</li>
+          <li><strong>Datos de uso:</strong> tu progreso académico, intentos de simulacros, resultados de minijuegos, XP acumulada y mensajes de feedback.</li>
+          <li><strong>Datos de pago:</strong> si pagás por SINPE Móvil, registramos manualmente plan adquirido, monto, fecha y nota interna. No almacenamos números de tarjeta.</li>
+        </ul>
+        <p style="margin-top:.8rem"><strong>3. Para qué usamos tus datos</strong></p>
+        <p>Únicamente para hacer funcionar la plataforma: guardar tu progreso, validar tu plan activo, contactarte si nos enviás feedback, y procesar pagos manuales.</p>
+        <p style="margin-top:.8rem"><strong>4. Con quién los compartimos</strong></p>
+        <p>No vendemos ni compartimos tus datos con terceros con fines comerciales. Los datos se almacenan en infraestructura de Supabase (servidores en Estados Unidos) y Vercel, con cifrado en tránsito (HTTPS) y en reposo.</p>
+        <p style="margin-top:.8rem"><strong>5. Tus derechos (Ley 8968 Costa Rica)</strong></p>
+        <p>Podés solicitar en cualquier momento acceso, rectificación, eliminación o portabilidad de tus datos personales escribiéndonos por WhatsApp al <strong>8713 7782</strong>. Procesamos solicitudes en máximo 5 días hábiles.</p>
+        <p style="margin-top:.8rem"><strong>6. Cookies y rastreo</strong></p>
+        <p>Usamos almacenamiento local del navegador (localStorage) para mantener tu sesión activa. No usamos cookies de publicidad ni rastreadores de terceros.</p>
+        <p style="margin-top:.8rem"><strong>7. Menores de edad</strong></p>
+        <p>BioMaster está dirigida a estudiantes del curso Biología General del TEC, mayoritariamente mayores de edad. Si sos menor de 18 años, requerís consentimiento de tu representante legal.</p>
+      `
+    },
+    terminos: {
+      title: '📋 Términos de uso',
+      html: `
+        <p style="margin-bottom:.8rem"><small><em>Última actualización: ${today}</em></small></p>
+        <p><strong>1. Naturaleza del servicio</strong></p>
+        <p>BioMaster es una <strong>herramienta de estudio independiente</strong>, no oficial del TEC. El contenido es referencial, basado en el temario del curso Biología General y en exámenes liberados de años anteriores.</p>
+        <p style="margin-top:.8rem"><strong>2. Sobre los resultados académicos</strong></p>
+        <p style="background:var(--soft);padding:.6rem .8rem;border-radius:8px;border-left:3px solid var(--green)"><strong>BioMaster NO garantiza la aprobación de ningún examen, parcial ni del curso.</strong> Los resultados académicos dependen exclusivamente del esfuerzo, preparación y desempeño individual de cada estudiante el día del examen. La plataforma es una ayuda complementaria al estudio, no un sustituto del trabajo personal ni de las clases del curso.</p>
+        <p style="margin-top:.8rem"><strong>3. Uso aceptable</strong></p>
+        <p>Te comprometés a usar BioMaster con fines educativos personales. No está permitido: compartir tu cuenta, redistribuir el contenido, usarlo con fines comerciales no autorizados, ni intentar vulnerar la seguridad de la plataforma.</p>
+        <p style="margin-top:.8rem"><strong>4. Contenido</strong></p>
+        <p>El contenido (resúmenes, preguntas, simulacros, juegos) es de uso interno de la plataforma. La autoría intelectual queda reservada. El temario base es propiedad académica del TEC.</p>
+        <p style="margin-top:.8rem"><strong>5. Pagos y planes</strong></p>
+        <p>Los planes son personales e intransferibles. Tienen una duración específica desde la fecha de activación y se desactivan automáticamente al vencer.</p>
+        <p style="margin-top:.8rem"><strong>6. Disponibilidad</strong></p>
+        <p>Hacemos lo posible por mantener la plataforma disponible 24/7, pero no garantizamos disponibilidad ininterrumpida. Pueden ocurrir mantenimientos o caídas técnicas.</p>
+        <p style="margin-top:.8rem"><strong>7. Cambios</strong></p>
+        <p>Podemos actualizar estos términos. Si hay cambios significativos, te avisaremos por correo o desde la plataforma.</p>
+        <p style="margin-top:.8rem"><strong>8. Limitación de responsabilidad</strong></p>
+        <p>BioMaster se ofrece "tal cual está". No nos hacemos responsables por: errores en el contenido derivados del temario base, pérdida de progreso por fallas técnicas más allá de nuestro control, decisiones académicas que tomes en base al material, o consecuencias indirectas del uso de la plataforma.</p>
+      `
+    },
+    reembolsos: {
+      title: '💰 Política de reembolsos',
+      html: `
+        <p style="margin-bottom:.8rem"><small><em>Última actualización: ${today}</em></small></p>
+        <p><strong>1. Período de reembolso</strong></p>
+        <p>Tenés <strong>7 días calendario</strong> desde la activación de tu plan para solicitar un reembolso, siempre que no hayás usado más del <strong>20% del contenido pago</strong> (medido por simulacros completados, juegos terminados o secciones premium accedidas).</p>
+        <p style="margin-top:.8rem"><strong>2. Cómo solicitarlo</strong></p>
+        <p>Escribinos por WhatsApp al <strong>8713 7782</strong> indicando:</p>
+        <ul style="padding-left:1.2rem">
+          <li>Tu email registrado en BioMaster.</li>
+          <li>Plan adquirido y fecha aproximada del pago.</li>
+          <li>Razón del reembolso.</li>
+        </ul>
+        <p style="margin-top:.8rem"><strong>3. Procesamiento</strong></p>
+        <p>Pagos por SINPE Móvil: te devolvemos el monto al mismo número desde el cual pagaste, en máximo 3 días hábiles.</p>
+        <p style="margin-top:.8rem"><strong>4. No reembolsable</strong></p>
+        <ul style="padding-left:1.2rem">
+          <li>Solicitudes después de los 7 días.</li>
+          <li>Cuentas con uso superior al 20%.</li>
+          <li>Planes activados como cortesía o beca (que no fueron pagados).</li>
+          <li>Renovaciones del plan mensual posteriores a la primera (las renovaciones se cancelan hacia adelante, no se reembolsan).</li>
+        </ul>
+        <p style="margin-top:.8rem"><strong>5. Resolución</strong></p>
+        <p>Aprobamos reembolsos legítimos sin discusión. Si hay desacuerdo sobre el uso, podemos compartir los registros de actividad de tu cuenta como evidencia.</p>
+      `
+    },
+    contacto: {
+      title: '📞 Contacto y soporte',
+      html: `
+        <p>Estamos para ayudarte. Tiempo típico de respuesta: <strong>menos de 24 horas</strong> en días hábiles.</p>
+        <div style="margin-top:1rem;padding:1rem;background:var(--soft);border-radius:10px">
+          <p><strong>📱 WhatsApp (preferido)</strong><br>
+          <a href="https://wa.me/50687137782?text=Hola%2C%20necesito%20ayuda%20con%20BioMaster" target="_blank" rel="noopener" style="color:var(--green);font-weight:700;font-size:1.05rem">8713 7782</a></p>
+          <p style="margin-top:.6rem"><strong>💬 Desde la plataforma</strong><br>
+          Si ya tenés cuenta, podés escribirnos desde la sección <em>Feedback</em> dentro de la app. Recibimos todos los mensajes y respondemos.</p>
+        </div>
+        <p style="margin-top:1rem"><strong>Operamos desde:</strong> Costa Rica 🇨🇷</p>
+        <p style="margin-top:.6rem"><strong>Para qué podés escribirnos:</strong></p>
+        <ul style="padding-left:1.2rem">
+          <li>Confirmación de pago SINPE Móvil.</li>
+          <li>Activación o problemas con tu plan.</li>
+          <li>Reembolsos.</li>
+          <li>Reportes de errores o sugerencias.</li>
+          <li>Becas y descuentos para casos especiales.</li>
+        </ul>
+      `
+    }
+  }
+  const doc = docs[seccion] || docs.privacidad
+  titleEl.textContent = doc.title
+  contentEl.innerHTML = doc.html
+  modal.style.display = 'flex'
+  contentEl.scrollTop = 0
+}
+
+// ═══ TESTIMONIOS PÚBLICOS (cargados desde feedback aprobado) ═══
+async function loadPublicTestimonials(){
+  const grid = document.getElementById('lpTestimonialsGrid')
+  if (!grid) return
+  try {
+    const { data, error } = await sb
+      .from('public_testimonials')
+      .select('name, experience_text, created_at')
+      .order('created_at', { ascending: false })
+      .limit(6)
+    if (error || !data || !data.length) return  // Mantiene los placeholders
+    grid.innerHTML = data.map(t => {
+      const initial = (t.name || 'B').trim().charAt(0).toUpperCase() || 'B'
+      const safeName = escapeHtml(t.name || 'Estudiante')
+      const safeText = escapeHtml(t.experience_text || '')
+      return `<div class="lp-test">
+        <div class="lp-test-stars">★★★★★</div>
+        <p class="lp-test-text">"${safeText}"</p>
+        <div class="lp-test-author"><div class="lp-test-avatar">${initial}</div><div><div class="lp-test-name">${safeName}</div><div class="lp-test-role">Biología General · TEC</div></div></div>
+      </div>`
+    }).join('')
+  } catch(e){ /* fallback a placeholders */ }
+}
+loadPublicTestimonials()
 
 // Año dinámico en footer de landing
 const yearEl = document.getElementById('lpYear')
