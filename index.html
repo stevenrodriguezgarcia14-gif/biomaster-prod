@@ -24,20 +24,64 @@
   upgrade-insecure-requests;
 ">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>BioMaster — Plataforma de estudio para Biología General | TEC</title>
-<meta name="description" content="Aprueba Biología General sin perderte en apuntes. Cubre los dos parciales del TEC: química celular, biomoléculas, célula, metabolismo, fotosíntesis, respiración, genética y evolución. Diagnóstico, plan personalizado y simulacros adaptativos.">
-<meta name="keywords" content="biología general TEC, primer parcial biología, segundo parcial biología, simulacros biología, biomoléculas, célula, metabolismo, fotosíntesis, genética, plataforma estudio TEC">
+<title>BioMaster — Plataforma interactiva para estudiar Biología General</title>
+<meta name="description" content="Plataforma interactiva moderna para estudiar Biología General: química celular, biomoléculas, célula, metabolismo, fotosíntesis, respiración, genética, evolución, diversidad biológica y ecología. Diagnóstico inteligente, plan personalizado, simulacros adaptativos y evaluaciones tipo parcial. Ideal para preparación de exámenes y refuerzo de contenidos biológicos.">
+<meta name="keywords" content="biología general, plataforma interactiva biología, simulacros biología, biomoléculas, célula, metabolismo, fotosíntesis, genética, evolución, ecología, diversidad biológica, estudio biología universitario, evaluación tipo parcial">
 <meta name="author" content="BioMaster">
 <meta name="theme-color" content="#2f8b4d">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="BioMaster — Plataforma de estudio para Biología General">
-<meta property="og:description" content="Examen 2023 íntegro, simulacros adaptativos y progreso real por subtema. Hecho para aprobar el segundo parcial del TEC.">
+<meta property="og:title" content="BioMaster — Plataforma interactiva para estudiar Biología General">
+<meta property="og:description" content="Resúmenes completos, simulacros adaptativos, evaluaciones tipo parcial y apoyo visual interactivo para Biología General. Aprendizaje moderno y premium.">
 <meta property="og:locale" content="es_CR">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BioMaster — Plataforma de estudio para Biología General">
-<meta name="twitter:description" content="Aprueba Biología General con simulacros adaptativos, examen 2023 completo y juegos diseñados para el TEC.">
+<meta name="twitter:title" content="BioMaster — Plataforma interactiva para estudiar Biología General">
+<meta name="twitter:description" content="Entrenamiento inteligente para Biología General: simulacros adaptativos, evaluaciones tipo parcial, juegos didácticos y apoyo visual interactivo.">
+<!-- Robots / canonical (ayuda a SEO) -->
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="/">
+<!-- ═══ SEO: JSON-LD ═══
+     Schema.org WebSite + EducationalOrganization + Product
+     Ayuda a Google a entender qué es BioMaster y mostrar rich snippets. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "BioMaster",
+      "url": "https://biomaster.cr/",
+      "description": "Plataforma interactiva moderna para estudiar Biología General con simulacros adaptativos, evaluaciones tipo parcial y apoyo visual interactivo.",
+      "inLanguage": "es-CR",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://biomaster.cr/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "EducationalOrganization",
+      "name": "BioMaster",
+      "description": "Plataforma educativa independiente para estudiar Biología General a nivel universitario.",
+      "email": "Biomaster.oficial@gmail.com",
+      "areaServed": "CR"
+    },
+    {
+      "@type": "Product",
+      "name": "Pase Semestre Completo BioMaster",
+      "description": "Acceso a los tres parciales de Biología General: resúmenes, simulacros adaptativos, evaluaciones tipo parcial, apoyo visual interactivo y diagnóstico inteligente.",
+      "brand": { "@type": "Brand", "name": "BioMaster" },
+      "offers": {
+        "@type": "Offer",
+        "price": "9900",
+        "priceCurrency": "CRC",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -346,14 +390,16 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 /* ═══ PRICING 4 PLANES (P1, Semestre destacado en centro, P2) ═══
    El semestre en el centro porque visualmente la mayoría va al medio.
    P1 izquierda, P2 derecha porque son simétricos. */
-.lp-pricing-4{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:1.2rem;max-width:1180px;margin:0 auto;align-items:stretch}
-.lp-pricing-4 .lp-plan{padding:1.8rem 1.4rem;background:var(--surface);border:1.5px solid var(--border);border-radius:24px;position:relative;display:flex;flex-direction:column}
-.lp-pricing-4 .lp-plan.featured{border-color:var(--green);border-width:2.5px;box-shadow:0 24px 60px rgba(47,139,77,.22);transform:scale(1.04);z-index:2}
-.lp-pricing-4 .lp-plan-list{margin-top:.8rem;font-size:.84rem}
-.lp-pricing-4 .lp-plan-list li{padding:.15rem 0}
-.lp-pricing-4 .lp-plan h3{font-size:1.15rem}
-.lp-pricing-4 .lp-plan-price{font-size:2rem}
-@media(max-width:980px){.lp-pricing-4{grid-template-columns:1fr;max-width:480px}.lp-pricing-4 .lp-plan.featured{transform:none;order:-1}}
+.lp-pricing-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1300px;margin:0 auto;align-items:stretch}
+.lp-pricing-4 .lp-plan{padding:1.6rem 1.2rem;background:var(--surface);border:1.5px solid var(--border);border-radius:22px;position:relative;display:flex;flex-direction:column}
+.lp-pricing-4 .lp-plan.featured{border-color:var(--green);border-width:2.5px;box-shadow:0 24px 60px rgba(47,139,77,.22);transform:scale(1.03);z-index:2}
+.lp-pricing-4 .lp-plan-list{margin-top:.7rem;font-size:.8rem}
+.lp-pricing-4 .lp-plan-list li{padding:.12rem 0}
+.lp-pricing-4 .lp-plan h3{font-size:1.05rem}
+.lp-pricing-4 .lp-plan-price{font-size:1.85rem}
+@media(max-width:1100px){.lp-pricing-4{grid-template-columns:repeat(2,1fr);max-width:640px}.lp-pricing-4 .lp-plan.featured{transform:none}}
+@media(max-width:560px){.lp-pricing-4{grid-template-columns:1fr;max-width:420px}}
+@media(max-width:980px){.lp-pricing-4 .lp-plan.featured{order:-1}}
 
 .lp-pricing-monthly{margin:2rem auto 0;max-width:900px;padding:1.4rem 1.6rem;background:var(--soft2);border:1px solid var(--border);border-radius:18px;display:flex;justify-content:space-between;align-items:center;gap:1.2rem;flex-wrap:wrap}
 .lp-pricing-monthly strong{display:block;font-size:.95rem;margin-bottom:.2rem}
@@ -415,7 +461,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 .pw-feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-bottom:1.4rem}
 .pw-feature{display:flex;align-items:center;gap:.5rem;padding:.55rem .7rem;border-radius:10px;background:var(--soft);border:1px solid var(--border);font-size:.82rem;font-weight:600}
 .pw-feature::before{content:"✓";color:var(--green);font-weight:800}
-.pw-plans-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1rem}
+.pw-plans-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
 .pw-plan-mini{padding:.8rem .5rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);text-align:center;cursor:pointer;transition:all .15s;position:relative}
 .pw-plan-mini:hover{border-color:var(--green)}
 .pw-plan-mini.selected{border-color:var(--green);background:var(--greenSoft)}
@@ -779,7 +825,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <div class="container lp-nav-inner">
       <div class="brand">
         <div class="logo">🧬</div>
-        <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted);font-size:.72rem">Biología General · TEC</small></div>
+        <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted);font-size:.72rem">Biología General</small></div>
       </div>
       <div class="lp-nav-links">
         <a onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Cómo funciona</a>
@@ -793,7 +839,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
 
   <!-- Hero -->
   <section class="lp-hero container">
-    <span class="lp-eyebrow">📚 Hecho para el segundo parcial de Biología General · TEC</span>
+    <span class="lp-eyebrow">📚 Plataforma interactiva para Biología General</span>
     <h1>El método con el que <span class="hl">se aprueba Biología General.</span></h1>
     <p class="lp-sub">Diagnóstico inicial, plan de estudio personalizado por fecha del examen, simulacros adaptativos y predicción de aprobación. Todo en una sola plataforma. Vista previa gratuita disponible.</p>
     <div class="lp-cta-row">
@@ -807,9 +853,9 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     </div>
     <div class="lp-hero-stats">
       <div class="lp-stat"><div class="lp-stat-num">15</div><div class="lp-stat-lbl">Preguntas de diagnóstico</div></div>
-      <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-lbl">Preguntas reales 2023</div></div>
+      <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-lbl">Preguntas con feedback</div></div>
       <div class="lp-stat"><div class="lp-stat-num">∞</div><div class="lp-stat-lbl">Simulacros adaptativos</div></div>
-      <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">Temas TEC completos</div></div>
+      <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">Parciales completos</div></div>
     </div>
   </section>
 
@@ -894,12 +940,12 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
   <section class="lp-section" id="lp-precio">
     <div class="container">
       <h2>Elegí el plan según lo que necesitás aprobar</h2>
-      <p class="lp-section-sub">Tres opciones claras: comprar solo el parcial que se viene, comprar el semestre completo (lo que más conviene), o probar un mes antes de comprometerte. Sin permanencia, garantía de 7 días.</p>
+      <p class="lp-section-sub">Cuatro opciones claras: comprar solo el parcial que se viene (P1, P2 o P3), comprar el semestre completo (lo que más conviene), o probar un mes antes de comprometerte. Sin permanencia, garantía de 7 días.</p>
 
       <!-- Toggle bundle vs individual (visual, sin lógica complicada) -->
       <div class="pricing-anchor" style="text-align:center;margin-bottom:1.5rem">
         <span style="display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;background:var(--greenSoft);border:1px solid var(--green);border-radius:99px;font-size:.85rem;font-weight:700;color:var(--green)">
-          💡 Comprando los dos parciales por separado: ₡13.800 — Pase Semestre Completo: <strong style="text-decoration:underline">₡9.900</strong>. Ahorrás ₡3.900.
+          💡 Comprando los tres parciales por separado: ₡11.700 — Pase Semestre Completo: <strong style="text-decoration:underline">₡9.900</strong>. Ahorrás ₡1.800.
         </span>
       </div>
 
@@ -907,40 +953,43 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
 
         <!-- PASE PRIMER PARCIAL -->
         <div class="lp-plan">
-          <span class="lp-plan-tag" style="background:var(--blue)">📘 Solo Primer Parcial</span>
-          <h3>Pase P1</h3>
+          <span class="lp-plan-tag" style="background:var(--blue)">📘 Solo Parcial 1</span>
+          <h3>Pase Parcial 1</h3>
           <p class="lp-plan-desc">Acceso completo al primer parcial: introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración.</p>
-          <div class="lp-plan-price">₡<span data-price="p1">6.900</span><small> · hasta el examen</small></div>
+          <div class="lp-plan-price">₡<span data-price="p1">3.900</span><small> · 60 días</small></div>
           <p class="lp-plan-equiv">Acceso 60 días desde la compra</p>
           <ul class="lp-plan-list">
             <li>Resumen teórico completo del P1 (5 temas, 42 subtemas)</li>
-            <li>Examen P1 íntegro con 40 preguntas y feedback</li>
+            <li>Evaluación tipo parcial P1 con 40 preguntas y feedback</li>
             <li>Simulacros ilimitados del P1 (todos los temas)</li>
             <li>Diagnóstico inteligente del P1</li>
             <li>Plan de estudio personalizado para tu fecha de P1</li>
             <li>Panel "Qué estudiar hoy" para P1</li>
             <li>Predicción de aprobación del P1</li>
+            <li>Apoyo visual interactivo para temas P1</li>
             <li>Errores frecuentes, modo rescate, jefe final</li>
-            <li class="no">No incluye contenido del segundo parcial</li>
+            <li class="no">No incluye P2 ni P3</li>
           </ul>
           <button class="lp-plan-cta secondary" data-plan-cta="p1">Comprar Pase P1 →</button>
         </div>
 
         <!-- PASE SEMESTRE COMPLETO (DESTACADO) -->
         <div class="lp-plan featured">
-          <span class="lp-plan-tag">⭐ Más elegido · ahorrás 28%</span>
+          <span class="lp-plan-tag">⭐ Más elegido · ahorrás 15%</span>
           <h3>Pase Semestre Completo</h3>
-          <p class="lp-plan-desc">Los dos parciales del semestre, acceso desde el día 1 hasta el final del ciclo. La opción que conviene a todos los que llevan el curso este semestre.</p>
+          <p class="lp-plan-desc">Los tres parciales del semestre, acceso desde el día 1 hasta el final del ciclo. La opción que más conviene a quienes llevan el curso completo.</p>
           <div class="lp-plan-price">₡<span data-price="semestre">9.900</span><small> · 6 meses</small></div>
-          <p class="lp-plan-equiv">≈ ₡1.650 / mes · vs ₡13.800 si compraras P1 + P2</p>
+          <p class="lp-plan-equiv">≈ ₡1.650 / mes · vs ₡11.700 si compraras P1 + P2 + P3</p>
           <ul class="lp-plan-list">
-            <li><strong>Todo lo del Pase P1 + Pase P2</strong></li>
-            <li>📘 Primer parcial: 5 temas, 42 subtemas, examen 40 preguntas</li>
-            <li>📗 Segundo parcial: temas 4-6, examen 2023 íntegro</li>
+            <li><strong>Todo lo del Pase P1 + P2 + P3</strong></li>
+            <li>📘 Primer parcial completo</li>
+            <li>📗 Segundo parcial completo</li>
+            <li>📕 Tercer parcial completo (origen de la vida, diversidad y ecología)</li>
             <li>Diagnóstico inteligente independiente por parcial</li>
-            <li>Dos planes de estudio activos (uno por parcial)</li>
+            <li>Tres planes de estudio activos (uno por parcial)</li>
             <li>Predicción de aprobación para cada parcial</li>
-            <li>Simulacros adaptativos ilimitados en ambos bancos</li>
+            <li>Simulacros adaptativos ilimitados en los tres bancos</li>
+            <li>Apoyo Visual Interactivo (BioVisual) en todos los temas</li>
             <li>Modo Sprint pre-examen para cada parcial</li>
             <li>Historial unificado de errores frecuentes</li>
             <li>Los 5 juegos didácticos completos</li>
@@ -952,23 +1001,47 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
 
         <!-- PASE SEGUNDO PARCIAL -->
         <div class="lp-plan">
-          <span class="lp-plan-tag" style="background:var(--green)">📗 Solo Segundo Parcial</span>
-          <h3>Pase P2</h3>
-          <p class="lp-plan-desc">Acceso completo al segundo parcial: genética, evolución, origen y diversidad biológica. Examen 2023 íntegro.</p>
-          <div class="lp-plan-price">₡<span data-price="p2">6.900</span><small> · hasta el examen</small></div>
+          <span class="lp-plan-tag" style="background:var(--green)">📗 Solo Parcial 2</span>
+          <h3>Pase Parcial 2</h3>
+          <p class="lp-plan-desc">Acceso completo al segundo parcial: bases genéticas, evolución y biotecnología. Evaluación tipo parcial íntegra.</p>
+          <div class="lp-plan-price">₡<span data-price="p2">3.900</span><small> · 60 días</small></div>
           <p class="lp-plan-equiv">Acceso 60 días desde la compra</p>
           <ul class="lp-plan-list">
-            <li>Resumen teórico completo del P2 (3 temas)</li>
-            <li>Examen 2023 íntegro: 4 partes (selección, corta, asociación, desarrollo)</li>
+            <li>Resumen teórico completo del P2</li>
+            <li>Evaluación tipo parcial: 4 partes (selección, corta, asociación, desarrollo)</li>
             <li>Simulacros ilimitados del P2</li>
             <li>Diagnóstico inteligente del P2</li>
             <li>Plan de estudio personalizado para tu fecha de P2</li>
             <li>Panel "Qué estudiar hoy" para P2</li>
             <li>Predicción de aprobación del P2</li>
+            <li>Apoyo visual interactivo para temas P2</li>
             <li>Errores frecuentes, modo rescate, jefe final</li>
-            <li class="no">No incluye contenido del primer parcial</li>
+            <li class="no">No incluye P1 ni P3</li>
           </ul>
           <button class="lp-plan-cta secondary" data-plan-cta="p2">Comprar Pase P2 →</button>
+        </div>
+
+        <!-- PASE TERCER PARCIAL (NUEVO P3) -->
+        <div class="lp-plan">
+          <span class="lp-plan-tag" style="background:#a855f7">📕 Solo Parcial 3</span>
+          <h3>Pase Parcial 3</h3>
+          <p class="lp-plan-desc">Acceso completo al tercer parcial: origen de la vida, sistemática, diversidad biológica (virus, procariotas, protistas, plantas, hongos, animales) y ecología.</p>
+          <div class="lp-plan-price">₡<span data-price="p3">3.900</span><small> · 60 días</small></div>
+          <p class="lp-plan-equiv">Acceso 60 días desde la compra</p>
+          <ul class="lp-plan-list">
+            <li>Resumen completo P3 (origen vida, diversidad, ecología)</li>
+            <li>Evaluación tipo parcial P3</li>
+            <li>Simulacros ilimitados del P3</li>
+            <li>Juegos interactivos enfocados en P3</li>
+            <li>Diagnóstico inteligente del P3</li>
+            <li>Plan de estudio personalizado para P3</li>
+            <li>Panel "Qué estudiar hoy" para P3</li>
+            <li>Predicción de aprobación del P3</li>
+            <li>Apoyo visual interactivo para temas P3</li>
+            <li>Modo rescate e historial de errores</li>
+            <li class="no">No incluye P1 ni P2</li>
+          </ul>
+          <button class="lp-plan-cta secondary" data-plan-cta="p3">Comprar Pase P3 →</button>
         </div>
 
       </div>
@@ -977,7 +1050,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       <div class="lp-pricing-monthly">
         <div>
           <strong>¿Preferís pagar mes a mes?</strong>
-          <p>Pase Mensual Completo (incluye P1 y P2) — <strong>₡3.500 / mes</strong>, recurring, cancelás cuando querás. Si vas a estudiar más de 3 meses, te conviene el Pase Semestre.</p>
+          <p>Pase Mensual Completo (incluye P1, P2 y P3) — <strong>₡2.900 / mes</strong>, cancelás cuando querás. Si vas a estudiar más de 3 meses, te conviene el Pase Semestre.</p>
         </div>
         <button class="lp-btn-secondary" data-plan-cta="mensual">Activar mensual →</button>
       </div>
@@ -1032,17 +1105,17 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <div class="lp-test">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"Llegué al segundo parcial sintiendo que no sabía nada. Los simulacros me dijeron exactamente qué subtema repasar y pasé de 60 a 85 en una semana."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">A</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General · TEC</div></div></div>
+          <div class="lp-test-author"><div class="lp-test-avatar">A</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
         <div class="lp-test">
           <div class="lp-test-stars">★★★★★</div>
-          <p class="lp-test-text">"El examen 2023 con feedback inmediato es lo que más me sirvió. No tener que adivinar si la respuesta estaba bien fue la diferencia."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">M</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General · TEC</div></div></div>
+          <p class="lp-test-text">"La evaluación tipo parcial con feedback inmediato es lo que más me sirvió. No tener que adivinar si la respuesta estaba bien fue la diferencia."</p>
+          <div class="lp-test-author"><div class="lp-test-avatar">M</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
         <div class="lp-test">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"Los juegos parecen tontos hasta que te das cuenta de que estás repasando codones a las 11pm sin darte cuenta. BioMatch es adictivo."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">D</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General · TEC</div></div></div>
+          <div class="lp-test-author"><div class="lp-test-avatar">D</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
       </div>
     </div>
@@ -1055,10 +1128,10 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       <p class="lp-section-sub">Si tenés otra pregunta, escribinos desde el panel de feedback dentro de la plataforma.</p>
       <div class="lp-faq">
         <details><summary>¿Qué incluye exactamente la vista previa gratuita?</summary><div class="lp-faq-body">El primer subtema del resumen de cada tema (de ambos parciales), las primeras 5 preguntas del examen, un simulacro corto de 5 preguntas por día, una ronda de muestra del juego BioMatch y una decena de flashcards básicas. Es suficiente para entender la calidad y el formato del producto. No es suficiente para estudiar para el parcial.</div></details>
-        <details><summary>¿Cuál plan me conviene? P1, P2 o Semestre Completo</summary><div class="lp-faq-body"><strong>Pase P1 (₡6.900 · 60 días):</strong> si solo te queda aprobar el primer parcial o ya pasaste el segundo. <strong>Pase P2 (₡6.900 · 60 días):</strong> si solo te queda aprobar el segundo parcial. <strong>Pase Semestre Completo (₡9.900 · 6 meses):</strong> el plan más elegido. Comprando los dos parciales por separado pagarías ₡13.800; con el Semestre pagás ₡9.900 (ahorrás ₡3.900) y tenés acceso a todo desde el día 1 hasta el final del ciclo. <strong>Pase Mensual (₡3.500/mes):</strong> si querés probar antes de comprometerte. Si vas a estudiar 3+ meses, te conviene el Semestre.</div></details>
+        <details><summary>¿Cuál plan me conviene? P1, P2, P3 o Semestre Completo</summary><div class="lp-faq-body"><strong>Pase Parcial 1, 2 o 3 (₡3.900 c/u · 60 días):</strong> si solo te queda aprobar uno de los parciales. <strong>Pase Semestre Completo (₡9.900 · 6 meses):</strong> el plan más elegido. Comprando los tres parciales por separado pagarías ₡11.700; con el Semestre pagás ₡9.900 (ahorrás ₡1.800) y tenés acceso a todo desde el día 1 hasta el final del ciclo. <strong>Pase Mensual (₡2.900/mes):</strong> si querés probar antes de comprometerte. Si vas a estudiar 3+ meses, te conviene el Semestre.</div></details>
         <details><summary>Si compro Pase P1, ¿puedo después comprar el P2 por separado?</summary><div class="lp-faq-body">Sí, pero te conviene mucho menos que haber comprado el Semestre desde el inicio. Comprar P1 (₡6.900) + P2 (₡6.900) son ₡13.800; el Semestre cuesta ₡9.900. Si todavía estás en tiempo del semestre, te recomendamos hacer un upgrade desde P1 → Semestre con el costo proporcional de la diferencia. Escribinos desde el panel de feedback.</div></details>
         <details><summary>¿Por qué el plan gratis no incluye más?</summary><div class="lp-faq-body">Porque el valor real está en las funciones que te ahorran tiempo y mejoran tu probabilidad de aprobar: el diagnóstico que te dice exactamente qué te falta, el plan personalizado por fecha de examen, el panel "Qué estudiar hoy", la predicción de aprobación, los simulacros ilimitados y el resumen completo. Esas funciones son las que justifican que pagues. Si las regaláramos, la plataforma no podría sostenerse.</div></details>
-        <details><summary>¿Esto sirve solo para Biología General del TEC?</summary><div class="lp-faq-body">El contenido está diseñado a partir del programa de Biología General del TEC y de los exámenes oficiales (incluye el examen 2023 íntegro del segundo parcial). Si llevás Biología en otra universidad, los temas (introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración para el primer parcial; genética, evolución y diversidad para el segundo) son los mismos en la mayoría de programas, pero los simulacros están específicamente alineados al TEC.</div></details>
+        <details><summary>¿Esto sirve para cualquier curso de Biología General?</summary><div class="lp-faq-body">El contenido está diseñado a partir del temario estándar de Biología General universitario (introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración para el primer parcial; bases genéticas, evolución y biotecnología para el segundo; origen de la vida, diversidad biológica y ecología para el tercero). Estos temas son los mismos en la mayoría de programas universitarios de Biología General. La plataforma es independiente y reutilizable para estudiantes de distintas universidades.</div></details>
         <details><summary>¿Hay reembolso si no me sirve?</summary><div class="lp-faq-body">Sí, en cualquier plan. Si dentro de los primeros 7 días sentís que no es para vos, te devolvemos el 100% sin preguntas. Escribinos desde el panel de feedback dentro de la app.</div></details>
         <details><summary>¿Cómo se guarda mi progreso?</summary><div class="lp-faq-body">Si te registrás con tu correo, tu progreso (diagnóstico, plan de estudio, errores frecuentes, simulacros) se guarda en la nube y se sincroniza entre dispositivos. Si entrás como invitado, el progreso se guarda solo en este navegador. Los avances de cada parcial se mantienen separados (lo que hagas en P1 no afecta tu mapa de P2).</div></details>
         <details><summary>¿Funciona desde el celular?</summary><div class="lp-faq-body">Sí. La plataforma está optimizada para celular, tablet y computadora. Los simulacros, juegos y el plan de estudio funcionan igual en cualquier dispositivo.</div></details>
@@ -1081,8 +1154,8 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <div class="container">
       <div class="lp-footer-grid" style="grid-template-columns:1.5fr 1fr 1fr 1fr">
         <div>
-          <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem">🧬</div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">Biología General · TEC</small></div></div>
-          <p style="max-width:320px;line-height:1.6">Herramienta de estudio independiente para el curso de Biología General del Tecnológico de Costa Rica. <strong>No es producto oficial del TEC.</strong></p>
+          <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem">🧬</div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">Biología General</small></div></div>
+          <p style="max-width:320px;line-height:1.6">Plataforma interactiva moderna para estudiar Biología General. Diseñada para reforzar y practicar contenidos biológicos a nivel universitario. <strong>Producto educativo independiente.</strong></p>
         </div>
         <div>
           <h4>Plataforma</h4>
@@ -1176,22 +1249,27 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <div class="pw-plans-mini" id="pwPlansMini">
       <div class="pw-plan-mini" data-plan="p1" onclick="window.selectPwPlan('p1')">
         <div class="pw-plan-mini-name">📘 P1</div>
-        <div class="pw-plan-mini-price">₡6.900</div>
+        <div class="pw-plan-mini-price">₡3.900</div>
         <div class="pw-plan-mini-period">solo 1er parcial</div>
       </div>
       <div class="pw-plan-mini selected popular" data-plan="semestre" onclick="window.selectPwPlan('semestre')">
         <div class="pw-plan-mini-name">⭐ Semestre</div>
         <div class="pw-plan-mini-price">₡9.900</div>
-        <div class="pw-plan-mini-period">P1 + P2 · 6 meses</div>
+        <div class="pw-plan-mini-period">P1+P2+P3 · 6 meses</div>
       </div>
       <div class="pw-plan-mini" data-plan="p2" onclick="window.selectPwPlan('p2')">
         <div class="pw-plan-mini-name">📗 P2</div>
-        <div class="pw-plan-mini-price">₡6.900</div>
+        <div class="pw-plan-mini-price">₡3.900</div>
         <div class="pw-plan-mini-period">solo 2do parcial</div>
+      </div>
+      <div class="pw-plan-mini" data-plan="p3" onclick="window.selectPwPlan('p3')">
+        <div class="pw-plan-mini-name">📕 P3</div>
+        <div class="pw-plan-mini-price">₡3.900</div>
+        <div class="pw-plan-mini-period">solo 3er parcial</div>
       </div>
     </div>
     <div style="text-align:center;margin-bottom:.8rem">
-      <button class="lp-btn-secondary" style="font-size:.78rem;padding:.4rem .9rem" onclick="window.selectPwPlan('mensual')" id="pwMensualBtn">¿Preferís pagar mensual? ₡3.500/mes →</button>
+      <button class="lp-btn-secondary" style="font-size:.78rem;padding:.4rem .9rem" onclick="window.selectPwPlan('mensual')" id="pwMensualBtn">¿Preferís pagar mensual? ₡2.900/mes →</button>
     </div>
 
     <button class="pw-cta" id="pwCta" onclick="window.confirmPaywall()">Activar plan seleccionado →</button>
@@ -1208,7 +1286,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
   <div class="auth-box">
     <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
       <div class="logo" style="width:44px;height:44px">🧬</div>
-      <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted)">Biología General · TEC</small></div>
+      <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted)">Biología General</small></div>
     </div>
     <button onclick="window.closeAuthToLanding()" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);padding:.3rem .6rem;border-radius:8px" title="Volver al inicio">←</button>
     <div class="auth-tabs">
@@ -1247,18 +1325,21 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
 <div class="container topbar-inner">
   <div class="brand">
     <div class="logo">🧬</div>
-    <div><strong>BioMaster</strong><small>Biología General · TEC</small></div>
+    <div><strong>BioMaster</strong><small>Biología General</small></div>
   </div>
   <nav class="menu">
     <div class="parcial-sw" id="parcialSw" title="Cambiar parcial activo">
       <button id="btnP1" onclick="window.setActiveParcial('p1')">P1</button>
       <button id="btnP2" class="active" onclick="window.setActiveParcial('p2')">P2</button>
+      <button id="btnP3" onclick="window.setActiveParcial('p3')">P3</button>
     </div>
     <a class="chip" href="#hoy">📅 Hoy</a>
     <a class="chip" href="#diagnostico">🎯 Diagnóstico</a>
     <a class="chip" href="#resumen">📚 Resumen</a>
     <a class="chip" href="#simulacros">⚡ Simulacros</a>
-    <a class="chip" href="#examenes">📝 Examen 2023</a>
+    <a class="chip" href="#examenes">📝 Evaluación P2</a>
+    <a class="chip" href="#examenP3Section">📕 Evaluación P3</a>
+    <a class="chip" href="#biovisual">🔬 BioVisual</a>
     <div class="menu-more-wrap">
       <button class="chip" onclick="document.getElementById('menuMorePop').classList.toggle('show')" id="menuMoreBtn">Más ▾</button>
       <div class="menu-more-pop" id="menuMorePop">
@@ -1274,6 +1355,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <a href="#mapa" onclick="document.getElementById('menuMorePop').classList.remove('show')">🗺 Mapa de dominio</a>
         <a href="#ranking" onclick="document.getElementById('menuMorePop').classList.remove('show')">🏆 Ranking</a>
         <a href="#feedback" onclick="document.getElementById('menuMorePop').classList.remove('show')">💬 Feedback</a>
+        <a href="#soporte" onclick="document.getElementById('menuMorePop').classList.remove('show')">📩 Soporte</a>
       </div>
     </div>
     <a class="chip chip-secondary" href="#dashboard">📊 Dashboard</a>
@@ -1369,8 +1451,16 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <div style="font-size:.7rem;color:var(--muted);margin:.5rem 0 .2rem;text-transform:uppercase;letter-spacing:.5px;font-weight:800">📗 Segundo parcial</div>
         <a href="#resumen">📚 Resumen P2</a>
         <a href="#cobertura">🗺️ Cobertura P2</a>
-        <a href="#examenes">📝 Examen 2023</a>
+        <a href="#examenes">📝 Evaluación P2</a>
       </div>
+      <!-- Nav contextual P3 -->
+      <div data-parcial="p3" class="nav-parcial">
+        <div style="font-size:.7rem;color:var(--muted);margin:.5rem 0 .2rem;text-transform:uppercase;letter-spacing:.5px;font-weight:800">📕 Tercer parcial</div>
+        <a href="#resumenP3">📚 Resumen P3</a>
+        <a href="#coberturaP3">🗺️ Cobertura P3</a>
+        <a href="#examenP3Section">📝 Evaluación P3</a>
+      </div>
+      <a href="#biovisual">🔬 BioVisual <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
       <a href="#simulacros">⚡ Simulacros</a>
       <a href="#desarrollo">✏️ Desarrollo libre</a>
       <a href="#juego">🎮 Modo Juego</a>
@@ -1598,7 +1688,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <section class="section p1-content" id="resumenP1" data-parcial="p1">
       <div class="section-head">
         <div>
-          <span class="parcial-context">📘 Primer parcial · Biología General TEC</span>
+          <span class="parcial-context">📘 Primer parcial · Biología General</span>
           <h2>📚 Resumen teórico — Primer parcial</h2>
           <p class="module-desc">Temas 1 a 5 del programa: introducción, composición química, biología celular, fotosíntesis y respiración celular. Cada subtema incluye errores típicos, claves de examen y cómo se suele preguntar.</p>
         </div>
@@ -2196,7 +2286,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <div>
           <span class="parcial-context">📘 Primer parcial</span>
           <h2>📝 Simulacro tipo parcial — P1</h2>
-          <p class="module-desc">25 preguntas de selección múltiple + 4 preguntas cortas + 1 asociación. Estilo del primer parcial real del TEC.</p>
+          <p class="module-desc">25 preguntas de selección múltiple + 4 preguntas cortas + 1 asociación. Estilo evaluación tipo parcial universitario.</p>
         </div>
         <div class="toolbar">
           <div class="timer-d" id="examP1Timer" style="display:none">⏱ 00:00</div>
@@ -2473,18 +2563,18 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <!-- ═══ EXAMEN 2023 (V5 literal completo: P1+P2+Manual+A1+A2+Desarrollo) ═══ -->
     <section class="section p2-content" id="examenes" data-parcial="p2">
       <div class="section-head">
-        <div><h2>📝 Examen 2023 — Completo</h2><p class="module-desc">Examen original íntegro con todas sus partes. <strong>Modo Estudio</strong>: feedback inmediato. <strong>Modo Examen</strong>: respuestas al final.</p></div>
+        <div><h2>📝 Evaluación tipo parcial — P2</h2><p class="module-desc">Evaluación universitaria completa de práctica. <strong>Modo Estudio</strong>: feedback inmediato. <strong>Modo Examen</strong>: respuestas al final.</p></div>
         <div class="toolbar">
           <div class="timer-d" id="examTimerDisp" style="display:none">⏱ 00:00</div>
           <button class="btn" id="examTimerBtn" onclick="A.toggleExamTimer()">⏱ Temporizador</button>
           <span class="badge" id="examModeBadge">Modo: Estudio</span>
         </div>
       </div>
-      <div class="warn" style="margin-bottom:.8rem">📜 <em>Material basado en el Examen de Biología 2023, segundo parcial, TEC, incorporado con fines de práctica y estudio dentro de esta plataforma educativa.</em></div>
+      <div class="warn" style="margin-bottom:.8rem">📜 <em>Evaluación tipo parcial basada en una evaluación académica utilizada en el TEC durante 2023, reformulada y utilizada únicamente con fines educativos y de práctica dentro de BioMaster.</em></div>
       <details class="card panel" open>
         <summary class="summary-line" style="cursor:pointer">
-          <div class="summary-left"><span class="num">2023</span><div><strong>Examen 2023 · Biología</strong><div class="muted">Primera parte: Selección múltiple (40 pts) · Segunda: Respuesta corta · Tercera: Asociación · Cuarta: Desarrollo</div></div></div>
-          <div class="summary-right"><span class="badge badge-blue">Examen completo</span></div>
+          <div class="summary-left"><span class="num">P2</span><div><strong>Evaluación tipo parcial · Biología General</strong><div class="muted">Primera parte: Selección múltiple (40 pts) · Segunda: Respuesta corta · Tercera: Asociación · Cuarta: Desarrollo</div></div></div>
+          <div class="summary-right"><span class="badge badge-blue">Evaluación completa</span></div>
         </summary>
         <div class="body">
           <div class="warn" id="examModeInfo">📖 <strong>Modo Estudio activo:</strong> el feedback aparece inmediatamente al revisar cada sección.</div>
@@ -2611,8 +2701,278 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       </details>
     </section>
 
-    <!-- ═══════════ SIMULACROS ═══════════ -->
+    <!-- ═══════════════════════════════════════════════════════════
+         PARCIAL 3 — Resumen, cobertura y evaluación tipo parcial
+         Bloque de contenido completo del tercer parcial integrado
+         con coherencia visual respecto a P1 y P2.
+         ═══════════════════════════════════════════════════════════ -->
 
+    <!-- ═══ RESUMEN P3 ═══ -->
+    <section class="section p3-content" id="resumenP3" data-parcial="p3">
+      <div class="section-head">
+        <div>
+          <span class="parcial-context" style="background:rgba(168,85,247,.14);color:#a855f7;border-color:rgba(168,85,247,.25)">📕 Tercer parcial · Biología General</span>
+          <h2>📚 Resumen teórico — Tercer parcial</h2>
+          <p class="module-desc">Origen de la vida, organización de la información sobre las especies, diversidad biológica (virus, procariotas, protistas, plantas, hongos, animales) y ecología. Estructura idéntica a P1/P2: secciones colapsables por subtema.</p>
+        </div>
+      </div>
+
+      <!-- Tema 6 — Origen de la vida y diversidad -->
+      <details class="card panel" open>
+        <summary class="summary-line" style="cursor:pointer">
+          <div class="summary-left"><span class="num">6</span><div><strong>Tema 6 — Origen de la vida y diversidad biológica</strong><div class="muted">Teorías, sistemática, virus/priones, procariotas, protistas, plantas, hongos, animales</div></div></div>
+          <div class="summary-right"><span class="badge badge-blue">Resumen</span></div>
+        </summary>
+        <div class="body">
+
+          <div class="subitem" data-keywords="origen vida generacion espontanea Redi Pasteur Tyndall quimiosintetica Oparin Haldane Miller Urey ARN protocelulas fotosintesis oxigenacion eucariotas endosimbiosis"><strong>6.1 Teorías del origen de la vida</strong>
+            <ul class="list">
+              <li><strong>Ideas antiguas:</strong> creación directa de las especies y generación espontánea (microorganismos en caldo, gusanos en carne).</li>
+              <li><strong>Refutación de la generación espontánea:</strong> Redi, Pasteur y Tyndall demostraron que los seres vivos provienen de otros seres vivos en condiciones actuales.</li>
+              <li><strong>Teoría quimiosintética (Oparin & Haldane):</strong> atmósfera primitiva con poco O₂, vapor de agua, H₂, metano, amoniaco. Permite formación de moléculas orgánicas por reacciones químicas → <em>evolución prebiótica</em>.</li>
+              <li><strong>Experimento Miller-Urey:</strong> simuló condiciones primitivas y obtuvo aminoácidos, proteínas cortas, nucleótidos y ATP. Apoya la <em>síntesis abiótica</em>; <span class="mark-yellow">no creó vida</span>.</li>
+              <li><strong>Otras fuentes:</strong> aminoácidos en meteoritos sugieren aporte extraterrestre de moléculas orgánicas.</li>
+              <li><strong>Macromoléculas:</strong> arcilla en océanos/lagos pudo concentrar moléculas pequeñas y catalizar la síntesis de mayores.</li>
+              <li><strong>Mundo de ARN:</strong> ARN autorreplicante y catalítico (ribozima) → vesículas con membrana → protocélulas. Secuencia: moléculas simples → macromoléculas → ARN → protocélulas → primeras células.</li>
+              <li><strong>Primeras células y oxigenación:</strong> anaerobias heterótrofas → bacterias fotosintéticas → acumulación de O₂ → procariotas aerobios → eucariotas → ozono.</li>
+              <li><strong>Origen eucariotas:</strong> teoría autógena (invaginación de membranas para núcleo/organelos) + teoría endosimbiótica (mitocondrias y cloroplastos).</li>
+              <li><span class="mark-yellow">Idea clave:</span> el origen de la vida fue gradual, químico y multietápico.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="sistematica taxonomia binomial Linneo categorias clados arboles filogeneticos Woese tres dominios Bacteria Archaea Eukarya"><strong>6.2 Organización de la información sobre las especies</strong>
+            <ul class="list">
+              <li><strong>Sistemática:</strong> estudia diversidad y reconstruye filogenia (relaciones evolutivas). Va más allá de nombrar.</li>
+              <li><strong>Taxonomía y sistema binomial (Linneo):</strong> género (mayúscula) + especie (minúscula), en cursiva. Ej: <em>Homo sapiens</em>, <em>Escherichia coli</em>.</li>
+              <li><strong>Categorías taxonómicas (de menor a mayor):</strong> Especie → Género → Familia → Orden → Clase → Filum → Reino → Dominio.</li>
+              <li><strong>Clados y árboles filogenéticos:</strong> un clado incluye TODOS los descendientes de un ancestro. Se construyen con evidencia anatómica y molecular.</li>
+              <li><strong>Carl Woese y los tres dominios:</strong> ARN ribosomal mostró que los procariotas no son un grupo uniforme: <strong>Bacteria, Archaea, Eukarya</strong>.</li>
+              <li><span class="mark-yellow">Idea clave:</span> la clasificación moderna es filogenética y se basa en evidencia molecular.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="virus capside ADN ARN bacteriofago viroide prion procariotas bacterias arqueas peptidoglicano gram flagelos biofilms endosporas fision binaria conjugacion"><strong>6.3 Virus, priones y procariotas</strong>
+            <ul class="list">
+              <li><strong>Virus:</strong> acelulares, material genético (ADN o ARN) + cubierta proteica. Sin metabolismo propio. Parásitos intracelulares obligados. Bacteriófagos = virus de bacterias.</li>
+              <li><strong>Viroides:</strong> ARN circular sin cubierta. <strong>Priones:</strong> proteínas infecciosas mal plegadas. <span class="mark-yellow">No son virus.</span></li>
+              <li><strong>Procariotas:</strong> unicelulares, sin núcleo ni organelos membranosos. Bacteria + Archaea.</li>
+              <li><strong>Diferencias Bacteria vs Archaea:</strong> peptidoglicano solo en bacterias; membrana, ribosomas y ARN polimerasas distintos. Las arqueas no son solo "extremófilas".</li>
+              <li><strong>Criterios de clasificación:</strong> forma, locomoción, pigmentos, nutrición, colonias, tinción.</li>
+              <li><strong>Tinción de Gram:</strong> distingue tipos de pared. <strong>Flagelos</strong> mueven · <strong>Biofilms</strong> adhieren · <strong>Endosporas</strong> protegen (no son reproducción).</li>
+              <li><strong>Diversidad metabólica:</strong> aerobios, anaerobios, facultativos. Funciones: fijación de N, descomposición, digestión de celulosa, biorremediación, fotosíntesis (cianobacterias).</li>
+              <li><strong>Reproducción:</strong> fisión binaria (rápida). <strong>Conjugación:</strong> transferencia de ADN, no es reproducción sexual.</li>
+              <li><span class="mark-yellow">Idea clave:</span> los procariotas sostienen ciclos ecológicos completos, no solo causan enfermedades.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="protistas eucariotas unicelulares fotosinteticos heterotrofos mixotrofos flagelados ciliados ameboides pseudopodos"><strong>6.4 Protistas</strong>
+            <ul class="list">
+              <li>Eucariotas muy diversos: en su mayoría unicelulares, algunos multicelulares simples.</li>
+              <li><strong>Nutrición:</strong> fotosintéticos, heterótrofos o mixótrofos.</li>
+              <li><strong>Locomoción:</strong> flagelados, ciliados, ameboides (con pseudópodos), inmóviles.</li>
+              <li>Importantes en cadenas ecológicas acuáticas y para entender la diversidad eucariota.</li>
+              <li><span class="mark-yellow">Idea clave:</span> "Protista" es categoría práctica, no grupo natural uniforme.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="plantas terrestres cuticula vasculares raices hojas embrion esporas briofitas pteridofitas gimnospermas angiospermas"><strong>6.5 Plantas</strong>
+            <ul class="list">
+              <li><strong>Adaptaciones a la vida terrestre:</strong> cutícula, tejidos vasculares, raíces, hojas, protección del embrión, esporas resistentes, meristemo apical.</li>
+              <li><strong>Grupos principales:</strong>
+                <ul>
+                  <li>Briofitas (no vasculares).</li>
+                  <li>Plantas vasculares sin semilla.</li>
+                  <li>Gimnospermas (semillas desnudas).</li>
+                  <li>Angiospermas (flores y frutos).</li>
+                </ul>
+              </li>
+              <li><span class="mark-yellow">Idea clave:</span> hay tendencia evolutiva a menor dependencia del agua y mayor complejidad estructural.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="hongos eucariotas heterotrofos absorcion quitina micelio hifas chytridiomycota zygomycota ascomycota basidiomycota glomeromycota micorrizas"><strong>6.6 Hongos</strong>
+            <ul class="list">
+              <li>Eucariotas heterótrofos por absorción. Pared celular de <strong>quitina</strong>. Sin clorofila.</li>
+              <li>Forman micelio a partir de hifas; algunos unicelulares (levaduras). Reproducción sexual y asexual.</li>
+              <li><strong>Grupos principales:</strong> Chytridiomycota (esporas flageladas), Zygomycota (zigosporas), Ascomycota (ascas), Basidiomycota (basidios, setas), Glomeromycota (micorrizas).</li>
+              <li><strong>Importancia ecológica:</strong> descomposición, reciclaje de minerales, micorrizas con raíces vegetales.</li>
+              <li><span class="mark-yellow">Idea clave:</span> los hongos no son plantas; son un reino propio.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="animales invertebrados protostomados deuterostomados cordados notocorda cordon nervioso hendiduras faringeas cola postanal urocordados cefalocordados vertebrados"><strong>6.7 / 6.8 Animales: invertebrados y cordados</strong>
+            <ul class="list">
+              <li><strong>Animales:</strong> eucariotas multicelulares heterótrofos. La mayoría son invertebrados.</li>
+              <li><strong>Clasificación amplia por desarrollo:</strong> protostomados / deuterostomados (según qué abertura embrionaria se forma primero).</li>
+              <li><strong>Cordados:</strong> notocorda, cordón nervioso dorsal hueco, hendiduras faríngeas y cola postanal (al menos en alguna etapa).</li>
+              <li>Dentro de cordados: <strong>urocordados, cefalocordados</strong> (invertebrados) y <strong>vertebrados</strong>.</li>
+              <li><span class="mark-yellow">Idea clave:</span> todos los vertebrados son cordados, pero no todos los cordados son vertebrados.</li>
+            </ul>
+          </div>
+
+        </div>
+      </details>
+
+      <!-- Tema 7 — Ecología -->
+      <details class="card panel">
+        <summary class="summary-line" style="cursor:pointer">
+          <div class="summary-left"><span class="num">7</span><div><strong>Tema 7 — Ecología</strong><div class="muted">Poblaciones, comunidades, ecosistemas y biósfera</div></div></div>
+          <div class="summary-right"><span class="badge badge-green">Resumen</span></div>
+        </summary>
+        <div class="body">
+
+          <div class="subitem" data-keywords="ecologia poblacion demografia tamaño densidad capacidad de carga competencia historia de vida"><strong>7.1 Ecología de poblaciones</strong>
+            <ul class="list">
+              <li><strong>Ecología:</strong> estudio de las interacciones de los organismos con su ambiente. Integra evolución, climatología, geología.</li>
+              <li><strong>Población:</strong> individuos de la misma especie en una misma área y tiempo. <strong>Demografía:</strong> estudia sus cambios.</li>
+              <li><strong>Características:</strong> tamaño, densidad, cambio en el tiempo.</li>
+              <li><strong>Crecimiento:</strong> condicionado por capacidad de carga, competencia intraespecífica, historia de vida.</li>
+              <li><span class="mark-yellow">Idea clave:</span> la población es una unidad ecológica dinámica; no crece aislada del ambiente.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="comunidad biologica interaccion poblaciones diversidad especies estructura competencia coexistencia"><strong>7.2 Ecología de comunidades</strong>
+            <ul class="list">
+              <li><strong>Comunidad:</strong> poblaciones de distintas especies en una misma área y tiempo.</li>
+              <li>Estudia interacciones, estructura, abundancia y distribución de especies.</li>
+              <li><span class="mark-yellow">Idea clave:</span> comunidad ≠ ecosistema ≠ población.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="ecosistema bioticos abioticos energia nutrientes flujo"><strong>7.3 Flujo de energía y nutrientes</strong>
+            <ul class="list">
+              <li><strong>Ecosistema:</strong> componentes <strong>bióticos</strong> (organismos) + <strong>abióticos</strong> (suelo, agua, rocas, química, energía).</li>
+              <li>Estudia cómo funcionan juntos: flujo de energía y circulación de nutrientes.</li>
+              <li><span class="mark-yellow">Idea clave:</span> ecosistema = seres vivos + medio físico + interacciones.</li>
+            </ul>
+          </div>
+
+          <div class="subitem" data-keywords="biosfera clima ecosistemas terrestres acuaticos biodiversidad temperatura agua suelo"><strong>7.4 Principales ecosistemas de la biósfera</strong>
+            <ul class="list">
+              <li><strong>Biósfera:</strong> conjunto de ecosistemas de la Tierra.</li>
+              <li>Distribución depende del clima (temperatura, agua, suelo).</li>
+              <li><strong>Clasificación general:</strong> ecosistemas terrestres y acuáticos.</li>
+              <li><span class="mark-yellow">Idea clave:</span> el clima condiciona fuertemente la distribución de la vida.</li>
+            </ul>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ═══ COBERTURA P3 ═══ -->
+    <section class="section p3-content" id="coberturaP3" data-parcial="p3">
+      <div class="section-head">
+        <div>
+          <h2>🗺️ Cobertura del tercer parcial</h2>
+          <p class="module-desc">Marcá cada subtema con tu nivel real. Esto alimenta tu plan personalizado y predicción.</p>
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="subtopic-item level-1"><div><strong>6.1 Origen de la vida</strong></div></div>
+        <div class="subtopic-item level-2"><div>6.1.1 Ideas antiguas y refutación de generación espontánea</div><select data-st="6.1.1.p3" onchange="A.saveST('6.1.1.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.1.2 Quimiosintética / Miller-Urey / mundo ARN</div><select data-st="6.1.2.p3" onchange="A.saveST('6.1.2.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.1.3 Primeras células, oxigenación y eucariotas</div><select data-st="6.1.3.p3" onchange="A.saveST('6.1.3.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-1"><div><strong>6.2 Sistemática y taxonomía</strong></div></div>
+        <div class="subtopic-item level-2"><div>6.2.1 Sistema binomial y categorías</div><select data-st="6.2.1.p3" onchange="A.saveST('6.2.1.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.2.2 Clados, filogenia, tres dominios</div><select data-st="6.2.2.p3" onchange="A.saveST('6.2.2.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-1"><div><strong>6.3 Virus, priones, procariotas</strong></div></div>
+        <div class="subtopic-item level-2"><div>6.3.1 Virus, viroides y priones</div><select data-st="6.3.1.p3" onchange="A.saveST('6.3.1.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.3.2 Bacteria vs Archaea / Gram / endosporas</div><select data-st="6.3.2.p3" onchange="A.saveST('6.3.2.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.3.3 Reproducción y conjugación</div><select data-st="6.3.3.p3" onchange="A.saveST('6.3.3.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-1"><div><strong>6.4–6.6 Protistas, plantas, hongos</strong></div></div>
+        <div class="subtopic-item level-2"><div>6.4 Protistas</div><select data-st="6.4.p3" onchange="A.saveST('6.4.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.5 Plantas: adaptaciones y grupos</div><select data-st="6.5.p3" onchange="A.saveST('6.5.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.6 Hongos: grupos y micorrizas</div><select data-st="6.6.p3" onchange="A.saveST('6.6.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-1"><div><strong>6.7–6.8 Animales</strong></div></div>
+        <div class="subtopic-item level-2"><div>6.7 Invertebrados, protostomados/deuterostomados</div><select data-st="6.7.p3" onchange="A.saveST('6.7.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>6.8 Cordados: invertebrados y vertebrados</div><select data-st="6.8.p3" onchange="A.saveST('6.8.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-1"><div><strong>7. Ecología</strong></div></div>
+        <div class="subtopic-item level-2"><div>7.1 Poblaciones y demografía</div><select data-st="7.1.p3" onchange="A.saveST('7.1.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>7.2 Comunidades</div><select data-st="7.2.p3" onchange="A.saveST('7.2.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>7.3 Flujo de energía / ecosistemas</div><select data-st="7.3.p3" onchange="A.saveST('7.3.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+        <div class="subtopic-item level-2"><div>7.4 Biósfera y biomas</div><select data-st="7.4.p3" onchange="A.saveST('7.4.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
+      </div>
+    </section>
+
+    <!-- ═══ EVALUACIÓN P3 ═══ -->
+    <section class="section p3-content" id="examenP3Section" data-parcial="p3">
+      <div class="section-head">
+        <div>
+          <h2>📕 Evaluación tipo parcial — P3</h2>
+          <p class="module-desc">Set de práctica con 10 preguntas de selección múltiple cubriendo los temas centrales del tercer parcial. Modo Estudio: feedback inmediato. Banco ampliado disponible próximamente.</p>
+        </div>
+        <div class="toolbar">
+          <button class="btn primary" onclick="window.startExamP3()">▶️ Iniciar evaluación P3</button>
+          <button class="btn" onclick="window.resetExamP3()">↺ Reiniciar</button>
+        </div>
+      </div>
+      <div class="warn" style="margin-bottom:.8rem">📜 <em>Evaluación tipo parcial original de BioMaster, diseñada con fines educativos y de práctica.</em></div>
+      <div id="examP3Container" class="card panel" style="padding:1rem">
+        <p class="muted">Pulsá <strong>"Iniciar evaluación P3"</strong> para cargar las preguntas.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BIOVISUAL — Apoyo Visual Interactivo (sección premium)
+         Simulaciones ligeras de procesos biológicos para los temas
+         de prioridad máxima de P1, P2 y P3.
+         ═══════════════════════════════════════════════════════════ -->
+    <section class="section" id="biovisual">
+      <div class="section-head">
+        <div>
+          <h2>🔬 BioVisual — Apoyo Visual Interactivo</h2>
+          <p class="module-desc">Simulaciones ligeras y visualización inteligente de procesos biológicos. Complementa la teoría y los simulacros, no los reemplaza. Pensado para entender conceptos abstractos visualmente.</p>
+        </div>
+        <span class="pro-badge">Pro</span>
+      </div>
+
+      <!-- Tabs de tema -->
+      <div class="card panel" style="padding:1rem">
+        <div class="toolbar" id="biovisualTabs" style="margin-bottom:.8rem;flex-wrap:wrap">
+          <button class="btn primary" data-bv="membrana" onclick="window.bvShow('membrana')">🧫 Transporte por membrana</button>
+          <button class="btn" data-bv="mitomei" onclick="window.bvShow('mitomei')">🧬 Mitosis vs Meiosis</button>
+          <button class="btn" data-bv="adn" onclick="window.bvShow('adn')">🧪 ADN: replicación</button>
+          <button class="btn" data-bv="fotosintesis" onclick="window.bvShow('fotosintesis')">🌱 Fotosíntesis</button>
+          <button class="btn" data-bv="respiracion" onclick="window.bvShow('respiracion')">⚡ Respiración celular</button>
+          <button class="btn" data-bv="transcripcion" onclick="window.bvShow('transcripcion')">📜 Transcripción / Traducción</button>
+          <button class="btn" data-bv="evolucion" onclick="window.bvShow('evolucion')">🦋 Selección natural</button>
+          <button class="btn" data-bv="origen" onclick="window.bvShow('origen')">🌍 Origen de la vida (P3)</button>
+          <button class="btn" data-bv="clasificacion" onclick="window.bvShow('clasificacion')">🌳 Tres dominios (P3)</button>
+        </div>
+
+        <!-- Controles de reproducción -->
+        <div class="toolbar" style="margin-bottom:.6rem">
+          <button class="btn" onclick="window.bvPlay()" id="bvPlayBtn">▶️ Reproducir</button>
+          <button class="btn" onclick="window.bvPause()" id="bvPauseBtn">⏸ Pausa</button>
+          <button class="btn" onclick="window.bvStep()" id="bvStepBtn">⏭ Paso a paso</button>
+          <button class="btn" onclick="window.bvReset()" id="bvResetBtn">↻ Reiniciar</button>
+          <label style="display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted)">
+            Velocidad
+            <input type="range" min="0.25" max="3" step="0.25" value="1" id="bvSpeed" oninput="window.bvSetSpeed(this.value)" style="width:120px">
+            <span id="bvSpeedLabel">1x</span>
+          </label>
+        </div>
+
+        <!-- Stage de visualización (canvas + texto explicativo) -->
+        <div id="bvStage" style="background:var(--soft2);border:1px solid var(--border);border-radius:14px;padding:1rem;min-height:340px">
+          <div id="bvCanvasWrap" style="position:relative;width:100%;height:340px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#0f2517,#0a1a10)">
+            <canvas id="bvCanvas" style="width:100%;height:100%;display:block"></canvas>
+            <div id="bvLegend" style="position:absolute;top:.6rem;left:.8rem;color:#d0edd8;font-size:.78rem;font-weight:700;background:rgba(0,0,0,.4);padding:.4rem .7rem;border-radius:8px;backdrop-filter:blur(4px)"></div>
+            <div id="bvStepInfo" style="position:absolute;bottom:.6rem;left:.8rem;right:.8rem;color:#d0edd8;font-size:.82rem;background:rgba(0,0,0,.5);padding:.5rem .8rem;border-radius:8px;backdrop-filter:blur(4px);line-height:1.5"></div>
+          </div>
+        </div>
+
+        <!-- Texto descriptivo bajo el stage -->
+        <div id="bvDescription" style="margin-top:.8rem;padding:.9rem 1rem;background:var(--soft);border-radius:14px;border:1px solid var(--border);font-size:.88rem;line-height:1.55"></div>
+      </div>
+
+      <p class="muted" style="font-size:.78rem;margin-top:.7rem;font-style:italic">BioVisual incluye una base de simulaciones ligeras (canvas 2D) cubriendo los temas de prioridad máxima. Más visualizaciones (3D con Three.js) se irán activando progresivamente.</p>
+    </section>
+
+    <!-- (la visibilidad por parcial está manejada por el CSS global en `section[data-parcial]`) -->
+
+    <!-- ═══════════ SIMULACROS ═══════════ -->
     <!-- ═══ SIMULACROS ═══ -->
     <section class="section" id="simulacros">
       <div class="section-head">
@@ -2703,6 +3063,21 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <div class="toolbar" style="margin-top:.6rem">
           <button class="btn" onclick="A.tts(document.getElementById('devLibre').value)">🔊 Leer mis notas</button>
           <button class="btn" onclick="document.getElementById('devLibre').value='';A.saveDevLibre('')">🗑 Limpiar</button>
+        </div>
+      </div>
+
+      <!-- ═══ ENTRENADOR DE RESPUESTAS DESARROLLADAS ═══
+           Modo profesor: el sistema da una pregunta de desarrollo,
+           el usuario responde, y luego puede ver respuesta modelo
+           y palabras clave. Estructura visual: principal/clave/explicación/cierre. -->
+      <div class="card panel" style="margin-top:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+          <strong>🎓 Entrenador de respuestas desarrolladas</strong>
+          <button class="btn primary" style="font-size:.78rem" onclick="window.initDevTrainer()">▶️ Empezar</button>
+        </div>
+        <p class="muted" style="font-size:.82rem;margin-bottom:.6rem">El sistema te da una pregunta tipo desarrollo. Escribís tu respuesta y luego compará con la <strong>respuesta modelo</strong> estructurada (idea principal, concepto clave, explicación, cierre). Permite revisar palabras clave esperadas.</p>
+        <div id="devTrainerBox">
+          <div class="muted" style="font-size:.85rem;font-style:italic">Pulsá "Empezar" para cargar la primera pregunta.</div>
         </div>
       </div>
     </section>
@@ -3014,6 +3389,70 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       </div>
     </section>
 
+    <!-- ═══ SOPORTE / CONTACTO ═══
+         Sección visible y profesional para contactar a BioMaster.
+         Correo oficial: Biomaster.oficial@gmail.com
+         Importante: el SINPE móvil es solo para pagos, no para soporte. -->
+    <section class="section" id="soporte">
+      <div class="section-head">
+        <div>
+          <h2>📩 Soporte y contacto</h2>
+          <p class="module-desc">Contactá al equipo de BioMaster para soporte, consultas, recuperación de contraseña, validación de pagos o feedback.</p>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card panel" style="padding:1.4rem">
+          <strong style="font-size:1rem">✉️ Correo oficial</strong>
+          <p class="muted" style="margin-top:.4rem;font-size:.88rem;line-height:1.55">
+            ¿Tuviste un problema o encontraste un error? Escribinos directamente.
+            Todas las sugerencias ayudan a mejorar BioMaster.
+          </p>
+          <div style="margin-top:.7rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+            <a href="mailto:Biomaster.oficial@gmail.com"
+               style="font-weight:800;color:var(--green);text-decoration:underline;font-size:.95rem">
+              Biomaster.oficial@gmail.com
+            </a>
+            <button class="btn"
+                    style="font-size:.78rem"
+                    onclick="navigator.clipboard.writeText('Biomaster.oficial@gmail.com').then(()=>window.toast&&window.toast('✓ Correo copiado'))">
+              📋 Copiar correo
+            </button>
+            <a href="mailto:Biomaster.oficial@gmail.com?subject=Soporte%20BioMaster&body=Hola%20equipo%20BioMaster%2C%0A%0A"
+               class="btn primary"
+               style="font-size:.78rem">
+              📧 Enviar consulta
+            </a>
+          </div>
+          <ul style="margin-top:.9rem;padding-left:1.1rem;font-size:.85rem;line-height:1.6;color:var(--muted)">
+            <li>Soporte general y consultas de uso</li>
+            <li>Reportes de errores o bugs</li>
+            <li>Recuperación de contraseña y problemas de acceso</li>
+            <li>Sugerencias y feedback sobre la plataforma</li>
+            <li>Validación de pagos y activación de planes premium</li>
+          </ul>
+        </div>
+        <div class="card panel" style="padding:1.4rem">
+          <strong style="font-size:1rem">💳 Cómo pagar y activar tu plan</strong>
+          <p class="muted" style="margin-top:.4rem;font-size:.88rem;line-height:1.55">
+            El número SINPE móvil se utiliza <strong>únicamente para pagos</strong>. Después de
+            realizar el SINPE, enviá el comprobante al correo oficial para validar y activar
+            tu acceso premium.
+          </p>
+          <ol style="margin-top:.7rem;padding-left:1.2rem;font-size:.88rem;line-height:1.7">
+            <li>Hacé el SINPE móvil al número indicado en la sección de planes.</li>
+            <li>Mandá el comprobante (captura o mensaje SMS) a
+              <a href="mailto:Biomaster.oficial@gmail.com" style="color:var(--green);font-weight:700">Biomaster.oficial@gmail.com</a>.
+            </li>
+            <li>Indicá tu correo registrado en BioMaster y qué pase compraste.</li>
+            <li>Tu plan se activa al validar el pago. Aparecerá automáticamente al iniciar sesión.</li>
+          </ol>
+          <p class="muted" style="margin-top:.6rem;font-size:.78rem;font-style:italic">
+            Importante: no usar el número SINPE como contacto de soporte. Para cualquier consulta, escribí siempre al correo oficial.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ ADMIN PANEL ═══ -->
     <section class="section" id="adminSection" style="display:none">
       <div class="section-head">
@@ -3047,10 +3486,11 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
             <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
               <input type="email" id="adminGrantEmail" placeholder="usuario@ejemplo.com" style="padding:.55rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:220px;flex:1">
               <select id="adminGrantPlan" style="padding:.55rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--surface)">
-                <option value="p1">Pase P1 (60 días)</option>
-                <option value="p2">Pase P2 (60 días)</option>
-                <option value="full" selected>Semestre Completo (180 días)</option>
-                <option value="mensual">Mensual (30 días)</option>
+                <option value="p1">Pase Parcial 1 — ₡3.900 · 60 días</option>
+                <option value="p2">Pase Parcial 2 — ₡3.900 · 60 días</option>
+                <option value="p3">Pase Parcial 3 — ₡3.900 · 60 días</option>
+                <option value="full" selected>Pase Semestre Completo — ₡9.900 · 180 días</option>
+                <option value="mensual">Pase Mensual — ₡2.900 · 30 días</option>
               </select>
               <input type="text" id="adminGrantNote" placeholder="Nota: SINPE 8713 7782 · Pase X · ₡X.XXX · YYYY-MM-DD" style="padding:.55rem .8rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:200px">
               <button class="btn primary" onclick="A.adminGrantPlan()">✓ Activar plan</button>
@@ -3086,9 +3526,29 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       </div>
     </section>
 
-    <footer style="padding:1rem 0 2rem;color:var(--muted);font-size:.82rem">
-      <p>Biología General · Plataforma V6 · Supabase como única fuente de verdad.</p>
-      <p style="margin-top:.3rem">📜 Material basado en el Examen de Biología 2023, segundo parcial, TEC, con fines educativos.</p>
+    <footer style="padding:1.2rem 0 2rem;color:var(--muted);font-size:.82rem;border-top:1px solid var(--border);margin-top:1.5rem">
+      <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:flex-start;justify-content:space-between">
+        <div style="flex:1;min-width:240px">
+          <strong style="color:var(--text);font-size:.95rem">BioMaster</strong>
+          <p style="margin-top:.3rem">Plataforma interactiva para estudiar Biología General. Diagnóstico, plan personalizado, simulacros adaptativos, evaluaciones tipo parcial y apoyo visual interactivo.</p>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <strong style="color:var(--text);font-size:.95rem">📩 Soporte y contacto</strong>
+          <p style="margin-top:.3rem">¿Tuviste un problema o encontraste un error? Escribinos al correo oficial:</p>
+          <div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
+            <a href="mailto:Biomaster.oficial@gmail.com"
+               style="font-weight:700;color:var(--green);text-decoration:underline">
+              Biomaster.oficial@gmail.com
+            </a>
+            <button class="btn"
+                    style="font-size:.7rem;padding:.25rem .55rem"
+                    onclick="navigator.clipboard.writeText('Biomaster.oficial@gmail.com').then(()=>window.toast&&window.toast('✓ Correo copiado'))">
+              📋 Copiar
+            </button>
+          </div>
+          <p style="margin-top:.4rem;font-size:.75rem">Todas las sugerencias ayudan a mejorar BioMaster.</p>
+        </div>
+      </div>
     </footer>
   </div>
 </div>
@@ -3455,10 +3915,17 @@ async function handleAuthSession(session){
       }
       // Best-effort: si existe un perfil real (con role='admin', por ejemplo)
       // intentamos hidratarlo, pero NUNCA bloqueamos el login por esto.
+      // ═══ FIX CRÍTICO PERSISTENCIA DEL PLAN ═══
+      // ANTES: solo se traían 'id,name,email,role,email_type' al login.
+      // Eso hacía que en cada refresh el plan se perdiera de la memoria
+      // hasta que el usuario tocara "Sincronizar". Ahora traemos también
+      // los campos de plan (plan_p1, plan_p2, plan_p3, plan_full,
+      // plan_expires_at, last_payment_at) para que el plan quede
+      // disponible desde el primer render, sin sincronización manual.
       try {
         const { data: real } = await sb
           .from('profiles')
-          .select('id,name,email,role,email_type')
+          .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at')
           .eq('id', session.user.id)
           .maybeSingle()
         if (real) Object.assign(profile, real)
@@ -3550,6 +4017,7 @@ async function refreshMyProfile(showToast = false){
       (!oldP.plan_full && fresh.plan_full) ||
       (!oldP.plan_p1 && fresh.plan_p1) ||
       (!oldP.plan_p2 && fresh.plan_p2) ||
+      (!oldP.plan_p3 && fresh.plan_p3) ||
       (oldP.role !== fresh.role)
     )
     currentSession.profile = fresh
@@ -3634,11 +4102,23 @@ function renderSessionUI(){
     : '<span class="account-badge badge-personal">✉️ Personal</span>'
   const adminBadge = isAdmin ? ' <span class="account-badge badge-admin">👑 Admin</span>' : ''
   // Indicador de plan actual + botón sincronizar
-  const planBadge = p.plan_full ? '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ Pase Semestre/Mensual</span>'
-                  : (p.plan_p1 && p.plan_p2) ? '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ P1 + P2</span>'
-                  : p.plan_p1 ? '<span class="account-badge" style="background:var(--blueSoft);color:var(--blue)">📘 Pase P1</span>'
-                  : p.plan_p2 ? '<span class="account-badge" style="background:var(--blueSoft);color:var(--blue)">📗 Pase P2</span>'
-                  : '<span class="account-badge" style="background:var(--soft);color:var(--muted)">Vista previa gratuita</span>'
+  // Lógica: si tiene plan_full → "Semestre/Mensual"; si no, listar los parciales activos.
+  let planBadge
+  if (p.plan_full){
+    planBadge = '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ Pase Semestre/Mensual</span>'
+  } else {
+    const parciales = []
+    if (p.plan_p1) parciales.push('P1')
+    if (p.plan_p2) parciales.push('P2')
+    if (p.plan_p3) parciales.push('P3')
+    if (parciales.length === 3){
+      planBadge = '<span class="account-badge" style="background:var(--greenSoft);color:var(--green)">⭐ P1 + P2 + P3</span>'
+    } else if (parciales.length > 0){
+      planBadge = '<span class="account-badge" style="background:var(--blueSoft);color:var(--blue)">📘 Pase ' + parciales.join(' + ') + '</span>'
+    } else {
+      planBadge = '<span class="account-badge" style="background:var(--soft);color:var(--muted)">Vista previa gratuita</span>'
+    }
+  }
   const expIcon = p.plan_expires_at && new Date(p.plan_expires_at) > new Date()
     ? `<small class="muted" style="display:block;margin-top:.2rem">Vence: ${new Date(p.plan_expires_at).toLocaleDateString()}</small>` : ''
   userInfo.innerHTML = `<strong>${escapeHtml(p.name)}</strong>${adminBadge}<br>${escapeHtml(p.email)} ${typeBadge}<br>
@@ -3706,6 +4186,7 @@ function toast(msg, danger=false){
   clearTimeout(toast._t)
   toast._t = setTimeout(() => t.classList.remove('show'), 3000)
 }
+window.toast = toast
 
 function toggleTheme(){
   S.settings.theme = S.settings.theme === 'dark' ? 'default' : 'dark'
@@ -4182,7 +4663,7 @@ async function toggleFeedbackPublic(id, makePublic){
 async function _renderAdminUsers(){
   const { data: users, error: ue } = await sb
     .from('profiles')
-    .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_full,plan_expires_at,created_at')
+    .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
     .order('created_at', { ascending:false })
     .limit(200)
   const userList = document.getElementById('adminUserList')
@@ -4238,7 +4719,7 @@ async function _renderAdminPlans(){
   // Lista de usuarios con plan activo
   const { data: paid, error } = await sb
     .from('profiles')
-    .select('id,name,email,plan_p1,plan_p2,plan_full,plan_expires_at,last_payment_at')
+    .select('id,name,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at')
     .or('plan_p1.eq.true,plan_p2.eq.true,plan_full.eq.true')
     .order('last_payment_at', { ascending:false, nullsFirst:false })
     .limit(100)
@@ -4300,16 +4781,26 @@ async function _renderAdminPlans(){
 //         modificar plan_* de OTROS usuarios (ver SQL_DELTA_v8.sql).
 // ═══════════════════════════════════════════════════════════
 
-const PLAN_DURATIONS = { p1: 60, p2: 60, full: 180, mensual: 30 }
-const PLAN_AMOUNTS_CRC = { p1: 6900, p2: 6900, full: 9900, mensual: 3500 }
-const PLAN_LABELS = { p1:'Pase P1', p2:'Pase P2', full:'Pase Semestre', mensual:'Pase Mensual' }
+// ═══ PRECIOS Y DURACIONES OFICIALES ═══
+// Precios actualizados este semestre:
+//   - Pase Parcial (cualquiera de los tres): ₡3.900 · 60 días
+//   - Pase Mensual (acceso a todo, recurrente): ₡2.900 · 30 días
+//   - Pase Semestre Completo (acceso a todo, semestre): ₡9.900 · 180 días
+// Mantengo los IDs internos antiguos (p1, p2, full, mensual) por compatibilidad
+// con el código y la base de datos, y agrego "p3" y "parcial" como nuevos.
+const PLAN_DURATIONS  = { p1: 60, p2: 60, p3: 60, parcial: 60, full: 180, mensual: 30 }
+const PLAN_AMOUNTS_CRC = { p1: 3900, p2: 3900, p3: 3900, parcial: 3900, full: 9900, mensual: 2900 }
+const PLAN_LABELS = {
+  p1:'Pase Parcial 1', p2:'Pase Parcial 2', p3:'Pase Parcial 3',
+  parcial:'Pase Parcial', full:'Pase Semestre Completo', mensual:'Pase Mensual'
+}
 
 // Escribir el plan directamente en BD (fallback si Edge Function no está)
 async function _grantPlanDirectDB(email, plan, note){
   // Buscar usuario destino
   const { data: target, error: findErr } = await sb
     .from('profiles')
-    .select('id, email, plan_p1, plan_p2, plan_full, plan_expires_at')
+    .select('id, email, plan_p1, plan_p2, plan_p3, plan_full, plan_expires_at')
     .eq('email', email)
     .single()
   if (findErr) throw new Error('Usuario no encontrado: ' + email)
@@ -4317,7 +4808,7 @@ async function _grantPlanDirectDB(email, plan, note){
   let updates = {}
   if (plan === 'revoke'){
     updates = {
-      plan_p1: false, plan_p2: false, plan_full: false,
+      plan_p1: false, plan_p2: false, plan_p3: false, plan_full: false,
       plan_expires_at: new Date().toISOString()
     }
   } else {
@@ -4329,17 +4820,25 @@ async function _grantPlanDirectDB(email, plan, note){
       const currentExp = target.plan_expires_at ? new Date(target.plan_expires_at) : new Date(0)
       updates.plan_expires_at = (expiresAt > currentExp ? expiresAt : currentExp).toISOString()
     } else if (plan === 'full' || plan === 'mensual'){
-      updates.plan_p1 = true; updates.plan_p2 = true; updates.plan_full = true
+      updates.plan_p1 = true; updates.plan_p2 = true; updates.plan_p3 = true; updates.plan_full = true
       updates.plan_expires_at = expiresAt.toISOString()
     } else if (plan === 'p1'){
       updates.plan_p1 = true
       updates.plan_p2 = target.plan_p2 || false
-      updates.plan_full = (updates.plan_p1 && updates.plan_p2) ? true : (target.plan_full || false)
+      updates.plan_p3 = target.plan_p3 || false
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2 && updates.plan_p3) ? true : (target.plan_full || false)
       updates.plan_expires_at = expiresAt.toISOString()
     } else if (plan === 'p2'){
       updates.plan_p2 = true
       updates.plan_p1 = target.plan_p1 || false
-      updates.plan_full = (updates.plan_p1 && updates.plan_p2) ? true : (target.plan_full || false)
+      updates.plan_p3 = target.plan_p3 || false
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2 && updates.plan_p3) ? true : (target.plan_full || false)
+      updates.plan_expires_at = expiresAt.toISOString()
+    } else if (plan === 'p3'){
+      updates.plan_p3 = true
+      updates.plan_p1 = target.plan_p1 || false
+      updates.plan_p2 = target.plan_p2 || false
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2 && updates.plan_p3) ? true : (target.plan_full || false)
       updates.plan_expires_at = expiresAt.toISOString()
     }
     updates.last_payment_at = new Date().toISOString()
@@ -4661,7 +5160,7 @@ function renderHero(){
         h1.textContent = 'Listo para estudiar. Vamos a aprobar el primer parcial.'
         sub.textContent = 'Cubre los temas 1-5: introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración. Empezá por el diagnóstico para saber por dónde atacar.'
       } else {
-        h1.textContent = 'Listo para estudiar. Vamos a aprobar el segundo parcial.'
+        h1.textContent = 'Listo para estudiar. Vamos a aprobar Biología General.'
         sub.textContent = 'Cubre los temas 4-6: genética, evolución, origen y diversidad. Empezá por el diagnóstico inteligente para saber exactamente qué tema dominás.'
       }
     }
@@ -5094,15 +5593,106 @@ function stopCountdown(){
 // ═══════════════════════════════════════════════════════════
 //  14h. TTS, BÚSQUEDA, EXPORT/IMPORT
 // ═══════════════════════════════════════════════════════════
+//
+//  TTS mejorado (corregido):
+//   - Si ya hay algo hablando, una segunda llamada con el MISMO texto
+//     funciona como toggle play/pause; con texto distinto, cancela y
+//     habla lo nuevo.
+//   - Aparece un mini-widget flotante con botones ⏸ Pausa / ⏹ Detener.
+//   - El widget desaparece automáticamente al terminar.
+//   - Se garantiza limpieza al cambiar de pestaña o cerrar la app
+//     (el bug típico de "voz queda pegada" se resuelve con
+//     speechSynthesis.cancel() agresivo).
+// ═══════════════════════════════════════════════════════════
+let _ttsLastText = ''
+let _ttsCurrentUtter = null
+
+function _ensureTTSWidget(){
+  let w = document.getElementById('ttsFloatingCtl')
+  if (w) return w
+  w = document.createElement('div')
+  w.id = 'ttsFloatingCtl'
+  w.style.cssText = 'position:fixed;bottom:1rem;right:1rem;z-index:9999;display:none;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:.55rem .7rem;display:none;align-items:center;gap:.4rem;font-size:.82rem;font-weight:700'
+  w.innerHTML = `
+    <span id="ttsFloatingState" style="color:var(--green)">🔊 Leyendo…</span>
+    <button onclick="window.ttsToggle()" id="ttsFloatingPause" style="padding:.3rem .55rem;border-radius:8px;border:1px solid var(--border);background:var(--soft);font-weight:700;font-size:.78rem;cursor:pointer">⏸ Pausa</button>
+    <button onclick="window.ttsStop()" style="padding:.3rem .55rem;border-radius:8px;border:1px solid var(--border);background:var(--redSoft);color:var(--red);font-weight:700;font-size:.78rem;cursor:pointer">⏹ Detener</button>
+  `
+  document.body.appendChild(w)
+  return w
+}
+
+function _showTTSWidget(){
+  const w = _ensureTTSWidget()
+  w.style.display = 'inline-flex'
+}
+function _hideTTSWidget(){
+  const w = document.getElementById('ttsFloatingCtl')
+  if (w) w.style.display = 'none'
+}
+
 function tts(txt){
-  if (!window.speechSynthesis || !txt?.trim()) return
+  if (!window.speechSynthesis) return
+  txt = String(txt || '').trim()
+  if (!txt) return
+
+  // Si ya está hablando este mismo texto → toggle pausa/play
+  if (speechSynthesis.speaking && txt === _ttsLastText){
+    if (speechSynthesis.paused) speechSynthesis.resume()
+    else speechSynthesis.pause()
+    const btn = document.getElementById('ttsFloatingPause')
+    if (btn) btn.textContent = speechSynthesis.paused ? '▶️ Reanudar' : '⏸ Pausa'
+    return
+  }
+
+  // Texto nuevo → cancelar todo y empezar de cero
   speechSynthesis.cancel()
-  const u = new SpeechSynthesisUtterance(String(txt).substring(0, 2000))
+  _ttsLastText = txt
+  const u = new SpeechSynthesisUtterance(txt.substring(0, 2000))
   u.lang = 'es-ES'; u.rate = 0.95
   const vs = speechSynthesis.getVoices().filter(v => v.lang.startsWith('es'))
   if (vs.length) u.voice = vs[0]
+  u.onend = () => { _hideTTSWidget(); _ttsCurrentUtter = null; _ttsLastText = '' }
+  u.onerror = () => { _hideTTSWidget(); _ttsCurrentUtter = null; _ttsLastText = '' }
+  _ttsCurrentUtter = u
   speechSynthesis.speak(u)
+  _showTTSWidget()
+  const btn = document.getElementById('ttsFloatingPause')
+  if (btn) btn.textContent = '⏸ Pausa'
 }
+
+// Toggle global accesible
+window.ttsToggle = function(){
+  if (!window.speechSynthesis) return
+  if (speechSynthesis.paused) speechSynthesis.resume()
+  else if (speechSynthesis.speaking) speechSynthesis.pause()
+  const btn = document.getElementById('ttsFloatingPause')
+  if (btn) btn.textContent = speechSynthesis.paused ? '▶️ Reanudar' : '⏸ Pausa'
+}
+
+// Stop AGRESIVO — esto resuelve el bug de "voz pegada"
+window.ttsStop = function(){
+  if (!window.speechSynthesis) return
+  try { speechSynthesis.pause() } catch(e){}
+  try { speechSynthesis.cancel() } catch(e){}
+  // Doble cancel después de un tick para vencer el bug de Chrome donde
+  // cancel() a veces es ignorado si llega justo en plena emisión.
+  setTimeout(() => { try { speechSynthesis.cancel() } catch(e){} }, 50)
+  _ttsCurrentUtter = null
+  _ttsLastText = ''
+  _hideTTSWidget()
+}
+
+// Limpieza defensiva: detener si la pestaña se oculta o si se navega fuera
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && window.speechSynthesis?.speaking){
+    // Pausamos en lugar de cancelar para que el usuario pueda reanudar
+    try { speechSynthesis.pause() } catch(e){}
+  }
+})
+window.addEventListener('beforeunload', () => {
+  try { speechSynthesis?.cancel() } catch(e){}
+})
 
 let searchIndex = []
 function buildSearchIndex(){
@@ -6826,7 +7416,7 @@ window.setActiveParcial = function(p){
   try { renderHero() } catch(e){}
   try { renderTodayPlan() } catch(e){}
   try { renderReadinessGauge() } catch(e){}
-  toast('Parcial activo: ' + (p === 'p1' ? '📘 Primer parcial' : '📗 Segundo parcial'), false)
+  toast('Parcial activo: ' + (p === 'p1' ? '📘 Primer parcial' : p === 'p2' ? '📗 Segundo parcial' : '📕 Tercer parcial'), false)
 }
 
 function applyParcialActive(){
@@ -6834,8 +7424,10 @@ function applyParcialActive(){
   // Marcar botones del switch
   const b1 = document.getElementById('btnP1')
   const b2 = document.getElementById('btnP2')
+  const b3 = document.getElementById('btnP3')
   if (b1) b1.classList.toggle('active', p === 'p1')
   if (b2) b2.classList.toggle('active', p === 'p2')
+  if (b3) b3.classList.toggle('active', p === 'p3')
   // Mostrar/ocultar secciones y nav-parcial
   document.querySelectorAll('section[data-parcial], .nav-parcial[data-parcial]').forEach(el => {
     el.classList.toggle('active-parcial', el.dataset.parcial === p)
@@ -6850,7 +7442,7 @@ function applyParcialActive(){
 
 // ═══════════════════════════════════════════════════════════
 //  BANCO DE PREGUNTAS PRIMER PARCIAL
-//  Basado en preguntas reales del primer parcial TEC + variaciones.
+//  Banco P1 — preguntas tipo parcial universitario (originales BioMaster).
 //  Estructura idéntica a E23Q para que las funciones sean reutilizables.
 //  Themes P1: int (introducción), bio (química/biomoléculas),
 //             cel (célula), met (metabolismo/enzimas),
@@ -7304,7 +7896,7 @@ function renderContinueBanner(){
   }
   const sectionLabels = {
     'resumenP1':'el resumen del primer parcial','resumen':'el resumen del segundo parcial',
-    'examenP1Section':'el examen P1','examenes':'el examen 2023',
+    'examenP1Section':'la evaluación P1','examenes':'la evaluación P2',
     'simulacros':'simulacros','flashcards':'las flashcards',
     'diagnostico':'el diagnóstico','plan-estudio':'tu plan de estudio',
     'hoy':'el plan de hoy','juego':'el modo juego'
@@ -7468,48 +8060,55 @@ function _planNotExpired(expISO){
   return new Date(expISO) > new Date()
 }
 
-// Devuelve los flags efectivos del usuario actual: {p1, p2, full}
+// Devuelve los flags efectivos del usuario actual: {p1, p2, p3, full}
 function getEffectivePlan(){
-  // Admin → full
+  // Admin → full + p3
   if (currentSession?.profile?.role === 'admin'){
-    return { p1: true, p2: true, full: true, source: 'admin' }
+    return { p1: true, p2: true, p3: true, full: true, source: 'admin' }
   }
   // Profile en Supabase
   const prof = currentSession?.profile
   if (prof){
     if (prof.plan_full && _planNotExpired(prof.plan_expires_at)){
-      return { p1: true, p2: true, full: true, source: 'profile' }
+      return { p1: true, p2: true, p3: true, full: true, source: 'profile' }
     }
-    if ((prof.plan_p1 || prof.plan_p2) && _planNotExpired(prof.plan_expires_at)){
-      return { p1: !!prof.plan_p1, p2: !!prof.plan_p2, full: false, source: 'profile' }
+    if ((prof.plan_p1 || prof.plan_p2 || prof.plan_p3) && _planNotExpired(prof.plan_expires_at)){
+      return {
+        p1:   !!prof.plan_p1,
+        p2:   !!prof.plan_p2,
+        p3:   !!prof.plan_p3,
+        full: false,
+        source: 'profile'
+      }
     }
   }
   // Fallback: localStorage (modo demo)
   const st = getPremiumState()
   if (st.plan && st.plan !== 'free'){
     if (_planNotExpired(st.plan_expires_at)){
-      // En modo demo el plan local puede ser: full | p1 | p2 | mensual | (legacy: pro/sprint)
+      // En modo demo el plan local puede ser: full | p1 | p2 | p3 | mensual | (legacy: pro/sprint)
       const legacy = ['pro','sprint','semestre','mensual','full']
       if (legacy.includes(st.plan)){
-        return { p1: true, p2: true, full: true, source: 'demo' }
+        return { p1: true, p2: true, p3: true, full: true, source: 'demo' }
       }
-      if (st.plan === 'p1') return { p1: true, p2: false, full: false, source: 'demo' }
-      if (st.plan === 'p2') return { p1: false, p2: true, full: false, source: 'demo' }
+      if (st.plan === 'p1') return { p1: true, p2: false, p3: false, full: false, source: 'demo' }
+      if (st.plan === 'p2') return { p1: false, p2: true, p3: false, full: false, source: 'demo' }
+      if (st.plan === 'p3') return { p1: false, p2: false, p3: true, full: false, source: 'demo' }
     }
   }
-  return { p1: false, p2: false, full: false, source: 'free' }
+  return { p1: false, p2: false, p3: false, full: false, source: 'free' }
 }
 
-// isPro = tiene CUALQUIER acceso pago (P1, P2 o Full)
+// isPro = tiene CUALQUIER acceso pago (P1, P2, P3 o Full)
 function isPro(){
   const eff = getEffectivePlan()
-  return eff.p1 || eff.p2 || eff.full
+  return eff.p1 || eff.p2 || eff.p3 || eff.full
 }
 
-// hasFullAccess = tiene acceso a AMBOS parciales (full o p1+p2)
+// hasFullAccess = tiene acceso a TODOS los parciales (full o p1+p2+p3)
 function hasFullAccess(){
   const eff = getEffectivePlan()
-  return eff.full || (eff.p1 && eff.p2)
+  return eff.full || (eff.p1 && eff.p2 && eff.p3)
 }
 
 // Acceso a un parcial específico
@@ -7518,7 +8117,8 @@ function canAccessParcial(p){
   if (eff.full) return { allowed: true }
   if (p === 'p1' && eff.p1) return { allowed: true }
   if (p === 'p2' && eff.p2) return { allowed: true }
-  // Free: permitimos navegar a ambos parciales pero el contenido va con preview/lock
+  if (p === 'p3' && eff.p3) return { allowed: true }
+  // Free: permitimos navegar a los parciales pero el contenido va con preview/lock
   // Si querés bloquear el switch entero a free, cambiar el siguiente return.
   return { allowed: true }
 }
@@ -7603,15 +8203,17 @@ window.confirmPaywall = function(){
   const PRICE_LINKS = {
     p1:       window.STRIPE_LINK_P1       || null,
     p2:       window.STRIPE_LINK_P2       || null,
+    p3:       window.STRIPE_LINK_P3       || null,
     semestre: window.STRIPE_LINK_SEMESTRE || null,
     mensual:  window.STRIPE_LINK_MENSUAL  || null
   }
   // Catálogo único de planes: nombre, monto numérico, monto formateado
   const PLAN_CATALOG = {
-    p1:       { nombre:'Pase Primer Parcial',  duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
-    p2:       { nombre:'Pase Segundo Parcial', duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
-    semestre: { nombre:'Pase Semestre Completo', duracion:'6 meses', monto:9900, montoFmt:'₡9.900' },
-    mensual:  { nombre:'Pase Mensual Completo', duracion:'recurring/mes', monto:3500, montoFmt:'₡3.500' }
+    p1:       { nombre:'Pase Parcial 1',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    p2:       { nombre:'Pase Parcial 2',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    p3:       { nombre:'Pase Parcial 3',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    semestre: { nombre:'Pase Semestre Completo',  duracion:'6 meses',  monto:9900, montoFmt:'₡9.900' },
+    mensual:  { nombre:'Pase Mensual Completo',   duracion:'recurring/mes', monto:2900, montoFmt:'₡2.900' }
   }
   const plan = _pwSelectedPlan || 'semestre'
   const link = PRICE_LINKS[plan]
@@ -7632,21 +8234,25 @@ window.confirmPaywall = function(){
 // Reusable: lo llaman tanto confirmPaywall como los botones data-plan-cta de la landing.
 window._showSinpeInstructions = function(plan){
   const PLAN_CATALOG = {
-    p1:       { nombre:'Pase Primer Parcial',  duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
-    p2:       { nombre:'Pase Segundo Parcial', duracion:'60 días',  monto:6900, montoFmt:'₡6.900' },
-    semestre: { nombre:'Pase Semestre Completo', duracion:'6 meses', monto:9900, montoFmt:'₡9.900' },
-    mensual:  { nombre:'Pase Mensual Completo', duracion:'recurring/mes', monto:3500, montoFmt:'₡3.500' }
+    p1:       { nombre:'Pase Parcial 1',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    p2:       { nombre:'Pase Parcial 2',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    p3:       { nombre:'Pase Parcial 3',          duracion:'60 días',  monto:3900, montoFmt:'₡3.900' },
+    semestre: { nombre:'Pase Semestre Completo',  duracion:'6 meses',  monto:9900, montoFmt:'₡9.900' },
+    mensual:  { nombre:'Pase Mensual Completo',   duracion:'recurring/mes', monto:2900, montoFmt:'₡2.900' }
   }
   const cfg = PLAN_CATALOG[plan] || PLAN_CATALOG.semestre
   const userEmail = (typeof currentSession !== 'undefined' && currentSession?.user?.email) ? currentSession.user.email : ''
   const emailLabel = userEmail
     ? `<code style="background:var(--soft);padding:.15rem .4rem;border-radius:6px;font-size:.85rem">${userEmail}</code>`
     : '<em>(creá tu cuenta primero y usá ese email)</em>'
-  const waMessage = encodeURIComponent(
-    `Hola, hice el SINPE Móvil para BioMaster.\n\n` +
-    `Plan: ${cfg.nombre} (${cfg.montoFmt})\n` +
-    `Email registrado: ${userEmail || '(completar)'}\n\n` +
-    `Adjunto la captura del SMS.`
+  // El comprobante se envía al correo oficial — el SINPE Móvil es solo para pagos.
+  const mailSubject = encodeURIComponent(`Comprobante SINPE — ${cfg.nombre} (${cfg.montoFmt})`)
+  const mailBody = encodeURIComponent(
+    `Hola equipo BioMaster,\n\n` +
+    `Adjunto el comprobante del SINPE Móvil para activar mi plan.\n\n` +
+    `Plan adquirido: ${cfg.nombre} (${cfg.montoFmt})\n` +
+    `Email registrado en BioMaster: ${userEmail || '(completar)'}\n\n` +
+    `(Adjunto captura del SMS de confirmación.)\n\nGracias.`
   )
   const modal = document.getElementById('pricingModal')
   const msg = document.getElementById('pricingModalMsg')
@@ -7660,29 +8266,37 @@ window._showSinpeInstructions = function(plan){
         <p style="font-weight:800;margin-bottom:.4rem">📱 Cómo pagar (3 pasos):</p>
         <ol style="padding-left:1.2rem;line-height:1.7;font-size:.92rem">
           <li>Hacé un <strong>SINPE Móvil de ${cfg.montoFmt}</strong> al número <strong style="font-size:1.05rem">8713 7782</strong>.<br>
-            <small style="color:var(--muted)">En el detalle/concepto del SINPE escribí: tu email registrado en BioMaster.</small></li>
+            <small style="color:var(--muted)">El número SINPE se usa <strong>únicamente para pagos</strong>, no para soporte.</small></li>
           <li>Tu email registrado: ${emailLabel}</li>
-          <li>Mandá la <strong>captura del SMS</strong> de confirmación al WhatsApp <strong style="font-size:1.05rem">8713 7782</strong>.</li>
+          <li>Mandá el <strong>comprobante</strong> (captura del SMS) al correo oficial <strong>Biomaster.oficial@gmail.com</strong> indicando tu email registrado y el plan comprado.</li>
         </ol>
         <div style="background:var(--blueSoft);padding:.6rem .8rem;border-radius:8px;margin-top:.7rem;font-size:.85rem">
-          ⏱ Activamos tu plan en menos de 24 horas. Te avisamos por correo y WhatsApp en cuanto esté listo.
+          ⏱ Activamos tu plan en menos de 24 horas. Te avisamos por correo cuando esté listo.
         </div>
       </div>
     `
   }
-  // Reemplazar los dos botones por uno que abre WhatsApp directo
+  // Reemplazar los dos botones por: enviar comprobante por correo + cerrar
   const modalCard = modal?.querySelector('.lp-modal-card') || modal?.firstElementChild
   if (modalCard){
-    // Quitar botones viejos del modal y poner los nuevos
-    modalCard.querySelectorAll('button').forEach(b => b.remove())
-    const btnWa = document.createElement('a')
-    btnWa.href = `https://wa.me/50687137782?text=${waMessage}`
-    btnWa.target = '_blank'
-    btnWa.rel = 'noopener'
-    btnWa.className = 'lp-btn-primary'
-    btnWa.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:100%;text-decoration:none;margin-top:.6rem'
-    btnWa.innerHTML = '💬 Abrir WhatsApp con la plantilla'
-    modalCard.appendChild(btnWa)
+    modalCard.querySelectorAll('button, a.lp-btn-primary, a.lp-btn-secondary').forEach(b => b.remove())
+    const btnMail = document.createElement('a')
+    btnMail.href = `mailto:Biomaster.oficial@gmail.com?subject=${mailSubject}&body=${mailBody}`
+    btnMail.className = 'lp-btn-primary'
+    btnMail.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:100%;text-decoration:none;margin-top:.6rem'
+    btnMail.innerHTML = '📧 Enviar comprobante a Biomaster.oficial@gmail.com'
+    modalCard.appendChild(btnMail)
+    const btnCopy = document.createElement('button')
+    btnCopy.className = 'lp-btn-secondary'
+    btnCopy.style.cssText = 'width:100%;margin-top:.5rem;justify-content:center'
+    btnCopy.textContent = '📋 Copiar correo oficial'
+    btnCopy.onclick = (e) => {
+      e.preventDefault()
+      navigator.clipboard?.writeText('Biomaster.oficial@gmail.com').then(() => {
+        if (window.toast) window.toast('✓ Correo copiado al portapapeles')
+      })
+    }
+    modalCard.appendChild(btnCopy)
     const btnClose = document.createElement('button')
     btnClose.className = 'lp-btn-secondary'
     btnClose.style.cssText = 'width:100%;margin-top:.5rem;justify-content:center'
@@ -7846,9 +8460,9 @@ function applyExamenGating(pro){
       pwCard.innerHTML = `
         <div class="lock-overlay">
           <h4>🔒 ${qBlocks.length - 5} preguntas más en Pro</h4>
-          <p>El examen 2023 íntegro tiene 4 partes y más de 60 ítems. Esta vista previa muestra las primeras 5 de selección múltiple para que veas el formato. Activá Pro para acceder al examen completo con feedback inmediato.</p>
+          <p>La evaluación tipo parcial completa tiene 4 partes y más de 60 ítems. Esta vista previa muestra las primeras 5 de selección múltiple para que veas el formato. Activá Pro para acceder a la evaluación completa con feedback inmediato.</p>
           <div class="lock-list-feat"><span>40 selección múltiple</span><span>10 respuesta corta</span><span>2 asociaciones</span><span>3 desarrollos</span></div>
-          <button class="lock-cta" onclick="window.showPaywall('examen','El examen 2023 íntegro con feedback inmediato es contenido Pro. Acceder al examen completo te permite practicar con preguntas reales del segundo parcial del TEC.')">Activar Pro y ver todo →</button>
+          <button class="lock-cta" onclick="window.showPaywall('examen','La evaluación tipo parcial completa con feedback inmediato es contenido Pro. Practicar con la evaluación completa te permite prepararte con preguntas estilo parcial universitario.')">Activar Pro y ver todo →</button>
         </div>`
       examCont.appendChild(pwCard)
     }
@@ -7872,7 +8486,7 @@ function applyExamenGating(pro){
       pw2.innerHTML = `
         <div class="lock-overlay">
           <h4>🔒 Partes 2, 3 y 4 del examen disponibles en Pro</h4>
-          <p>Respuesta corta (10 puntos), dos asociaciones (10 puntos cada una) y desarrollos (15 puntos). El examen 2023 completo cubre los 4 tipos de pregunta del parcial real.</p>
+          <p>Respuesta corta (10 puntos), dos asociaciones (10 puntos cada una) y desarrollos (15 puntos). La evaluación tipo parcial completa cubre los 4 tipos de pregunta de un parcial universitario.</p>
           <button class="lock-cta" onclick="window.showPaywall('examen','El examen completo incluye respuesta corta, asociaciones y desarrollos — los formatos en los que más se pierden puntos por no haberlos practicado antes.')">Activar Pro →</button>
         </div>`
       examenSection.appendChild(pw2)
@@ -8409,6 +9023,780 @@ window.deactivateProDemo = function(){
   toast('Plan revertido a Free.', false)
   setTimeout(() => location.reload(), 800)
 }
+
+// ═══════════════════════════════════════════════════════════
+//  EVALUACIÓN P3 — Banco mínimo viable (10 preguntas)
+//  Original BioMaster, sin referencias institucionales.
+//  Cubre temas centrales del tercer parcial.
+// ═══════════════════════════════════════════════════════════
+const EXAM_P3_BANK = [
+  { q:'Según la teoría quimiosintética de Oparin y Haldane, la atmósfera primitiva contenía:',
+    o:['Mucho oxígeno y poco metano','Vapor de agua, hidrógeno, metano y amoniaco con poco oxígeno','Solo nitrógeno y oxígeno','Solo CO₂ y argón'], a:1,
+    f:'La atmósfera primitiva tenía poco O₂ y compuestos como vapor de agua, H₂, metano y amoniaco.' },
+  { q:'¿Qué demostró el experimento de Miller y Urey?',
+    o:['Que las células surgieron completas en un solo paso','Que pueden formarse moléculas orgánicas (aminoácidos) en condiciones simuladas de la Tierra primitiva','Que los virus son formas de vida primitivas','Que la fotosíntesis es anterior a la respiración'], a:1,
+    f:'Miller-Urey obtuvo aminoácidos y otras moléculas orgánicas; apoyó la síntesis abiótica, no creó vida.' },
+  { q:'La hipótesis del mundo de ARN propone que:',
+    o:['El ADN apareció antes que cualquier otra molécula','El ARN pudo almacenar información y catalizar reacciones (ribozima) antes que el ADN','Los priones son los primeros seres vivos','Los virus dieron origen a las primeras células'], a:1,
+    f:'El ARN puede actuar como ribozima; vesículas con membrana habrían formado protocélulas antes del ADN.' },
+  { q:'Carl Woese, basándose en ARN ribosomal, propuso los tres dominios:',
+    o:['Plantae, Animalia, Fungi','Bacteria, Archaea, Eukarya','Procariota, Eucariota, Virus','Monera, Protista, Eukarya'], a:1,
+    f:'Woese mostró que los procariotas no son uniformes: Bacteria y Archaea son linajes muy distintos, junto con Eukarya.' },
+  { q:'¿Cuál de los siguientes NO es una característica de los virus?',
+    o:['Son acelulares','Tienen material genético (ADN o ARN)','Realizan metabolismo propio','Son parásitos intracelulares obligados'], a:2,
+    f:'Los virus NO tienen metabolismo propio: dependen de una célula hospedadora para reproducirse.' },
+  { q:'Un prión es:',
+    o:['Una proteína infecciosa mal plegada','Un virus pequeño','Un viroide','Una bacteria patógena'], a:0,
+    f:'Los priones son proteínas infecciosas mal plegadas; los viroides son ARN circular; los virus llevan ácido nucleico.' },
+  { q:'¿Qué estructura procariota proporciona resistencia a condiciones extremas?',
+    o:['Flagelo','Endospora','Pili','Cápsula'], a:1,
+    f:'La endospora protege; no es reproducción. Los flagelos mueven, los biofilms adhieren.' },
+  { q:'La conjugación bacteriana:',
+    o:['Es una forma de reproducción sexual idéntica a la de eucariotas','Es transferencia de ADN entre células sin que sea reproducción','Solo ocurre en Archaea','Genera endosporas'], a:1,
+    f:'La conjugación transfiere ADN (frecuentemente plasmídico) pero no es reproducción; la fisión binaria sí.' },
+  { q:'Las micorrizas son:',
+    o:['Asociación entre raíces de plantas y hongos','Bacterias fijadoras de nitrógeno','Líquenes','Estructuras vegetales no relacionadas con hongos'], a:0,
+    f:'Micorriza = raíz vegetal + hongo. Mejora absorción de nutrientes; ecológicamente fundamental.' },
+  { q:'Una población se define como:',
+    o:['Cualquier conjunto de organismos','Individuos de la misma especie en una misma área y tiempo','Todas las especies de un ecosistema','La interacción de comunidades'], a:1,
+    f:'Población = mismos individuos de una especie en un área y tiempo. Comunidad = varias poblaciones.' }
+]
+
+let _examP3State = null
+
+window.startExamP3 = function(){
+  _examP3State = { idx: 0, correct: 0, answered: [] }
+  _renderExamP3()
+}
+window.resetExamP3 = function(){
+  _examP3State = null
+  const c = document.getElementById('examP3Container')
+  if (c) c.innerHTML = '<p class="muted">Pulsá <strong>"Iniciar evaluación P3"</strong> para cargar las preguntas.</p>'
+}
+window.answerExamP3 = function(idx){
+  if (!_examP3State) return
+  const q = EXAM_P3_BANK[_examP3State.idx]
+  _examP3State.answered.push({ q: _examP3State.idx, picked: idx, ok: idx === q.a })
+  if (idx === q.a) _examP3State.correct++
+  _renderExamP3({ showFeedback: true, picked: idx })
+}
+window.nextExamP3 = function(){
+  if (!_examP3State) return
+  _examP3State.idx++
+  if (_examP3State.idx >= EXAM_P3_BANK.length){
+    _renderExamP3({ done: true })
+  } else {
+    _renderExamP3()
+  }
+}
+function _renderExamP3(opts){
+  opts = opts || {}
+  const c = document.getElementById('examP3Container')
+  if (!c || !_examP3State) return
+  if (opts.done){
+    const pct = Math.round(100 * _examP3State.correct / EXAM_P3_BANK.length)
+    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad'
+    c.innerHTML = `
+      <div class="${cls}" style="padding:1.2rem;border-radius:14px;text-align:center">
+        <h3 style="margin-bottom:.4rem">📊 Resultado evaluación P3</h3>
+        <div style="font-size:2.4rem;font-weight:800;margin:.4rem 0">${_examP3State.correct} / ${EXAM_P3_BANK.length}</div>
+        <p>Porcentaje: <strong>${pct}%</strong> · ${pct >= 70 ? '✅ Buen dominio' : pct >= 50 ? '⚠ Refuerzo recomendado' : '🚨 Repasar conceptos'}</p>
+        <button class="btn primary" style="margin-top:.6rem" onclick="window.startExamP3()">↻ Volver a empezar</button>
+      </div>
+    `
+    return
+  }
+  const q = EXAM_P3_BANK[_examP3State.idx]
+  if (!q) return
+  const opts_html = q.o.map((opt, i) => {
+    let cls = 'option'
+    if (opts.showFeedback){
+      if (i === q.a) cls += ' correct'
+      else if (i === opts.picked) cls += ' wrong'
+    }
+    const onclick = opts.showFeedback ? '' : `onclick="window.answerExamP3(${i})"`
+    return `<div class="${cls}" ${onclick}><strong style="margin-right:.4rem">${String.fromCharCode(65+i)}.</strong>${escapeHtml(opt)}</div>`
+  }).join('')
+  const fb = opts.showFeedback ? `
+    <div class="feedback show ${opts.picked === q.a ? 'good' : 'bad'}" style="margin-top:.7rem">
+      ${opts.picked === q.a ? '✅ <strong>Correcto.</strong> ' : '❌ <strong>Incorrecto.</strong> '}${escapeHtml(q.f)}
+    </div>
+    <div class="toolbar" style="margin-top:.7rem">
+      <button class="btn primary" onclick="window.nextExamP3()">${_examP3State.idx + 1 >= EXAM_P3_BANK.length ? 'Ver resultado →' : 'Siguiente →'}</button>
+    </div>
+  ` : ''
+  c.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+      <strong>Pregunta ${_examP3State.idx + 1} de ${EXAM_P3_BANK.length}</strong>
+      <span class="badge badge-blue">P3 · Evaluación</span>
+    </div>
+    <div class="sim-question">
+      <strong>${escapeHtml(q.q)}</strong>
+      <div class="mcq" style="margin-top:.5rem">${opts_html}</div>
+      ${fb}
+    </div>
+  `
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BIOVISUAL — Apoyo visual interactivo (canvas 2D ligero)
+//  Una visualización por tema. Animaciones controlables (play/pause/
+//  step/reset/velocidad). Diseñadas para que se entiendan rápido,
+//  no para ser "realistas".
+// ═══════════════════════════════════════════════════════════
+const _bv = {
+  current: 'membrana',
+  playing: false,
+  speed: 1,
+  rafId: null,
+  t: 0,
+  step: 0,
+  ctx: null,
+  canvas: null,
+  particles: []
+}
+
+const BV_TOPICS = {
+  membrana:     { title:'🧫 Transporte por membrana', desc:'Difusión simple, facilitada y transporte activo. Las partículas se mueven por gradiente; el transporte activo gasta ATP.' },
+  mitomei:      { title:'🧬 Mitosis vs Meiosis', desc:'Mitosis: 1 división → 2 células diploides idénticas. Meiosis: 2 divisiones + crossing-over → 4 células haploides distintas.' },
+  adn:          { title:'🧪 ADN: replicación', desc:'La doble hélice se separa; cada hebra sirve de molde. Helicasa abre, polimerasa sintetiza la nueva hebra emparejando A-T y G-C.' },
+  fotosintesis: { title:'🌱 Fotosíntesis', desc:'La luz excita electrones en cloroplastos. Fase luminosa produce ATP y NADPH; ciclo de Calvin fija CO₂ → glucosa.' },
+  respiracion:  { title:'⚡ Respiración celular', desc:'Glucosa → glucólisis (citoplasma) → Krebs (matriz mitocondrial) → cadena de transporte de electrones (cresta) → mucha ATP.' },
+  transcripcion:{ title:'📜 Transcripción y traducción', desc:'En el núcleo: ADN → ARN mensajero. En el citoplasma: ribosoma lee codones del ARNm y arma proteína con ARNt.' },
+  evolucion:    { title:'🦋 Selección natural', desc:'Variación + presión selectiva → los más aptos dejan más descendencia. Las frecuencias alélicas cambian con el tiempo.' },
+  origen:       { title:'🌍 Origen de la vida', desc:'Atmósfera primitiva → moléculas orgánicas → macromoléculas → ARN → protocélulas → primeras células anaerobias → fotosíntesis → oxigenación.' },
+  clasificacion:{ title:'🌳 Tres dominios (Woese)', desc:'Bacteria, Archaea y Eukarya. Las arqueas no son "bacterias raras": son un dominio aparte basado en evidencia molecular.' }
+}
+
+window.bvShow = function(topic){
+  if (!BV_TOPICS[topic]) return
+  _bv.current = topic
+  _bv.t = 0
+  _bv.step = 0
+  _bv.particles = []
+  // Marcar tab activo
+  document.querySelectorAll('#biovisualTabs button').forEach(b => {
+    b.classList.toggle('primary', b.dataset.bv === topic)
+  })
+  const t = BV_TOPICS[topic]
+  document.getElementById('bvLegend').textContent = t.title
+  document.getElementById('bvStepInfo').textContent = ''
+  document.getElementById('bvDescription').innerHTML = `<strong>${t.title}</strong><br>${t.desc}`
+  _bvSetup()
+  _bvFrame() // dibujo inmediato (sin tener que dar play)
+}
+
+window.bvPlay = function(){
+  _bv.playing = true
+  if (!_bv.rafId) _bvFrame()
+}
+window.bvPause = function(){
+  _bv.playing = false
+}
+window.bvStep = function(){
+  _bv.playing = false
+  _bv.t += 30 * (_bv.speed)
+  _bv.step++
+  _bvFrame()
+}
+window.bvReset = function(){
+  _bv.t = 0
+  _bv.step = 0
+  _bv.particles = []
+  _bvSetup()
+  _bvFrame()
+}
+window.bvSetSpeed = function(v){
+  _bv.speed = parseFloat(v) || 1
+  const lbl = document.getElementById('bvSpeedLabel')
+  if (lbl) lbl.textContent = _bv.speed + 'x'
+}
+
+function _bvSetup(){
+  const canvas = document.getElementById('bvCanvas')
+  if (!canvas) return
+  _bv.canvas = canvas
+  const ctx = canvas.getContext('2d')
+  // HiDPI
+  const dpr = window.devicePixelRatio || 1
+  const rect = canvas.getBoundingClientRect()
+  canvas.width = rect.width * dpr
+  canvas.height = rect.height * dpr
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  _bv.ctx = ctx
+
+  // Inicializar partículas según tema
+  const w = rect.width, h = rect.height
+  if (_bv.current === 'membrana'){
+    _bv.particles = []
+    // Membrana lipídica horizontal en el medio
+    for (let i = 0; i < 24; i++){
+      _bv.particles.push({ x: Math.random()*w, y: 20 + Math.random()*(h/2 - 50), r: 4+Math.random()*3, type:'small', side:'top' })
+      _bv.particles.push({ x: Math.random()*w, y: h/2 + 40 + Math.random()*(h/2 - 60), r: 4+Math.random()*3, type:'small', side:'bot' })
+    }
+    for (let i = 0; i < 6; i++){
+      _bv.particles.push({ x: Math.random()*w, y: 20 + Math.random()*(h/2 - 50), r: 9, type:'big', side:'top' })
+    }
+  } else if (_bv.current === 'evolucion'){
+    _bv.particles = []
+    for (let i = 0; i < 30; i++){
+      _bv.particles.push({ x: Math.random()*w, y: Math.random()*h, fitness: Math.random(), color: Math.random() < 0.5 ? '#5fbc7e' : '#c45252' })
+    }
+  } else if (_bv.current === 'adn'){
+    _bv.particles = []
+  } else if (_bv.current === 'fotosintesis' || _bv.current === 'respiracion'){
+    _bv.particles = []
+    for (let i = 0; i < 18; i++){
+      _bv.particles.push({ x: Math.random()*w, y: Math.random()*h, vy: 0.3 + Math.random()*0.6 })
+    }
+  }
+}
+
+function _bvFrame(){
+  if (!_bv.ctx || !_bv.canvas) return
+  const ctx = _bv.ctx
+  const w = _bv.canvas.getBoundingClientRect().width
+  const h = _bv.canvas.getBoundingClientRect().height
+  ctx.clearRect(0, 0, w, h)
+
+  // Fondo radial sutil
+  const grad = ctx.createRadialGradient(w/2, h/2, 50, w/2, h/2, Math.max(w,h))
+  grad.addColorStop(0, '#13301d')
+  grad.addColorStop(1, '#0a1a10')
+  ctx.fillStyle = grad
+  ctx.fillRect(0, 0, w, h)
+
+  if (_bv.current === 'membrana')        _bvDrawMembrana(ctx, w, h)
+  else if (_bv.current === 'mitomei')    _bvDrawMitoMei(ctx, w, h)
+  else if (_bv.current === 'adn')        _bvDrawADN(ctx, w, h)
+  else if (_bv.current === 'fotosintesis') _bvDrawFotosintesis(ctx, w, h)
+  else if (_bv.current === 'respiracion') _bvDrawRespiracion(ctx, w, h)
+  else if (_bv.current === 'transcripcion') _bvDrawTranscripcion(ctx, w, h)
+  else if (_bv.current === 'evolucion')  _bvDrawEvolucion(ctx, w, h)
+  else if (_bv.current === 'origen')     _bvDrawOrigen(ctx, w, h)
+  else if (_bv.current === 'clasificacion') _bvDrawClasif(ctx, w, h)
+
+  if (_bv.playing){
+    _bv.t += 1 * _bv.speed
+    _bv.rafId = requestAnimationFrame(_bvFrame)
+  } else {
+    _bv.rafId = null
+  }
+}
+
+function _bvDrawMembrana(ctx, w, h){
+  // Membrana lipídica (dos filas de cabezas)
+  const my = h/2
+  ctx.fillStyle = '#f5d76e'
+  for (let x = 0; x < w; x += 18){
+    ctx.beginPath(); ctx.arc(x, my - 12, 6, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.arc(x, my + 12, 6, 0, Math.PI*2); ctx.fill()
+  }
+  ctx.strokeStyle = '#f5d76e88'
+  ctx.lineWidth = 2
+  for (let x = 0; x < w; x += 18){
+    ctx.beginPath(); ctx.moveTo(x, my-12); ctx.lineTo(x, my-2); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(x, my+12); ctx.lineTo(x, my+2); ctx.stroke()
+  }
+  // Canal proteico (transporte facilitado)
+  ctx.fillStyle = '#3aa5c4'
+  ctx.fillRect(w/2 - 20, my - 20, 40, 40)
+
+  // Mover partículas pequeñas según gradiente (top → bot)
+  for (const p of _bv.particles){
+    if (p.type === 'small'){
+      // Difusión: drift hacia el otro lado
+      p.y += (p.side === 'top' ? 0.3 : -0.3) * _bv.speed * (Math.random()*0.6 + 0.7)
+      p.x += (Math.random() - 0.5) * 0.6 * _bv.speed
+      if (p.y > h/2 + 30 && p.side === 'top') p.side = 'bot'
+      if (p.y < h/2 - 30 && p.side === 'bot') p.side = 'top'
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
+      if (p.y < 0) p.y = 0; if (p.y > h) p.y = h
+      ctx.fillStyle = '#9ad6ff'
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill()
+    } else {
+      // Partículas grandes: solo pasan por canal
+      const distToChannel = Math.abs(p.x - w/2)
+      if (distToChannel < 20){
+        p.y += (p.side === 'top' ? 0.5 : -0.5) * _bv.speed
+        if (p.y > h/2 + 30 && p.side === 'top') p.side = 'bot'
+      } else {
+        p.x += (p.x < w/2 ? 0.4 : -0.4) * _bv.speed
+      }
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
+      ctx.fillStyle = '#ff9ad6'
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill()
+    }
+  }
+  document.getElementById('bvStepInfo').textContent = 'Partículas pequeñas (azules) cruzan por difusión simple. Partículas grandes (rosas) usan canal proteico (difusión facilitada).'
+}
+
+function _bvDrawMitoMei(ctx, w, h){
+  // Lado izquierdo: mitosis (2 céls). Lado derecho: meiosis (4 céls).
+  ctx.fillStyle = '#d0edd8'
+  ctx.font = 'bold 14px Inter'
+  ctx.textAlign = 'center'
+  ctx.fillText('Mitosis: 2 células idénticas (diploides)', w/4, 24)
+  ctx.fillText('Meiosis: 4 células distintas (haploides)', 3*w/4, 24)
+
+  const phase = Math.floor((_bv.t / 80) % 4)
+  // Mitosis (izq)
+  for (let i = 0; i < (phase >= 3 ? 2 : 1); i++){
+    const cx = w/4 + (phase >= 3 ? (i === 0 ? -50 : 50) : 0)
+    ctx.fillStyle = 'rgba(95,188,126,.18)'
+    ctx.beginPath(); ctx.arc(cx, h/2 + 20, 50, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2; ctx.stroke()
+    // Cromosomas
+    ctx.fillStyle = '#5fbc7e'
+    if (phase === 0){ ctx.fillRect(cx-20, h/2+5, 8, 30); ctx.fillRect(cx+12, h/2+5, 8, 30) }
+    else if (phase === 1){ ctx.fillRect(cx-4, h/2-5, 8, 30); ctx.fillRect(cx-4, h/2+30, 8, 25) }
+    else if (phase === 2){ ctx.fillRect(cx-12, h/2-15, 8, 30); ctx.fillRect(cx+4, h/2+30, 8, 25) }
+    else { ctx.fillRect(cx-4, h/2+10, 8, 30) }
+  }
+  // Meiosis (der)
+  const cells = phase === 0 ? 1 : phase === 1 ? 2 : phase === 2 ? 2 : 4
+  for (let i = 0; i < cells; i++){
+    const offsetX = cells === 1 ? 0 : cells === 2 ? (i === 0 ? -45 : 45) : (-60 + i*40)
+    const cx = 3*w/4 + offsetX
+    ctx.fillStyle = 'rgba(168,85,247,.18)'
+    const rad = cells === 4 ? 28 : 40
+    ctx.beginPath(); ctx.arc(cx, h/2 + 20, rad, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 2; ctx.stroke()
+    ctx.fillStyle = '#a855f7'
+    ctx.fillRect(cx-3, h/2+10, 6, cells === 4 ? 18 : 26)
+  }
+
+  document.getElementById('bvStepInfo').textContent = 'Fase ' + (phase + 1) + ' de 4 — Mitosis preserva diploidía; meiosis genera variabilidad por crossing-over y separación independiente.'
+}
+
+function _bvDrawADN(ctx, w, h){
+  // Doble hélice simple animada
+  const cy = h/2
+  const N = 30
+  const amp = 28
+  for (let i = 0; i < N; i++){
+    const x = (i / N) * w
+    const phase = (_bv.t * 0.03) + i * 0.4
+    const y1 = cy + Math.sin(phase) * amp
+    const y2 = cy + Math.sin(phase + Math.PI) * amp
+    // Backbones
+    ctx.strokeStyle = '#5fbc7e'
+    ctx.lineWidth = 3
+    if (i > 0){
+      const prevX = ((i-1) / N) * w
+      const prevP = (_bv.t * 0.03) + (i-1) * 0.4
+      ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP)*amp); ctx.lineTo(x, y1); ctx.stroke()
+      ctx.strokeStyle = '#a855f7'
+      ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP+Math.PI)*amp); ctx.lineTo(x, y2); ctx.stroke()
+    }
+    // Bases (líneas entre hebras)
+    ctx.strokeStyle = i % 2 === 0 ? '#f5d76e' : '#3aa5c4'
+    ctx.lineWidth = 2
+    ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke()
+  }
+  // Bifurcación (replicación) — del lado izquierdo, simulamos apertura
+  const fork = ((_bv.t * 0.5) % w)
+  ctx.fillStyle = 'rgba(95,188,126,.4)'
+  ctx.beginPath(); ctx.arc(fork, cy, 18, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#fff'
+  ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Helicasa', fork, cy - 24)
+
+  document.getElementById('bvStepInfo').textContent = 'Helicasa abre la doble hélice; cada hebra sirve de molde para sintetizar una nueva (A-T, G-C).'
+}
+
+function _bvDrawFotosintesis(ctx, w, h){
+  // Cloroplasto verde con tilacoides
+  ctx.fillStyle = 'rgba(95,188,126,.18)'
+  ctx.beginPath()
+  ctx.ellipse(w/2, h/2, w/2.4, h/2.4, 0, 0, Math.PI*2)
+  ctx.fill()
+  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2; ctx.stroke()
+  // Tilacoides (discos verdes apilados)
+  ctx.fillStyle = '#3a8c4e'
+  for (let i = 0; i < 4; i++){
+    ctx.beginPath()
+    ctx.ellipse(w/2 - 80 + i*8, h/2 - 30 + i*6, 40, 10, 0, 0, Math.PI*2)
+    ctx.fill()
+  }
+  // Sol con rayos
+  ctx.fillStyle = '#ffd76e'
+  ctx.beginPath(); ctx.arc(50, 50, 22, 0, Math.PI*2); ctx.fill()
+  // Fotones que caen hacia los tilacoides
+  for (const p of _bv.particles){
+    p.y += p.vy * _bv.speed * 1.2
+    if (p.y > h - 20){ p.y = 0; p.x = Math.random() * w * 0.6 }
+    ctx.fillStyle = '#ffd76e'
+    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill()
+  }
+  // Salida: O₂ flotando hacia arriba (a la derecha)
+  ctx.fillStyle = '#9ad6ff'
+  ctx.font = 'bold 14px Inter'; ctx.textAlign = 'center'
+  const o2y = (h - ((_bv.t * 0.6) % h))
+  ctx.fillText('O₂', w - 60, o2y)
+  ctx.fillText('CO₂', 60, h - ((_bv.t * 0.4) % h))
+
+  document.getElementById('bvStepInfo').textContent = 'Luz → tilacoides (fase luminosa: ATP, NADPH) → estroma (ciclo de Calvin: CO₂ → glucosa). Sale O₂.'
+}
+
+function _bvDrawRespiracion(ctx, w, h){
+  // Mitocondria
+  ctx.fillStyle = 'rgba(196,82,82,.18)'
+  ctx.beginPath()
+  ctx.ellipse(w/2, h/2, w/2.4, h/3, 0, 0, Math.PI*2)
+  ctx.fill()
+  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 2; ctx.stroke()
+  // Crestas
+  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 1.5
+  for (let i = 0; i < 6; i++){
+    ctx.beginPath()
+    ctx.ellipse(w/2 - 60 + i*24, h/2, 14, 30, 0.2 * (i%2 ? 1 : -1), 0, Math.PI*2)
+    ctx.stroke()
+  }
+  // Glucosa (azul) entrando, ATP (amarillo) saliendo
+  ctx.fillStyle = '#9ad6ff'
+  ctx.font = 'bold 13px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Glucosa →', 12, h/2 + 5)
+  ctx.fillStyle = '#ffd76e'
+  ctx.textAlign = 'right'
+  for (let i = 0; i < 8; i++){
+    const phase = (_bv.t * 0.5 + i * 30) % 200
+    if (phase < 100){
+      ctx.fillText('ATP', w - 12 - phase, h/2 + (i % 3 - 1) * 18)
+    }
+  }
+  document.getElementById('bvStepInfo').textContent = 'Glucólisis → Krebs (matriz) → cadena transporte de electrones (cresta) → mucha ATP. Producto: H₂O y CO₂.'
+}
+
+function _bvDrawTranscripcion(ctx, w, h){
+  // Núcleo: ADN→ARNm. Citoplasma: ribosoma traduce ARNm.
+  ctx.fillStyle = 'rgba(43,110,163,.15)'
+  ctx.fillRect(10, 10, w/2 - 20, h - 20) // núcleo
+  ctx.fillStyle = 'rgba(95,188,126,.10)'
+  ctx.fillRect(w/2 + 10, 10, w/2 - 20, h - 20) // citoplasma
+  ctx.fillStyle = '#d0edd8'
+  ctx.font = 'bold 12px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Núcleo: transcripción', 18, 26)
+  ctx.fillText('Citoplasma: traducción', w/2 + 18, 26)
+
+  // ADN en núcleo
+  ctx.strokeStyle = '#3aa5c4'; ctx.lineWidth = 2
+  ctx.beginPath()
+  for (let x = 30; x < w/2 - 30; x += 4){
+    const y = h/2 + Math.sin(x * 0.2) * 18
+    if (x === 30) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+  }
+  ctx.stroke()
+  // ARNm sale del núcleo
+  const tx = (w/2 - 20) + ((_bv.t * 0.4) % (w/2 - 60))
+  ctx.fillStyle = '#ffd76e'
+  ctx.fillRect(tx, h/2 - 4, 30, 8)
+  ctx.fillText('ARNm', tx, h/2 - 8)
+  // Ribosoma
+  ctx.fillStyle = '#a855f7'
+  ctx.beginPath(); ctx.arc(3*w/4, h/2 + 30, 20, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'
+  ctx.fillText('Rib.', 3*w/4, h/2 + 34)
+  // Proteína
+  ctx.fillStyle = '#5fbc7e'
+  for (let i = 0; i < 5; i++){
+    ctx.beginPath(); ctx.arc(3*w/4 + 30 + i*14, h/2 + 30, 6, 0, Math.PI*2); ctx.fill()
+  }
+  ctx.fillStyle = '#d0edd8'; ctx.textAlign = 'left'
+  ctx.fillText('Proteína', 3*w/4 + 30, h/2 + 56)
+
+  document.getElementById('bvStepInfo').textContent = 'Transcripción (ADN→ARN) ocurre en el núcleo. Traducción (ARN→proteína) ocurre en el ribosoma del citoplasma.'
+}
+
+function _bvDrawEvolucion(ctx, w, h){
+  // Aplicar selección: cada cierto tiempo, los de fitness bajo son reemplazados
+  if (Math.floor(_bv.t) % 60 === 0 && _bv.t > 0){
+    for (const p of _bv.particles){
+      if (p.fitness < 0.4){
+        // Selección: reemplazar por descendiente del más apto cercano
+        p.fitness = Math.min(1, p.fitness + 0.3 + Math.random()*0.2)
+        p.color = '#5fbc7e'
+      }
+    }
+  }
+  // Mover partículas
+  for (const p of _bv.particles){
+    p.x += (Math.random() - 0.5) * 0.8 * _bv.speed
+    p.y += (Math.random() - 0.5) * 0.8 * _bv.speed
+    if (p.x < 0) p.x = w; if (p.x > w) p.x = 0
+    if (p.y < 0) p.y = h; if (p.y > h) p.y = 0
+    ctx.fillStyle = p.color
+    ctx.beginPath(); ctx.arc(p.x, p.y, 4 + p.fitness * 4, 0, Math.PI*2); ctx.fill()
+  }
+  // Indicador de presión selectiva
+  const fittest = _bv.particles.filter(p => p.fitness >= 0.6).length
+  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 13px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Individuos aptos: ' + fittest + ' / ' + _bv.particles.length, 12, h - 12)
+  document.getElementById('bvStepInfo').textContent = 'Los individuos verdes son más aptos y dejan más descendencia. Los rojos van desapareciendo: la frecuencia alélica cambia.'
+}
+
+function _bvDrawOrigen(ctx, w, h){
+  // Línea de tiempo horizontal
+  const stages = [
+    {t:'Tierra primitiva', color:'#c45252'},
+    {t:'Moléculas orgánicas', color:'#ffd76e'},
+    {t:'Macromoléculas', color:'#5fbc7e'},
+    {t:'Mundo de ARN', color:'#a855f7'},
+    {t:'Protocélulas', color:'#3aa5c4'},
+    {t:'Primeras células', color:'#5fbc7e'},
+    {t:'Fotosíntesis', color:'#5fbc7e'},
+    {t:'Oxigenación', color:'#9ad6ff'}
+  ]
+  const span = (_bv.t * 0.04) % stages.length
+  ctx.strokeStyle = '#5fbc7e88'; ctx.lineWidth = 2
+  ctx.beginPath(); ctx.moveTo(40, h/2); ctx.lineTo(w - 40, h/2); ctx.stroke()
+  for (let i = 0; i < stages.length; i++){
+    const x = 40 + (i / (stages.length - 1)) * (w - 80)
+    const active = Math.floor(span) === i
+    ctx.fillStyle = active ? stages[i].color : stages[i].color + '55'
+    ctx.beginPath(); ctx.arc(x, h/2, active ? 14 : 8, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = active ? '#fff' : '#d0edd888'
+    ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+    ctx.fillText(stages[i].t, x, h/2 + (i % 2 === 0 ? -22 : 30))
+  }
+  document.getElementById('bvStepInfo').textContent = 'Etapas progresivas: el origen de la vida fue gradual. Cada paso supone una nueva propiedad emergente (replicación, membrana, metabolismo).'
+}
+
+function _bvDrawClasif(ctx, w, h){
+  // Árbol de tres ramas
+  ctx.strokeStyle = '#5fbc7e'
+  ctx.lineWidth = 3
+  // Tronco
+  ctx.beginPath(); ctx.moveTo(w/2, h - 20); ctx.lineTo(w/2, h/2 + 20); ctx.stroke()
+  // Tres ramas
+  const labels = [{x: w/4, t:'Bacteria', c:'#3aa5c4'}, {x: w/2, t:'Archaea', c:'#a855f7'}, {x: 3*w/4, t:'Eukarya', c:'#5fbc7e'}]
+  for (const l of labels){
+    ctx.strokeStyle = l.c
+    ctx.beginPath(); ctx.moveTo(w/2, h/2 + 20); ctx.lineTo(l.x, h/2 - 30); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(l.x, h/2 - 30); ctx.lineTo(l.x, 60); ctx.stroke()
+    ctx.fillStyle = l.c
+    ctx.beginPath(); ctx.arc(l.x, 50, 14 + Math.sin(_bv.t * 0.05) * 2, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
+    ctx.fillText(l.t, l.x, 30)
+  }
+  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Ancestro común universal (LUCA)', w/2, h - 4)
+  document.getElementById('bvStepInfo').textContent = 'Carl Woese, basándose en ARN ribosomal, separó a los procariotas en Bacteria y Archaea. Eukarya es el tercer dominio.'
+}
+
+// ═══════════════════════════════════════════════════════════
+//  INTRO CINEMÁTICA — animación corta de entrada
+//  Se muestra solo en la primera carga de la sesión (sessionStorage)
+//  o cuando el usuario explícitamente la dispara desde el menú.
+//  Cumple los requisitos: corta (3-5s), saltable, ligera, móvil-friendly.
+// ═══════════════════════════════════════════════════════════
+function _injectIntroStyles(){
+  if (document.getElementById('introStyles')) return
+  const s = document.createElement('style')
+  s.id = 'introStyles'
+  s.textContent = `
+    #bmIntro{
+      position:fixed;inset:0;z-index:99999;
+      background:radial-gradient(ellipse at center, #1c4730 0%, #0d1f13 70%);
+      display:flex;align-items:center;justify-content:center;
+      animation:bmIntroFade 4.2s forwards;
+      cursor:pointer
+    }
+    #bmIntro .bmIntroLogo{
+      font-size:5rem;animation:bmIntroPulse 2s ease-in-out infinite;
+      filter:drop-shadow(0 0 30px rgba(95,188,126,.6))
+    }
+    #bmIntro .bmIntroText{
+      position:absolute;bottom:18%;left:0;right:0;text-align:center;
+      color:#d0edd8;font-family:Merriweather,serif;font-weight:700;
+      font-size:clamp(1.2rem,3vw,2rem);
+      opacity:0;animation:bmIntroTextIn 1.5s forwards;animation-delay:.6s
+    }
+    #bmIntro .bmIntroSub{
+      position:absolute;bottom:11%;left:0;right:0;text-align:center;
+      color:#6fa07a;font-size:.9rem;
+      opacity:0;animation:bmIntroTextIn 1.5s forwards;animation-delay:1.4s
+    }
+    #bmIntro .bmIntroSkip{
+      position:absolute;top:1rem;right:1rem;
+      background:rgba(255,255,255,.1);color:#d0edd8;
+      border:1px solid rgba(255,255,255,.2);
+      border-radius:99px;padding:.4rem 1rem;font-size:.78rem;font-weight:700;
+      cursor:pointer;backdrop-filter:blur(8px)
+    }
+    #bmIntro .bmIntroParticle{
+      position:absolute;border-radius:50%;
+      background:radial-gradient(circle,#5fbc7e,#5fbc7e00);
+      pointer-events:none
+    }
+    @keyframes bmIntroPulse{
+      0%,100%{transform:scale(1);opacity:.85}
+      50%{transform:scale(1.12);opacity:1}
+    }
+    @keyframes bmIntroTextIn{ to { opacity:1 } }
+    @keyframes bmIntroFade{
+      0%{opacity:1}
+      80%{opacity:1}
+      100%{opacity:0;visibility:hidden;pointer-events:none}
+    }
+  `
+  document.head.appendChild(s)
+}
+
+window.playBioMasterIntro = function(force){
+  // Solo una vez por sesión, salvo que se fuerce
+  if (!force && sessionStorage.getItem('bm_intro_played') === '1') return
+  _injectIntroStyles()
+  let intro = document.getElementById('bmIntro')
+  if (intro) intro.remove()
+  intro = document.createElement('div')
+  intro.id = 'bmIntro'
+  intro.innerHTML = `
+    <button class="bmIntroSkip" onclick="event.stopPropagation();document.getElementById('bmIntro')?.remove()">Saltar →</button>
+    <div class="bmIntroLogo">🧬</div>
+    <div class="bmIntroText">BioMaster</div>
+    <div class="bmIntroSub">Plataforma interactiva para Biología General</div>
+  `
+  // Partículas decorativas
+  for (let i = 0; i < 24; i++){
+    const p = document.createElement('div')
+    p.className = 'bmIntroParticle'
+    const sz = 4 + Math.random()*10
+    p.style.width = sz + 'px'
+    p.style.height = sz + 'px'
+    p.style.left = Math.random()*100 + '%'
+    p.style.top = Math.random()*100 + '%'
+    p.style.opacity = (0.3 + Math.random()*0.5)
+    p.style.animation = `bmIntroPulse ${1.5 + Math.random()*1.5}s ease-in-out infinite`
+    p.style.animationDelay = (Math.random()*2) + 's'
+    intro.appendChild(p)
+  }
+  intro.addEventListener('click', () => intro.remove())
+  document.body.appendChild(intro)
+  sessionStorage.setItem('bm_intro_played', '1')
+  // Auto-remove al terminar la animación
+  setTimeout(() => { if (intro.parentNode) intro.remove() }, 4500)
+}
+
+// Disparar intro cuando entra a la app (post-login o post-guest)
+window.addEventListener('DOMContentLoaded', () => {
+  // Disparamos solo si ya estamos en la app (no en landing)
+  setTimeout(() => {
+    const lp = document.getElementById('landingPage')
+    if (lp && !lp.classList.contains('show')){
+      window.playBioMasterIntro()
+    }
+  }, 800)
+})
+
+// ═══════════════════════════════════════════════════════════
+//  MODO DESARROLLO — entrenador de respuestas desarrolladas
+//  Estructura visual: idea principal, concepto clave, explicación, cierre.
+//  El usuario escribe; al pedir respuesta modelo, se muestra la guía.
+// ═══════════════════════════════════════════════════════════
+const DEV_PROMPTS = [
+  { topic:'Membrana', q:'Explicá cómo funciona el transporte activo a través de la membrana.',
+    keywords:['ATP','gradiente','bomba','energía','contra gradiente'],
+    model:{
+      principal:'El transporte activo mueve sustancias a través de la membrana CONTRA su gradiente de concentración.',
+      clave:'Requiere energía en forma de ATP porque va contra gradiente.',
+      explicacion:'Una proteína transmembrana (bomba) une a la sustancia, hidroliza ATP y cambia de conformación, expulsando la molécula al otro lado.',
+      cierre:'Ejemplo clásico: la bomba Na⁺/K⁺, que mantiene gradientes esenciales para el potencial de membrana.'
+    }
+  },
+  { topic:'Meiosis', q:'¿Por qué la meiosis genera variabilidad genética?',
+    keywords:['crossing-over','recombinación','independiente','haploides','reducción'],
+    model:{
+      principal:'La meiosis genera variabilidad por dos mecanismos principales.',
+      clave:'Crossing-over en profase I y segregación independiente en metafase I.',
+      explicacion:'En el crossing-over, cromosomas homólogos intercambian segmentos. En la segregación independiente, cada par de homólogos se orienta al azar.',
+      cierre:'Resultado: 4 células haploides genéticamente distintas, base de la diversidad sexual.'
+    }
+  },
+  { topic:'Fotosíntesis', q:'Diferenciá la fase luminosa del ciclo de Calvin.',
+    keywords:['ATP','NADPH','tilacoide','estroma','CO₂','glucosa'],
+    model:{
+      principal:'La fase luminosa y el ciclo de Calvin son dos etapas complementarias de la fotosíntesis.',
+      clave:'Luminosa ocurre en tilacoides; Calvin ocurre en el estroma.',
+      explicacion:'En la fase luminosa, la luz excita electrones que generan ATP y NADPH (y libera O₂ del agua). El ciclo de Calvin usa esos ATP y NADPH para fijar CO₂ en glucosa.',
+      cierre:'Sin la fase luminosa no hay ATP/NADPH; sin Calvin no se sintetiza glucosa.'
+    }
+  },
+  { topic:'Origen de la vida (P3)', q:'Explicá por qué la teoría quimiosintética no contradice los experimentos de Pasteur.',
+    keywords:['atmósfera primitiva','condiciones actuales','generación espontánea','Miller','protocélulas'],
+    model:{
+      principal:'Pasteur refutó la generación espontánea EN CONDICIONES ACTUALES; la teoría quimiosintética habla de condiciones primitivas distintas.',
+      clave:'No son contradictorias: aplican a momentos diferentes.',
+      explicacion:'Pasteur demostró que hoy los seres vivos provienen de otros seres vivos. Oparin-Haldane y Miller-Urey hablan de cómo, en una atmósfera primitiva muy distinta, podían formarse moléculas orgánicas a partir de materia inorgánica.',
+      cierre:'Hoy no surgen seres vivos espontáneamente, pero en la Tierra primitiva las condiciones químicas permitieron una evolución prebiótica.'
+    }
+  },
+  { topic:'Clasificación (P3)', q:'¿Por qué Woese reorganizó el árbol de la vida en tres dominios?',
+    keywords:['ARN ribosomal','Bacteria','Archaea','Eukarya','procariotas'],
+    model:{
+      principal:'Carl Woese encontró que los procariotas no eran un grupo uniforme.',
+      clave:'Análisis de ARN ribosomal mostró diferencias profundas entre Bacteria y Archaea.',
+      explicacion:'Las arqueas, aunque morfológicamente parecen bacterias, difieren en pared celular, lípidos de membrana, ribosomas y ARN polimerasas. Genéticamente están más cerca de Eukarya en algunos rasgos.',
+      cierre:'Por eso se propuso el sistema de tres dominios: Bacteria, Archaea y Eukarya.'
+    }
+  }
+]
+let _devCurrentPrompt = 0
+
+window.devNextPrompt = function(){
+  _devCurrentPrompt = (_devCurrentPrompt + 1) % DEV_PROMPTS.length
+  _devRender()
+}
+window.devShowModel = function(){
+  _devRender({ showModel: true })
+}
+window.devCheckKeywords = function(){
+  _devRender({ checkKeywords: true })
+}
+function _devRender(opts){
+  opts = opts || {}
+  const c = document.getElementById('devTrainerBox')
+  if (!c) return
+  const p = DEV_PROMPTS[_devCurrentPrompt]
+  const userText = (document.getElementById('devTrainerInput')?.value || '').toLowerCase()
+  // Análisis de palabras clave
+  let kwHit = []
+  if (opts.checkKeywords && userText){
+    kwHit = p.keywords.filter(k => userText.includes(k.toLowerCase()))
+  }
+  c.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+      <strong>${escapeHtml(p.topic)} · pregunta ${_devCurrentPrompt + 1}/${DEV_PROMPTS.length}</strong>
+      <button class="btn" style="font-size:.75rem;padding:.3rem .6rem" onclick="window.devNextPrompt()">Siguiente →</button>
+    </div>
+    <div class="sim-question" style="margin-bottom:.6rem">
+      <strong>${escapeHtml(p.q)}</strong>
+    </div>
+    <textarea id="devTrainerInput" rows="5" placeholder="Escribí tu respuesta usando tus propias palabras…"
+      style="width:100%;padding:.7rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);font:inherit;color:var(--text);resize:vertical">${escapeHtml(document.getElementById('devTrainerInput')?.value || '')}</textarea>
+    <div class="toolbar" style="margin-top:.6rem">
+      <button class="btn" onclick="window.devCheckKeywords()">🔑 Revisar palabras clave</button>
+      <button class="btn primary" onclick="window.devShowModel()">📖 Ver respuesta modelo</button>
+      <button class="btn" onclick="A.tts(document.getElementById('devTrainerInput').value)">🔊 Leer mi respuesta</button>
+    </div>
+    ${opts.checkKeywords ? `
+      <div class="feedback ${kwHit.length >= p.keywords.length / 2 ? 'good' : 'bad'} show" style="margin-top:.7rem">
+        Palabras clave esperadas: ${p.keywords.map(k => kwHit.includes(k) ? `<strong style="color:var(--green)">✓ ${escapeHtml(k)}</strong>` : `<span style="color:var(--muted)">✕ ${escapeHtml(k)}</span>`).join(' · ')}<br>
+        Detectadas: <strong>${kwHit.length} / ${p.keywords.length}</strong>
+      </div>
+    ` : ''}
+    ${opts.showModel ? `
+      <div style="margin-top:.8rem;padding:1rem;border-radius:14px;background:var(--greenSoft);border:1px solid var(--green);font-size:.88rem;line-height:1.6">
+        <strong style="color:var(--green);font-size:.95rem">📖 Respuesta modelo</strong>
+        <div style="margin-top:.5rem"><strong>1. Idea principal:</strong> ${escapeHtml(p.model.principal)}</div>
+        <div style="margin-top:.4rem"><strong>2. Concepto clave:</strong> ${escapeHtml(p.model.clave)}</div>
+        <div style="margin-top:.4rem"><strong>3. Explicación:</strong> ${escapeHtml(p.model.explicacion)}</div>
+        <div style="margin-top:.4rem"><strong>4. Cierre:</strong> ${escapeHtml(p.model.cierre)}</div>
+      </div>
+    ` : ''}
+  `
+}
+window.initDevTrainer = function(){ _devRender() }
 
 // ═══════════════════════════════════════════════════════════
 //  16. API PÚBLICA (lo que se invoca desde onclick="A.xxx()")
@@ -10313,6 +11701,7 @@ document.querySelectorAll('[data-plan-cta]').forEach(btn => {
     const links = {
       p1:       window.STRIPE_LINK_P1       || null,
       p2:       window.STRIPE_LINK_P2       || null,
+      p3:       window.STRIPE_LINK_P3       || null,
       semestre: window.STRIPE_LINK_SEMESTRE || null,
       mensual:  window.STRIPE_LINK_MENSUAL  || null
     }
@@ -10467,7 +11856,7 @@ async function loadPublicTestimonials(){
       return `<div class="lp-test">
         <div class="lp-test-stars">★★★★★</div>
         <p class="lp-test-text">"${safeText}"</p>
-        <div class="lp-test-author"><div class="lp-test-avatar">${initial}</div><div><div class="lp-test-name">${safeName}</div><div class="lp-test-role">Biología General · TEC</div></div></div>
+        <div class="lp-test-author"><div class="lp-test-avatar">${initial}</div><div><div class="lp-test-name">${safeName}</div><div class="lp-test-role">Biología General</div></div></div>
       </div>`
     }).join('')
   } catch(e){ /* fallback a placeholders */ }
