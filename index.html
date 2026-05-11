@@ -1132,7 +1132,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <details><summary>Si compro Pase P1, ¿puedo después comprar el P2 por separado?</summary><div class="lp-faq-body">Sí, pero te conviene mucho menos que haber comprado el Semestre desde el inicio. Comprar P1 (₡6.900) + P2 (₡6.900) son ₡13.800; el Semestre cuesta ₡9.900. Si todavía estás en tiempo del semestre, te recomendamos hacer un upgrade desde P1 → Semestre con el costo proporcional de la diferencia. Escribinos desde el panel de feedback.</div></details>
         <details><summary>¿Por qué el plan gratis no incluye más?</summary><div class="lp-faq-body">Porque el valor real está en las funciones que te ahorran tiempo y mejoran tu probabilidad de aprobar: el diagnóstico que te dice exactamente qué te falta, el plan personalizado por fecha de examen, el panel "Qué estudiar hoy", la predicción de aprobación, los simulacros ilimitados y el resumen completo. Esas funciones son las que justifican que pagues. Si las regaláramos, la plataforma no podría sostenerse.</div></details>
         <details><summary>¿Esto sirve para cualquier curso de Biología General?</summary><div class="lp-faq-body">El contenido está diseñado a partir del temario estándar de Biología General universitario (introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración para el primer parcial; bases genéticas, evolución y biotecnología para el segundo; origen de la vida, diversidad biológica y ecología para el tercero). Estos temas son los mismos en la mayoría de programas universitarios de Biología General. La plataforma es independiente y reutilizable para estudiantes de distintas universidades.</div></details>
-        <details><summary>¿Hay reembolso si no me sirve?</summary><div class="lp-faq-body">Sí, en cualquier plan. Si dentro de los primeros 7 días sentís que no es para vos, te devolvemos el 100% sin preguntas. Escribinos desde el panel de feedback dentro de la app.</div></details>
+        <details><summary>¿Hay reembolso si no me sirve?</summary><div class="lp-faq-body">Sí, en cualquier plan. Si dentro de los primeros 7 días sentís que no es para vos y no usaste más del 20% del contenido, te devolvemos el 100% sin preguntas. Escribinos al correo oficial <strong>Biomaster.oficial@gmail.com</strong> o usá el panel de feedback dentro de la app. Reiniciar tu progreso jugable NO anula tu derecho a reembolso, pero tampoco resetea el registro administrativo de avance: si superaste el 20%, ese dato queda registrado.</div></details>
         <details><summary>¿Cómo se guarda mi progreso?</summary><div class="lp-faq-body">Si te registrás con tu correo, tu progreso (diagnóstico, plan de estudio, errores frecuentes, simulacros) se guarda en la nube y se sincroniza entre dispositivos. Si entrás como invitado, el progreso se guarda solo en este navegador. Los avances de cada parcial se mantienen separados (lo que hagas en P1 no afecta tu mapa de P2).</div></details>
         <details><summary>¿Funciona desde el celular?</summary><div class="lp-faq-body">Sí. La plataforma está optimizada para celular, tablet y computadora. Los simulacros, juegos y el plan de estudio funcionan igual en cualquier dispositivo.</div></details>
         <details><summary>¿Cuándo se renueva el contenido?</summary><div class="lp-faq-body">El resumen teórico se actualiza cada vez que hay cambios en el programa del curso. Los simulacros se renuevan periódicamente con preguntas nuevas. Los exámenes oficiales (2024, 2025…) se incorporan a medida que se publican y los suscriptores con plan activo acceden a ellos sin costo adicional durante su período.</div></details>
@@ -1526,6 +1526,23 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           <h3 id="hoyTitle">Tu plan de hoy</h3>
           <div class="today-card-greeting" id="hoyGreeting">Hola. Esto es lo que conviene hoy:</div>
           <div class="today-tasks" id="hoyTasks"></div>
+        </div>
+
+        <!-- ═══ PANEL FEATURES V2 ═══
+             Línea de progreso biológica + perfil académico + estadísticas
+             emocionales + recomendación automática. Solo se muestra si
+             hay sesión y plan activo. Botón modo ultra limpio en el header. -->
+        <div class="today-card" id="featuresV2Panel" style="display:none;margin-top:.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem">
+            <div id="bioProgressBar"></div>
+            <button class="btn" style="font-size:.72rem;padding:.3rem .6rem" onclick="window.toggleUltraClean()">🧘 Modo ultra limpio</button>
+          </div>
+          <div id="studentProfileBox" style="padding:.6rem .8rem;background:var(--soft);border-radius:10px;margin-bottom:.5rem;font-size:.85rem"></div>
+          <div id="autoRecoBox" style="padding:.7rem .9rem;background:linear-gradient(135deg,var(--greenSoft),var(--soft));border-radius:10px;margin-bottom:.5rem"></div>
+          <details>
+            <summary style="cursor:pointer;font-size:.78rem;color:var(--muted);margin-bottom:.4rem">📈 Estadísticas detalladas (parcial activo)</summary>
+            <div id="emotionalStatsBox" style="font-size:.82rem;line-height:1.6;padding-top:.4rem"></div>
+          </details>
         </div>
       </div>
     </section>
@@ -2927,18 +2944,26 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         <span class="pro-badge">Pro</span>
       </div>
 
-      <!-- Tabs de tema -->
+      <!-- Tabs de tema. Cada botón con data-bv lleva además metadata del parcial
+           en BV_TOPICS, y window.bvFilterByParcial() oculta los que no
+           corresponden al parcial activo. -->
       <div class="card panel" style="padding:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem">
+          <strong style="font-size:.88rem">Visualizadores del parcial activo: <span data-parcial-label style="color:var(--green)">📗 P2</span></strong>
+          <span class="muted" style="font-size:.75rem">Cambiá de parcial arriba para ver los visualizadores correspondientes</span>
+        </div>
         <div class="toolbar" id="biovisualTabs" style="margin-bottom:.8rem;flex-wrap:wrap">
           <button class="btn primary" data-bv="membrana" onclick="window.bvShow('membrana')">🧫 Transporte por membrana</button>
-          <button class="btn" data-bv="mitomei" onclick="window.bvShow('mitomei')">🧬 Mitosis vs Meiosis</button>
+          <button class="btn" data-bv="ciclocelular" onclick="window.bvShow('ciclocelular')">🔄 Ciclo celular</button>
+          <button class="btn" data-bv="enzimas" onclick="window.bvShow('enzimas')">🔧 Enzimas</button>
           <button class="btn" data-bv="adn" onclick="window.bvShow('adn')">🧪 ADN: replicación</button>
           <button class="btn" data-bv="fotosintesis" onclick="window.bvShow('fotosintesis')">🌱 Fotosíntesis</button>
           <button class="btn" data-bv="respiracion" onclick="window.bvShow('respiracion')">⚡ Respiración celular</button>
+          <button class="btn" data-bv="mitomei" onclick="window.bvShow('mitomei')">🧬 Mitosis vs Meiosis</button>
           <button class="btn" data-bv="transcripcion" onclick="window.bvShow('transcripcion')">📜 Transcripción / Traducción</button>
           <button class="btn" data-bv="evolucion" onclick="window.bvShow('evolucion')">🦋 Selección natural</button>
-          <button class="btn" data-bv="origen" onclick="window.bvShow('origen')">🌍 Origen de la vida (P3)</button>
-          <button class="btn" data-bv="clasificacion" onclick="window.bvShow('clasificacion')">🌳 Tres dominios (P3)</button>
+          <button class="btn" data-bv="origen" onclick="window.bvShow('origen')">🌍 Origen de la vida</button>
+          <button class="btn" data-bv="clasificacion" onclick="window.bvShow('clasificacion')">🌳 Tres dominios</button>
         </div>
 
         <!-- Controles de reproducción -->
@@ -3026,10 +3051,10 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         </button>
       </div>
 
-      <!-- Jefe Final (boss) -->
+      <!-- Jefe Final (boss) — cambia según parcial activo -->
       <div class="boss-card">
-        <h3>👹 Jefe Final <span class="pro-badge" style="margin-left:.3rem">Pro</span></h3>
-        <p>20 preguntas mezcladas del parcial activo, modo examen sin feedback inmediato. Solo se revelan los resultados al final. Si lo aprobás (≥70%), estás listo para el parcial real.</p>
+        <h3>👹 Jefe Final <span data-parcial-label style="font-weight:700;font-size:.95rem">📗 P2</span> <span class="pro-badge" style="margin-left:.3rem">Pro</span></h3>
+        <p>20 preguntas mezcladas del parcial activo, modo examen sin feedback inmediato. Las preguntas se ordenan por dificultad creciente. Si lo aprobás (≥70%), estás listo para el parcial real.</p>
         <button class="btn primary" onclick="window.startBossSim()">🔥 Enfrentar al Jefe Final</button>
       </div>
 
@@ -3636,21 +3661,61 @@ const E23Q = [
 ]
 
 const FLASHCARDS = [
-  {id:'f01',q:'¿Qué es el locus?',a:'Posición específica de un gen en un cromosoma.',t:'gen'},
-  {id:'f02',q:'Cromátidas hermanas vs cromosomas homólogos.',a:'Hermanas: copias idénticas. Homólogos: mismo gen, posibles distintos alelos.',t:'gen'},
-  {id:'f03',q:'¿Qué ocurre en profase I de la meiosis?',a:'Sinapsis y crossing-over → variabilidad.',t:'gen'},
-  {id:'f04',q:'Fórmula de heterocigotos en H-W.',a:'2pq.',t:'evo'},
-  {id:'f05',q:'Dominancia incompleta vs codominancia.',a:'Incompleta: fenotipo intermedio. Codominancia: ambos alelos expresados.',t:'gen'},
-  {id:'f06',q:'¿Qué demostraron Miller y Urey?',a:'Síntesis abiótica de aminoácidos.',t:'ori'},
-  {id:'f07',q:'¿Cuáles bacterias introdujeron O₂?',a:'Cianobacterias.',t:'ori'},
-  {id:'f08',q:'¿Qué es el operón lac?',a:'Genes estructurales + promotor + operador + regulador.',t:'gen'},
-  {id:'f09',q:'AUG codifica:',a:'Metionina. Codón de inicio de traducción.',t:'gen'},
-  {id:'f10',q:'Replicación semiconservativa:',a:'Cada nueva molécula conserva una hebra original.',t:'gen'},
-  {id:'f11',q:'3 tipos de selección natural.',a:'Estabilizadora, direccional, disruptiva.',t:'evo'},
-  {id:'f12',q:'Teoría endosimbiótica.',a:'Mitocondrias y cloroplastos derivaron de procariotas engullidos.',t:'ori'},
-  {id:'f13',q:'Hemofilia y daltonismo: tipo de herencia.',a:'Recesivos ligados al X.',t:'gen'},
-  {id:'f14',q:'5 condiciones del equilibrio H-W.',a:'Sin mutaciones, sin selección, población grande, apareamiento al azar, sin migración.',t:'evo'},
-  {id:'f15',q:'Diferencia Bacteria vs Archaea.',a:'Bacteria: peptidoglicano, ésteres. Archaea: sin peptidoglicano clásico, éteres, histonas.',t:'ori'}
+  // ═══ P2 — flashcards existentes (genética, evolución, origen) ═══
+  {id:'f01',q:'¿Qué es el locus?',a:'Posición específica de un gen en un cromosoma.',t:'gen',p:'p2'},
+  {id:'f02',q:'Cromátidas hermanas vs cromosomas homólogos.',a:'Hermanas: copias idénticas. Homólogos: mismo gen, posibles distintos alelos.',t:'gen',p:'p2'},
+  {id:'f03',q:'¿Qué ocurre en profase I de la meiosis?',a:'Sinapsis y crossing-over → variabilidad.',t:'gen',p:'p2'},
+  {id:'f04',q:'Fórmula de heterocigotos en H-W.',a:'2pq.',t:'evo',p:'p2'},
+  {id:'f05',q:'Dominancia incompleta vs codominancia.',a:'Incompleta: fenotipo intermedio. Codominancia: ambos alelos expresados.',t:'gen',p:'p2'},
+  {id:'f06',q:'¿Qué demostraron Miller y Urey?',a:'Síntesis abiótica de aminoácidos.',t:'ori',p:'p2'},
+  {id:'f07',q:'¿Cuáles bacterias introdujeron O₂?',a:'Cianobacterias.',t:'ori',p:'p2'},
+  {id:'f08',q:'¿Qué es el operón lac?',a:'Genes estructurales + promotor + operador + regulador.',t:'gen',p:'p2'},
+  {id:'f09',q:'AUG codifica:',a:'Metionina. Codón de inicio de traducción.',t:'gen',p:'p2'},
+  {id:'f10',q:'Replicación semiconservativa:',a:'Cada nueva molécula conserva una hebra original.',t:'gen',p:'p2'},
+  {id:'f11',q:'3 tipos de selección natural.',a:'Estabilizadora, direccional, disruptiva.',t:'evo',p:'p2'},
+  {id:'f12',q:'Teoría endosimbiótica.',a:'Mitocondrias y cloroplastos derivaron de procariotas engullidos.',t:'ori',p:'p2'},
+  {id:'f13',q:'Hemofilia y daltonismo: tipo de herencia.',a:'Recesivos ligados al X.',t:'gen',p:'p2'},
+  {id:'f14',q:'5 condiciones del equilibrio H-W.',a:'Sin mutaciones, sin selección, población grande, apareamiento al azar, sin migración.',t:'evo',p:'p2'},
+  {id:'f15',q:'Diferencia Bacteria vs Archaea.',a:'Bacteria: peptidoglicano, ésteres. Archaea: sin peptidoglicano clásico, éteres, histonas.',t:'ori',p:'p2'},
+
+  // ═══ P1 — flashcards de biomoléculas, célula, metabolismo, energía ═══
+  {id:'fp1_01',q:'¿Qué es un enlace peptídico?',a:'Enlace covalente entre el grupo carboxilo de un aminoácido y el grupo amino del siguiente.',t:'bio',p:'p1'},
+  {id:'fp1_02',q:'Estructura primaria, secundaria, terciaria y cuaternaria de una proteína.',a:'1ª: secuencia. 2ª: hélice α/lámina β. 3ª: forma 3D. 4ª: varias subunidades.',t:'bio',p:'p1'},
+  {id:'fp1_03',q:'Diferencia entre fosfolípido y triglicérido.',a:'Triglicérido: 3 ácidos grasos en glicerol (energía). Fosfolípido: 2 ácidos grasos + grupo fosfato (membranas).',t:'bio',p:'p1'},
+  {id:'fp1_04',q:'¿Qué es la membrana plasmática? (modelo)',a:'Mosaico fluido: bicapa de fosfolípidos con proteínas embebidas.',t:'cel',p:'p1'},
+  {id:'fp1_05',q:'Función de mitocondria vs cloroplasto.',a:'Mitocondria: respiración celular (ATP). Cloroplasto: fotosíntesis (glucosa).',t:'cel',p:'p1'},
+  {id:'fp1_06',q:'¿Qué es una enzima?',a:'Proteína catalítica que reduce la energía de activación de una reacción.',t:'met',p:'p1'},
+  {id:'fp1_07',q:'Glucólisis: ubicación y producto neto.',a:'Citoplasma. Glucosa → 2 piruvato + 2 ATP + 2 NADH.',t:'ene',p:'p1'},
+  {id:'fp1_08',q:'Ciclo de Krebs: dónde y para qué.',a:'Matriz mitocondrial. Genera CO₂, NADH, FADH₂ y un poco de ATP.',t:'ene',p:'p1'},
+  {id:'fp1_09',q:'Cadena transportadora de electrones: dónde.',a:'Crestas mitocondriales. Donde se sintetiza la mayor parte del ATP.',t:'ene',p:'p1'},
+  {id:'fp1_10',q:'Fase luminosa de la fotosíntesis: dónde y qué produce.',a:'Tilacoides. Produce ATP, NADPH y libera O₂.',t:'ene',p:'p1'},
+  {id:'fp1_11',q:'Ciclo de Calvin: dónde y qué produce.',a:'Estroma del cloroplasto. Fija CO₂ usando ATP/NADPH para hacer glucosa.',t:'ene',p:'p1'},
+  {id:'fp1_12',q:'Diferencia procariota vs eucariota.',a:'Procariota: sin núcleo ni organelos membranosos. Eucariota: con núcleo y organelos.',t:'cel',p:'p1'},
+  {id:'fp1_13',q:'¿Qué son los carbohidratos? Función.',a:'Polímeros de monosacáridos. Energía rápida y estructura (celulosa, quitina).',t:'bio',p:'p1'},
+  {id:'fp1_14',q:'¿Qué es una vía catabólica vs anabólica?',a:'Catabólica: rompe moléculas y libera energía. Anabólica: construye y consume energía.',t:'met',p:'p1'},
+  {id:'fp1_15',q:'¿Qué hace la respiración anaerobia?',a:'Genera ATP sin O₂; produce lactato (animal) o etanol (levadura). Mucho menos ATP que la aerobia.',t:'ene',p:'p1'},
+
+  // ═══ P3 — flashcards de origen, dominios, virus/procariotas, plantas/hongos, animales, ecología ═══
+  {id:'fp3_01',q:'¿Quién refutó la generación espontánea?',a:'Redi (gusanos), Pasteur (frasco cuello de cisne) y Tyndall.',t:'ori',p:'p3'},
+  {id:'fp3_02',q:'¿Qué es la teoría quimiosintética?',a:'Oparin-Haldane: la atmósfera primitiva con poco O₂ permitió evolución prebiótica de moléculas orgánicas.',t:'ori',p:'p3'},
+  {id:'fp3_03',q:'Mundo de ARN: ¿qué propone?',a:'ARN autorreplicante con función catalítica (ribozima) habría existido antes que el ADN.',t:'ori',p:'p3'},
+  {id:'fp3_04',q:'Los tres dominios de Woese.',a:'Bacteria, Archaea y Eukarya — basado en ARN ribosomal.',t:'dom',p:'p3'},
+  {id:'fp3_05',q:'Categorías taxonómicas de menor a mayor.',a:'Especie → Género → Familia → Orden → Clase → Filum → Reino → Dominio.',t:'dom',p:'p3'},
+  {id:'fp3_06',q:'¿Qué es un clado en filogenia?',a:'Un ancestro y TODOS sus descendientes (grupo monofilético).',t:'dom',p:'p3'},
+  {id:'fp3_07',q:'Virus: ¿son seres vivos?',a:'Acelulares, sin metabolismo propio, parásitos intracelulares obligados. Frontera entre lo vivo y lo no vivo.',t:'virpro',p:'p3'},
+  {id:'fp3_08',q:'¿Qué es un prión?',a:'Proteína infecciosa mal plegada. NO es virus ni viroide.',t:'virpro',p:'p3'},
+  {id:'fp3_09',q:'Diferencia Bacteria vs Archaea.',a:'Bacteria: con peptidoglicano. Archaea: sin peptidoglicano, lípidos de membrana únicos.',t:'virpro',p:'p3'},
+  {id:'fp3_10',q:'Endospora vs flagelo.',a:'Endospora: estructura de resistencia (no es reproducción). Flagelo: locomoción.',t:'virpro',p:'p3'},
+  {id:'fp3_11',q:'Conjugación bacteriana.',a:'Transferencia de ADN entre bacterias. NO es reproducción sexual; sirve para diseminar genes (ej. resistencia a antibióticos).',t:'virpro',p:'p3'},
+  {id:'fp3_12',q:'Adaptaciones de plantas a la tierra.',a:'Cutícula, tejidos vasculares, raíces, esporas/semillas resistentes, embrión protegido.',t:'euk',p:'p3'},
+  {id:'fp3_13',q:'Grupos principales de plantas.',a:'Briofitas (no vasculares), pteridofitas (helechos), gimnospermas (semillas desnudas), angiospermas (flores y frutos).',t:'euk',p:'p3'},
+  {id:'fp3_14',q:'Pared celular de los hongos.',a:'Quitina (no celulosa). Heterótrofos por absorción.',t:'euk',p:'p3'},
+  {id:'fp3_15',q:'¿Qué son las micorrizas?',a:'Asociación simbiótica entre hongos y raíces de plantas. Mejora absorción de nutrientes.',t:'euk',p:'p3'},
+  {id:'fp3_16',q:'Característica clave de los cordados.',a:'Notocorda, cordón nervioso dorsal hueco, hendiduras faríngeas y cola postanal en alguna etapa.',t:'ani',p:'p3'},
+  {id:'fp3_17',q:'Protostomados vs deuterostomados.',a:'En protostomados, la boca se forma a partir del blastoporo. En deuterostomados (cordados, equinodermos), el blastoporo origina el ano.',t:'ani',p:'p3'},
+  {id:'fp3_18',q:'Población vs comunidad vs ecosistema.',a:'Población: una especie en un área. Comunidad: varias poblaciones interactuando. Ecosistema: comunidad + factores abióticos.',t:'eco',p:'p3'},
+  {id:'fp3_19',q:'Capacidad de carga (K).',a:'Tamaño máximo poblacional sostenible determinado por recursos disponibles.',t:'eco',p:'p3'},
+  {id:'fp3_20',q:'Componentes bióticos vs abióticos.',a:'Bióticos: organismos vivos. Abióticos: suelo, agua, clima, energía, sustancias químicas.',t:'eco',p:'p3'}
 ]
 
 const ACHIEVEMENTS = [
@@ -4430,22 +4495,27 @@ function recordAnswer(ok, theme){
     S.stats[k] = S.stats[k] || {gen:0,evo:0,ori:0}
     S.stats[k][theme] = (S.stats[k][theme]||0) + 1
   }
-  // ═══ MULTI-PARCIAL: registrar en bytheme P1 o P2 según corresponda ═══
-  // Los themes de P1 son: int, bio, cel, met, ene
-  // Los themes de P2 son: gen, evo, ori, div
+  // ═══ MULTI-PARCIAL: registrar en bytheme P1, P2 o P3 según corresponda ═══
+  // P1: int, bio, cel, met, ene
+  // P2: gen, evo, biot, ori, div  (ori es compartido históricamente con P3)
+  // P3: ori, dom, virpro, euk, ani, eco
   if (theme){
-    const isP1Theme = ['int','bio','cel','met','ene'].includes(theme)
-    if (isP1Theme){
+    const p1Themes = ['int','bio','cel','met','ene']
+    const p3Themes = ['dom','virpro','euk','ani','eco'] // 'ori' lo dejamos en P2 por compat histórica
+    const activeP = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+    let bucket
+    if (p1Themes.includes(theme)){
       S.bythemeP1 = S.bythemeP1 || {}
-      S.bythemeP1[theme] = S.bythemeP1[theme] || {hits:0, miss:0}
-      if (ok) S.bythemeP1[theme].hits++
-      else    S.bythemeP1[theme].miss++
+      bucket = (S.bythemeP1[theme] = S.bythemeP1[theme] || {hits:0, miss:0})
+    } else if (p3Themes.includes(theme) || (theme === 'ori' && activeP === 'p3')){
+      S.bythemeP3 = S.bythemeP3 || {}
+      bucket = (S.bythemeP3[theme] = S.bythemeP3[theme] || {hits:0, miss:0})
     } else {
       S.bytheme = S.bytheme || {}
-      S.bytheme[theme] = S.bytheme[theme] || {hits:0, miss:0}
-      if (ok) S.bytheme[theme].hits++
-      else    S.bytheme[theme].miss++
+      bucket = (S.bytheme[theme] = S.bytheme[theme] || {hits:0, miss:0})
     }
+    if (ok) bucket.hits++
+    else    bucket.miss++
   }
   // racha simple
   const today = new Date().toLocaleDateString()
@@ -4460,9 +4530,13 @@ function recordAnswer(ok, theme){
 }
 
 // ═══════════════════════════════════════════════════════════
-//  10. FLASHCARDS
+//  10. FLASHCARDS — filtradas por parcial activo
 // ═══════════════════════════════════════════════════════════
-let flashIdx = 0, flashFlip = false, flashOrder = [...FLASHCARDS]
+function _flashcardsForActiveParcial(){
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  return FLASHCARDS.filter(c => c.p === p)
+}
+let flashIdx = 0, flashFlip = false, flashOrder = _flashcardsForActiveParcial()
 
 function renderFlash(){
   const f = flashOrder[flashIdx]
@@ -4482,7 +4556,15 @@ function renderFlash(){
 function flipFlash(){ flashFlip = !flashFlip; renderFlash() }
 function nextFlash(){ flashIdx = (flashIdx+1) % flashOrder.length; flashFlip = false; renderFlash() }
 function prevFlash(){ flashIdx = (flashIdx-1+flashOrder.length) % flashOrder.length; flashFlip = false; renderFlash() }
-function shuffleFlash(){ flashOrder = [...FLASHCARDS].sort(() => Math.random()-0.5); flashIdx = 0; flashFlip = false; renderFlash() }
+function shuffleFlash(){ flashOrder = _flashcardsForActiveParcial().sort(() => Math.random()-0.5); flashIdx = 0; flashFlip = false; renderFlash() }
+// Llamado al cambiar de parcial — refresca el set sin perder el index
+function refreshFlashForParcial(){
+  flashOrder = _flashcardsForActiveParcial()
+  flashIdx = 0
+  flashFlip = false
+  try { renderFlash() } catch(e){}
+}
+window.refreshFlashForParcial = refreshFlashForParcial
 
 // ═══════════════════════════════════════════════════════════
 //  11. RANKING (vista pública)
@@ -4731,7 +4813,11 @@ async function _renderAdminPlans(){
     list.innerHTML = paid.map(u => {
       const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
       const expired = exp && exp < new Date()
-      const planLabel = u.plan_full ? '⭐ Full' : (u.plan_p1 && u.plan_p2 ? '⭐ P1+P2' : u.plan_p1 ? '📘 P1' : u.plan_p2 ? '📗 P2' : '?')
+      const parciales = []
+      if (u.plan_p1) parciales.push('P1')
+      if (u.plan_p2) parciales.push('P2')
+      if (u.plan_p3) parciales.push('P3')
+      const planLabel = u.plan_full ? '⭐ Full' : (parciales.length === 3 ? '⭐ P1+P2+P3' : parciales.length ? '📘 ' + parciales.join('+') : '?')
       const safeEmail = escapeHtml(u.email).replace(/'/g,'&#39;')
       return `<div class="reco-item" style="${expired?'opacity:.6':''}">
         <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
@@ -4740,7 +4826,10 @@ async function _renderAdminPlans(){
             ${expired?'<span class="fb-status fb-descartado">VENCIDO</span>':''}
             <br><small class="muted">${escapeHtml(u.email)}${exp?' · vence '+exp.toLocaleDateString():''}${u.last_payment_at?' · pagó '+new Date(u.last_payment_at).toLocaleDateString():''}</small>
           </div>
-          <button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar</button>
+          <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+            <button class="btn" style="font-size:.75rem" onclick="A.adminViewAudit('${safeEmail}')">📊 Ver progreso máx.</button>
+            <button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar</button>
+          </div>
         </div>
       </div>`
     }).join('')
@@ -4954,6 +5043,55 @@ async function adminRevokePlan(email){
   }
 }
 
+// ═══ Ver registro administrativo de progreso ═══
+// Permite al admin verificar si el usuario superó el 20% para
+// validar reembolsos. Lee user_progress.data.progress_audit que
+// se mantiene aunque el usuario haya borrado su progreso.
+async function adminViewAudit(email){
+  if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
+  // Buscar id del usuario
+  const { data: prof, error: pe } = await sb
+    .from('profiles').select('id, name').ilike('email', email).maybeSingle()
+  if (pe || !prof){ alert('Usuario no encontrado.'); return }
+  // Leer progreso
+  const { data: progRow, error: prgE } = await sb
+    .from('user_progress').select('data, updated_at')
+    .eq('user_id', prof.id).maybeSingle()
+  if (prgE){ alert('Error al leer progreso: ' + prgE.message); return }
+  const audit = progRow?.data?.progress_audit || null
+  const liveData = progRow?.data
+  const livePct = (() => {
+    try {
+      // Reconstruir un % aproximado del progreso vivo del usuario
+      const dx = liveData?.diagnostic
+      if (!dx?.scores) return 0
+      const vals = Object.values(dx.scores)
+      return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*100) : 0
+    } catch { return 0 }
+  })()
+  const html = `
+    Usuario: ${prof.name || ''} <${email}>
+
+    Progreso vivo actual: ${livePct}%
+    ${audit
+      ? '\n📊 REGISTRO ADMINISTRATIVO (no borrable)\n' +
+        '· % máximo alcanzado: ' + (audit.max_progress_pct || 0) + '%\n' +
+        '· Cruzó 20%: ' + (audit.crossed_20_at ? new Date(audit.crossed_20_at).toLocaleString() : 'No') + '\n' +
+        '· Cruzó 50%: ' + (audit.crossed_50_at ? new Date(audit.crossed_50_at).toLocaleString() : 'No') + '\n' +
+        '· Primera sesión: ' + (audit.first_seen_at ? new Date(audit.first_seen_at).toLocaleString() : '—') + '\n' +
+        '· Última auditoría: ' + (audit.last_audited_at ? new Date(audit.last_audited_at).toLocaleString() : '—') + '\n' +
+        '· Eventos de reset: ' + (audit.reset_events?.length || 0) + '\n' +
+        (audit.reset_events?.length
+          ? audit.reset_events.map(r => `   - ${new Date(r.at).toLocaleString()} por ${r.by} (desde ${r.from_pct}%)`).join('\n')
+          : '')
+      : '\n⚠ Sin registro de auditoría — el usuario no ha generado actividad medible aún.'}
+
+    Validación de reembolso:
+    ${audit && audit.max_progress_pct >= 20 ? '❌ NO procede reembolso (cruzó 20%)' : '✅ Procede reembolso (no cruzó 20%)'}
+  `
+  alert(html)
+}
+
 // Acciones rápidas desde la lista de usuarios admin
 async function adminRowAction(kind, email){
   if (currentSession?.profile?.role !== 'admin') return
@@ -5072,24 +5210,88 @@ async function deleteUser(targetEmail){
 }
 
 // ═══════════════════════════════════════════════════════════
-//  13c. BORRADO DE PROGRESO
-//       - El usuario puede borrar su propio progreso
-//       - El admin puede borrar el progreso de cualquier usuario
+//  13c. BORRADO DE PROGRESO + REGISTRO ADMINISTRATIVO INMUTABLE
+//
+//  Importante: el usuario puede reiniciar SU progreso jugable, pero
+//  esto NO debe borrar la evidencia administrativa requerida para
+//  validar reembolsos (regla del 20%).
+//
+//  Cómo lo resolvemos:
+//   - El progreso "vivo" (XP, aciertos, partidas, etc.) sigue en
+//     `user_progress` y SÍ se reinicia.
+//   - Adicionalmente, mantenemos un objeto `progress_audit` dentro
+//     del state que solo aumenta (max_progress_pct, milestones,
+//     reset_events) y NUNCA se resetea, ni siquiera por el usuario.
+//   - El admin puede consultar este audit con
+//     `getProgressAudit(email)` y ver el % máximo alcanzado, fecha
+//     en que cruzó el 20%, y todos los eventos de reset.
+//
+//  Aclaración legal: agregamos en política de reembolsos un párrafo
+//  corto que explica esto al usuario sin ensuciar la UI.
 // ═══════════════════════════════════════════════════════════
+
+// ═══ AUDIT LOG: lectura ═══
+function getProgressAudit(){
+  if (!S.progress_audit) S.progress_audit = {
+    max_progress_pct: 0,        // % máximo alcanzado en la plataforma
+    crossed_20_at: null,         // fecha ISO la primera vez que cruzó 20%
+    crossed_50_at: null,
+    reset_events: [],            // [{at: ISO, by: 'user'|'admin', from_pct: number}]
+    first_seen_at: null,
+    last_audited_at: null
+  }
+  return S.progress_audit
+}
+
+// ═══ AUDIT LOG: escritura cada vez que se calcula progreso ═══
+// Llamada desde renderHero/renderReadinessGauge para mantener actualizado
+// el max_progress_pct sin que el usuario pueda manipularlo.
+function updateProgressAudit(currentPct){
+  if (typeof currentPct !== 'number' || isNaN(currentPct)) return
+  const audit = getProgressAudit()
+  if (!audit.first_seen_at) audit.first_seen_at = new Date().toISOString()
+  audit.last_audited_at = new Date().toISOString()
+  if (currentPct > audit.max_progress_pct){
+    audit.max_progress_pct = Math.round(currentPct)
+    if (currentPct >= 20 && !audit.crossed_20_at){
+      audit.crossed_20_at = new Date().toISOString()
+    }
+    if (currentPct >= 50 && !audit.crossed_50_at){
+      audit.crossed_50_at = new Date().toISOString()
+    }
+  }
+}
+
 async function resetMyProgress(){
   if (!currentSession){ toast('⚠ Inicia sesión primero', true); return }
-  if (!confirm('⚠ ¿Borrar TU progreso?\n\nSe perderá: XP, racha, aciertos, partidas guardadas, logros, favoritos y métodos personalizados.\n\nNO se borra: tu cuenta, tu correo ni tus feedbacks.\n\nEsta acción no se puede deshacer.')) return
+  if (!confirm('⚠ ¿Borrar TU progreso?\n\nSe perderá: XP, racha, aciertos, partidas guardadas, logros, favoritos y métodos personalizados.\n\nNO se borra: tu cuenta, tu correo, tus feedbacks ni el registro administrativo de progreso máximo (necesario para validación de reembolsos).\n\nEsta acción no se puede deshacer.')) return
+
+  // ═══ PRESERVAR AUDIT LOG ═══
+  // Antes de reescribir S, capturamos el audit y agregamos el evento de reset.
+  // El audit se conserva intacto al guardar el nuevo state.
+  const previousAudit = getProgressAudit()
+  const previousPct = previousAudit.max_progress_pct || 0
+  previousAudit.reset_events.push({
+    at: new Date().toISOString(),
+    by: 'user',
+    from_pct: previousPct
+  })
 
   S = defaultState()
+  // Reinyectamos el audit (no se borra)
+  S.progress_audit = previousAudit
+
   if (currentSession.isGuest){
     try { localStorage.removeItem(GUEST_KEY) } catch(e){}
-    toast('🧹 Progreso de invitado borrado')
+    // En guest también guardamos el audit en localStorage aparte
+    try { localStorage.setItem('biomaster_audit_guest', JSON.stringify(previousAudit)) } catch(e){}
+    toast('🧹 Progreso de invitado borrado (registro de avance preservado)')
   } else {
     const { error } = await sb
       .from('user_progress')
       .upsert({ user_id: currentSession.user.id, data: S, updated_at: new Date().toISOString() })
     if (error){ toast('⚠ ' + error.message, true); return }
-    toast('🧹 Progreso borrado')
+    toast('🧹 Progreso borrado (registro de avance preservado para validación de reembolsos)')
   }
   // Re-renderizar todo lo que muestre stats
   try {
@@ -5159,9 +5361,12 @@ function renderHero(){
       if (p === 'p1'){
         h1.textContent = 'Listo para estudiar. Vamos a aprobar el primer parcial.'
         sub.textContent = 'Cubre los temas 1-5: introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración. Empezá por el diagnóstico para saber por dónde atacar.'
+      } else if (p === 'p3'){
+        h1.textContent = 'Listo para estudiar. Vamos a aprobar el tercer parcial.'
+        sub.textContent = 'Cubre los temas 6-7: origen de la vida, sistemática, diversidad biológica (virus, procariotas, protistas, plantas, hongos, animales) y ecología. Empezá por el diagnóstico inteligente.'
       } else {
-        h1.textContent = 'Listo para estudiar. Vamos a aprobar Biología General.'
-        sub.textContent = 'Cubre los temas 4-6: genética, evolución, origen y diversidad. Empezá por el diagnóstico inteligente para saber exactamente qué tema dominás.'
+        h1.textContent = 'Listo para estudiar. Vamos a aprobar el segundo parcial.'
+        sub.textContent = 'Cubre los temas 4-6: bases genéticas, evolución y biotecnología. Empezá por el diagnóstico inteligente para saber exactamente qué tema dominás.'
       }
     }
   } catch(e){}
@@ -5176,10 +5381,19 @@ function renderHero(){
 function renderThemeBars(){
   const el = document.getElementById('themeBars')
   if (!el) return
-  const themes = { gen:'🧬 Genética', evo:'🌿 Evolución', ori:'🌍 Origen y Diversidad' }
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  // Temas según parcial activo
+  const themesByParcial = {
+    p1: { int:'📖 Introducción', bio:'🧪 Biomoléculas', cel:'🔬 Célula', met:'⚗️ Metabolismo', ene:'⚡ Fotosíntesis/Respiración' },
+    p2: { gen:'🧬 Genética', evo:'🌿 Evolución', biot:'🧫 Biotecnología' },
+    p3: { ori:'🌍 Origen de la vida', dom:'🌳 Tres dominios', virpro:'🦠 Virus/Procariotas', euk:'🌱 Protistas/Plantas/Hongos', ani:'🦋 Animales', eco:'🌎 Ecología' }
+  }
+  const themes = themesByParcial[p] || themesByParcial.p2
+  const stats = (p === 'p1' ? S.bythemeP1 : (p === 'p3' ? (S.bythemeP3 = S.bythemeP3 || {}) : S.bytheme)) || {}
   el.innerHTML = Object.entries(themes).map(([k,name]) => {
-    const h = S.stats.themeHits?.[k] || 0
-    const m = S.stats.themeMiss?.[k] || 0
+    const tStats = stats[k] || { hits: 0, miss: 0 }
+    const h = (p === 'p2' ? (S.stats.themeHits?.[k] || 0) : (tStats.hits || 0))
+    const m = (p === 'p2' ? (S.stats.themeMiss?.[k] || 0) : (tStats.miss || 0))
     const tot = h + m
     const pct = tot ? Math.round(h/tot*100) : 0
     return `<div>
@@ -5196,11 +5410,18 @@ function renderThemeBars(){
 function renderRecommendations(){
   const el = document.getElementById('recoPanel')
   if (!el) return
-  const themes = { gen:'🧬 Genética', evo:'🌿 Evolución', ori:'🌍 Origen y Diversidad' }
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const themesByParcial = {
+    p1: { int:'📖 Introducción', bio:'🧪 Biomoléculas', cel:'🔬 Célula', met:'⚗️ Metabolismo', ene:'⚡ Fotosíntesis/Respiración' },
+    p2: { gen:'🧬 Genética', evo:'🌿 Evolución', biot:'🧫 Biotecnología' },
+    p3: { ori:'🌍 Origen de la vida', dom:'🌳 Tres dominios', virpro:'🦠 Virus/Procariotas', euk:'🌱 Protistas/Plantas/Hongos', ani:'🦋 Animales', eco:'🌎 Ecología' }
+  }
+  const themes = themesByParcial[p] || themesByParcial.p2
+  const stats = (p === 'p1' ? S.bythemeP1 : (p === 'p3' ? (S.bythemeP3 || {}) : null))
   const recos = []
   Object.entries(themes).forEach(([k,n]) => {
-    const h = S.stats.themeHits?.[k] || 0
-    const m = S.stats.themeMiss?.[k] || 0
+    const h = stats ? (stats[k]?.hits || 0) : (S.stats.themeHits?.[k] || 0)
+    const m = stats ? (stats[k]?.miss || 0) : (S.stats.themeMiss?.[k] || 0)
     const tot = h + m
     if (tot === 0) recos.push({txt: `${n}: sin práctica aún.`, theme:k, label:'Practicar'})
     else if (h/tot < 0.6) recos.push({txt: `${n}: ${Math.round(h/tot*100)}% precisión — refuerza.`, theme:k, label:'Reforzar'})
@@ -7393,17 +7614,22 @@ function initApp(){
 // ═══════════════════════════════════════════════════════════
 
 const PARCIAL_KEY = 'biomaster_parcial_active'
+const VALID_PARCIALES = ['p1', 'p2', 'p3']
 
 function getActiveParcial(){
   try {
     const v = localStorage.getItem(PARCIAL_KEY)
-    if (v === 'p1' || v === 'p2') return v
+    if (VALID_PARCIALES.includes(v)) return v
   } catch(e){}
   return 'p2' // por defecto P2 (es el más maduro)
 }
 
 window.setActiveParcial = function(p){
-  if (p !== 'p1' && p !== 'p2') return
+  // ═══ FIX BUG CRÍTICO ═══
+  // ANTES: este guard rechazaba 'p3' silenciosamente, por eso el botón
+  // P3 se podía clickear pero no pasaba nada (retornaba sin error).
+  // Ahora acepta los tres parciales válidos.
+  if (!VALID_PARCIALES.includes(p)) return
   // Verificar acceso premium si corresponde
   const acc = canAccessParcial(p)
   if (!acc.allowed){
@@ -7412,10 +7638,16 @@ window.setActiveParcial = function(p){
   }
   try { localStorage.setItem(PARCIAL_KEY, p) } catch(e){}
   applyParcialActive()
-  // Recalcular hero según parcial
+  // Recalcular paneles dependientes del parcial
   try { renderHero() } catch(e){}
   try { renderTodayPlan() } catch(e){}
   try { renderReadinessGauge() } catch(e){}
+  // Refiltrar todos los contenedores que dependen del parcial
+  try { applyParcialFiltering() } catch(e){}
+  // Reiniciar visualizador biológico al parcial activo
+  try { if (typeof window.bvFilterByParcial === 'function') window.bvFilterByParcial(p) } catch(e){}
+  // Refrescar flashcards al set del parcial activo
+  try { if (typeof window.refreshFlashForParcial === 'function') window.refreshFlashForParcial() } catch(e){}
   toast('Parcial activo: ' + (p === 'p1' ? '📘 Primer parcial' : p === 'p2' ? '📗 Segundo parcial' : '📕 Tercer parcial'), false)
 }
 
@@ -7432,7 +7664,37 @@ function applyParcialActive(){
   document.querySelectorAll('section[data-parcial], .nav-parcial[data-parcial]').forEach(el => {
     el.classList.toggle('active-parcial', el.dataset.parcial === p)
   })
+  // Filtrar también dentro de secciones compartidas (juegos, simulacros, etc.)
+  applyParcialFiltering()
+  // Filtrar visualizadores BioVisual al parcial activo
+  try { if (typeof window.bvFilterByParcial === 'function') window.bvFilterByParcial(p) } catch(e){}
 }
+
+// ═══════════════════════════════════════════════════════════
+//  FILTRADO REAL POR PARCIAL — secciones compartidas
+//  Las secciones de juegos, simulacros, visualizador, estadísticas,
+//  flashcards, jefe final, etc. son una sola sección que en su
+//  interior tiene tarjetas/items con [data-parcial]. Esta función
+//  aplica el filtro: si una tarjeta tiene data-parcial="p3" pero el
+//  parcial activo es p1, se oculta.
+// ═══════════════════════════════════════════════════════════
+function applyParcialFiltering(){
+  const p = getActiveParcial()
+  // Cualquier elemento con [data-parcial-filter] (NO data-parcial,
+  // que ya se maneja arriba para secciones top-level enteras)
+  document.querySelectorAll('[data-parcial-filter]').forEach(el => {
+    const allowed = el.dataset.parcialFilter
+    // Acepta valores tipo "p1" o "p1,p2" o "all"
+    if (!allowed || allowed === 'all'){ el.style.display = ''; return }
+    const list = allowed.split(',').map(s => s.trim())
+    el.style.display = list.includes(p) ? '' : 'none'
+  })
+  // Actualizar etiquetas dinámicas que muestran "Parcial activo: X"
+  document.querySelectorAll('[data-parcial-label]').forEach(el => {
+    el.textContent = p === 'p1' ? '📘 P1' : p === 'p2' ? '📗 P2' : '📕 P3'
+  })
+}
+window.applyParcialFiltering = applyParcialFiltering
 
 // ═══ ACCESO POR PARCIAL ═══
 // La función canAccessParcial() real vive más abajo, junto con
@@ -7749,9 +8011,11 @@ function renderRadar(){
   const p = getActiveParcial()
   const themes = p === 'p1'
     ? [['int','Intro'],['bio','Biomol'],['cel','Célula'],['met','Metab'],['ene','Energía']]
+    : p === 'p3'
+    ? [['ori','Origen'],['dom','Dominios'],['virpro','Virus/Proc'],['euk','Eukar.'],['eco','Ecología']]
     : [['gen','Genética'],['evo','Evolución'],['ori','Origen'],['div','Diversidad'],['examen','Práctica']]
   // Calcular score por eje (basado en bytheme stats)
-  const stats = (p === 'p1' ? S.bythemeP1 : S.bytheme) || {}
+  const stats = (p === 'p1' ? S.bythemeP1 : (p === 'p3' ? (S.bythemeP3 || {}) : S.bytheme)) || {}
   const scores = themes.map(([id]) => {
     const t = stats[id]
     if (!t || (t.hits + t.miss) === 0) return 0
@@ -8010,14 +8274,31 @@ window.startBossSim = function(){
     return
   }
   const p = getActiveParcial()
-  const pool = p === 'p1' ? E1Q : E23Q
+  // ═══ Boss adaptado por parcial ═══
+  // P1 → E1Q (40 preguntas)
+  // P2 → E23Q (banco P2)
+  // P3 → EXAM_P3_BANK (30 preguntas, normalizadas)
+  let pool
+  if (p === 'p1') pool = E1Q
+  else if (p === 'p3'){
+    // EXAM_P3_BANK usa {o, a} en vez de {ops, a}; normalizamos
+    pool = EXAM_P3_BANK.map(q => ({
+      q: q.q, ops: q.o, a: q.a, theme: q.theme, fb: q.f
+    }))
+  } else {
+    pool = E23Q
+  }
   const qs = [...pool].sort(()=>Math.random()-0.5).slice(0, Math.min(20, pool.length))
-  simState = { qs, idx:0, hits:0, miss:0, ans:false, theme:'boss', finished:false, isBoss:true }
+  // Mezcla con dificultad creciente (las últimas son las más complejas — efecto "boss")
+  // Lo simulamos poniendo al final las preguntas con explicación más larga (proxy de dificultad)
+  qs.sort((a,b) => (a.fb || a.f || '').length - (b.fb || b.f || '').length)
+  simState = { qs, idx:0, hits:0, miss:0, ans:false, theme:'boss', finished:false, isBoss:true, parcial:p }
   S.settings.mode = 'examen' // forzar modo examen (sin feedback inmediato)
   updateModeUI()
   renderSim()
   document.getElementById('simulacros').scrollIntoView({behavior:'smooth'})
-  toast('👹 Jefe Final activado. Modo examen sin feedback. ¡Suerte!', false)
+  const bossLabel = p === 'p1' ? 'Jefe Final P1 (Bioquímica/Célula)' : (p === 'p3' ? 'Jefe Final P3 (Diversidad/Ecología)' : 'Jefe Final P2 (Genética/Evolución)')
+  toast(`👹 ${bossLabel} activado. Modo examen sin feedback. ¡Suerte!`, false)
 }
 
 
@@ -8564,16 +8845,32 @@ function checkSimulacroAccess(){
   return { allowed: true, limit: 5, isFree: true }
 }
 
-// ═══ DIAGNÓSTICO INICIAL ═══
+// ═══ DIAGNÓSTICO INICIAL — multi-parcial ═══
 let _diagState = null
 function diagStart(){
   if (!isPro()){
     window.showPaywall('diagnostico')
     return
   }
-  // 15 preguntas mezcladas: 5 por tema
-  const byTheme = { gen: [], evo: [], ori: [] }
-  E23Q.forEach(q => { if (byTheme[q.theme]) byTheme[q.theme].push(q) })
+  // ═══ Diagnóstico independiente por parcial ═══
+  // P2 usa E23Q (genética/evolución/origen). P1 usa E1Q. P3 usa una
+  // muestra balanceada de EXAM_P3_BANK por sus 4 áreas grandes.
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  let bank, themesNeeded
+  if (p === 'p1'){
+    bank = (typeof E1Q !== 'undefined' ? E1Q : [])
+    themesNeeded = ['int','bio','cel','met','ene'] // 3 c/u = 15
+  } else if (p === 'p3'){
+    bank = EXAM_P3_BANK
+    themesNeeded = ['ori','dom','virpro','euk','ani','eco'] // mezclar — total 15
+  } else {
+    bank = (typeof E23Q !== 'undefined' ? E23Q : [])
+    themesNeeded = ['gen','evo','ori']  // 5 c/u = 15
+  }
+
+  const byTheme = {}
+  themesNeeded.forEach(t => byTheme[t] = [])
+  bank.forEach(q => { if (byTheme[q.theme]) byTheme[q.theme].push(q) })
   const pick = (arr, n) => {
     const copy = [...arr]
     const out = []
@@ -8582,16 +8879,41 @@ function diagStart(){
     }
     return out
   }
-  const questions = [
-    ...pick(byTheme.gen, 5),
-    ...pick(byTheme.evo, 5),
-    ...pick(byTheme.ori, 5)
-  ].sort(() => Math.random() - 0.5)
+  // Calcular cuántas por tema queremos (15 total)
+  const perTheme = Math.max(1, Math.floor(15 / themesNeeded.length))
+  let questions = []
+  themesNeeded.forEach(t => {
+    questions = questions.concat(pick(byTheme[t], perTheme))
+  })
+  // Si quedan huecos, completar con cualquier pregunta
+  while (questions.length < 15 && bank.length){
+    const extra = bank[Math.floor(Math.random()*bank.length)]
+    if (!questions.includes(extra)) questions.push(extra)
+  }
+  // Recortar a 15 y mezclar
+  questions = questions.slice(0, 15).sort(() => Math.random() - 0.5)
+
+  // Si el banco está vacío (no debería pasar), avisar
+  if (!questions.length){
+    toast('Banco de diagnóstico no disponible para este parcial.', true)
+    return
+  }
+
+  // Normalizar: tanto E1Q/E23Q usan {ops, a} y EXAM_P3_BANK usa {o, a}.
+  // Para simplificar, mapeamos a una estructura común.
+  questions = questions.map(q => ({
+    q: q.q,
+    ops: q.ops || q.o,
+    a: q.a,
+    theme: q.theme
+  }))
 
   _diagState = {
+    parcial: p,
+    themes: themesNeeded,
     questions,
     current: 0,
-    answers: [],   // {theme, correct}
+    answers: []
   }
   document.getElementById('diagCardIntro').style.display = 'none'
   document.getElementById('diagCardResult').style.display = 'none'
@@ -8626,36 +8948,45 @@ function diagAnswer(picked, correct, theme){
 
 function diagFinish(){
   if (!_diagState) return
-  // Calcular precisión por tema
-  const tally = { gen: { hits:0, total:0 }, evo: { hits:0, total:0 }, ori: { hits:0, total:0 } }
+  const p = _diagState.parcial || 'p2'
+  // Calcular precisión por tema usando los temas REALES del parcial
+  const tally = {}
+  _diagState.themes.forEach(t => tally[t] = { hits:0, total:0 })
   _diagState.answers.forEach(a => {
     if (tally[a.theme]){
       tally[a.theme].total++
       if (a.correct) tally[a.theme].hits++
     }
   })
-  const scores = {
-    gen: tally.gen.total ? tally.gen.hits/tally.gen.total : 0,
-    evo: tally.evo.total ? tally.evo.hits/tally.evo.total : 0,
-    ori: tally.ori.total ? tally.ori.hits/tally.ori.total : 0
-  }
+  const scores = {}
+  Object.entries(tally).forEach(([k,v]) => {
+    scores[k] = v.total ? v.hits/v.total : 0
+  })
   // Identificar el más débil
-  const themes = Object.entries(scores).sort((a,b) => a[1]-b[1])
-  const weakest = themes[0][0]
-  // Persistir
+  const themesArr = Object.entries(scores).sort((a,b) => a[1]-b[1])
+  const weakest = themesArr[0][0]
+  // Persistir en la KEY correcta del parcial
   const st = getPremiumState()
-  st.diagnostic = {
+  const diagKey = p === 'p1' ? 'diagnostic_p1' : (p === 'p3' ? 'diagnostic_p3' : 'diagnostic')
+  st[diagKey] = {
     scores,
     weakest,
+    parcial: p,
     completed_at: new Date().toISOString()
   }
   savePremiumState(st)
+  // Etiquetas según parcial
+  const labelsByParcial = {
+    p1: { int:'Introducción', bio:'Biomoléculas', cel:'Célula', met:'Metabolismo', ene:'Energía celular' },
+    p2: { gen:'Genética', evo:'Evolución', ori:'Origen y Diversidad' },
+    p3: { ori:'Origen de la vida', dom:'Tres dominios', virpro:'Virus/Procariotas', euk:'Eucariotas/Plantas/Hongos', ani:'Animales', eco:'Ecología' }
+  }
+  const labels = labelsByParcial[p] || labelsByParcial.p2
   // Renderizar resultado
   document.getElementById('diagCardRunning').style.display = 'none'
   document.getElementById('diagCardResult').style.display = 'block'
-  const labels = { gen: 'Genética', evo: 'Evolución', ori: 'Origen y Diversidad' }
   const totalCorrect = _diagState.answers.filter(a=>a.correct).length
-  document.getElementById('diagResultSummary').innerHTML = `Acertaste <strong>${totalCorrect} de 15</strong>. Aquí está tu mapa real:`
+  document.getElementById('diagResultSummary').innerHTML = `Acertaste <strong>${totalCorrect} de 15</strong> — diagnóstico del parcial ${p.toUpperCase()}. Aquí está tu mapa real:`
   const bars = document.getElementById('diagBars')
   bars.innerHTML = ''
   Object.entries(scores).forEach(([k, v]) => {
@@ -8663,17 +8994,17 @@ function diagFinish(){
     const color = v >= 0.7 ? 'var(--green)' : v >= 0.5 ? 'var(--yellow)' : 'var(--red)'
     const div = document.createElement('div')
     div.className = 'diag-bar'
-    div.innerHTML = `<span>${labels[k]}</span><div class="diag-bar-track"><div class="diag-bar-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-weight:800;color:${color}">${pct}%</span>`
+    div.innerHTML = `<span>${labels[k] || k}</span><div class="diag-bar-track"><div class="diag-bar-fill" style="width:${pct}%;background:${color}"></div></div><span style="font-weight:800;color:${color}">${pct}%</span>`
     bars.appendChild(div)
   })
   // Recomendaciones
   const recos = document.getElementById('diagRecos')
-  const weakLabel = labels[weakest]
+  const weakLabel = labels[weakest] || weakest
   const reco = []
-  reco.push(`🔴 <strong>Empezá por ${weakLabel}</strong> — es tu tema más débil. Pasá al resumen del Tema ${weakest === 'gen' ? '4' : weakest === 'evo' ? '5' : '6'}.`)
+  reco.push(`🔴 <strong>Empezá por ${weakLabel}</strong> — es tu tema más débil del ${p.toUpperCase()}.`)
   if (scores[weakest] < 0.4) reco.push(`⚠ Considerá activar el <strong>Modo Sprint</strong> si el examen es pronto.`)
-  themes.forEach(([t, s]) => {
-    if (s >= 0.8) reco.push(`✅ Dominás bien ${labels[t]} (${Math.round(s*100)}%). Mantenelo con flashcards y un simulacro semanal.`)
+  themesArr.forEach(([t, s]) => {
+    if (s >= 0.8) reco.push(`✅ Dominás bien ${labels[t] || t} (${Math.round(s*100)}%). Mantenelo con flashcards y un simulacro semanal.`)
   })
   recos.innerHTML = reco.map(r => `<div style="margin-bottom:.4rem">${r}</div>`).join('')
   // Actualizar Hoy y predicción
@@ -8832,10 +9163,16 @@ function renderTodayPlan(){
   const title = document.getElementById('hoyTitle')
   if (!cont) return
   cont.innerHTML = ''
+  // ═══ Multi-parcial: usar diagnóstico y plan del parcial activo ═══
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const diagKey = p === 'p1' ? 'diagnostic_p1' : (p === 'p3' ? 'diagnostic_p3' : 'diagnostic')
+  const planKey = p === 'p1' ? 'plan_schedule_p1' : (p === 'p3' ? 'plan_schedule_p3' : 'plan_schedule')
+  const diagnostic = st[diagKey]
+  const planSchedule = st[planKey]
   // Caso 1: sin diagnóstico → empujar a hacerlo
-  if (!st.diagnostic){
+  if (!diagnostic){
     if (title) title.textContent = '🎯 Empezá por el diagnóstico'
-    if (greeting) greeting.textContent = 'Para que pueda decirte qué estudiar hoy, primero necesito saber dónde estás. Hacé el diagnóstico (5–7 min).'
+    if (greeting) greeting.textContent = `Para que pueda decirte qué estudiar hoy, primero necesito saber dónde estás. Hacé el diagnóstico (5–7 min) del parcial activo (${p.toUpperCase()}).`
     cont.innerHTML = `<div class="today-task" onclick="document.getElementById('diagnostico').scrollIntoView({behavior:'smooth'})">
       <div class="today-task-icon">🎯</div>
       <div class="today-task-info"><strong>Hacer diagnóstico inteligente</strong><small>15 preguntas · construye tu plan</small></div>
@@ -8843,7 +9180,7 @@ function renderTodayPlan(){
     return
   }
   // Caso 2: diagnóstico hecho, sin plan → empujar a crear plan
-  if (!st.plan_schedule){
+  if (!planSchedule){
     if (title) title.textContent = '📋 Construí tu plan de estudio'
     if (greeting) greeting.textContent = 'Ya hiciste el diagnóstico. Ahora elegí cuándo es tu examen y armo el plan día por día.'
     cont.innerHTML = `<div class="today-task" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">
@@ -8854,33 +9191,76 @@ function renderTodayPlan(){
   }
   // Caso 3: hay plan → mostrar tareas del día
   const today = new Date().toISOString().slice(0,10)
-  const todayPlan = st.plan_schedule.find(d => d.date === today)
-  const labels = { gen: 'Genética', evo: 'Evolución', ori: 'Origen y Diversidad' }
+  const todayPlan = planSchedule.find(d => d.date === today)
+  // Etiquetas por parcial
+  const labelsByParcial = {
+    p1: { int:'Introducción', bio:'Biomoléculas', cel:'Célula', met:'Metabolismo', ene:'Energía celular' },
+    p2: { gen:'Genética', evo:'Evolución', biot:'Biotecnología' },
+    p3: { ori:'Origen de la vida', dom:'Tres dominios', virpro:'Virus/Procariotas', euk:'Eucariotas/Plantas/Hongos', ani:'Animales', eco:'Ecología' }
+  }
+  const labels = labelsByParcial[p] || labelsByParcial.p2
   if (title) title.textContent = '📅 Tu plan de hoy'
   if (greeting){
-    const weakLabel = labels[st.diagnostic.weakest]
-    greeting.textContent = `Hola. Tu tema más débil es ${weakLabel}. Esto es lo que conviene hoy:`
+    const weakLabel = labels[diagnostic.weakest] || diagnostic.weakest || '—'
+    greeting.textContent = `Hola. Tu tema más débil en ${p.toUpperCase()} es ${weakLabel}. Esto es lo que conviene hoy:`
   }
+  // Resumen target según parcial
+  const resumenTarget = p === 'p1' ? 'resumenP1' : (p === 'p3' ? 'resumenP3' : 'resumen')
   if (todayPlan){
-    cont.innerHTML += `<div class="today-task" onclick="document.getElementById('resumen').scrollIntoView({behavior:'smooth'})">
+    cont.innerHTML += `<div class="today-task" onclick="document.getElementById('${resumenTarget}').scrollIntoView({behavior:'smooth'})">
       <div class="today-task-icon">📚</div>
       <div class="today-task-info"><strong>${todayPlan.task}</strong><small>${todayPlan.detail}</small></div>
       <div class="today-task-arrow">→</div></div>`
   }
   // Siempre: simulacro corto del tema débil
-  const weakNice = labels[st.diagnostic.weakest]
+  const weakNice = labels[diagnostic.weakest] || diagnostic.weakest || 'tema débil'
   cont.innerHTML += `<div class="today-task" onclick="document.getElementById('simulacros').scrollIntoView({behavior:'smooth'})">
     <div class="today-task-icon">⚡</div>
     <div class="today-task-info"><strong>Simulacro corto de ${weakNice}</strong><small>10 preguntas · 5 minutos</small></div>
     <div class="today-task-arrow">→</div></div>`
   // Repaso de errores frecuentes
-  const errCount = Object.keys(st.error_log).length
+  const errCount = Object.keys(st.error_log || {}).length
   if (errCount > 0){
     cont.innerHTML += `<div class="today-task" onclick="document.getElementById('errlog').scrollIntoView({behavior:'smooth'})">
       <div class="today-task-icon">📛</div>
       <div class="today-task-info"><strong>Repasar errores frecuentes</strong><small>${errCount} preguntas en tu lista</small></div>
       <div class="today-task-arrow">→</div></div>`
   }
+
+  // ═══ Renderizar panel V2 (progreso biológico, perfil, recomendación, estadísticas) ═══
+  try { _renderFeaturesV2Panel() } catch(e){ console.warn('[v2 panel]', e) }
+}
+
+// Renderiza el panel de features v2 cada vez que cambia el plan/parcial
+function _renderFeaturesV2Panel(){
+  const panel = document.getElementById('featuresV2Panel')
+  if (!panel) return
+  panel.style.display = 'block'
+  // 1. Línea de progreso biológica
+  try { window.renderBioProgressBar('bioProgressBar') } catch(e){}
+  // 2. Perfil académico evolutivo
+  try {
+    const profile = window.getStudentProfile()
+    const box = document.getElementById('studentProfileBox')
+    if (box) box.innerHTML = `<strong>${profile.title}</strong> · Nivel ${profile.level} · ${profile.xp} XP <br><span style="color:var(--muted);font-size:.78rem">${profile.desc}</span>`
+  } catch(e){}
+  // 3. Recomendación automática
+  try {
+    const reco = window.getAutoRecommendation()
+    const box = document.getElementById('autoRecoBox')
+    if (box) box.innerHTML = `
+      <strong>${reco.icon} ${reco.title}</strong>
+      <div style="font-size:.82rem;color:var(--muted);margin-top:.2rem">${reco.desc}</div>
+      <button class="btn primary" style="font-size:.75rem;padding:.3rem .7rem;margin-top:.4rem"
+        onclick="document.querySelector('${reco.target}')?.scrollIntoView({behavior:'smooth'})">Ir →</button>
+    `
+  } catch(e){}
+  // 4. Estadísticas emocionales
+  try {
+    const phrases = window.getEmotionalStats()
+    const box = document.getElementById('emotionalStatsBox')
+    if (box) box.innerHTML = phrases.map(p => `<div style="margin-bottom:.3rem">${p.icon} ${p.text}</div>`).join('')
+  } catch(e){}
 }
 
 // ═══ PREDICCIÓN DE PREPARACIÓN ═══
@@ -8894,22 +9274,32 @@ function renderReadinessGauge(){
   const breakdownEl = document.getElementById('readinessBreakdown')
   if (!fg) return
 
+  // ═══ Multi-parcial ═══
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const diagKey = p === 'p1' ? 'diagnostic_p1' : (p === 'p3' ? 'diagnostic_p3' : 'diagnostic')
+  const planKey = p === 'p1' ? 'plan_schedule_p1' : (p === 'p3' ? 'plan_schedule_p3' : 'plan_schedule')
+  const examKey = p === 'p1' ? 'plan_exam_date_p1' : (p === 'p3' ? 'plan_exam_date_p3' : 'plan_exam_date')
+  const diagnostic = st[diagKey]
+  const planSchedule = st[planKey]
+  const examDate = st[examKey]
+
   let score = 0
   let breakdown = []
 
   // Componentes:
-  // 1) Diagnóstico (40% peso)
-  if (st.diagnostic){
-    const avg = (st.diagnostic.scores.gen + st.diagnostic.scores.evo + st.diagnostic.scores.ori) / 3
+  // 1) Diagnóstico (40% peso) — promedio de scores existentes
+  if (diagnostic && diagnostic.scores){
+    const vals = Object.values(diagnostic.scores)
+    const avg = vals.length ? (vals.reduce((a,b) => a+b, 0) / vals.length) : 0
     score += avg * 40
     breakdown.push({label:'Diagnóstico', val: Math.round(avg*100), w: 40})
   } else {
     breakdown.push({label:'Diagnóstico', val: 0, w: 40, missing:true})
   }
   // 2) Cumplimiento del plan (30% peso)
-  if (st.plan_schedule && st.plan_schedule.length){
+  if (planSchedule && planSchedule.length){
     const todayStr = new Date().toISOString().slice(0,10)
-    const past = st.plan_schedule.filter(d => d.date <= todayStr)
+    const past = planSchedule.filter(d => d.date <= todayStr)
     const done = past.filter(d => d.done).length
     const ratio = past.length ? done/past.length : 0
     score += ratio * 30
@@ -8917,7 +9307,7 @@ function renderReadinessGauge(){
   } else {
     breakdown.push({label:'Cumplimiento plan', val: 0, w: 30, missing:true})
   }
-  // 3) Desempeño en simulacros (20% peso) - usa state.hits/state.miss si existe
+  // 3) Desempeño en simulacros (20% peso)
   try {
     const hits = state?.hits || 0
     const miss = state?.miss || 0
@@ -8930,8 +9320,8 @@ function renderReadinessGauge(){
     }
   } catch(e){ breakdown.push({label:'Aciertos en práctica', val: 0, w: 20, missing:true}) }
   // 4) Días al examen (10% peso, decae si quedan menos de 7 días)
-  if (st.plan_exam_date){
-    const days = Math.max(0, Math.ceil((new Date(st.plan_exam_date) - new Date())/86400000))
+  if (examDate){
+    const days = Math.max(0, Math.ceil((new Date(examDate) - new Date())/86400000))
     const factor = days >= 14 ? 1 : days >= 7 ? 0.85 : days >= 3 ? 0.6 : 0.3
     score += factor * 10
     breakdown.push({label:`Tiempo al examen (${days}d)`, val: Math.round(factor*100), w: 10})
@@ -8940,6 +9330,12 @@ function renderReadinessGauge(){
   }
 
   score = Math.round(Math.min(100, Math.max(0, score)))
+  // ═══ HOOK AUDIT LOG ═══
+  // Actualizar el registro administrativo inmutable de progreso máximo.
+  // Esto se ejecuta cada vez que se calcula readiness, así el admin
+  // siempre tiene el % máximo alcanzado por el usuario, aún si
+  // posteriormente el usuario borra su progreso.
+  try { updateProgressAudit(score) } catch(e){}
   const circumference = 2 * Math.PI * 65  // r=65
   const offset = (score/100) * circumference
   fg.setAttribute('stroke-dasharray', `${offset} ${circumference}`)
@@ -9025,41 +9421,127 @@ window.deactivateProDemo = function(){
 }
 
 // ═══════════════════════════════════════════════════════════
-//  EVALUACIÓN P3 — Banco mínimo viable (10 preguntas)
+//  EVALUACIÓN P3 — Banco ampliado (30 preguntas)
 //  Original BioMaster, sin referencias institucionales.
-//  Cubre temas centrales del tercer parcial.
+//  Cubre temas centrales del tercer parcial:
+//   - 6.1 Origen de la vida
+//   - 6.2 Sistemática y taxonomía
+//   - 6.3 Virus, priones, procariotas
+//   - 6.4 Protistas
+//   - 6.5 Plantas
+//   - 6.6 Hongos
+//   - 6.7-6.8 Animales (invertebrados, cordados)
+//   - 7. Ecología
+//
+//  Cada pregunta tiene tema asignado para que el sistema de
+//  bytheme/recomendaciones funcione correctamente para P3.
 // ═══════════════════════════════════════════════════════════
 const EXAM_P3_BANK = [
-  { q:'Según la teoría quimiosintética de Oparin y Haldane, la atmósfera primitiva contenía:',
+  // === 6.1 ORIGEN DE LA VIDA (6 preguntas) ===
+  { q:'Según la teoría quimiosintética de Oparin y Haldane, la atmósfera primitiva contenía:', theme:'ori',
     o:['Mucho oxígeno y poco metano','Vapor de agua, hidrógeno, metano y amoniaco con poco oxígeno','Solo nitrógeno y oxígeno','Solo CO₂ y argón'], a:1,
     f:'La atmósfera primitiva tenía poco O₂ y compuestos como vapor de agua, H₂, metano y amoniaco.' },
-  { q:'¿Qué demostró el experimento de Miller y Urey?',
+  { q:'¿Qué demostró el experimento de Miller y Urey?', theme:'ori',
     o:['Que las células surgieron completas en un solo paso','Que pueden formarse moléculas orgánicas (aminoácidos) en condiciones simuladas de la Tierra primitiva','Que los virus son formas de vida primitivas','Que la fotosíntesis es anterior a la respiración'], a:1,
     f:'Miller-Urey obtuvo aminoácidos y otras moléculas orgánicas; apoyó la síntesis abiótica, no creó vida.' },
-  { q:'La hipótesis del mundo de ARN propone que:',
+  { q:'La hipótesis del mundo de ARN propone que:', theme:'ori',
     o:['El ADN apareció antes que cualquier otra molécula','El ARN pudo almacenar información y catalizar reacciones (ribozima) antes que el ADN','Los priones son los primeros seres vivos','Los virus dieron origen a las primeras células'], a:1,
     f:'El ARN puede actuar como ribozima; vesículas con membrana habrían formado protocélulas antes del ADN.' },
-  { q:'Carl Woese, basándose en ARN ribosomal, propuso los tres dominios:',
+  { q:'¿Quiénes refutaron experimentalmente la teoría de la generación espontánea?', theme:'ori',
+    o:['Oparin y Haldane','Miller y Urey','Redi, Pasteur y Tyndall','Watson y Crick'], a:2,
+    f:'Redi (gusanos en carne), Pasteur (frasco de cuello de cisne) y Tyndall mostraron que los seres vivos provienen de otros seres vivos.' },
+  { q:'¿Cuál es el orden correcto de la evolución prebiótica?', theme:'ori',
+    o:['Células → macromoléculas → moléculas pequeñas','Moléculas pequeñas → macromoléculas → ARN → protocélulas → primeras células','Primeras células → ARN → moléculas pequeñas','Protocélulas → moléculas pequeñas → ARN'], a:1,
+    f:'La secuencia es: moléculas simples → macromoléculas → ARN autorreplicante → protocélulas → primeras células anaerobias.' },
+  { q:'La teoría endosimbiótica explica el origen de:', theme:'ori',
+    o:['La membrana celular','Las mitocondrias y los cloroplastos','El núcleo celular','Los ribosomas'], a:1,
+    f:'Mitocondrias y cloroplastos derivan de procariotas que fueron fagocitados por una célula ancestral y vivieron en simbiosis.' },
+
+  // === 6.2 SISTEMÁTICA Y TAXONOMÍA (4) ===
+  { q:'Carl Woese, basándose en ARN ribosomal, propuso los tres dominios:', theme:'dom',
     o:['Plantae, Animalia, Fungi','Bacteria, Archaea, Eukarya','Procariota, Eucariota, Virus','Monera, Protista, Eukarya'], a:1,
     f:'Woese mostró que los procariotas no son uniformes: Bacteria y Archaea son linajes muy distintos, junto con Eukarya.' },
-  { q:'¿Cuál de los siguientes NO es una característica de los virus?',
+  { q:'¿Cuál es el orden correcto de las categorías taxonómicas, de menor a mayor?', theme:'dom',
+    o:['Especie → Género → Familia → Orden → Clase → Filum → Reino → Dominio','Dominio → Reino → Filum → Clase → Orden → Familia → Género → Especie','Especie → Familia → Género → Reino → Dominio','Reino → Filum → Especie → Género → Familia'], a:0,
+    f:'De menor a mayor inclusividad: Especie → Género → Familia → Orden → Clase → Filum → Reino → Dominio.' },
+  { q:'En el sistema binomial de Linneo, ¿cómo se escribe correctamente el nombre científico?', theme:'dom',
+    o:['homo sapiens (todo en minúscula y normal)','Homo sapiens (en cursiva, género con mayúscula y especie con minúscula)','HOMO SAPIENS (todo en mayúscula)','Sapiens homo (especie primero)'], a:1,
+    f:'Género va con mayúscula, especie con minúscula, ambos en cursiva. Ej: Homo sapiens, Escherichia coli.' },
+  { q:'Un clado, en filogenia, incluye:', theme:'dom',
+    o:['Solo a los individuos vivos hoy','A un ancestro y TODOS sus descendientes','Solo a los descendientes recientes','A organismos que comparten hábitat'], a:1,
+    f:'Un clado contiene un ancestro común y todos sus descendientes — es un grupo monofilético.' },
+
+  // === 6.3 VIRUS, PRIONES, PROCARIOTAS (6) ===
+  { q:'¿Cuál de los siguientes NO es una característica de los virus?', theme:'virpro',
     o:['Son acelulares','Tienen material genético (ADN o ARN)','Realizan metabolismo propio','Son parásitos intracelulares obligados'], a:2,
     f:'Los virus NO tienen metabolismo propio: dependen de una célula hospedadora para reproducirse.' },
-  { q:'Un prión es:',
+  { q:'Un prión es:', theme:'virpro',
     o:['Una proteína infecciosa mal plegada','Un virus pequeño','Un viroide','Una bacteria patógena'], a:0,
     f:'Los priones son proteínas infecciosas mal plegadas; los viroides son ARN circular; los virus llevan ácido nucleico.' },
-  { q:'¿Qué estructura procariota proporciona resistencia a condiciones extremas?',
+  { q:'¿Qué estructura procariota proporciona resistencia a condiciones extremas?', theme:'virpro',
     o:['Flagelo','Endospora','Pili','Cápsula'], a:1,
     f:'La endospora protege; no es reproducción. Los flagelos mueven, los biofilms adhieren.' },
-  { q:'La conjugación bacteriana:',
+  { q:'La conjugación bacteriana:', theme:'virpro',
     o:['Es una forma de reproducción sexual idéntica a la de eucariotas','Es transferencia de ADN entre células sin que sea reproducción','Solo ocurre en Archaea','Genera endosporas'], a:1,
     f:'La conjugación transfiere ADN (frecuentemente plasmídico) pero no es reproducción; la fisión binaria sí.' },
-  { q:'Las micorrizas son:',
+  { q:'¿Qué diferencia fundamental existe entre Bacteria y Archaea?', theme:'virpro',
+    o:['Las arqueas son siempre patógenas','La pared de Archaea no contiene peptidoglicano; sus lípidos de membrana son distintos','Las bacterias tienen núcleo y las arqueas no','Las arqueas son eucariotas'], a:1,
+    f:'Solo Bacteria tiene peptidoglicano. Archaea posee lípidos de membrana únicos y diferencias en ribosomas y ARN polimerasas.' },
+  { q:'La tinción de Gram permite distinguir:', theme:'virpro',
+    o:['Bacterias vivas de muertas','Tipos de pared celular bacteriana (gram+ vs gram−)','Virus de bacterias','Bacterias de arqueas'], a:1,
+    f:'Gram+ retienen el cristal violeta por su gruesa capa de peptidoglicano; gram− tienen capa más fina más una membrana externa.' },
+
+  // === 6.4 PROTISTAS (2) ===
+  { q:'¿Cuál afirmación sobre los protistas es correcta?', theme:'euk',
+    o:['Son todos fotosintéticos','Son eucariotas, mayormente unicelulares y muy diversos en nutrición y locomoción','Son procariotas','Solo son patógenos'], a:1,
+    f:'Protista es categoría práctica: eucariotas mayormente unicelulares con gran diversidad metabólica y de movimiento.' },
+  { q:'Los protistas con pseudópodos para moverse y capturar alimento se llaman:', theme:'euk',
+    o:['Flagelados','Ciliados','Ameboides','Esporozoos'], a:2,
+    f:'Los ameboides usan pseudópodos (extensiones del citoplasma). Flagelados usan flagelos; ciliados, cilios.' },
+
+  // === 6.5 PLANTAS (3) ===
+  { q:'¿Cuál de los siguientes NO es una adaptación de las plantas a la vida terrestre?', theme:'euk',
+    o:['Cutícula impermeable','Tejidos vasculares','Sistema circulatorio cerrado con corazón','Esporas o semillas resistentes'], a:2,
+    f:'Las plantas NO tienen sistema circulatorio. Su transporte interno es por xilema y floema (tejidos vasculares).' },
+  { q:'Las plantas que producen flores y frutos pertenecen al grupo de las:', theme:'euk',
+    o:['Briofitas','Pteridofitas','Gimnospermas','Angiospermas'], a:3,
+    f:'Las angiospermas son las plantas con flores y frutos, el grupo más diverso y dominante hoy.' },
+  { q:'¿Qué grupo vegetal carece de tejidos vasculares verdaderos?', theme:'euk',
+    o:['Briofitas (musgos, hepáticas)','Helechos','Coníferas','Angiospermas'], a:0,
+    f:'Las briofitas son no vasculares; dependen de la difusión y de ambientes húmedos.' },
+
+  // === 6.6 HONGOS (3) ===
+  { q:'Las micorrizas son:', theme:'euk',
     o:['Asociación entre raíces de plantas y hongos','Bacterias fijadoras de nitrógeno','Líquenes','Estructuras vegetales no relacionadas con hongos'], a:0,
     f:'Micorriza = raíz vegetal + hongo. Mejora absorción de nutrientes; ecológicamente fundamental.' },
-  { q:'Una población se define como:',
+  { q:'La pared celular de los hongos está hecha principalmente de:', theme:'euk',
+    o:['Celulosa','Quitina','Peptidoglicano','Lignina'], a:1,
+    f:'Los hongos tienen pared de quitina (mismo polímero que el exoesqueleto de los artrópodos). NO son plantas.' },
+  { q:'Los hongos obtienen sus nutrientes:', theme:'euk',
+    o:['Por fotosíntesis','Por absorción heterotrófica','Por quimiosíntesis','Por ingestión y digestión interna'], a:1,
+    f:'Los hongos son heterótrofos por absorción: secretan enzimas extracelulares y absorben las moléculas resultantes.' },
+
+  // === 6.7-6.8 ANIMALES (3) ===
+  { q:'¿Cuál es la característica clave de los cordados?', theme:'ani',
+    o:['Tener columna vertebral siempre','Tener notocorda, cordón nervioso dorsal hueco, hendiduras faríngeas y cola postanal en alguna etapa','Ser de sangre caliente','Tener corazón de cuatro cámaras'], a:1,
+    f:'Los cordados se definen por estos 4 rasgos en algún momento del desarrollo. No todos los cordados son vertebrados.' },
+  { q:'En la clasificación de animales según el desarrollo embrionario, los protostomados se distinguen porque:', theme:'ani',
+    o:['Su boca se forma a partir del primer orificio embrionario (blastoporo)','No tienen tubo digestivo','Son siempre acuáticos','Carecen de simetría'], a:0,
+    f:'En protostomados la boca se forma primero. En deuterostomados (cordados, equinodermos), el blastoporo origina el ano.' },
+  { q:'Una característica fundamental de todos los animales es que son:', theme:'ani',
+    o:['Eucariotas multicelulares heterótrofos','Eucariotas unicelulares autótrofos','Procariotas heterótrofos','Eucariotas multicelulares fotosintéticos'], a:0,
+    f:'Animal = eucariota multicelular heterótrofo. Esto los distingue de plantas (autótrofas) y hongos (absorción).' },
+
+  // === 7. ECOLOGÍA (3) ===
+  { q:'Una población se define como:', theme:'eco',
     o:['Cualquier conjunto de organismos','Individuos de la misma especie en una misma área y tiempo','Todas las especies de un ecosistema','La interacción de comunidades'], a:1,
-    f:'Población = mismos individuos de una especie en un área y tiempo. Comunidad = varias poblaciones.' }
+    f:'Población = mismos individuos de una especie en un área y tiempo. Comunidad = varias poblaciones.' },
+  { q:'Un ecosistema está formado por:', theme:'eco',
+    o:['Solo factores bióticos','Solo factores abióticos','Componentes bióticos + abióticos y sus interacciones','Solo el clima'], a:2,
+    f:'Ecosistema = organismos + medio físico + interacciones. La biósfera es el conjunto de todos los ecosistemas.' },
+  { q:'La capacidad de carga de un ambiente se refiere a:', theme:'eco',
+    o:['El número máximo de individuos de una especie que el ambiente puede sostener establemente','La cantidad de luz que recibe','El número total de especies','El peso total de biomasa'], a:0,
+    f:'La capacidad de carga (K) es el límite poblacional sostenible determinado por recursos disponibles.' }
 ]
 
 let _examP3State = null
@@ -9157,15 +9639,142 @@ const _bv = {
 }
 
 const BV_TOPICS = {
-  membrana:     { title:'🧫 Transporte por membrana', desc:'Difusión simple, facilitada y transporte activo. Las partículas se mueven por gradiente; el transporte activo gasta ATP.' },
-  mitomei:      { title:'🧬 Mitosis vs Meiosis', desc:'Mitosis: 1 división → 2 células diploides idénticas. Meiosis: 2 divisiones + crossing-over → 4 células haploides distintas.' },
-  adn:          { title:'🧪 ADN: replicación', desc:'La doble hélice se separa; cada hebra sirve de molde. Helicasa abre, polimerasa sintetiza la nueva hebra emparejando A-T y G-C.' },
-  fotosintesis: { title:'🌱 Fotosíntesis', desc:'La luz excita electrones en cloroplastos. Fase luminosa produce ATP y NADPH; ciclo de Calvin fija CO₂ → glucosa.' },
-  respiracion:  { title:'⚡ Respiración celular', desc:'Glucosa → glucólisis (citoplasma) → Krebs (matriz mitocondrial) → cadena de transporte de electrones (cresta) → mucha ATP.' },
-  transcripcion:{ title:'📜 Transcripción y traducción', desc:'En el núcleo: ADN → ARN mensajero. En el citoplasma: ribosoma lee codones del ARNm y arma proteína con ARNt.' },
-  evolucion:    { title:'🦋 Selección natural', desc:'Variación + presión selectiva → los más aptos dejan más descendencia. Las frecuencias alélicas cambian con el tiempo.' },
-  origen:       { title:'🌍 Origen de la vida', desc:'Atmósfera primitiva → moléculas orgánicas → macromoléculas → ARN → protocélulas → primeras células anaerobias → fotosíntesis → oxigenación.' },
-  clasificacion:{ title:'🌳 Tres dominios (Woese)', desc:'Bacteria, Archaea y Eukarya. Las arqueas no son "bacterias raras": son un dominio aparte basado en evidencia molecular.' }
+  membrana:     {
+    title:'🧫 Transporte por membrana', parcial:'p1',
+    desc:'Difusión simple, facilitada y transporte activo. Las partículas se mueven por gradiente; el transporte activo gasta ATP.',
+    phases:[
+      'Fase 1 — Equilibrio inicial: las partículas pequeñas (azules) están más concentradas arriba.',
+      'Fase 2 — Difusión simple: partículas pequeñas cruzan la bicapa lipídica directamente, a favor de gradiente, sin energía.',
+      'Fase 3 — Difusión facilitada: las partículas grandes (rosas) usan el canal proteico (azul) porque no atraviesan solas.',
+      'Fase 4 — Equilibrio dinámico: ambos lados quedan con concentraciones similares; el movimiento sigue, pero neto = 0.'
+    ]
+  },
+  mitomei:      {
+    title:'🧬 Mitosis vs Meiosis', parcial:'p2',
+    desc:'Mitosis: 1 división → 2 células diploides idénticas. Meiosis: 2 divisiones + crossing-over → 4 células haploides distintas.',
+    phases:[
+      'Fase 1 — Profase: cromosomas se condensan; en meiosis ocurre el crossing-over entre homólogos.',
+      'Fase 2 — Metafase: cromosomas se alinean. Mitosis: en línea simple. Meiosis I: pares homólogos en bivalente.',
+      'Fase 3 — Anafase: separación. Mitosis: cromátidas hermanas. Meiosis I: cromosomas homólogos completos.',
+      'Fase 4 — Telofase: nuevas células. Mitosis = 2 diploides idénticas. Meiosis = 4 haploides distintas.'
+    ]
+  },
+  adn:          {
+    title:'🧪 ADN: replicación', parcial:'p1',
+    desc:'La doble hélice se separa; cada hebra sirve de molde. Helicasa abre, polimerasa sintetiza la nueva hebra emparejando A-T y G-C.',
+    phases:[
+      'Fase 1 — Reconocimiento: la helicasa identifica el origen de replicación.',
+      'Fase 2 — Apertura: la helicasa rompe los puentes de hidrógeno y separa las hebras.',
+      'Fase 3 — Síntesis: la polimerasa lee 3\'→5\' y sintetiza la hebra nueva 5\'→3\' emparejando A-T, G-C.',
+      'Fase 4 — Resultado: dos moléculas hijas, cada una con una hebra vieja y una nueva (replicación semiconservativa).'
+    ]
+  },
+  fotosintesis: {
+    title:'🌱 Fotosíntesis', parcial:'p1',
+    desc:'La luz excita electrones en cloroplastos. Fase luminosa produce ATP y NADPH; ciclo de Calvin fija CO₂ → glucosa.',
+    phases:[
+      'Fase 1 — Captación de luz: los pigmentos del fotosistema II absorben fotones.',
+      'Fase 2 — Fase luminosa: se rompe el agua (libera O₂), se generan ATP y NADPH en los tilacoides.',
+      'Fase 3 — Ciclo de Calvin: en el estroma, el CO₂ se fija con ATP y NADPH.',
+      'Fase 4 — Producción: el ciclo genera glucosa que se exporta o almacena como almidón.'
+    ]
+  },
+  respiracion:  {
+    title:'⚡ Respiración celular', parcial:'p1',
+    desc:'Glucosa → glucólisis (citoplasma) → Krebs (matriz mitocondrial) → cadena de transporte de electrones (cresta) → mucha ATP.',
+    phases:[
+      'Fase 1 — Glucólisis (citoplasma): glucosa → 2 piruvato + 2 ATP + 2 NADH. Anaerobia.',
+      'Fase 2 — Piruvato a acetil-CoA: el piruvato entra a la matriz mitocondrial y se oxida.',
+      'Fase 3 — Ciclo de Krebs (matriz): genera CO₂, NADH, FADH₂ y un poco de ATP por sustrato.',
+      'Fase 4 — Cadena transportadora (cresta): NADH y FADH₂ ceden electrones; el O₂ es el aceptor final, se sintetiza la mayor parte del ATP.'
+    ]
+  },
+  transcripcion:{
+    title:'📜 Transcripción y traducción', parcial:'p2',
+    desc:'En el núcleo: ADN → ARN mensajero. En el citoplasma: ribosoma lee codones del ARNm y arma proteína con ARNt.',
+    phases:[
+      'Fase 1 — Transcripción (núcleo): la ARN polimerasa lee el ADN y sintetiza el ARNm.',
+      'Fase 2 — Procesamiento: en eucariotas el ARNm se modifica (caperuza, cola poli-A, splicing).',
+      'Fase 3 — Salida del núcleo: el ARNm maduro sale al citoplasma.',
+      'Fase 4 — Traducción: el ribosoma lee codones; los ARNt traen aminoácidos; se forma la proteína.'
+    ]
+  },
+  evolucion:    {
+    title:'🦋 Selección natural', parcial:'p2',
+    desc:'Variación + presión selectiva → los más aptos dejan más descendencia. Las frecuencias alélicas cambian con el tiempo.',
+    phases:[
+      'Fase 1 — Variación inicial: la población contiene individuos verdes (aptos) y rojos (menos aptos).',
+      'Fase 2 — Presión selectiva: el ambiente favorece a los verdes; los rojos sobreviven y se reproducen menos.',
+      'Fase 3 — Cambio de frecuencias: los alelos verdes aumentan, los rojos disminuyen generación tras generación.',
+      'Fase 4 — Resultado: la población queda dominada por individuos verdes — la frecuencia alélica cambió.'
+    ]
+  },
+  origen:       {
+    title:'🌍 Origen de la vida', parcial:'p3',
+    desc:'Atmósfera primitiva → moléculas orgánicas → macromoléculas → ARN → protocélulas → primeras células anaerobias → fotosíntesis → oxigenación.',
+    phases:[
+      'Fase 1 — Tierra primitiva: atmósfera con vapor de agua, H₂, metano y amoniaco; sin O₂.',
+      'Fase 2 — Moléculas orgánicas: descargas eléctricas y radiación generan aminoácidos y nucleótidos (Miller-Urey).',
+      'Fase 3 — Macromoléculas: las arcillas concentran y catalizan la formación de polímeros.',
+      'Fase 4 — Mundo de ARN: aparece ARN autorreplicante con función catalítica (ribozima).',
+      'Fase 5 — Protocélulas: vesículas lipídicas que encierran al ARN.',
+      'Fase 6 — Primeras células anaerobias heterótrofas.',
+      'Fase 7 — Fotosíntesis: las cianobacterias liberan O₂ al ambiente.',
+      'Fase 8 — Oxigenación: aparecen procariotas aerobios y luego eucariotas (endosimbiosis).'
+    ]
+  },
+  clasificacion:{
+    title:'🌳 Tres dominios (Woese)', parcial:'p3',
+    desc:'Bacteria, Archaea y Eukarya. Las arqueas no son "bacterias raras": son un dominio aparte basado en evidencia molecular.',
+    phases:[
+      'Fase 1 — LUCA: ancestro común universal del que descienden todos los seres vivos.',
+      'Fase 2 — Divergencia: el ARN ribosomal de Woese mostró tres ramas profundas, no dos.',
+      'Fase 3 — Bacteria: procariotas con peptidoglicano; metabolismo muy diverso.',
+      'Fase 4 — Archaea: procariotas sin peptidoglicano; lípidos de membrana únicos; ribosomas y ARN polimerasas distintas.',
+      'Fase 5 — Eukarya: células con núcleo y organelos; incluye protistas, hongos, plantas y animales.'
+    ]
+  },
+  // ═══ NUEVOS visualizadores agregados ═══
+  ciclocelular: {
+    title:'🔄 Ciclo celular', parcial:'p1',
+    desc:'G1 → S (síntesis ADN) → G2 → M (mitosis). Punto de control en G1, G2 y mitosis evita errores.',
+    phases:[
+      'Fase G1 — Crecimiento: la célula crece y prepara material para replicar el ADN.',
+      'Fase S — Síntesis: se replica el ADN. Cada cromosoma queda con dos cromátidas hermanas.',
+      'Fase G2 — Verificación: la célula revisa que la replicación fue correcta y prepara la mitosis.',
+      'Fase M — Mitosis: división nuclear y citocinesis (división del citoplasma).'
+    ]
+  },
+  enzimas:      {
+    title:'🔧 Enzimas', parcial:'p1',
+    desc:'Las enzimas son catalizadores biológicos: bajan la energía de activación. Sustrato → complejo enzima-sustrato → producto.',
+    phases:[
+      'Fase 1 — Sustrato libre: la molécula que la enzima va a transformar se acerca al sitio activo.',
+      'Fase 2 — Complejo: la enzima se une al sustrato (modelo de ajuste inducido).',
+      'Fase 3 — Catálisis: la enzima reduce la energía de activación y transforma el sustrato.',
+      'Fase 4 — Liberación: el producto se separa; la enzima vuelve libre, lista para otra reacción.'
+    ]
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  BIOVISUAL — filtrado por parcial
+//  Muestra solo los visualizadores cuyo .parcial === parcial activo,
+//  o los marcados como genéricos (sin .parcial). Mejora 5.1 del prompt.
+// ═══════════════════════════════════════════════════════════
+window.bvFilterByParcial = function(p){
+  document.querySelectorAll('#biovisualTabs button[data-bv]').forEach(btn => {
+    const topic = btn.dataset.bv
+    const t = BV_TOPICS[topic]
+    if (!t){ btn.style.display = 'none'; return }
+    btn.style.display = (!t.parcial || t.parcial === p) ? '' : 'none'
+  })
+  // Si el topic actualmente activo no pertenece al parcial, saltar al primero válido
+  const cur = BV_TOPICS[_bv.current]
+  if (cur && cur.parcial && cur.parcial !== p){
+    const firstValid = Object.entries(BV_TOPICS).find(([id, t]) => !t.parcial || t.parcial === p)
+    if (firstValid) window.bvShow(firstValid[0])
+  }
 }
 
 window.bvShow = function(topic){
@@ -9180,10 +9789,27 @@ window.bvShow = function(topic){
   })
   const t = BV_TOPICS[topic]
   document.getElementById('bvLegend').textContent = t.title
-  document.getElementById('bvStepInfo').textContent = ''
+  // ═══ FIX MENSAJE POR FASE ═══
+  // Antes: cada draw() seteaba un mensaje fijo, no respetaba step.
+  // Ahora: bvShow muestra fase 1 inmediatamente; bvUpdatePhaseMessage()
+  // se llama desde las funciones draw para mantener sincronía.
+  _bvUpdatePhaseMessage()
   document.getElementById('bvDescription').innerHTML = `<strong>${t.title}</strong><br>${t.desc}`
   _bvSetup()
   _bvFrame() // dibujo inmediato (sin tener que dar play)
+}
+
+// Calcula y actualiza el texto de la fase actual del topic activo
+function _bvUpdatePhaseMessage(){
+  const info = document.getElementById('bvStepInfo')
+  if (!info) return
+  const t = BV_TOPICS[_bv.current]
+  if (!t || !t.phases || !t.phases.length){
+    info.textContent = ''
+    return
+  }
+  const phaseIdx = Math.floor(_bv.step) % t.phases.length
+  info.textContent = t.phases[phaseIdx]
 }
 
 window.bvPlay = function(){
@@ -9195,14 +9821,16 @@ window.bvPause = function(){
 }
 window.bvStep = function(){
   _bv.playing = false
-  _bv.t += 30 * (_bv.speed)
+  _bv.t += 60 * (_bv.speed)
   _bv.step++
+  _bvUpdatePhaseMessage()
   _bvFrame()
 }
 window.bvReset = function(){
   _bv.t = 0
   _bv.step = 0
   _bv.particles = []
+  _bvUpdatePhaseMessage()
   _bvSetup()
   _bvFrame()
 }
@@ -9275,9 +9903,19 @@ function _bvFrame(){
   else if (_bv.current === 'evolucion')  _bvDrawEvolucion(ctx, w, h)
   else if (_bv.current === 'origen')     _bvDrawOrigen(ctx, w, h)
   else if (_bv.current === 'clasificacion') _bvDrawClasif(ctx, w, h)
+  else if (_bv.current === 'ciclocelular') _bvDrawCicloCelular(ctx, w, h)
+  else if (_bv.current === 'enzimas')    _bvDrawEnzimas(ctx, w, h)
 
+  // ═══ AVANCE AUTOMÁTICO DE FASE EN PLAY ═══
+  // Cada ~120 ticks (~2 segundos a velocidad 1x) avanza una fase y
+  // actualiza el mensaje. Esto resuelve el bug del mensaje estático.
   if (_bv.playing){
     _bv.t += 1 * _bv.speed
+    const newPhase = Math.floor(_bv.t / 120)
+    if (newPhase !== _bv.step){
+      _bv.step = newPhase
+      _bvUpdatePhaseMessage()
+    }
     _bv.rafId = requestAnimationFrame(_bvFrame)
   } else {
     _bv.rafId = null
@@ -9328,7 +9966,6 @@ function _bvDrawMembrana(ctx, w, h){
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill()
     }
   }
-  document.getElementById('bvStepInfo').textContent = 'Partículas pequeñas (azules) cruzan por difusión simple. Partículas grandes (rosas) usan canal proteico (difusión facilitada).'
 }
 
 function _bvDrawMitoMei(ctx, w, h){
@@ -9366,7 +10003,6 @@ function _bvDrawMitoMei(ctx, w, h){
     ctx.fillRect(cx-3, h/2+10, 6, cells === 4 ? 18 : 26)
   }
 
-  document.getElementById('bvStepInfo').textContent = 'Fase ' + (phase + 1) + ' de 4 — Mitosis preserva diploidía; meiosis genera variabilidad por crossing-over y separación independiente.'
 }
 
 function _bvDrawADN(ctx, w, h){
@@ -9402,7 +10038,6 @@ function _bvDrawADN(ctx, w, h){
   ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
   ctx.fillText('Helicasa', fork, cy - 24)
 
-  document.getElementById('bvStepInfo').textContent = 'Helicasa abre la doble hélice; cada hebra sirve de molde para sintetizar una nueva (A-T, G-C).'
 }
 
 function _bvDrawFotosintesis(ctx, w, h){
@@ -9436,7 +10071,6 @@ function _bvDrawFotosintesis(ctx, w, h){
   ctx.fillText('O₂', w - 60, o2y)
   ctx.fillText('CO₂', 60, h - ((_bv.t * 0.4) % h))
 
-  document.getElementById('bvStepInfo').textContent = 'Luz → tilacoides (fase luminosa: ATP, NADPH) → estroma (ciclo de Calvin: CO₂ → glucosa). Sale O₂.'
 }
 
 function _bvDrawRespiracion(ctx, w, h){
@@ -9465,7 +10099,6 @@ function _bvDrawRespiracion(ctx, w, h){
       ctx.fillText('ATP', w - 12 - phase, h/2 + (i % 3 - 1) * 18)
     }
   }
-  document.getElementById('bvStepInfo').textContent = 'Glucólisis → Krebs (matriz) → cadena transporte de electrones (cresta) → mucha ATP. Producto: H₂O y CO₂.'
 }
 
 function _bvDrawTranscripcion(ctx, w, h){
@@ -9505,7 +10138,6 @@ function _bvDrawTranscripcion(ctx, w, h){
   ctx.fillStyle = '#d0edd8'; ctx.textAlign = 'left'
   ctx.fillText('Proteína', 3*w/4 + 30, h/2 + 56)
 
-  document.getElementById('bvStepInfo').textContent = 'Transcripción (ADN→ARN) ocurre en el núcleo. Traducción (ARN→proteína) ocurre en el ribosoma del citoplasma.'
 }
 
 function _bvDrawEvolucion(ctx, w, h){
@@ -9532,7 +10164,6 @@ function _bvDrawEvolucion(ctx, w, h){
   const fittest = _bv.particles.filter(p => p.fitness >= 0.6).length
   ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 13px Inter'; ctx.textAlign = 'left'
   ctx.fillText('Individuos aptos: ' + fittest + ' / ' + _bv.particles.length, 12, h - 12)
-  document.getElementById('bvStepInfo').textContent = 'Los individuos verdes son más aptos y dejan más descendencia. Los rojos van desapareciendo: la frecuencia alélica cambia.'
 }
 
 function _bvDrawOrigen(ctx, w, h){
@@ -9559,7 +10190,6 @@ function _bvDrawOrigen(ctx, w, h){
     ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
     ctx.fillText(stages[i].t, x, h/2 + (i % 2 === 0 ? -22 : 30))
   }
-  document.getElementById('bvStepInfo').textContent = 'Etapas progresivas: el origen de la vida fue gradual. Cada paso supone una nueva propiedad emergente (replicación, membrana, metabolismo).'
 }
 
 function _bvDrawClasif(ctx, w, h){
@@ -9581,7 +10211,97 @@ function _bvDrawClasif(ctx, w, h){
   }
   ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
   ctx.fillText('Ancestro común universal (LUCA)', w/2, h - 4)
-  document.getElementById('bvStepInfo').textContent = 'Carl Woese, basándose en ARN ribosomal, separó a los procariotas en Bacteria y Archaea. Eukarya es el tercer dominio.'
+}
+
+// ═══ Ciclo celular — visualizador P1 ═══
+function _bvDrawCicloCelular(ctx, w, h){
+  // Pie chart con 4 fases del ciclo: G1, S, G2, M
+  const phases = [
+    { name:'G1', frac: 0.4, color:'#5fbc7e' },
+    { name:'S',  frac: 0.25, color:'#3aa5c4' },
+    { name:'G2', frac: 0.2, color:'#ffd76e' },
+    { name:'M',  frac: 0.15, color:'#c45252' }
+  ]
+  const cx = w/2, cy = h/2, r = Math.min(w,h) * 0.32
+  let start = -Math.PI / 2
+  // Indicador animado que va recorriendo el ciclo
+  const indicatorAngle = -Math.PI/2 + (_bv.t * 0.02) % (Math.PI * 2)
+  for (const p of phases){
+    const end = start + p.frac * Math.PI * 2
+    ctx.fillStyle = p.color + 'cc'
+    ctx.beginPath()
+    ctx.moveTo(cx, cy)
+    ctx.arc(cx, cy, r, start, end)
+    ctx.closePath()
+    ctx.fill()
+    // Etiqueta
+    const mid = (start + end) / 2
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Inter'; ctx.textAlign = 'center'
+    ctx.fillText(p.name, cx + Math.cos(mid) * r * 0.7, cy + Math.sin(mid) * r * 0.7 + 4)
+    start = end
+  }
+  // Indicador
+  ctx.fillStyle = '#fff'
+  ctx.beginPath()
+  ctx.arc(cx + Math.cos(indicatorAngle) * r, cy + Math.sin(indicatorAngle) * r, 6, 0, Math.PI*2)
+  ctx.fill()
+  ctx.strokeStyle = '#0a1a10'; ctx.lineWidth = 2; ctx.stroke()
+  // Centro
+  ctx.fillStyle = '#0a1a10'
+  ctx.beginPath(); ctx.arc(cx, cy, r * 0.45, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = '#5fbc7e'; ctx.stroke()
+  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 12px Inter'
+  ctx.fillText('Ciclo', cx, cy - 4)
+  ctx.fillText('celular', cx, cy + 12)
+}
+
+// ═══ Enzimas — visualizador P1 ═══
+function _bvDrawEnzimas(ctx, w, h){
+  // Enzima fija (forma de "C" amarilla) y sustrato animado que entra/sale
+  const cx = w/2, cy = h/2
+  // Enzima
+  ctx.fillStyle = '#5fbc7e'
+  ctx.beginPath()
+  ctx.arc(cx, cy, 60, Math.PI/3, -Math.PI/3, false)
+  ctx.lineTo(cx + 25, cy)
+  ctx.fill()
+  ctx.strokeStyle = '#3a8c4e'; ctx.lineWidth = 2; ctx.stroke()
+  // Etiqueta
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Enzima', cx - 10, cy + 4)
+  // Sustrato: animado entrando, uniéndose y saliendo como producto
+  const cycleT = (_bv.t * 0.025) % 4
+  let sx, sy, color, label
+  if (cycleT < 1){
+    // Aproximándose
+    sx = cx + 200 - cycleT * 140
+    sy = cy
+    color = '#3aa5c4'
+    label = 'Sustrato'
+  } else if (cycleT < 2){
+    // Unido
+    sx = cx + 30
+    sy = cy
+    color = '#ffd76e'
+    label = 'Complejo'
+  } else if (cycleT < 3){
+    // Saliendo como producto
+    sx = cx + 30 + (cycleT - 2) * 140
+    sy = cy
+    color = '#c45252'
+    label = 'Producto'
+  } else {
+    // Espera/regreso al inicio
+    sx = cx + 200
+    sy = cy
+    color = '#3aa5c4'
+    label = 'Sustrato'
+  }
+  ctx.fillStyle = color
+  ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = '#0a1a10'; ctx.lineWidth = 2; ctx.stroke()
+  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(label, sx, sy - 22)
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -9590,6 +10310,16 @@ function _bvDrawClasif(ctx, w, h){
 //  o cuando el usuario explícitamente la dispara desde el menú.
 //  Cumple los requisitos: corta (3-5s), saltable, ligera, móvil-friendly.
 // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  INTRO PREMIUM — secuencia visual con biología
+//  Fases (5.5s totales, saltable):
+//   0.0-1.0s: célula central pulsa, anillos orbitales aparecen
+//   1.0-2.0s: ADN se materializa al lado y rota
+//   2.0-3.5s: explosión de partículas verdes desde el centro
+//   3.5-4.5s: nombre BIOMASTER se compone letra por letra
+//   4.5-5.5s: fade-out con desbloqueo de la plataforma debajo
+//  Mobile-friendly (sin video, sin assets externos), <60kb total.
+// ═══════════════════════════════════════════════════════════
 function _injectIntroStyles(){
   if (document.getElementById('introStyles')) return
   const s = document.createElement('style')
@@ -9597,47 +10327,151 @@ function _injectIntroStyles(){
   s.textContent = `
     #bmIntro{
       position:fixed;inset:0;z-index:99999;
-      background:radial-gradient(ellipse at center, #1c4730 0%, #0d1f13 70%);
+      background:radial-gradient(ellipse at center, #1c4730 0%, #0d1f13 60%, #050d08 100%);
       display:flex;align-items:center;justify-content:center;
-      animation:bmIntroFade 4.2s forwards;
-      cursor:pointer
-    }
-    #bmIntro .bmIntroLogo{
-      font-size:5rem;animation:bmIntroPulse 2s ease-in-out infinite;
-      filter:drop-shadow(0 0 30px rgba(95,188,126,.6))
-    }
-    #bmIntro .bmIntroText{
-      position:absolute;bottom:18%;left:0;right:0;text-align:center;
-      color:#d0edd8;font-family:Merriweather,serif;font-weight:700;
-      font-size:clamp(1.2rem,3vw,2rem);
-      opacity:0;animation:bmIntroTextIn 1.5s forwards;animation-delay:.6s
-    }
-    #bmIntro .bmIntroSub{
-      position:absolute;bottom:11%;left:0;right:0;text-align:center;
-      color:#6fa07a;font-size:.9rem;
-      opacity:0;animation:bmIntroTextIn 1.5s forwards;animation-delay:1.4s
+      overflow:hidden;cursor:pointer;
+      animation:bmIntroFinalFade 5.5s forwards
     }
     #bmIntro .bmIntroSkip{
-      position:absolute;top:1rem;right:1rem;
-      background:rgba(255,255,255,.1);color:#d0edd8;
-      border:1px solid rgba(255,255,255,.2);
-      border-radius:99px;padding:.4rem 1rem;font-size:.78rem;font-weight:700;
-      cursor:pointer;backdrop-filter:blur(8px)
+      position:absolute;top:1rem;right:1rem;z-index:10;
+      background:rgba(255,255,255,.08);color:#d0edd8;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:99px;padding:.5rem 1.1rem;font-size:.78rem;font-weight:700;
+      cursor:pointer;backdrop-filter:blur(8px);
+      transition:background .2s
     }
-    #bmIntro .bmIntroParticle{
-      position:absolute;border-radius:50%;
-      background:radial-gradient(circle,#5fbc7e,#5fbc7e00);
-      pointer-events:none
+    #bmIntro .bmIntroSkip:hover{ background:rgba(255,255,255,.16) }
+
+    /* Stage central */
+    #bmIntro .stage{
+      position:relative;width:min(70vw,420px);height:min(70vw,420px);
+      display:flex;align-items:center;justify-content:center
     }
-    @keyframes bmIntroPulse{
-      0%,100%{transform:scale(1);opacity:.85}
-      50%{transform:scale(1.12);opacity:1}
+    /* Célula central */
+    #bmIntro .cell{
+      position:absolute;width:120px;height:120px;border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, #a8e6c1 0%, #5fbc7e 50%, #2f8b4d 100%);
+      box-shadow:0 0 80px rgba(95,188,126,.6),inset 0 0 30px rgba(255,255,255,.3);
+      animation:bmCellPulse 1.6s ease-in-out infinite,bmCellEntry 1s ease-out
     }
-    @keyframes bmIntroTextIn{ to { opacity:1 } }
-    @keyframes bmIntroFade{
-      0%{opacity:1}
-      80%{opacity:1}
-      100%{opacity:0;visibility:hidden;pointer-events:none}
+    #bmIntro .cell::after{
+      content:"";position:absolute;inset:25%;border-radius:50%;
+      background:radial-gradient(circle,#1c4730 0%,#0a1a10 70%);
+      opacity:.55
+    }
+    /* Anillos orbitales */
+    #bmIntro .orbit{
+      position:absolute;border:1.5px solid rgba(95,188,126,.35);
+      border-radius:50%;
+      animation:bmOrbitFade 1s ease-out forwards;
+      opacity:0
+    }
+    #bmIntro .orbit.o1{ width:200px;height:200px;animation-delay:.3s }
+    #bmIntro .orbit.o2{ width:280px;height:280px;animation-delay:.5s;border-color:rgba(95,188,126,.22) }
+    #bmIntro .orbit.o3{ width:360px;height:360px;animation-delay:.7s;border-color:rgba(95,188,126,.12) }
+    /* ADN: doble hélice de 12 puntos rotando */
+    #bmIntro .dna{
+      position:absolute;width:200px;height:60px;
+      transform:translate(0,0) scale(.4);
+      opacity:0;
+      animation:bmDnaIn 1s ease-out forwards;
+      animation-delay:1s
+    }
+    #bmIntro .dna .strand{
+      position:absolute;left:0;right:0;top:50%;height:2px;
+      background:linear-gradient(90deg,#5fbc7e,#3aa5c4,#5fbc7e)
+    }
+    #bmIntro .dna .pair{
+      position:absolute;width:6px;height:30px;border-radius:3px;
+      transform:translateX(-50%);
+      animation:bmDnaWave 1.5s ease-in-out infinite
+    }
+    /* Partículas en explosión */
+    #bmIntro .particle{
+      position:absolute;width:4px;height:4px;border-radius:50%;
+      background:#5fbc7e;
+      box-shadow:0 0 6px #5fbc7e;
+      opacity:0;
+      animation:bmParticleBurst 2s ease-out forwards;
+      animation-delay:2s
+    }
+    /* Texto BIOMASTER */
+    #bmIntro .name{
+      position:absolute;bottom:22%;left:0;right:0;text-align:center;
+      font-family:Merriweather,serif;font-weight:900;
+      font-size:clamp(1.8rem,5vw,3.4rem);letter-spacing:.04em;
+      color:transparent;
+      background:linear-gradient(135deg,#a8e6c1 0%,#5fbc7e 50%,#3aa5c4 100%);
+      -webkit-background-clip:text;background-clip:text;
+      filter:drop-shadow(0 0 20px rgba(95,188,126,.4));
+      opacity:0;
+      animation:bmNameIn 1s ease-out forwards;
+      animation-delay:3.5s
+    }
+    #bmIntro .tag{
+      position:absolute;bottom:14%;left:0;right:0;text-align:center;
+      color:#6fa07a;font-size:clamp(.78rem,2vw,1rem);
+      letter-spacing:.5px;
+      opacity:0;
+      animation:bmTagIn 1s ease-out forwards;
+      animation-delay:4s
+    }
+    /* Animaciones */
+    @keyframes bmCellEntry{
+      0%{ transform:scale(.2);opacity:0 }
+      100%{ transform:scale(1);opacity:1 }
+    }
+    @keyframes bmCellPulse{
+      0%,100%{ transform:scale(1);box-shadow:0 0 80px rgba(95,188,126,.6),inset 0 0 30px rgba(255,255,255,.3) }
+      50%{ transform:scale(1.06);box-shadow:0 0 120px rgba(95,188,126,.85),inset 0 0 40px rgba(255,255,255,.4) }
+    }
+    @keyframes bmOrbitFade{
+      0%{ transform:scale(.4);opacity:0 }
+      100%{ transform:scale(1);opacity:1 }
+    }
+    @keyframes bmDnaIn{
+      0%{ transform:translate(0,0) scale(.4) rotate(0);opacity:0 }
+      100%{ transform:translate(150px,-100px) scale(1) rotate(15deg);opacity:1 }
+    }
+    @keyframes bmDnaWave{
+      0%,100%{ transform:translateX(-50%) translateY(0) rotate(0) }
+      50%{ transform:translateX(-50%) translateY(-15px) rotate(180deg) }
+    }
+    @keyframes bmParticleBurst{
+      0%{ transform:translate(0,0) scale(0);opacity:0 }
+      30%{ opacity:1 }
+      100%{ transform:translate(var(--tx),var(--ty)) scale(1.4);opacity:0 }
+    }
+    @keyframes bmNameIn{
+      0%{ opacity:0;transform:translateY(20px) scale(.92) }
+      100%{ opacity:1;transform:translateY(0) scale(1) }
+    }
+    @keyframes bmTagIn{ to { opacity:1 } }
+    @keyframes bmFinalFade{
+      0%{ opacity:1 }
+      85%{ opacity:1 }
+      100%{ opacity:0;visibility:hidden;pointer-events:none }
+    }
+    @keyframes bmIntroFinalFade{
+      0%{ opacity:1 }
+      88%{ opacity:1;filter:blur(0) }
+      100%{ opacity:0;filter:blur(20px);visibility:hidden;pointer-events:none }
+    }
+    /* Fade-in de la plataforma debajo */
+    @keyframes bmPlatformReveal{
+      0%{ opacity:0;transform:translateY(20px) }
+      100%{ opacity:1;transform:translateY(0) }
+    }
+    /* En móvil reducimos el tamaño */
+    @media(max-width:560px){
+      #bmIntro .cell{ width:90px;height:90px }
+      #bmIntro .orbit.o1{ width:140px;height:140px }
+      #bmIntro .orbit.o2{ width:200px;height:200px }
+      #bmIntro .orbit.o3{ width:260px;height:260px }
+    }
+    /* Respeto preferencia de reduced-motion: intro instantánea */
+    @media(prefers-reduced-motion:reduce){
+      #bmIntro,#bmIntro *{ animation-duration:.01s !important }
     }
   `
   document.head.appendChild(s)
@@ -9651,31 +10485,66 @@ window.playBioMasterIntro = function(force){
   if (intro) intro.remove()
   intro = document.createElement('div')
   intro.id = 'bmIntro'
-  intro.innerHTML = `
-    <button class="bmIntroSkip" onclick="event.stopPropagation();document.getElementById('bmIntro')?.remove()">Saltar →</button>
-    <div class="bmIntroLogo">🧬</div>
-    <div class="bmIntroText">BioMaster</div>
-    <div class="bmIntroSub">Plataforma interactiva para Biología General</div>
-  `
-  // Partículas decorativas
-  for (let i = 0; i < 24; i++){
-    const p = document.createElement('div')
-    p.className = 'bmIntroParticle'
-    const sz = 4 + Math.random()*10
-    p.style.width = sz + 'px'
-    p.style.height = sz + 'px'
-    p.style.left = Math.random()*100 + '%'
-    p.style.top = Math.random()*100 + '%'
-    p.style.opacity = (0.3 + Math.random()*0.5)
-    p.style.animation = `bmIntroPulse ${1.5 + Math.random()*1.5}s ease-in-out infinite`
-    p.style.animationDelay = (Math.random()*2) + 's'
-    intro.appendChild(p)
+  // Construir DNA bases
+  let dnaPairs = ''
+  for (let i = 0; i < 12; i++){
+    const left = (i * 100 / 11) + '%'
+    const delay = (i * 0.12) + 's'
+    const color = i % 2 === 0 ? '#5fbc7e' : '#3aa5c4'
+    dnaPairs += `<div class="pair" style="left:${left};animation-delay:${delay};background:${color}"></div>`
   }
-  intro.addEventListener('click', () => intro.remove())
+  // Construir partículas (24 explosivas) con direcciones radiales
+  let particles = ''
+  for (let i = 0; i < 24; i++){
+    const angle = (i / 24) * Math.PI * 2
+    const distance = 200 + Math.random() * 180
+    const tx = Math.cos(angle) * distance
+    const ty = Math.sin(angle) * distance
+    const delay = 2 + Math.random() * 0.4
+    const size = 3 + Math.random() * 5
+    particles += `<div class="particle" style="--tx:${tx}px;--ty:${ty}px;width:${size}px;height:${size}px;animation-delay:${delay}s"></div>`
+  }
+  intro.innerHTML = `
+    <button class="bmIntroSkip" onclick="event.stopPropagation();window._closeBmIntro()">Saltar →</button>
+    <div class="stage">
+      <div class="orbit o1"></div>
+      <div class="orbit o2"></div>
+      <div class="orbit o3"></div>
+      <div class="cell"></div>
+      <div class="dna">
+        <div class="strand"></div>
+        ${dnaPairs}
+      </div>
+      ${particles}
+    </div>
+    <div class="name">BIOMASTER</div>
+    <div class="tag">Plataforma interactiva para Biología General</div>
+  `
+  intro.addEventListener('click', () => window._closeBmIntro())
   document.body.appendChild(intro)
   sessionStorage.setItem('bm_intro_played', '1')
-  // Auto-remove al terminar la animación
-  setTimeout(() => { if (intro.parentNode) intro.remove() }, 4500)
+
+  // Auto-remove al terminar (con respaldo de seguridad por si la animación no dispara)
+  const _autoEnd = setTimeout(() => window._closeBmIntro(), 5800)
+  intro._autoEnd = _autoEnd
+}
+
+window._closeBmIntro = function(){
+  const intro = document.getElementById('bmIntro')
+  if (!intro) return
+  if (intro._autoEnd) clearTimeout(intro._autoEnd)
+  // Marcar la app debajo con un fade-in elegante
+  try {
+    const main = document.querySelector('main')
+    if (main && !main._bmRevealed){
+      main._bmRevealed = true
+      main.style.animation = 'bmPlatformReveal .6s ease-out'
+    }
+  } catch(e){}
+  intro.style.transition = 'opacity .4s,filter .4s'
+  intro.style.opacity = '0'
+  intro.style.filter = 'blur(20px)'
+  setTimeout(() => intro.remove(), 450)
 }
 
 // Disparar intro cuando entra a la app (post-login o post-guest)
@@ -9695,7 +10564,8 @@ window.addEventListener('DOMContentLoaded', () => {
 //  El usuario escribe; al pedir respuesta modelo, se muestra la guía.
 // ═══════════════════════════════════════════════════════════
 const DEV_PROMPTS = [
-  { topic:'Membrana', q:'Explicá cómo funciona el transporte activo a través de la membrana.',
+  // ═══ P1 — 5 preguntas ═══
+  { topic:'Membrana', parcial:'p1', q:'Explicá cómo funciona el transporte activo a través de la membrana.',
     keywords:['ATP','gradiente','bomba','energía','contra gradiente'],
     model:{
       principal:'El transporte activo mueve sustancias a través de la membrana CONTRA su gradiente de concentración.',
@@ -9704,16 +10574,25 @@ const DEV_PROMPTS = [
       cierre:'Ejemplo clásico: la bomba Na⁺/K⁺, que mantiene gradientes esenciales para el potencial de membrana.'
     }
   },
-  { topic:'Meiosis', q:'¿Por qué la meiosis genera variabilidad genética?',
-    keywords:['crossing-over','recombinación','independiente','haploides','reducción'],
+  { topic:'Enzimas', parcial:'p1', q:'¿Por qué las enzimas son específicas y cómo bajan la energía de activación?',
+    keywords:['sitio activo','sustrato','complejo','ajuste inducido','energía de activación','catalizador'],
     model:{
-      principal:'La meiosis genera variabilidad por dos mecanismos principales.',
-      clave:'Crossing-over en profase I y segregación independiente en metafase I.',
-      explicacion:'En el crossing-over, cromosomas homólogos intercambian segmentos. En la segregación independiente, cada par de homólogos se orienta al azar.',
-      cierre:'Resultado: 4 células haploides genéticamente distintas, base de la diversidad sexual.'
+      principal:'Las enzimas son catalizadores biológicos altamente específicos.',
+      clave:'La especificidad viene de la forma 3D del sitio activo (modelo de ajuste inducido).',
+      explicacion:'Solo el sustrato adecuado encaja en el sitio activo. Al formarse el complejo enzima-sustrato, se posicionan los grupos químicos de modo que la reacción ocurra con menor energía de activación.',
+      cierre:'La enzima sale intacta y se reusa muchas veces — por eso pequeñas cantidades catalizan grandes cantidades de reactivo.'
     }
   },
-  { topic:'Fotosíntesis', q:'Diferenciá la fase luminosa del ciclo de Calvin.',
+  { topic:'Mitocondria y respiración', parcial:'p1', q:'Explicá las etapas de la respiración celular aerobia y dónde ocurre cada una.',
+    keywords:['glucólisis','citoplasma','Krebs','matriz','cadena','cresta','ATP','O₂'],
+    model:{
+      principal:'La respiración aerobia tiene 3 etapas principales que oxidan glucosa para producir ATP.',
+      clave:'Glucólisis en citoplasma; Krebs en matriz mitocondrial; cadena de electrones en cresta.',
+      explicacion:'Glucólisis: glucosa → 2 piruvato + 2 ATP + 2 NADH. Piruvato entra a la mitocondria y se oxida a acetil-CoA. Krebs genera NADH, FADH₂ y CO₂. La cadena transportadora usa los electrones de NADH/FADH₂ para bombear protones, y la ATP sintasa genera la mayoría del ATP.',
+      cierre:'El O₂ es el aceptor final de electrones. Sin O₂ solo se obtienen ~2 ATP (anaerobia); con O₂, ~30-32 ATP.'
+    }
+  },
+  { topic:'Fotosíntesis', parcial:'p1', q:'Diferenciá la fase luminosa del ciclo de Calvin.',
     keywords:['ATP','NADPH','tilacoide','estroma','CO₂','glucosa'],
     model:{
       principal:'La fase luminosa y el ciclo de Calvin son dos etapas complementarias de la fotosíntesis.',
@@ -9722,7 +10601,65 @@ const DEV_PROMPTS = [
       cierre:'Sin la fase luminosa no hay ATP/NADPH; sin Calvin no se sintetiza glucosa.'
     }
   },
-  { topic:'Origen de la vida (P3)', q:'Explicá por qué la teoría quimiosintética no contradice los experimentos de Pasteur.',
+  { topic:'Estructura celular', parcial:'p1', q:'¿Cuáles son las diferencias principales entre una célula procariota y una eucariota?',
+    keywords:['núcleo','organelos','membrana','tamaño','ADN','citoesqueleto'],
+    model:{
+      principal:'La diferencia fundamental es la presencia de núcleo y organelos membranosos.',
+      clave:'Procariota: sin núcleo, sin organelos. Eucariota: con núcleo y organelos (mitocondrias, RE, Golgi, etc.).',
+      explicacion:'En procariotas el ADN está libre en el citoplasma (nucleoide); en eucariotas, el ADN está dentro del núcleo. Los eucariotas tienen citoesqueleto y suelen ser de 10 a 100 veces más grandes.',
+      cierre:'Pese a sus diferencias, ambas células comparten ribosomas, membrana plasmática y la maquinaria genética básica.'
+    }
+  },
+
+  // ═══ P2 — 5 preguntas ═══
+  { topic:'Meiosis', parcial:'p2', q:'¿Por qué la meiosis genera variabilidad genética?',
+    keywords:['crossing-over','recombinación','independiente','haploides','reducción'],
+    model:{
+      principal:'La meiosis genera variabilidad por dos mecanismos principales.',
+      clave:'Crossing-over en profase I y segregación independiente en metafase I.',
+      explicacion:'En el crossing-over, cromosomas homólogos intercambian segmentos. En la segregación independiente, cada par de homólogos se orienta al azar.',
+      cierre:'Resultado: 4 células haploides genéticamente distintas, base de la diversidad sexual.'
+    }
+  },
+  { topic:'Genética mendeliana', parcial:'p2', q:'Explicá el cruce dihíbrido y la proporción 9:3:3:1.',
+    keywords:['independientes','metafase','heterocigoto','fenotipo','segregación','independiente'],
+    model:{
+      principal:'En un cruce dihíbrido (dos rasgos), si los genes están en cromosomas distintos, se heredan independientemente.',
+      clave:'F1 heterocigota (AaBb) cruzada consigo misma → proporción 9:3:3:1 en F2.',
+      explicacion:'En metafase I los pares homólogos se orientan al azar, generando 4 tipos de gametos en proporciones iguales (AB, Ab, aB, ab). El cruce produce 16 combinaciones que agrupadas dan 9 dominantes ambos, 3 dominante en uno, 3 dominante en el otro, 1 recesivo doble.',
+      cierre:'Si los genes están ligados (mismo cromosoma), no se cumple 9:3:3:1; aparecen proporciones distintas según frecuencia de recombinación.'
+    }
+  },
+  { topic:'Evolución', parcial:'p2', q:'Explicá la diferencia entre selección natural y deriva genética.',
+    keywords:['adaptación','aleatorio','frecuencias','población','ambiente','azar'],
+    model:{
+      principal:'Ambas cambian las frecuencias alélicas pero por mecanismos distintos.',
+      clave:'Selección natural: no aleatoria, favorece adaptación. Deriva genética: aleatoria, sin dirección.',
+      explicacion:'La selección natural actúa cuando el ambiente favorece ciertos fenotipos; los más aptos dejan más descendencia y sus alelos se vuelven comunes. La deriva genética es el cambio aleatorio en frecuencias, especialmente fuerte en poblaciones pequeñas (efecto fundador, cuello de botella).',
+      cierre:'En poblaciones grandes domina la selección; en pequeñas la deriva puede prevalecer aún cuando reduzca la aptitud.'
+    }
+  },
+  { topic:'Replicación del ADN', parcial:'p2', q:'Describí el proceso de replicación del ADN y por qué se llama semiconservativa.',
+    keywords:['helicasa','polimerasa','semiconservativa','molde','antiparalela','hebras'],
+    model:{
+      principal:'La replicación copia la doble hélice de ADN en dos moléculas hijas idénticas.',
+      clave:'Es semiconservativa: cada molécula hija tiene una hebra original y una nueva.',
+      explicacion:'La helicasa separa las dos hebras. La ADN polimerasa lee cada hebra molde de 3\' a 5\' y sintetiza la nueva de 5\' a 3\', emparejando bases (A-T, G-C). Una hebra se sintetiza continua (líder) y la otra en fragmentos (de Okazaki, hebra retrasada) que luego se unen.',
+      cierre:'La fidelidad es altísima gracias a la actividad correctora 3\'→5\' de la polimerasa.'
+    }
+  },
+  { topic:'Biotecnología', parcial:'p2', q:'¿Qué es PCR y para qué se usa en biotecnología?',
+    keywords:['polimerasa','temperatura','amplificar','primers','ciclos','Taq'],
+    model:{
+      principal:'PCR (Polymerase Chain Reaction) amplifica una secuencia específica de ADN, haciendo millones de copias.',
+      clave:'Usa ciclos de temperatura controlados con una polimerasa termoestable (Taq).',
+      explicacion:'En cada ciclo: 95°C desnaturaliza el ADN, 50-60°C permite que los primers se unan, 72°C la polimerasa extiende la secuencia. Cada ciclo duplica la cantidad de ADN objetivo.',
+      cierre:'Se usa en diagnóstico (detectar virus, mutaciones), medicina forense, secuenciación, ingeniería genética y muchas aplicaciones más.'
+    }
+  },
+
+  // ═══ P3 — 5 preguntas ═══
+  { topic:'Origen de la vida', parcial:'p3', q:'Explicá por qué la teoría quimiosintética no contradice los experimentos de Pasteur.',
     keywords:['atmósfera primitiva','condiciones actuales','generación espontánea','Miller','protocélulas'],
     model:{
       principal:'Pasteur refutó la generación espontánea EN CONDICIONES ACTUALES; la teoría quimiosintética habla de condiciones primitivas distintas.',
@@ -9731,7 +10668,7 @@ const DEV_PROMPTS = [
       cierre:'Hoy no surgen seres vivos espontáneamente, pero en la Tierra primitiva las condiciones químicas permitieron una evolución prebiótica.'
     }
   },
-  { topic:'Clasificación (P3)', q:'¿Por qué Woese reorganizó el árbol de la vida en tres dominios?',
+  { topic:'Tres dominios', parcial:'p3', q:'¿Por qué Woese reorganizó el árbol de la vida en tres dominios?',
     keywords:['ARN ribosomal','Bacteria','Archaea','Eukarya','procariotas'],
     model:{
       principal:'Carl Woese encontró que los procariotas no eran un grupo uniforme.',
@@ -9739,12 +10676,47 @@ const DEV_PROMPTS = [
       explicacion:'Las arqueas, aunque morfológicamente parecen bacterias, difieren en pared celular, lípidos de membrana, ribosomas y ARN polimerasas. Genéticamente están más cerca de Eukarya en algunos rasgos.',
       cierre:'Por eso se propuso el sistema de tres dominios: Bacteria, Archaea y Eukarya.'
     }
+  },
+  { topic:'Virus y priones', parcial:'p3', q:'¿Por qué los virus no se consideran formalmente seres vivos?',
+    keywords:['acelular','metabolismo','reproducción','hospedador','obligado'],
+    model:{
+      principal:'Los virus están en una frontera entre lo vivo y lo no vivo.',
+      clave:'No tienen metabolismo propio ni reproducción autónoma — dependen totalmente de una célula hospedadora.',
+      explicacion:'Un virus es una partícula proteica con ácido nucleico, sin estructura celular. Fuera del hospedador es inerte. Solo dentro de una célula usa la maquinaria del hospedador para replicarse. No respira, no crece, no responde a estímulos.',
+      cierre:'Por eso muchos biólogos los clasifican como "entidades replicativas" pero no como seres vivos en sentido estricto. Los priones (proteínas mal plegadas) son aún más extremos: ni siquiera tienen ácido nucleico.'
+    }
+  },
+  { topic:'Plantas y hongos', parcial:'p3', q:'¿Por qué los hongos no son plantas y cuáles son sus diferencias principales?',
+    keywords:['quitina','heterótrofo','clorofila','absorción','reino','pared'],
+    model:{
+      principal:'Pese a vivir fijos al sustrato, los hongos pertenecen a su propio reino, no al de las plantas.',
+      clave:'Hongos: pared de quitina, sin clorofila, heterótrofos por absorción. Plantas: pared de celulosa, con clorofila, autótrofos.',
+      explicacion:'Los hongos secretan enzimas digestivas al exterior y absorben las moléculas resultantes. Las plantas hacen fotosíntesis con sus cloroplastos. Genéticamente, los hongos están más cerca de los animales que de las plantas.',
+      cierre:'Los hongos son fundamentales como descomponedores y en simbiosis (micorrizas, líquenes). Su clasificación como reino propio es relativamente reciente.'
+    }
+  },
+  { topic:'Ecología', parcial:'p3', q:'Explicá la diferencia entre población, comunidad y ecosistema.',
+    keywords:['especie','interacciones','bióticos','abióticos','ambiente','biósfera'],
+    model:{
+      principal:'Son tres niveles de organización ecológica de creciente complejidad.',
+      clave:'Población: una especie en un lugar. Comunidad: varias poblaciones. Ecosistema: comunidad + factores abióticos.',
+      explicacion:'Una población es un conjunto de individuos de la MISMA especie en una misma área y tiempo. Una comunidad agrupa todas las poblaciones que conviven e interactúan. Un ecosistema añade los factores físicos y químicos (suelo, agua, clima, energía) y todas las interacciones bióticas y abióticas.',
+      cierre:'Por encima del ecosistema está la biósfera, que es el conjunto de todos los ecosistemas de la Tierra.'
+    }
   }
 ]
+
+// Filtra prompts por parcial activo
+function _devPromptsForParcial(){
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const filtered = DEV_PROMPTS.filter(dp => !dp.parcial || dp.parcial === p)
+  return filtered.length ? filtered : DEV_PROMPTS
+}
 let _devCurrentPrompt = 0
 
 window.devNextPrompt = function(){
-  _devCurrentPrompt = (_devCurrentPrompt + 1) % DEV_PROMPTS.length
+  const list = _devPromptsForParcial()
+  _devCurrentPrompt = (_devCurrentPrompt + 1) % list.length
   _devRender()
 }
 window.devShowModel = function(){
@@ -9757,7 +10729,9 @@ function _devRender(opts){
   opts = opts || {}
   const c = document.getElementById('devTrainerBox')
   if (!c) return
-  const p = DEV_PROMPTS[_devCurrentPrompt]
+  const list = _devPromptsForParcial()
+  if (_devCurrentPrompt >= list.length) _devCurrentPrompt = 0
+  const p = list[_devCurrentPrompt]
   const userText = (document.getElementById('devTrainerInput')?.value || '').toLowerCase()
   // Análisis de palabras clave
   let kwHit = []
@@ -9766,7 +10740,7 @@ function _devRender(opts){
   }
   c.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-      <strong>${escapeHtml(p.topic)} · pregunta ${_devCurrentPrompt + 1}/${DEV_PROMPTS.length}</strong>
+      <strong>${escapeHtml(p.topic)} · pregunta ${_devCurrentPrompt + 1}/${list.length} <span style="font-weight:600;color:var(--muted);font-size:.78rem">(${(p.parcial || 'general').toUpperCase()})</span></strong>
       <button class="btn" style="font-size:.75rem;padding:.3rem .6rem" onclick="window.devNextPrompt()">Siguiente →</button>
     </div>
     <div class="sim-question" style="margin-bottom:.6rem">
@@ -9801,6 +10775,292 @@ window.initDevTrainer = function(){ _devRender() }
 // ═══════════════════════════════════════════════════════════
 //  16. API PÚBLICA (lo que se invoca desde onclick="A.xxx()")
 // ═══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  FEATURES V2 — Integradas con criterio en el index actual
+//  Ninguna rompe la base, todas son acumulativas/desactivables.
+// ═══════════════════════════════════════════════════════════
+
+// ─── 1. MODO ULTRA LIMPIO ───────────────────────────────────
+//  Reduce ruido visual: oculta hero stats secundarios, recos
+//  laterales, glows decorativos. Mantiene TODAS las funciones,
+//  solo simplifica la presentación. Toggle persistente.
+window.toggleUltraClean = function(){
+  const on = !document.body.classList.contains('ultra-clean')
+  document.body.classList.toggle('ultra-clean', on)
+  try { localStorage.setItem('biomaster_ultra_clean', on ? '1' : '0') } catch(e){}
+  toast(on ? '🧘 Modo ultra limpio activado' : 'Modo normal activado', false)
+}
+function _injectUltraCleanStyles(){
+  if (document.getElementById('ultraCleanStyles')) return
+  const s = document.createElement('style')
+  s.id = 'ultraCleanStyles'
+  s.textContent = `
+    body.ultra-clean .glow,
+    body.ultra-clean .hero-stats,
+    body.ultra-clean .lp-particles,
+    body.ultra-clean #recoPanel,
+    body.ultra-clean .badge-admin,
+    body.ultra-clean .lp-trust,
+    body.ultra-clean .lp-faq{ display:none !important }
+    body.ultra-clean .card,
+    body.ultra-clean .panel{ box-shadow:none !important;background:var(--surface) !important }
+    body.ultra-clean h1,body.ultra-clean h2{ font-weight:700 !important }
+    body.ultra-clean *{ animation-duration:0s !important;transition-duration:.1s !important }
+  `
+  document.head.appendChild(s)
+}
+// Restaurar preferencia al cargar
+try {
+  if (localStorage.getItem('biomaster_ultra_clean') === '1'){
+    document.addEventListener('DOMContentLoaded', () => {
+      _injectUltraCleanStyles()
+      document.body.classList.add('ultra-clean')
+    })
+  } else {
+    _injectUltraCleanStyles() // siempre cargar el CSS aunque esté off, así toggle funciona instantáneo
+  }
+} catch(e){}
+
+// ─── 2. MODO ÚLTIMOS 3 DÍAS ────────────────────────────────
+//  Si hay plan_exam_date y faltan ≤3 días, activa una capa
+//  visual y reordena las recomendaciones del día (errores
+//  frecuentes primero, luego repaso del tema más débil).
+window.checkLast3DaysMode = function(){
+  const st = getPremiumState()
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const examKey = p === 'p1' ? 'plan_exam_date_p1' : (p === 'p3' ? 'plan_exam_date_p3' : 'plan_exam_date')
+  const examDate = st[examKey]
+  if (!examDate) return
+  const days = Math.ceil((new Date(examDate) - new Date()) / 86400000)
+  if (days < 0 || days > 3) return
+  // Mostrar banner si no existe ya
+  if (!document.getElementById('last3DaysBanner')){
+    const banner = document.createElement('div')
+    banner.id = 'last3DaysBanner'
+    banner.style.cssText = 'position:sticky;top:0;z-index:100;background:linear-gradient(90deg,#c45252,#e88a36);color:#fff;padding:.6rem 1rem;font-size:.85rem;font-weight:700;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.2)'
+    banner.innerHTML = `🚨 Modo últimos 3 días activado — quedan <strong>${days} día${days === 1 ? '' : 's'}</strong> para tu examen ${p.toUpperCase()}. Foco en errores frecuentes y simulacros del tema débil.
+      <button onclick="this.parentNode.remove()" style="margin-left:.6rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:.2rem .6rem;border-radius:6px;cursor:pointer;font-size:.75rem">Cerrar</button>`
+    document.body.insertBefore(banner, document.body.firstChild)
+  }
+}
+
+// ─── 3. SISTEMA DE FATIGA INTELIGENTE ──────────────────────
+//  Detecta dos señales: (a) muchas sesiones cortas seguidas con
+//  baja precisión, (b) tiempo total sostenido sin pausa.
+//  Si una se cumple, recomienda pausa con un toast no-intrusivo
+//  como máximo 1 vez cada 30 minutos.
+const _fatigue = {
+  lastWarn: 0,
+  sessionStart: Date.now(),
+  recentAccuracy: []
+}
+window.recordAnswerForFatigue = function(correct){
+  _fatigue.recentAccuracy.push({ t: Date.now(), correct })
+  // Mantener solo los últimos 20
+  if (_fatigue.recentAccuracy.length > 20) _fatigue.recentAccuracy.shift()
+  _checkFatigue()
+}
+function _checkFatigue(){
+  const now = Date.now()
+  if (now - _fatigue.lastWarn < 30 * 60 * 1000) return // máx 1/30min
+  // Señal A: últimas 10 respuestas con < 50% acierto
+  if (_fatigue.recentAccuracy.length >= 10){
+    const recent10 = _fatigue.recentAccuracy.slice(-10)
+    const correct = recent10.filter(r => r.correct).length
+    if (correct / 10 < 0.5){
+      toast('🧠 Notamos que tu precisión bajó. ¿Tomás 5 min de pausa?', false)
+      _fatigue.lastWarn = now
+      _fatigue.recentAccuracy = []
+      return
+    }
+  }
+  // Señal B: 45 minutos seguidos en sesión
+  if (now - _fatigue.sessionStart > 45 * 60 * 1000){
+    toast('⏸ Llevás 45 minutos de práctica continua. Pausa breve recomendada.', false)
+    _fatigue.lastWarn = now
+    _fatigue.sessionStart = now
+  }
+}
+// Reset de sesión cuando hay actividad real (no idle)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') _fatigue.sessionStart = Date.now()
+})
+
+// ─── 4. ESTADÍSTICAS EMOCIONALES ────────────────────────────
+//  Genera frases interpretativas tipo "Genética casi dominada"
+//  o "Ecología sin tocar — buen momento para empezar".
+//  Útil como capa motivacional, NO inventa pseudociencia.
+window.getEmotionalStats = function(){
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const stats = (p === 'p1' ? S.bythemeP1 : (p === 'p3' ? (S.bythemeP3 || {}) : S.bytheme)) || {}
+  const labelsByParcial = {
+    p1: { int:'Introducción', bio:'Biomoléculas', cel:'Célula', met:'Metabolismo', ene:'Energía celular' },
+    p2: { gen:'Genética', evo:'Evolución', biot:'Biotecnología' },
+    p3: { ori:'Origen de la vida', dom:'Tres dominios', virpro:'Virus/Procariotas', euk:'Eucariotas/Plantas/Hongos', ani:'Animales', eco:'Ecología' }
+  }
+  const labels = labelsByParcial[p] || labelsByParcial.p2
+  const phrases = []
+  Object.keys(labels).forEach(k => {
+    const t = stats[k] || { hits:0, miss:0 }
+    const h = (p === 'p2' ? (S.stats.themeHits?.[k] || 0) : (t.hits || 0))
+    const m = (p === 'p2' ? (S.stats.themeMiss?.[k] || 0) : (t.miss || 0))
+    const total = h + m
+    const pct = total ? (h / total) : 0
+    const label = labels[k]
+    if (total === 0){
+      phrases.push({ icon:'⚪', text:`${label} sin tocar — buen momento para empezar.` })
+    } else if (pct >= 0.85){
+      phrases.push({ icon:'🌟', text:`${label} dominada (${Math.round(pct*100)}%) — mantenelo con repaso suave.` })
+    } else if (pct >= 0.7){
+      phrases.push({ icon:'🟢', text:`${label} casi dominada (${Math.round(pct*100)}%) — un par de simulacros más.` })
+    } else if (pct >= 0.5){
+      phrases.push({ icon:'🟡', text:`${label} en construcción (${Math.round(pct*100)}%) — practicá más.` })
+    } else {
+      phrases.push({ icon:'🔴', text:`${label} flojo (${Math.round(pct*100)}%) — empezá por el resumen y reforzá con simulacros cortos.` })
+    }
+  })
+  return phrases
+}
+
+// ─── 5. RECOMENDACIÓN AUTOMÁTICA ────────────────────────────
+//  Sugiere UNA acción concreta basada en el estado actual:
+//  diagnóstico no hecho, plan no creado, tema débil, días al examen.
+window.getAutoRecommendation = function(){
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  const st = getPremiumState()
+  const diagKey = p === 'p1' ? 'diagnostic_p1' : (p === 'p3' ? 'diagnostic_p3' : 'diagnostic')
+  const planKey = p === 'p1' ? 'plan_schedule_p1' : (p === 'p3' ? 'plan_schedule_p3' : 'plan_schedule')
+  const examKey = p === 'p1' ? 'plan_exam_date_p1' : (p === 'p3' ? 'plan_exam_date_p3' : 'plan_exam_date')
+
+  // 1) Sin diagnóstico → recomendar diagnóstico
+  if (!st[diagKey]) return {
+    icon:'🎯',
+    title:'Hacé el diagnóstico inteligente',
+    desc:'15 preguntas — descubrí cuál es tu tema más débil del ' + p.toUpperCase() + '.',
+    target:'#diagnostico'
+  }
+  // 2) Diagnóstico hecho pero sin plan → recomendar plan
+  if (!st[planKey]) return {
+    icon:'📋',
+    title:'Construí tu plan de estudio',
+    desc:'30 segundos — alineado a la fecha de tu examen ' + p.toUpperCase() + '.',
+    target:'#plan-estudio'
+  }
+  // 3) Quedan ≤3 días → modo sprint
+  if (st[examKey]){
+    const days = Math.ceil((new Date(st[examKey]) - new Date()) / 86400000)
+    if (days >= 0 && days <= 3) return {
+      icon:'🚨',
+      title:'Activá el modo sprint',
+      desc:`Quedan ${days} día${days === 1 ? '' : 's'}. Foco en errores frecuentes y simulacros cortos.`,
+      target:'#errlog'
+    }
+  }
+  // 4) Tema débil → simulacro de ese tema
+  const weak = st[diagKey].weakest
+  if (weak) return {
+    icon:'⚡',
+    title:'Practicá tu tema débil',
+    desc:`Simulacro corto enfocado en "${weak}". 10 preguntas, 5 minutos.`,
+    target:'#simulacros'
+  }
+  return {
+    icon:'✅',
+    title:'Vas bien encaminado',
+    desc:'Mantené el ritmo con simulacros semanales y repaso de errores.',
+    target:'#hoy'
+  }
+}
+
+// ─── 6. LÍNEA DE PROGRESO BIOLÓGICA (ADN llenándose) ───────
+//  Componente que muestra una hélice ADN cuyas "bases" se llenan
+//  en función del % de progreso del parcial activo. Sutil, no pesa.
+window.renderBioProgressBar = function(targetId){
+  const el = document.getElementById(targetId)
+  if (!el) return
+  const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+  // Usar el max_progress_pct del audit si existe, si no, calcular por diagnostic
+  const audit = (typeof getProgressAudit === 'function') ? getProgressAudit() : null
+  const liveStats = S.stats || { hits:0, miss:0 }
+  const tot = (liveStats.hits || 0) + (liveStats.miss || 0)
+  const livePct = tot ? Math.round(100 * liveStats.hits / tot) : 0
+  const pct = Math.max(audit?.max_progress_pct || 0, livePct)
+  const filled = Math.round(20 * pct / 100)
+  let bases = ''
+  for (let i = 0; i < 20; i++){
+    const isFilled = i < filled
+    const color = isFilled ? '#5fbc7e' : 'rgba(95,188,126,.18)'
+    bases += `<div style="width:8px;height:18px;background:${color};border-radius:2px;${isFilled ? 'box-shadow:0 0 6px rgba(95,188,126,.5)' : ''}"></div>`
+  }
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.8rem">
+      <span style="font-size:.78rem;color:var(--muted);font-weight:700">🧬 Progreso ${p.toUpperCase()}</span>
+      <div style="display:flex;gap:2px;align-items:center">${bases}</div>
+      <strong style="font-size:.85rem">${pct}%</strong>
+    </div>
+  `
+}
+
+// ─── 7. EVENTOS TEMPORALES ACADÉMICOS ───────────────────────
+//  Detecta si estamos en un evento académico activo y muestra
+//  un highlight. Los eventos se definen aquí (editables):
+const ACADEMIC_EVENTS = [
+  // Ejemplo: { name:'Semana de repaso P1', from:'2026-05-15', to:'2026-05-22', parcial:'p1' }
+  // Esto es un placeholder — admin/usuario lo va a configurar después.
+  // Por defecto NO hay eventos hardcodeados (no inventamos fechas).
+]
+window.getActiveAcademicEvent = function(){
+  const now = new Date()
+  for (const e of ACADEMIC_EVENTS){
+    if (new Date(e.from) <= now && now <= new Date(e.to)){
+      return e
+    }
+  }
+  return null
+}
+
+// ─── 8. PERFIL ACADÉMICO EVOLUTIVO ──────────────────────────
+//  Calcula un "nivel" interpretativo del estudiante basado en
+//  XP + diagnóstico promedio + cumplimiento del plan.
+window.getStudentProfile = function(){
+  const xp = S.stats.xp || 0
+  const st = getPremiumState()
+  const diag = st.diagnostic_p1 || st.diagnostic || st.diagnostic_p3
+  let diagAvg = 0
+  if (diag?.scores){
+    const vals = Object.values(diag.scores)
+    diagAvg = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0
+  }
+  const composite = (xp / 1000) * 0.3 + diagAvg * 0.7
+  let level, title, desc
+  if (composite < 0.2){ level = 1; title = '🌱 Brote'; desc = 'Estás empezando. Cada simulacro suma.' }
+  else if (composite < 0.4){ level = 2; title = '🌿 Plántula'; desc = 'Tomaste contacto con varios temas. Reforzá los más débiles.' }
+  else if (composite < 0.6){ level = 3; title = '🌳 Árbol joven'; desc = 'Tenés base sólida. Estás listo para simulacros largos.' }
+  else if (composite < 0.8){ level = 4; title = '🌟 Avanzado'; desc = 'Dominás la mayoría de temas. Foco en cerrar lo que falta.' }
+  else { level = 5; title = '🧠 Experto'; desc = 'Excelente nivel. Confía en lo aprendido.' }
+  return { level, title, desc, xp, diagAvg: Math.round(diagAvg*100), composite: Math.round(composite*100) }
+}
+
+// ─── Exposición de helpers para uso desde HTML/onClick ──
+window.A_features_v2 = {
+  toggleUltraClean: window.toggleUltraClean,
+  checkLast3DaysMode: window.checkLast3DaysMode,
+  getEmotionalStats: window.getEmotionalStats,
+  getAutoRecommendation: window.getAutoRecommendation,
+  renderBioProgressBar: window.renderBioProgressBar,
+  getStudentProfile: window.getStudentProfile
+}
+
+// Auto-disparo en cambios de parcial
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    try { window.checkLast3DaysMode() } catch(e){}
+  }, 1000)
+})
+
+// ═══════════════════════════════════════════════════════════
+//  16. API PÚBLICA (lo que se invoca desde onclick="A.xxx()")
+// ═══════════════════════════════════════════════════════════
 const A = {
   // auth
   doLogin, doRegister, doLogout, forgotPassword, authSwitchTab,
@@ -9823,7 +11083,7 @@ const A = {
   // admin
   openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser, refreshMyProfile,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
-  adminGrantPlan, adminRevokePlan, adminQuickGrant,
+  adminGrantPlan, adminRevokePlan, adminQuickGrant, adminViewAudit,
   // cobertura/dominio
   syncTopic, saveST, filterDomain, showDomainDetail,
   // juego
@@ -11788,9 +13048,9 @@ window.openLegal = function(seccion){
       html: `
         <p style="margin-bottom:.8rem"><small><em>Última actualización: ${today}</em></small></p>
         <p><strong>1. Período de reembolso</strong></p>
-        <p>Tenés <strong>7 días calendario</strong> desde la activación de tu plan para solicitar un reembolso, siempre que no hayás usado más del <strong>20% del contenido pago</strong> (medido por simulacros completados, juegos terminados o secciones premium accedidas).</p>
+        <p>Tenés <strong>7 días calendario</strong> desde la activación de tu plan para solicitar un reembolso, siempre que no hayás usado más del <strong>20% del contenido pago</strong> (medido por simulacros completados, juegos terminados, secciones premium accedidas y diagnóstico/plan utilizados).</p>
         <p style="margin-top:.8rem"><strong>2. Cómo solicitarlo</strong></p>
-        <p>Escribinos por WhatsApp al <strong>8713 7782</strong> indicando:</p>
+        <p>Escribinos al correo oficial <strong>Biomaster.oficial@gmail.com</strong> indicando:</p>
         <ul style="padding-left:1.2rem">
           <li>Tu email registrado en BioMaster.</li>
           <li>Plan adquirido y fecha aproximada del pago.</li>
@@ -11805,8 +13065,12 @@ window.openLegal = function(seccion){
           <li>Planes activados como cortesía o beca (que no fueron pagados).</li>
           <li>Renovaciones del plan mensual posteriores a la primera (las renovaciones se cancelan hacia adelante, no se reembolsan).</li>
         </ul>
-        <p style="margin-top:.8rem"><strong>5. Resolución</strong></p>
-        <p>Aprobamos reembolsos legítimos sin discusión. Si hay desacuerdo sobre el uso, podemos compartir los registros de actividad de tu cuenta como evidencia.</p>
+        <p style="margin-top:.8rem"><strong>5. Registro de avance y validación</strong></p>
+        <p style="background:var(--soft);padding:.6rem .8rem;border-radius:8px;border-left:3px solid var(--green);font-size:.9rem">
+          <strong>Importante:</strong> BioMaster mantiene un registro administrativo del progreso máximo alcanzado por cada cuenta. Este registro se utiliza únicamente para validar reembolsos y se conserva aunque el usuario reinicie su progreso visible desde "Borrar mi progreso". <strong>Reiniciar tu progreso jugable NO borra ni modifica el registro administrativo de avance ni anula el 20% ya alcanzado.</strong> Así garantizamos transparencia y evitamos disputas.
+        </p>
+        <p style="margin-top:.8rem"><strong>6. Resolución</strong></p>
+        <p>Aprobamos reembolsos legítimos sin discusión. Si hay desacuerdo sobre el uso, compartimos contigo el registro administrativo de actividad de tu cuenta como evidencia.</p>
       `
     },
     contacto: {
