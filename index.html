@@ -13380,7 +13380,7 @@ async function loadPublicTestimonials(){
   if (!grid) return
   try {
     const { data, error } = await sb
-      .from('feedbacks')
+      .from('feedback')
       .select('id, text, experience_text, type, created_at, profiles(name)')
       .eq('is_public', true)
       .order('created_at', { ascending: false })
