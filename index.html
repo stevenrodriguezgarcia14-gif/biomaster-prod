@@ -1100,24 +1100,31 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
   <section class="lp-section" style="background:var(--soft2)">
     <div class="container">
       <h2>Lo que dicen estudiantes que ya la usaron</h2>
-      <p class="lp-section-sub">Testimonios reales de usuarios de BioMaster. Si compartiste tu experiencia desde el panel de feedback y la aprobamos, podría aparecer acá.</p>
+      <p class="lp-section-sub">Testimonios reales de usuarios de BioMaster. Si compartís tu experiencia desde el panel de feedback dentro de la app y la aprobamos, aparece acá.</p>
+      <!-- Los testimonios públicos se cargan desde Supabase (feedbacks con is_public=true).
+           Si no hay feedbacks públicos aún, mostramos los placeholders de abajo
+           (ediables y bien identificados como "Estudiante beta" para no engañar). -->
       <div class="lp-testimonials" id="lpTestimonialsGrid">
-        <div class="lp-test">
+        <div class="lp-test" data-placeholder="1">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"Llegué al segundo parcial sintiendo que no sabía nada. Los simulacros me dijeron exactamente qué subtema repasar y pasé de 60 a 85 en una semana."</p>
           <div class="lp-test-author"><div class="lp-test-avatar">A</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
-        <div class="lp-test">
+        <div class="lp-test" data-placeholder="1">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"La evaluación tipo parcial con feedback inmediato es lo que más me sirvió. No tener que adivinar si la respuesta estaba bien fue la diferencia."</p>
           <div class="lp-test-author"><div class="lp-test-avatar">M</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
-        <div class="lp-test">
+        <div class="lp-test" data-placeholder="1">
           <div class="lp-test-stars">★★★★★</div>
           <p class="lp-test-text">"Los juegos parecen tontos hasta que te das cuenta de que estás repasando codones a las 11pm sin darte cuenta. BioMatch es adictivo."</p>
           <div class="lp-test-author"><div class="lp-test-avatar">D</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
         </div>
       </div>
+      <p class="muted" style="text-align:center;font-size:.78rem;margin-top:1rem;font-style:italic">
+        ¿Querés compartir tu experiencia? Iniciá sesión y mandanos tu feedback desde el panel.
+        Lo revisamos y, con tu permiso, lo publicamos acá.
+      </p>
     </div>
   </section>
 
@@ -3491,6 +3498,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           <button class="tab-btn active" onclick="A.adminTab(this,'paneFb')">💬 Feedback</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneUsers')">👥 Usuarios</button>
           <button class="tab-btn" onclick="A.adminTab(this,'panePlans')">💳 Planes y pagos</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneProgress')">📊 Progreso</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Herramientas</button>
         </div>
         <div class="tab-pane active" id="paneFb">
@@ -3526,6 +3534,35 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           <hr style="margin:1.5rem 0;border:none;border-top:1px solid var(--border)">
           <strong style="font-size:.88rem">Últimos pagos registrados</strong>
           <div id="adminPaymentsLog" style="margin-top:.5rem">Cargando…</div>
+        </div>
+        <!-- ═══ NUEVO: PESTAÑA DE PROGRESO DE TODOS LOS USUARIOS ═══
+             Lista todos los usuarios con su progreso real leído de
+             user_progress.data. Sirve para validar avance antes de
+             aprobar reembolsos o detectar abuso. -->
+        <div class="tab-pane" id="paneProgress">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem">
+            <strong style="font-size:.92rem">Progreso real de todos los usuarios</strong>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <input type="text" id="adminProgressFilter" placeholder="Filtrar por nombre o email…"
+                     oninput="A.adminProgressFilter(this.value)"
+                     style="padding:.45rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);min-width:200px;font-size:.85rem">
+              <select id="adminProgressSort" onchange="A.adminProgressSort(this.value)"
+                      style="padding:.45rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:.85rem">
+                <option value="max_desc">Progreso máx ↓</option>
+                <option value="max_asc">Progreso máx ↑</option>
+                <option value="live_desc">Progreso vivo ↓</option>
+                <option value="recent">Última actividad</option>
+                <option value="name">Nombre A-Z</option>
+              </select>
+              <button class="btn" onclick="A.adminRefreshProgress()" style="font-size:.78rem">↻ Refrescar</button>
+            </div>
+          </div>
+          <p class="muted" style="font-size:.78rem;margin-bottom:.6rem">
+            <strong>Progreso vivo</strong>: % que el usuario ve ahora.
+            <strong>Progreso máx</strong>: máximo histórico (no se borra si el usuario resetea su progreso).
+            <strong>Cruzó 20%</strong>: indica si ya no procede reembolso por uso.
+          </p>
+          <div id="adminProgressTable" style="margin-top:.5rem">Cargando…</div>
         </div>
         <div class="tab-pane" id="paneTools">
           <p class="muted" style="font-size:.85rem;margin-bottom:.6rem">Las acciones sensibles (promover, degradar, eliminar) se ejecutan vía Edge Functions del lado servidor. Nunca desde el cliente.</p>
@@ -4034,6 +4071,9 @@ async function onSessionChanged(){
     try { initApp() } catch(e){ console.error('[initApp]', e); toast('⚠ Error al cargar la app, recarga la página.', true) }
     // Iniciar auto-refresh del profile mientras la sesión esté activa
     _startProfilePolling()
+    // ═══ TRIGGER INTRO DETERMINISTA ═══
+    // Cualquier cambio a estado logueado dispara la intro (una vez por carga).
+    try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
   } else {
     // No hay sesión → volver a la landing (no al overlay directo)
     document.getElementById('authOverlay').style.display = 'none'
@@ -4854,6 +4894,211 @@ async function _renderAdminPlans(){
       </div>
     </div>`).join('')
   }
+
+  // Cargar progreso de TODOS los usuarios (al abrir la pestaña Progreso)
+  // Se ejecuta acá una sola vez para que esté listo en la pestaña.
+  try { await adminLoadAllProgress() } catch(e){ console.warn('[adminProgress]', e) }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — Progreso de TODOS los usuarios
+//
+//  Lee profiles + user_progress.data y construye una tabla con:
+//   - usuario / email
+//   - parcial activo
+//   - progreso vivo (lo que ve el usuario ahora)
+//   - progreso máx histórico (registro inmutable de avance)
+//   - si cruzó el 20% y cuándo
+//   - última actividad
+//   - botón para ver detalle
+//
+//  IMPORTANTE: el progreso vivo se calcula del MISMO modo que en
+//  el frontend del usuario (promedio de scores de diagnóstico).
+//  Si user_progress no tiene fila, mostramos "sin actividad".
+//
+//  REQUISITO Supabase: el admin debe poder hacer SELECT en
+//  user_progress de OTROS usuarios. Si la RLS solo permite leer
+//  el propio progreso, agregar la policy descrita en
+//  SQL_DELTA_v9.sql.
+// ═══════════════════════════════════════════════════════════
+let _adminProgressData = []   // cache de toda la data
+let _adminProgressFilterText = ''
+let _adminProgressSortMode = 'max_desc'
+
+async function adminLoadAllProgress(){
+  const cont = document.getElementById('adminProgressTable')
+  if (!cont) return
+  cont.innerHTML = '<span class="muted">Cargando progreso de usuarios…</span>'
+
+  // 1. Traer todos los profiles (id, name, email, plan)
+  const { data: profiles, error: pe } = await sb
+    .from('profiles')
+    .select('id,name,email,role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
+    .order('created_at', { ascending: false })
+    .limit(500)
+  if (pe){
+    cont.innerHTML = '<span class="bad">⚠ Error: '+escapeHtml(pe.message)+'</span>'
+    return
+  }
+  if (!profiles?.length){
+    cont.innerHTML = '<span class="muted">No hay usuarios todavía.</span>'
+    return
+  }
+
+  // 2. Traer user_progress de todos (puede fallar si RLS no permite — manejamos el caso)
+  const ids = profiles.map(p => p.id)
+  const { data: progressRows, error: prgE } = await sb
+    .from('user_progress')
+    .select('user_id, data, updated_at')
+    .in('user_id', ids)
+  if (prgE){
+    cont.innerHTML = `<div class="warn" style="padding:.7rem .9rem;border-radius:10px">
+      ⚠ <strong>No se pudo leer user_progress de otros usuarios.</strong><br>
+      <span style="font-size:.82rem">Mensaje: ${escapeHtml(prgE.message)}</span><br>
+      <span style="font-size:.82rem">Probablemente falta una RLS policy en Supabase que permita al admin leer user_progress de otros. Ver SQL_DELTA_v9.sql.</span>
+    </div>`
+    return
+  }
+  const byUser = {}
+  for (const row of (progressRows || [])) byUser[row.user_id] = row
+
+  // 3. Construir filas combinadas
+  _adminProgressData = profiles.map(prof => {
+    const row = byUser[prof.id]
+    const data = row?.data || null
+    // Progreso vivo: promedio de scores del diagnóstico más reciente del parcial activo
+    let livePct = 0
+    let activeParcial = 'p2'
+    let lastActivity = row?.updated_at || null
+    if (data){
+      // El parcial activo se lee de localStorage del usuario — no lo tenemos acá.
+      // Estimamos por el diagnóstico más reciente que tenga.
+      const diagP1 = data.premium?.diagnostic_p1 || (data.diagnostic_p1)
+      const diagP2 = data.premium?.diagnostic || (data.diagnostic)
+      const diagP3 = data.premium?.diagnostic_p3 || (data.diagnostic_p3)
+      const diags = [
+        { p:'p1', d: diagP1 },
+        { p:'p2', d: diagP2 },
+        { p:'p3', d: diagP3 }
+      ].filter(x => x.d?.completed_at)
+      if (diags.length){
+        diags.sort((a,b) => new Date(b.d.completed_at) - new Date(a.d.completed_at))
+        activeParcial = diags[0].p
+        const vals = Object.values(diags[0].d.scores || {})
+        livePct = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length * 100) : 0
+      }
+    }
+    const audit = data?.progress_audit || null
+    const maxPct = audit?.max_progress_pct || 0
+    const crossed20 = audit?.crossed_20_at || null
+    const crossed50 = audit?.crossed_50_at || null
+    const resetCount = audit?.reset_events?.length || 0
+    // Plan activo
+    const parciales = []
+    if (prof.plan_p1) parciales.push('P1')
+    if (prof.plan_p2) parciales.push('P2')
+    if (prof.plan_p3) parciales.push('P3')
+    const planLabel = prof.plan_full ? '⭐ Full' : (parciales.length === 3 ? '⭐ P1+P2+P3' : parciales.length ? '📘 ' + parciales.join('+') : 'Free')
+    return {
+      id: prof.id,
+      name: prof.name || '(sin nombre)',
+      email: prof.email,
+      role: prof.role,
+      planLabel,
+      activeParcial,
+      livePct,
+      maxPct,
+      crossed20,
+      crossed50,
+      resetCount,
+      lastActivity,
+      hasData: !!data
+    }
+  })
+
+  _renderAdminProgressTable()
+}
+
+function _renderAdminProgressTable(){
+  const cont = document.getElementById('adminProgressTable')
+  if (!cont) return
+  // Filtrar
+  const q = (_adminProgressFilterText || '').toLowerCase().trim()
+  let rows = _adminProgressData.filter(r =>
+    !q || (r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q))
+  )
+  // Ordenar
+  if (_adminProgressSortMode === 'max_desc') rows.sort((a,b) => b.maxPct - a.maxPct)
+  else if (_adminProgressSortMode === 'max_asc') rows.sort((a,b) => a.maxPct - b.maxPct)
+  else if (_adminProgressSortMode === 'live_desc') rows.sort((a,b) => b.livePct - a.livePct)
+  else if (_adminProgressSortMode === 'recent') rows.sort((a,b) => new Date(b.lastActivity || 0) - new Date(a.lastActivity || 0))
+  else if (_adminProgressSortMode === 'name') rows.sort((a,b) => a.name.localeCompare(b.name))
+
+  if (!rows.length){
+    cont.innerHTML = '<span class="muted">Sin resultados con ese filtro.</span>'
+    return
+  }
+
+  // Renderizar tabla responsive con tarjetas
+  cont.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:.5rem">
+      ${rows.map(r => {
+        const parcialEmoji = r.activeParcial === 'p1' ? '📘' : r.activeParcial === 'p3' ? '📕' : '📗'
+        const liveColor = r.livePct >= 70 ? 'var(--green)' : r.livePct >= 40 ? 'var(--yellow)' : 'var(--red)'
+        const maxColor = r.maxPct >= 70 ? 'var(--green)' : r.maxPct >= 20 ? 'var(--yellow)' : 'var(--muted)'
+        const crossed20Badge = r.crossed20
+          ? `<span style="background:var(--redSoft);color:var(--red);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">❌ Cruzó 20% · ${new Date(r.crossed20).toLocaleDateString()}</span>`
+          : `<span style="background:var(--greenSoft);color:var(--green);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">✅ Reembolso procede</span>`
+        const resetBadge = r.resetCount > 0
+          ? `<span style="background:var(--soft);color:var(--text);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">🔄 ${r.resetCount} reset${r.resetCount === 1 ? '' : 's'}</span>`
+          : ''
+        const noDataBadge = !r.hasData
+          ? `<span style="background:var(--soft);color:var(--muted);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">Sin actividad</span>`
+          : ''
+        return `<div class="reco-item">
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:.5rem;align-items:center">
+            <div>
+              <strong>${escapeHtml(r.name)}</strong>
+              ${r.role === 'admin' ? '<span style="color:var(--blue);font-size:.7rem;font-weight:700">[ADMIN]</span>' : ''}
+              <br><small class="muted" style="font-size:.78rem">${escapeHtml(r.email)}</small>
+              <br><small class="muted" style="font-size:.75rem">${r.planLabel}</small>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.7rem;color:var(--muted)">Parcial activo</div>
+              <strong>${parcialEmoji} ${r.activeParcial.toUpperCase()}</strong>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.7rem;color:var(--muted)">Progreso vivo</div>
+              <strong style="color:${liveColor};font-size:1.05rem">${r.livePct}%</strong>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:.7rem;color:var(--muted)">Máx histórico</div>
+              <strong style="color:${maxColor};font-size:1.05rem">${r.maxPct}%</strong>
+            </div>
+            <div style="display:flex;gap:.3rem;flex-direction:column;align-items:flex-end">
+              ${crossed20Badge}
+              ${resetBadge}
+              ${noDataBadge}
+            </div>
+          </div>
+        </div>`
+      }).join('')}
+    </div>
+    <p class="muted" style="font-size:.75rem;margin-top:.8rem;text-align:center">${rows.length} usuario${rows.length === 1 ? '' : 's'} mostrado${rows.length === 1 ? '' : 's'}.</p>
+  `
+}
+
+// Handlers expuestos para los onClick del HTML
+window.adminProgressFilter = function(text){
+  _adminProgressFilterText = text || ''
+  _renderAdminProgressTable()
+}
+window.adminProgressSort = function(mode){
+  _adminProgressSortMode = mode || 'max_desc'
+  _renderAdminProgressTable()
+}
+window.adminRefreshProgress = async function(){
+  await adminLoadAllProgress()
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -10477,9 +10722,20 @@ function _injectIntroStyles(){
   document.head.appendChild(s)
 }
 
+// ═══════════════════════════════════════════════════════════
+//  INTRO DETERMINISTA
+//  Antes: usaba sessionStorage, lo que la hacía aparecer solo
+//  "a veces". Ahora usa una variable de módulo que se resetea
+//  en cada carga de página, así dispara consistentemente cada
+//  vez que el usuario entra a la app (post-login o post-guest
+//  o recarga ya logueado).
+// ═══════════════════════════════════════════════════════════
+let _introPlayedThisPageLoad = false
+
 window.playBioMasterIntro = function(force){
-  // Solo una vez por sesión, salvo que se fuerce
-  if (!force && sessionStorage.getItem('bm_intro_played') === '1') return
+  // Una sola vez por carga de página (no por sesión del navegador)
+  if (!force && _introPlayedThisPageLoad) return
+  _introPlayedThisPageLoad = true
   _injectIntroStyles()
   let intro = document.getElementById('bmIntro')
   if (intro) intro.remove()
@@ -10522,7 +10778,6 @@ window.playBioMasterIntro = function(force){
   `
   intro.addEventListener('click', () => window._closeBmIntro())
   document.body.appendChild(intro)
-  sessionStorage.setItem('bm_intro_played', '1')
 
   // Auto-remove al terminar (con respaldo de seguridad por si la animación no dispara)
   const _autoEnd = setTimeout(() => window._closeBmIntro(), 5800)
@@ -10547,16 +10802,15 @@ window._closeBmIntro = function(){
   setTimeout(() => intro.remove(), 450)
 }
 
-// Disparar intro cuando entra a la app (post-login o post-guest)
-window.addEventListener('DOMContentLoaded', () => {
-  // Disparamos solo si ya estamos en la app (no en landing)
-  setTimeout(() => {
-    const lp = document.getElementById('landingPage')
-    if (lp && !lp.classList.contains('show')){
-      window.playBioMasterIntro()
-    }
-  }, 800)
-})
+// Disparador eliminado: antes la intro se disparaba con un setTimeout
+// dentro de DOMContentLoaded que dependía de si la landing estaba o no
+// activa en ese momento (race condition). Ahora la intro se dispara
+// determinísticamente desde:
+//  - boot() cuando hay sesión persistida → playBioMasterIntro()
+//  - enterAsGuestFromLanding() / enterGuest() al entrar como invitado
+//  - handleAuthSession() al hacer login exitoso
+// Esto garantiza que SIEMPRE aparezca al entrar a la app, una sola vez
+// por carga de página.
 
 // ═══════════════════════════════════════════════════════════
 //  MODO DESARROLLO — entrenador de respuestas desarrolladas
@@ -11084,6 +11338,9 @@ const A = {
   openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser, refreshMyProfile,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
   adminGrantPlan, adminRevokePlan, adminQuickGrant, adminViewAudit,
+  adminProgressFilter: window.adminProgressFilter,
+  adminProgressSort: window.adminProgressSort,
+  adminRefreshProgress: window.adminRefreshProgress,
   // cobertura/dominio
   syncTopic, saveST, filterDomain, showDomainDetail,
   // juego
@@ -12909,6 +13166,9 @@ initJuegos()
       const lp = document.getElementById('landingPage')
       if (lp) lp.classList.remove('show')
       handleAuthSession(session)
+      // ═══ TRIGGER INTRO DETERMINISTA ═══
+      // El usuario está entrando a la app con sesión activa → disparamos intro.
+      try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
     } else {
       // Sin sesión → la landing es la primera pantalla (ya visible por default)
       const lp = document.getElementById('landingPage')
@@ -12921,6 +13181,12 @@ initJuegos()
     if (lp) lp.classList.add('show')
     document.getElementById('authOverlay').style.display = 'none'
   }
+  // ═══ TESTIMONIOS PÚBLICOS EN PORTADA ═══
+  // Carga feedbacks con is_public=true desde Supabase y reemplaza los
+  // placeholders del bloque de testimonios. La función real vive más
+  // abajo (en el script de la landing). Acá solo nos aseguramos de
+  // dispararla cuando boot termina.
+  try { if (typeof loadPublicTestimonials === 'function') await loadPublicTestimonials() } catch(e){ console.warn('[testimonials]', e) }
 })()
 
 // ═══════════════════════════════════════════════════════════
@@ -12946,6 +13212,8 @@ window.enterAsGuestFromLanding = function(){
   const lp = document.getElementById('landingPage')
   if (lp) lp.classList.remove('show')
   enterGuest()
+  // ═══ TRIGGER INTRO DETERMINISTA ═══
+  try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
 }
 
 window.openPricingModal = function(){
@@ -13102,27 +13370,45 @@ window.openLegal = function(seccion){
   contentEl.scrollTop = 0
 }
 
-// ═══ TESTIMONIOS PÚBLICOS (cargados desde feedback aprobado) ═══
+// ═══ TESTIMONIOS PÚBLICOS (cargados desde feedback marcado como público) ═══
+// Lee directamente la tabla feedbacks con is_public=true. Si la query falla
+// (por ejemplo, RLS no permite SELECT anónimo), conserva los placeholders.
+// REQUISITO Supabase: policy que permita SELECT en feedbacks where is_public=true
+// también a usuarios sin sesión (anon). Ver SQL_DELTA_v9.sql.
 async function loadPublicTestimonials(){
   const grid = document.getElementById('lpTestimonialsGrid')
   if (!grid) return
   try {
     const { data, error } = await sb
-      .from('public_testimonials')
-      .select('name, experience_text, created_at')
+      .from('feedbacks')
+      .select('id, text, experience_text, type, created_at, profiles(name)')
+      .eq('is_public', true)
       .order('created_at', { ascending: false })
       .limit(6)
-    if (error || !data || !data.length) return  // Mantiene los placeholders
-    grid.innerHTML = data.map(t => {
-      const initial = (t.name || 'B').trim().charAt(0).toUpperCase() || 'B'
-      const safeName = escapeHtml(t.name || 'Estudiante')
-      const safeText = escapeHtml(t.experience_text || '')
-      return `<div class="lp-test">
+    if (error || !data || !data.length) return // Mantiene los placeholders
+    const cards = data.map(f => {
+      const fullName = (f.profiles?.name || '').trim() || 'Estudiante BioMaster'
+      const firstName = fullName.split(/\s+/)[0]
+      const initial = (fullName[0] || 'B').toUpperCase()
+      const txt = (f.experience_text || f.text || '').trim()
+      if (!txt) return ''
+      const display = txt.length > 280 ? txt.slice(0, 277) + '…' : txt
+      const safe = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+      return `<div class="lp-test" data-feedback-id="${f.id}">
         <div class="lp-test-stars">★★★★★</div>
-        <p class="lp-test-text">"${safeText}"</p>
-        <div class="lp-test-author"><div class="lp-test-avatar">${initial}</div><div><div class="lp-test-name">${safeName}</div><div class="lp-test-role">Biología General</div></div></div>
+        <p class="lp-test-text">"${safe(display)}"</p>
+        <div class="lp-test-author">
+          <div class="lp-test-avatar">${safe(initial)}</div>
+          <div>
+            <div class="lp-test-name">${safe(firstName)}</div>
+            <div class="lp-test-role">Estudiante BioMaster</div>
+          </div>
+        </div>
       </div>`
-    }).join('')
+    }).filter(Boolean)
+    if (cards.length){
+      grid.innerHTML = cards.slice(0, 6).join('')
+    }
   } catch(e){ /* fallback a placeholders */ }
 }
 loadPublicTestimonials()
