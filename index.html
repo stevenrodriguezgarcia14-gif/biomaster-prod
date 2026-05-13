@@ -546,12 +546,22 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 .errlog-item .errlog-q{margin-bottom:.3rem}
 .errlog-count{display:inline-block;padding:.1rem .4rem;background:var(--red);color:#fff;border-radius:6px;font-size:.7rem;font-weight:800;margin-left:.4rem}
 
-/* Lock teaser para subitems del resumen */
-.subitem.lock-teaser{position:relative;overflow:hidden;cursor:pointer;transition:all .2s}
+/* Lock teaser para subitems del resumen - capa Pro bien integrada */
+.subitem.lock-teaser{position:relative;overflow:hidden;cursor:default;transition:all .2s;min-height:130px;max-height:170px;user-select:none}
 .subitem.lock-teaser:hover{border-color:var(--green)}
-.subitem.lock-teaser::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg,transparent 0%,var(--soft) 65%,var(--soft) 100%);pointer-events:none}
-.subitem.lock-teaser .lock-cta-mini{position:absolute;bottom:.7rem;left:50%;transform:translateX(-50%);z-index:2;display:inline-flex;align-items:center;gap:.3rem;padding:.45rem .9rem;border-radius:99px;background:var(--green);color:#fff;font-weight:800;font-size:.78rem;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(47,139,77,.4)}
+.subitem.lock-teaser > *:not(.lock-pro-overlay):not(.lock-cta-mini){filter:blur(5px);opacity:.55;pointer-events:none;user-select:none}
+.subitem.lock-teaser::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,.35) 0%,var(--soft) 70%,var(--soft) 100%);pointer-events:none}
+.theme-dark .subitem.lock-teaser::after{background:linear-gradient(180deg,rgba(13,31,19,.4) 0%,var(--soft) 70%,var(--soft) 100%)}
+.subitem.lock-teaser .lock-cta-mini{position:absolute;bottom:.7rem;left:50%;transform:translateX(-50%);z-index:3;display:inline-flex;align-items:center;gap:.3rem;padding:.45rem .9rem;border-radius:99px;background:var(--green);color:#fff;font-weight:800;font-size:.78rem;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(47,139,77,.4)}
 .subitem.lock-teaser .lock-cta-mini::before{content:"🔒"}
+.subitem.lock-teaser .lock-pro-overlay{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:.6rem;backdrop-filter:blur(2px);background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,rgba(238,247,240,.55) 100%)}
+.theme-dark .subitem.lock-teaser .lock-pro-overlay{background:linear-gradient(180deg,rgba(13,31,19,.15) 0%,rgba(28,46,30,.65) 100%)}
+.subitem.lock-teaser .lock-pro-overlay > *{filter:none;opacity:1;pointer-events:auto;user-select:auto}
+.lock-pro-card{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:.85rem 1.1rem;background:var(--surface);border-radius:14px;border:1.5px solid var(--green);box-shadow:0 8px 24px rgba(47,139,77,.2);text-align:center;max-width:92%}
+.lock-pro-badge{display:inline-flex;align-items:center;gap:.25rem;padding:.18rem .65rem;border-radius:99px;background:linear-gradient(135deg,var(--green),#5fbc7e);color:#fff;font-weight:800;font-size:.68rem;letter-spacing:.6px;text-transform:uppercase}
+.lock-pro-title{font-size:.78rem;color:var(--muted);font-weight:600;line-height:1.3}
+.lock-pro-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.5rem 1rem;border-radius:99px;background:var(--green);color:#fff;font-weight:800;font-size:.8rem;border:none;cursor:pointer;box-shadow:0 4px 14px rgba(47,139,77,.35);transition:transform .15s,box-shadow .15s}
+.lock-pro-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(47,139,77,.45)}
 
 /* ═══════════════════════════════════════════════════════════
    SELECTOR DE PARCIAL — switch principal P1 / P2
@@ -1303,7 +1313,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     </div>
 
     <div id="authLogin">
-      <div class="auth-field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="auth-field"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="tu@correo.com" autocomplete="email" inputmode="email" spellcheck="false" oninput="this.value=this.value.replace(/\s+/g,'')"></div>
       <div class="auth-field"><label>Contraseña</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
       <div id="loginMsg" class="feedback" style="margin-bottom:.6rem"></div>
       <button class="btn primary" style="width:100%;justify-content:center;margin-bottom:.5rem" onclick="A.doLogin()">🔐 Iniciar sesión</button>
@@ -1316,7 +1326,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
 
     <div id="authRegister" style="display:none">
       <div class="auth-field"><label>Nombre visible (ranking)</label><input type="text" id="regName" placeholder="Ej: Steven R." maxlength="40"></div>
-      <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email" inputmode="email" spellcheck="false" oninput="this.value=this.value.replace(/\s+/g,'')"></div>
       <div class="auth-field"><label>Contraseña (mínimo 8 caracteres)</label><input type="password" id="regPass" placeholder="••••••••" autocomplete="new-password"></div>
       <div class="auth-field"><label>Confirmar contraseña</label><input type="password" id="regPass2" placeholder="••••••••" autocomplete="new-password"></div>
       <label style="display:flex;align-items:center;gap:.4rem;font-size:.8rem;cursor:pointer;margin-bottom:.6rem">
@@ -3615,7 +3625,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           <button class="btn" onclick="window.bvReset()" id="bvResetBtn">↻ Reiniciar</button>
           <label style="display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted)">
             Velocidad
-            <input type="range" min="0.25" max="3" step="0.25" value="1" id="bvSpeed" oninput="window.bvSetSpeed(this.value)" style="width:120px">
+            <input type="range" min="0.1" max="3" step="0.1" value="1" id="bvSpeed" oninput="window.bvSetSpeed(this.value)" style="width:120px">
             <span id="bvSpeedLabel">1x</span>
           </label>
         </div>
@@ -4500,7 +4510,22 @@ async function loadStateForCurrentSession(){
 // ═══════════════════════════════════════════════════════════
 //  5. AUTH — wrappers sobre supabase.auth
 // ═══════════════════════════════════════════════════════════
-function validEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) }
+// VALIDACION DE CORREO - endurecida
+// Antes: regex laxa que aceptaba "vgh@ma.c " (con espacio sobrante y TLD de 1 letra).
+// Ahora: sin espacios, TLD >= 2 letras, sin puntos consecutivos, largo razonable.
+function validEmail(e){
+  if (typeof e !== 'string') return false
+  if (e !== e.trim()) return false
+  if (/\s/.test(e)) return false
+  if (e.length < 6 || e.length > 254) return false
+  const re = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/
+  if (!re.test(e)) return false
+  const [local, domain] = e.split('@')
+  if (local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false
+  if (domain.startsWith('.') || domain.endsWith('.') || domain.includes('..')) return false
+  if (domain.startsWith('-') || domain.endsWith('-')) return false
+  return true
+}
 
 function showMsg(elId, kind, txt){
   const el = document.getElementById(elId); if (!el) return
@@ -4544,13 +4569,19 @@ async function doLogin(){
 
 async function doRegister(){
   if (_authBusy) return
-  const email = document.getElementById('regEmail').value.trim()
+  // Detectar espacios sobrantes ANTES del trim para dar mensaje especifico
+  const emailRaw = document.getElementById('regEmail').value
+  const email = emailRaw.trim()
+  if (emailRaw !== email){
+    return showMsg('registerMsg','bad','⚠ Tu correo tiene espacios al inicio o al final. Quitalos e intenta de nuevo.')
+  }
   const pass  = document.getElementById('regPass').value
   const pass2 = document.getElementById('regPass2').value
   const name  = document.getElementById('regName').value.trim()
   const consent = document.getElementById('regConsent').checked
   if (!name || name.length < 2) return showMsg('registerMsg','bad','⚠ Escribe tu nombre visible.')
-  if (!validEmail(email)) return showMsg('registerMsg','bad','⚠ Correo no válido.')
+  if (!email) return showMsg('registerMsg','bad','⚠ Escribe tu correo.')
+  if (!validEmail(email)) return showMsg('registerMsg','bad','⚠ El correo no tiene un formato valido. Ej: nombre@dominio.com (sin espacios, con dominio real).')
   if (pass.length < 8) return showMsg('registerMsg','bad','⚠ La contraseña debe tener al menos 8 caracteres.')
   if (pass !== pass2) return showMsg('registerMsg','bad','⚠ Las contraseñas no coinciden.')
   if (!consent) return showMsg('registerMsg','bad','⚠ Debes aceptar el tratamiento de datos.')
@@ -6061,31 +6092,125 @@ async function promoteUser(newRole){
 // ═══════════════════════════════════════════════════════════
 async function deleteUser(targetEmail){
   if (currentSession?.profile?.role !== 'admin') return
-  const email = (targetEmail || prompt('Correo del usuario a ELIMINAR (operación irreversible):'))?.trim()
+  const email = (targetEmail || prompt('Correo del usuario a ELIMINAR (operacion irreversible):'))?.trim()
   if (!email) return
   if (!validEmail(email)){
-    toast('⚠ Correo no válido', true); return
+    toast('Correo no valido', true); return
   }
-  if (!confirm(`¿Eliminar definitivamente a ${email}?\n\nEsto borra:\n• Su cuenta de auth\n• Su perfil\n• Su progreso\n• Sus feedbacks\n\nEsta acción NO se puede deshacer.`)) return
+  if (!confirm('Eliminar definitivamente a ' + email + '?\n\nEsto borra:\n- Su perfil\n- Su progreso\n- Sus feedbacks\n- Su cuenta de auth (si la Edge Function esta configurada)\n\nEsta accion NO se puede deshacer.')) return
 
   const msg = document.getElementById('adminControlMsg')
-  if (msg){ msg.className = 'feedback show good'; msg.textContent = '🔄 Eliminando usuario…' }
+  const setMsg = (kind, text) => {
+    if (!msg) return
+    msg.className = 'feedback show ' + (kind === 'bad' ? 'bad' : 'good')
+    msg.textContent = text
+  }
+  setMsg('good', 'Eliminando usuario...')
 
-  // Ruta vía RPC SQL (admin_delete_user en Supabase)
-  const { data, error } = await sb.rpc('admin_delete_user', { target_email: email })
-
-  if (error){
-    if (msg){ msg.className = 'feedback show bad'; msg.textContent = '⚠ ' + error.message }
+  // INTENTO 1: Edge Function delete_user (unica via que puede borrar auth.users)
+  let edgeOk = false, edgeErr = null
+  try {
+    const r = await sb.functions.invoke('delete_user', { body: { target_email: email } })
+    if (!r.error && (!r.data || !r.data.error)){
+      edgeOk = true
+    } else {
+      edgeErr = r.error?.message || r.data?.error || 'Edge Function devolvio error'
+    }
+  } catch(e){
+    edgeErr = e?.message || 'Edge Function no disponible'
+  }
+  if (edgeOk){
+    setMsg('good', email + ' eliminado completamente (incluida cuenta de auth).')
+    toast('Usuario eliminado')
+    renderAdminPanel()
+    if (typeof loadRanking === 'function') loadRanking()
     return
   }
-  if (data?.error){
-    if (msg){ msg.className = 'feedback show bad'; msg.textContent = '⚠ ' + data.error }
+
+  // INTENTO 2: RPC SQL admin_delete_user (limpia tablas publicas)
+  let rpcOk = false, rpcErr = null
+  try {
+    const { data, error } = await sb.rpc('admin_delete_user', { target_email: email })
+    if (error){ rpcErr = error.message }
+    else if (data?.error){ rpcErr = data.error }
+    else { rpcOk = true }
+  } catch(e){
+    rpcErr = e?.message || 'RPC no disponible'
+  }
+  if (rpcOk){
+    setMsg('good', 'Datos de ' + email + ' eliminados (perfil, progreso, feedbacks). La cuenta de auth queda en Supabase y debes borrarla manualmente si lo deseas.')
+    toast('Datos eliminados')
+    renderAdminPanel()
+    if (typeof loadRanking === 'function') loadRanking()
     return
   }
-  if (msg){ msg.className = 'feedback show good'; msg.textContent = `✅ ${email} eliminado.` }
-  toast('🗑 Usuario eliminado')
+
+  // INTENTO 3: limpieza directa desde el cliente (fallback)
+  setMsg('good', 'Vias seguras no disponibles, intentando limpieza manual...')
+  let target = null
+  try {
+    const { data: prof, error } = await sb.from('profiles').select('id, email').eq('email', email).maybeSingle()
+    if (error) throw new Error('No se pudo buscar el perfil: ' + error.message)
+    if (!prof) throw new Error('No existe ningun perfil con ese correo en la tabla profiles')
+    target = prof
+  } catch(e){
+    setMsg('bad', e.message + '\n\nDetalles:\n- Edge Function: ' + (edgeErr || 'no disponible') + '\n- RPC admin_delete_user: ' + (rpcErr || 'no disponible') + '\n\nVer instrucciones en consola.')
+    _logDeleteUserHelp(edgeErr, rpcErr)
+    return
+  }
+  const tables = [
+    { name: 'user_progress', col: 'user_id' },
+    { name: 'feedback',      col: 'user_id' },
+    { name: 'payments_log',  col: 'user_id' },
+    { name: 'game_scores',   col: 'user_id' }
+  ]
+  const results = []
+  for (const t of tables){
+    try {
+      const r = await sb.from(t.name).delete().eq(t.col, target.id)
+      results.push({ table: t.name, ok: !r.error, err: r.error?.message })
+    } catch(e){
+      results.push({ table: t.name, ok: false, err: e?.message })
+    }
+  }
+  try {
+    const r = await sb.from('profiles').delete().eq('id', target.id)
+    results.push({ table: 'profiles', ok: !r.error, err: r.error?.message })
+  } catch(e){
+    results.push({ table: 'profiles', ok: false, err: e?.message })
+  }
+  const okCount = results.filter(r => r.ok).length
+  const failCount = results.filter(r => !r.ok).length
+  if (okCount > 0 && failCount === 0){
+    setMsg('good', 'Datos publicos de ' + email + ' eliminados (' + okCount + ' tablas). La cuenta de auth.users queda en Supabase. Ver consola para conectar el borrado completo.')
+  } else if (okCount > 0){
+    setMsg('good', 'Borrado parcial de ' + email + ': ' + okCount + ' tablas OK, ' + failCount + ' con error. Ver consola.')
+  } else {
+    setMsg('bad', 'No se pudo borrar a ' + email + ' por ninguna via. Ver consola para detalle y como configurar Supabase.')
+  }
+  console.group('[admin deleteUser] resultados por tabla')
+  for (const r of results){
+    if (r.ok) console.log('OK', r.table)
+    else console.error('FAIL', r.table, '-', r.err)
+  }
+  console.groupEnd()
+  _logDeleteUserHelp(edgeErr, rpcErr)
   renderAdminPanel()
   if (typeof loadRanking === 'function') loadRanking()
+}
+function _logDeleteUserHelp(edgeErr, rpcErr){
+  console.group('[admin deleteUser] Como activar el borrado completo')
+  console.warn('No se pudo borrar la cuenta de auth.users desde el cliente.')
+  console.warn('Razon: borrar auth.users requiere la service_role key, que NO puede vivir en el navegador.')
+  console.log('Edge Function delete_user:', edgeErr || 'OK')
+  console.log('RPC admin_delete_user:', rpcErr || 'OK')
+  console.info('Solucion recomendada (Edge Function):')
+  console.info('1. supabase functions new delete_user')
+  console.info('2. En el handler, usar createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY).auth.admin.deleteUser(userId)')
+  console.info('3. Validar primero que quien llama tenga role=admin en profiles.')
+  console.info('4. supabase functions deploy delete_user')
+  console.info('Alternativa (RPC SQL): crear funcion admin_delete_user(target_email) con SECURITY DEFINER que borre filas en tablas publicas.')
+  console.groupEnd()
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -9557,41 +9682,56 @@ function applyPremiumGating(){
 }
 
 // ═══ GATING DEL RESUMEN ═══
-// Free: solo el primer subitem visible de cada tema. Resto bloqueado con teaser.
+// Free: solo el primer subitem visible del primer tema de cada parcial.
+// Resto bloqueado con overlay Pro bien integrado visualmente.
 function applyResumenGating(){
-  // Plan efectivo
-  const eff = (typeof getEffectivePlan === 'function') ? getEffectivePlan() : { p1:false, p2:false, full:false }
-  // Aplicar a cada resumen según flag de su parcial
+  const eff = (typeof getEffectivePlan === 'function') ? getEffectivePlan() : { p1:false, p2:false, p3:false, full:false }
   _gateResumen('#resBodyP1', eff.full || eff.p1, 'p1')
   _gateResumen('#resBody',   eff.full || eff.p2, 'p2')
+  // FIX: P3 estaba sin gating. Apuntamos al contenedor de la seccion.
+  _gateResumen('#resumenP3', eff.full || eff.p3, 'p3')
 }
 
 function _gateResumen(containerSel, hasAccess, parcialCode){
   const root = document.querySelector(containerSel)
   if (!root) return
-  const topics = root.querySelectorAll('details.topic-card')
-  const parcialLabel = parcialCode === 'p1' ? 'primer parcial' : 'segundo parcial'
+  // P1/P2 usan details.topic-card; P3 usa details.card.panel. Cubrimos ambos.
+  const topics = root.querySelectorAll('details.topic-card, details.card.panel')
+  const parcialLabel = parcialCode === 'p1' ? 'primer parcial' : (parcialCode === 'p2' ? 'segundo parcial' : 'tercer parcial')
   topics.forEach((tc, topicIdx) => {
-    const subitems = tc.querySelectorAll('.body .grid2 > .subitem')
+    // P1/P2: subitems en .body .grid2 > .subitem. P3: en .body > .subitem.
+    const subitems = tc.querySelectorAll('.body .grid2 > .subitem, .body > .subitem')
     // Limpieza previa
     subitems.forEach(si => {
       si.classList.remove('lock-teaser')
       const oldCta = si.querySelector('.lock-cta-mini')
       if (oldCta) oldCta.remove()
+      const oldOverlay = si.querySelector('.lock-pro-overlay')
+      if (oldOverlay) oldOverlay.remove()
     })
-    if (hasAccess) return  // pago → mostrar todo
-    // Free: SOLO el primer subtema del PRIMER tema completo. Todo el resto bloqueado.
+    if (hasAccess) return
     subitems.forEach((si, idx) => {
-      if (topicIdx === 0 && idx === 0) return  // único preview honesto
+      if (topicIdx === 0 && idx === 0) return  // unico preview honesto
       si.classList.add('lock-teaser')
-      const cta = document.createElement('button')
-      cta.className = 'lock-cta-mini'
-      cta.textContent = 'Desbloquear'
-      cta.onclick = (e) => {
+      const overlay = document.createElement('div')
+      overlay.className = 'lock-pro-overlay'
+      overlay.innerHTML = '<div class="lock-pro-card">' +
+        '<div class="lock-pro-badge">🔒 Pro</div>' +
+        '<div class="lock-pro-title">Contenido del ' + parcialLabel + '</div>' +
+        '<button type="button" class="lock-pro-btn">Desbloquear con Pro →</button>' +
+        '</div>'
+      overlay.querySelector('.lock-pro-btn').onclick = (e) => {
         e.stopPropagation()
-        window.showPaywall('resumen', `El resumen completo del ${parcialLabel} (con todos los subtemas, errores comunes y claves de examen) es contenido pago. La vista previa muestra solo un subtema introductorio.`)
+        e.preventDefault()
+        window.showPaywall('resumen', 'El resumen completo del ' + parcialLabel + ' (con todos los subtemas, errores comunes y claves de examen) es contenido pago. La vista previa muestra solo un subtema introductorio.')
       }
-      si.appendChild(cta)
+      overlay.addEventListener('click', e => {
+        if (!e.target.classList.contains('lock-pro-btn')){
+          e.stopPropagation()
+          e.preventDefault()
+        }
+      })
+      si.appendChild(overlay)
     })
   })
 }
@@ -10885,99 +11025,367 @@ function _bvDrawMitoMei(ctx, w, h){
 }
 
 function _bvDrawADN(ctx, w, h){
-  // Doble hélice simple animada
+  // ADN - REPLICACION (reescrito)
+  // El texto explica: reconocimiento -> apertura por helicasa -> sintesis con
+  // polimerasa emparejando A-T y G-C -> resultado semiconservativo.
+  const phase = Math.floor(_bv.step) % 4
   const cy = h/2
-  const N = 30
-  const amp = 28
-  for (let i = 0; i < N; i++){
-    const x = (i / N) * w
-    const phase = (_bv.t * 0.03) + i * 0.4
-    const y1 = cy + Math.sin(phase) * amp
-    const y2 = cy + Math.sin(phase + Math.PI) * amp
-    // Backbones
-    ctx.strokeStyle = '#5fbc7e'
-    ctx.lineWidth = 3
-    if (i > 0){
-      const prevX = ((i-1) / N) * w
-      const prevP = (_bv.t * 0.03) + (i-1) * 0.4
-      ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP)*amp); ctx.lineTo(x, y1); ctx.stroke()
-      ctx.strokeStyle = '#a855f7'
-      ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP+Math.PI)*amp); ctx.lineTo(x, y2); ctx.stroke()
-    }
-    // Bases (líneas entre hebras)
-    ctx.strokeStyle = i % 2 === 0 ? '#f5d76e' : '#3aa5c4'
-    ctx.lineWidth = 2
-    ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke()
-  }
-  // Bifurcación (replicación) — del lado izquierdo, simulamos apertura
-  const fork = ((_bv.t * 0.5) % w)
-  ctx.fillStyle = 'rgba(95,188,126,.4)'
-  ctx.beginPath(); ctx.arc(fork, cy, 18, 0, Math.PI*2); ctx.fill()
-  ctx.fillStyle = '#fff'
-  ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
-  ctx.fillText('Helicasa', fork, cy - 24)
+  const N = 32
+  const baseSpacing = (w - 60) / N
+  const amp = 24
+  let progress
+  if (phase === 0) progress = Math.min(0.15, _bv.t * 0.0008)
+  else if (phase === 1) progress = Math.min(0.5, 0.15 + _bv.t * 0.0008)
+  else if (phase === 2) progress = Math.min(0.85, 0.4 + _bv.t * 0.0008)
+  else progress = Math.min(1, 0.7 + _bv.t * 0.0008)
+  const forkIdx = Math.floor(progress * N)
 
+  for (let i = 0; i < N; i++){
+    const x = 30 + i * baseSpacing
+    if (i < forkIdx){
+      const sep = 50
+      const yC1 = cy - sep
+      const wave = Math.sin(i*0.4 + _bv.t*0.01) * amp * 0.5
+      ctx.fillStyle = '#5fbc7e'
+      ctx.beginPath(); ctx.arc(x, yC1 - 8 + wave*0.2, 3.5, 0, Math.PI*2); ctx.fill()
+      ctx.fillStyle = '#a855f7'
+      ctx.beginPath(); ctx.arc(x, yC1 + 8 - wave*0.2, 3.5, 0, Math.PI*2); ctx.fill()
+      const baseColor = (i % 2 === 0) ? '#f5d76e' : '#3aa5c4'
+      ctx.strokeStyle = baseColor; ctx.lineWidth = 1.5
+      ctx.beginPath(); ctx.moveTo(x, yC1 - 8 + wave*0.2); ctx.lineTo(x, yC1 + 8 - wave*0.2); ctx.stroke()
+      const yC2 = cy + sep
+      ctx.fillStyle = '#a855f7'
+      ctx.beginPath(); ctx.arc(x, yC2 - 8 + wave*0.2, 3.5, 0, Math.PI*2); ctx.fill()
+      ctx.fillStyle = '#5fbc7e'
+      ctx.beginPath(); ctx.arc(x, yC2 + 8 - wave*0.2, 3.5, 0, Math.PI*2); ctx.fill()
+      ctx.strokeStyle = baseColor; ctx.lineWidth = 1.5
+      ctx.beginPath(); ctx.moveTo(x, yC2 - 8 + wave*0.2); ctx.lineTo(x, yC2 + 8 - wave*0.2); ctx.stroke()
+    } else {
+      const ph = (_bv.t * 0.012) + i * 0.45
+      const y1 = cy + Math.sin(ph) * amp
+      const y2 = cy + Math.sin(ph + Math.PI) * amp
+      ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 3
+      if (i > 0 && i - 1 >= forkIdx){
+        const prevX = 30 + (i-1) * baseSpacing
+        const prevP = (_bv.t * 0.012) + (i-1) * 0.45
+        ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP)*amp); ctx.lineTo(x, y1); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(prevX, cy + Math.sin(prevP+Math.PI)*amp); ctx.lineTo(x, y2); ctx.stroke()
+      }
+      const isAT = i % 2 === 0
+      ctx.strokeStyle = isAT ? '#f5d76e' : '#3aa5c4'
+      ctx.lineWidth = 2.5
+      ctx.beginPath(); ctx.moveTo(x, y1); ctx.lineTo(x, y2); ctx.stroke()
+      if (i >= forkIdx && i < forkIdx + 6){
+        ctx.fillStyle = isAT ? '#f5d76e' : '#3aa5c4'
+        ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+        ctx.fillText(isAT ? 'A' : 'G', x, y1 - 4)
+        ctx.fillText(isAT ? 'T' : 'C', x, y2 + 10)
+      }
+    }
+  }
+
+  const forkX = 30 + forkIdx * baseSpacing
+  ctx.fillStyle = 'rgba(95,188,126,.55)'
+  ctx.beginPath(); ctx.arc(forkX, cy, 18, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2; ctx.stroke()
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Helicasa', forkX, cy + 3)
+  ctx.font = 'bold 9px Inter'
+  ctx.fillText('(abre hebras)', forkX, cy + 14)
+
+  if (phase >= 1 && forkIdx > 2){
+    const polY1 = cy - 50
+    ctx.fillStyle = 'rgba(168,85,247,.7)'
+    ctx.beginPath(); ctx.arc(forkX - 16, polY1, 11, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#a855f7'; ctx.stroke()
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('Pol', forkX - 16, polY1 + 3)
+    ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 1.5
+    ctx.beginPath(); ctx.moveTo(forkX - 28, polY1 - 16); ctx.lineTo(forkX - 6, polY1 - 16); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(forkX - 6, polY1 - 16); ctx.lineTo(forkX - 11, polY1 - 19); ctx.lineTo(forkX - 11, polY1 - 13); ctx.closePath(); ctx.fill()
+    ctx.fillStyle = '#a855f7'; ctx.font = 'bold 8px Inter'
+    ctx.fillText("5'->3'", forkX - 16, polY1 - 20)
+    const polY2 = cy + 50
+    ctx.fillStyle = 'rgba(168,85,247,.7)'
+    ctx.beginPath(); ctx.arc(forkX - 8, polY2, 11, 0, Math.PI*2); ctx.fill()
+    ctx.stroke()
+    ctx.fillStyle = '#fff'; ctx.fillText('Pol', forkX - 8, polY2 + 3)
+    ctx.fillStyle = '#a855f7'; ctx.font = 'bold 8px Inter'
+    ctx.fillText('Okazaki', forkX - 8, polY2 + 18)
+  }
+
+  const phaseNames = [
+    'Fase 1 - Reconocimiento del origen',
+    'Fase 2 - Apertura por helicasa',
+    'Fase 3 - Sintesis por polimerasa (A-T, G-C)',
+    'Fase 4 - Dos moleculas hijas (semiconservativa)'
+  ]
+  ctx.fillStyle = 'rgba(0,0,0,.45)'
+  ctx.fillRect(0, 0, w, 22)
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(phaseNames[phase], w/2, 15)
+  ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+  ctx.fillStyle = '#5fbc7e'
+  ctx.beginPath(); ctx.arc(14, h - 14, 4, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#d0edd8'; ctx.fillText('hebra vieja', 22, h - 11)
+  ctx.fillStyle = '#a855f7'
+  ctx.beginPath(); ctx.arc(94, h - 14, 4, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#d0edd8'; ctx.fillText('hebra nueva', 102, h - 11)
+  ctx.fillStyle = '#f5d76e'
+  ctx.beginPath(); ctx.arc(180, h - 14, 4, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#d0edd8'; ctx.fillText('A-T', 188, h - 11)
+  ctx.fillStyle = '#3aa5c4'
+  ctx.beginPath(); ctx.arc(220, h - 14, 4, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = '#d0edd8'; ctx.fillText('G-C', 228, h - 11)
 }
 
 function _bvDrawFotosintesis(ctx, w, h){
-  // Cloroplasto verde con tilacoides
-  ctx.fillStyle = 'rgba(95,188,126,.18)'
+  // FOTOSINTESIS (reescrito)
+  // Fase 1: fotones captados por el fotosistema
+  // Fase 2: fotolisis del agua (libera O2), genera ATP y NADPH
+  // Fase 3: ATP/NADPH cruzan al estroma, CO2 entra al ciclo de Calvin
+  // Fase 4: glucosa producida
+  const phase = Math.floor(_bv.step) % 4
+  ctx.fillStyle = 'rgba(95,188,126,.10)'
   ctx.beginPath()
-  ctx.ellipse(w/2, h/2, w/2.4, h/2.4, 0, 0, Math.PI*2)
-  ctx.fill()
-  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2; ctx.stroke()
-  // Tilacoides (discos verdes apilados)
-  ctx.fillStyle = '#3a8c4e'
-  for (let i = 0; i < 4; i++){
+  ctx.ellipse(w/2, h/2, w/2.4, h/2.4, 0, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2.5; ctx.stroke()
+  ctx.fillStyle = '#5fbc7e'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Cloroplasto', 18, 38)
+  const tx = w * 0.32, ty = h/2
+  const tilW = 90
+  for (let i = 0; i < 5; i++){
+    ctx.fillStyle = '#3a8c4e'
     ctx.beginPath()
-    ctx.ellipse(w/2 - 80 + i*8, h/2 - 30 + i*6, 40, 10, 0, 0, Math.PI*2)
-    ctx.fill()
+    ctx.ellipse(tx, ty - 36 + i*18, tilW/2, 7, 0, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#2a6837'; ctx.lineWidth = 1; ctx.stroke()
   }
-  // Sol con rayos
+  ctx.fillStyle = '#9fd6ae'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Tilacoides', tx, ty + 64)
+  ctx.font = 'italic 9px Inter'
+  ctx.fillText('(fase luminosa)', tx, ty + 76)
+  ctx.fillStyle = '#9fd6ae'; ctx.font = 'bold 10px Inter'
+  ctx.fillText('Estroma', w*0.7, ty - 70)
+  ctx.font = 'italic 9px Inter'
+  ctx.fillText('(ciclo de Calvin)', w*0.7, ty - 58)
   ctx.fillStyle = '#ffd76e'
-  ctx.beginPath(); ctx.arc(50, 50, 22, 0, Math.PI*2); ctx.fill()
-  // Fotones que caen hacia los tilacoides
-  for (const p of _bv.particles){
-    p.y += p.vy * _bv.speed * 1.2
-    if (p.y > h - 20){ p.y = 0; p.x = Math.random() * w * 0.6 }
-    ctx.fillStyle = '#ffd76e'
-    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.arc(40, 60, 18, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#ffe79e'
+  for (let i = 0; i < 8; i++){
+    const a = i * Math.PI/4 + _bv.t*0.01
+    ctx.beginPath()
+    ctx.moveTo(40 + Math.cos(a)*22, 60 + Math.sin(a)*22)
+    ctx.lineTo(40 + Math.cos(a)*30, 60 + Math.sin(a)*30); ctx.stroke()
   }
-  // Salida: O₂ flotando hacia arriba (a la derecha)
-  ctx.fillStyle = '#9ad6ff'
-  ctx.font = 'bold 14px Inter'; ctx.textAlign = 'center'
-  const o2y = (h - ((_bv.t * 0.6) % h))
-  ctx.fillText('O₂', w - 60, o2y)
-  ctx.fillText('CO₂', 60, h - ((_bv.t * 0.4) % h))
-
+  const photonIntensity = (phase === 0 || phase === 1) ? 1 : 0.4
+  for (const p of _bv.particles){
+    p.y += p.vy * _bv.speed * 0.8
+    if (p.y > ty + 40 || p.x > tx + 30){
+      p.y = 60 + Math.random()*20
+      p.x = 50 + Math.random()*60
+    }
+    ctx.fillStyle = 'rgba(255,215,110,' + photonIntensity + ')'
+    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = 'rgba(255,215,110,' + (photonIntensity*0.4) + ')'; ctx.lineWidth = 1
+    ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - 6, p.y - 6); ctx.stroke()
+  }
+  if (phase === 0){
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left'
+    ctx.fillText('Fotones', 70, 90)
+  }
+  if (phase >= 1){
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('H\u2082O', tx - 60, ty)
+    ctx.strokeStyle = '#9ad6ff'; ctx.lineWidth = 1.5
+    ctx.beginPath(); ctx.moveTo(tx - 44, ty - 2); ctx.lineTo(tx - tilW/2 - 4, ty - 2); ctx.stroke()
+    const o2Y = ty - 30 - ((_bv.t * 0.4) % 60)
+    ctx.fillStyle = '#9ad6ff'
+    ctx.fillText('O\u2082 \u2191', tx - 60, o2Y)
+    const atpShift = (_bv.t * 0.5) % 80
+    ctx.fillStyle = '#ffd76e'
+    ctx.fillText('ATP \u2192', tx + tilW/2 + 10 + atpShift, ty - 8)
+    ctx.fillStyle = '#c8a8f7'
+    ctx.fillText('NADPH \u2192', tx + tilW/2 + 18 + atpShift, ty + 10)
+  }
+  if (phase >= 2){
+    const ccx = w * 0.72, ccy = ty
+    const ccr = 38
+    ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2
+    ctx.setLineDash([4, 4])
+    ctx.beginPath(); ctx.arc(ccx, ccy, ccr, 0, Math.PI*2); ctx.stroke()
+    ctx.setLineDash([])
+    const cAng = (_bv.t * 0.05) % (Math.PI*2)
+    ctx.fillStyle = '#fff'
+    ctx.beginPath(); ctx.arc(ccx + Math.cos(cAng)*ccr, ccy + Math.sin(cAng)*ccr, 4, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = '#5fbc7e'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Calvin', ccx, ccy - 2)
+    ctx.font = 'bold 9px Inter'
+    ctx.fillText('Rubisco', ccx, ccy + 10)
+    ctx.fillStyle = '#c8c0b8'; ctx.font = 'bold 11px Inter'
+    const co2X = ccx - ccr - 32 + ((_bv.t * 0.3) % 24)
+    ctx.fillText('CO\u2082 \u2192', co2X, ccy)
+  }
+  if (phase >= 3){
+    const glX = w - 50 - ((_bv.t * 0.2) % 30)
+    ctx.fillStyle = '#5fbc7e'
+    ctx.beginPath(); ctx.arc(glX, h/2 + 30, 9, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke()
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('C\u2086H\u2081\u2082O\u2086', glX, h/2 + 32)
+    ctx.fillStyle = '#5fbc7e'; ctx.font = 'bold 10px Inter'
+    ctx.fillText('Glucosa', glX, h/2 + 50)
+  }
+  const phaseNames = [
+    'Fase 1 - Captacion de luz por el fotosistema',
+    'Fase 2 - Fase luminosa: H\u2082O \u2192 O\u2082 + ATP + NADPH',
+    'Fase 3 - Ciclo de Calvin: fija CO\u2082 con ATP y NADPH',
+    'Fase 4 - Glucosa producida'
+  ]
+  ctx.fillStyle = 'rgba(0,0,0,.45)'
+  ctx.fillRect(0, 0, w, 22)
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(phaseNames[phase], w/2, 15)
 }
 
 function _bvDrawRespiracion(ctx, w, h){
-  // Mitocondria
-  ctx.fillStyle = 'rgba(196,82,82,.18)'
+  // RESPIRACION CELULAR (reescrito) - sigue 4 fases del texto:
+  // F1: Glucolisis citoplasma (glucosa -> piruvato)
+  // F2: Piruvato cruza a la matriz, oxidacion a acetil-CoA
+  // F3: Krebs en matriz (libera CO2, NADH, FADH2)
+  // F4: Cadena transportadora en cresta, O2 acepta e-, mucho ATP
+  const phase = Math.floor(_bv.step) % 4
+  const splitX = w * 0.32
+  ctx.fillStyle = 'rgba(154,214,255,.06)'
+  ctx.fillRect(0, 0, splitX, h)
+  ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Citoplasma', 8, 16)
+  ctx.font = 'italic 9px Inter'
+  ctx.fillText('(glucolisis)', 8, 28)
+  const mx = w * 0.66, my = h/2
+  const mRx = w * 0.30, mRy = h * 0.36
+  ctx.fillStyle = 'rgba(196,82,82,.10)'
   ctx.beginPath()
-  ctx.ellipse(w/2, h/2, w/2.4, h/3, 0, 0, Math.PI*2)
-  ctx.fill()
-  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 2; ctx.stroke()
-  // Crestas
-  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 1.5
-  for (let i = 0; i < 6; i++){
-    ctx.beginPath()
-    ctx.ellipse(w/2 - 60 + i*24, h/2, 14, 30, 0.2 * (i%2 ? 1 : -1), 0, Math.PI*2)
-    ctx.stroke()
+  ctx.ellipse(mx, my, mRx, mRy, 0, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 2.5; ctx.stroke()
+  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 1.8
+  ctx.beginPath()
+  ctx.ellipse(mx, my, mRx - 14, mRy - 10, 0, 0, Math.PI*2); ctx.stroke()
+  ctx.lineWidth = 1.5
+  for (let i = 0; i < 5; i++){
+    const ang = (i / 5) * Math.PI*2 + 0.3
+    const x1 = mx + Math.cos(ang) * (mRx - 14)
+    const y1 = my + Math.sin(ang) * (mRy - 10)
+    const x2 = mx + Math.cos(ang) * (mRx - 38)
+    const y2 = my + Math.sin(ang) * (mRy - 28)
+    ctx.beginPath(); ctx.moveTo(x1, y1)
+    ctx.bezierCurveTo(x1 - 10, y1 - 4, x2 + 10, y2 + 4, x2, y2); ctx.stroke()
   }
-  // Glucosa (azul) entrando, ATP (amarillo) saliendo
-  ctx.fillStyle = '#9ad6ff'
-  ctx.font = 'bold 13px Inter'; ctx.textAlign = 'left'
-  ctx.fillText('Glucosa →', 12, h/2 + 5)
-  ctx.fillStyle = '#ffd76e'
-  ctx.textAlign = 'right'
-  for (let i = 0; i < 8; i++){
-    const phase = (_bv.t * 0.5 + i * 30) % 200
-    if (phase < 100){
-      ctx.fillText('ATP', w - 12 - phase, h/2 + (i % 3 - 1) * 18)
+  ctx.fillStyle = '#c45252'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Mitocondria', mx, 16)
+  ctx.font = 'italic 9px Inter'
+  ctx.fillText('Matriz (Krebs) + Crestas (cadena)', mx, 28)
+  // F1: Glucolisis
+  ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('Glucosa', 8, h/2 - 4)
+  ctx.beginPath(); ctx.arc(50, h/2 + 8, 10, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke()
+  if (phase >= 0){
+    ctx.strokeStyle = '#9ad6ff'; ctx.lineWidth = 1.5
+    ctx.beginPath(); ctx.moveTo(50, h/2 + 22); ctx.lineTo(50, h/2 + 46); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(50, h/2 + 46); ctx.lineTo(46, h/2 + 40); ctx.lineTo(54, h/2 + 40); ctx.closePath(); ctx.fill()
+    ctx.fillStyle = '#5fbc7e'
+    ctx.beginPath(); ctx.arc(38, h/2 + 60, 6, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.arc(62, h/2 + 60, 6, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = '#5fbc7e'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('2 piruvato', 50, h/2 + 78)
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('+ 2 ATP', 50, h/2 - 18)
+    ctx.fillStyle = '#c8a8f7'
+    ctx.fillText('+ 2 NADH', 50, h/2 - 30)
+  }
+  // F2: Piruvato cruza a la matriz
+  if (phase >= 1){
+    const t01 = ((_bv.t * 0.3) % 100) / 100
+    const startX = 62, endX = mx - mRx + 30
+    const pathX = startX + (endX - startX) * t01
+    const pathY = h/2 + 60 - t01 * 30
+    ctx.fillStyle = '#5fbc7e'
+    ctx.beginPath(); ctx.arc(pathX, pathY, 5, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.arc(pathX + 8, pathY - 4, 5, 0, Math.PI*2); ctx.fill()
+    if (t01 > 0.25 && t01 < 0.75){
+      ctx.fillStyle = '#5fbc7e'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('piruvato -> matriz', pathX, pathY - 12)
+    }
+    if (phase === 1){
+      const co2y = h/2 - ((_bv.t * 0.5) % 50)
+      ctx.fillStyle = '#c8c0b8'; ctx.font = 'bold 10px Inter'
+      ctx.fillText('CO\u2082 \u2191', endX, co2y)
     }
   }
+  // F3: Krebs
+  if (phase >= 2){
+    const kx = mx - 14, ky = my + 6
+    const kr = 22
+    ctx.strokeStyle = '#ffd76e'; ctx.lineWidth = 1.8
+    ctx.setLineDash([3, 3])
+    ctx.beginPath(); ctx.arc(kx, ky, kr, 0, Math.PI*2); ctx.stroke()
+    ctx.setLineDash([])
+    const ka = (_bv.t * 0.06) % (Math.PI*2)
+    ctx.fillStyle = '#fff'
+    ctx.beginPath(); ctx.arc(kx + Math.cos(ka)*kr, ky + Math.sin(ka)*kr, 3.5, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Krebs', kx, ky + 2)
+    ctx.fillStyle = '#c8c0b8'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('CO\u2082 \u2191', kx, ky - kr - 6)
+    ctx.fillStyle = '#c8a8f7'
+    ctx.fillText('NADH', kx + kr + 12, ky - 4)
+    ctx.fillStyle = '#ffe79e'
+    ctx.fillText('FADH\u2082', kx + kr + 14, ky + 8)
+  }
+  // F4: Cadena transportadora
+  if (phase >= 3){
+    const cyY = my - 28
+    ctx.fillStyle = '#c45252'
+    for (let i = 0; i < 4; i++){
+      const cxx = mx + 14 + i*14
+      ctx.fillRect(cxx - 5, cyY - 10, 10, 18)
+    }
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(mx + 9, cyY); ctx.lineTo(mx + 14 + 3*14 + 8, cyY)
+    ctx.stroke()
+    const eX = (_bv.t * 0.4) % 56
+    ctx.fillStyle = '#ffd76e'
+    ctx.beginPath(); ctx.arc(mx + 14 + eX, cyY, 3, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('e-', mx + 14 + eX, cyY - 8)
+    ctx.fillStyle = '#c45252'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('Cadena de transporte', mx + 14 + 22, cyY - 22)
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('O\u2082 + H -> H\u2082O', mx + mRx - 30, cyY + 18)
+    for (let i = 0; i < 6; i++){
+      const t01b = ((_bv.t * 0.5 + i * 30) % 120) / 120
+      if (t01b < 0.8){
+        const ax = mx + mRx + 8 + t01b * 30
+        const ay = my + (i % 3 - 1) * 14
+        ctx.fillStyle = 'rgba(255,215,110,' + (1 - t01b) + ')'
+        ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left'
+        ctx.fillText('ATP', ax, ay)
+      }
+    }
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 10px Inter'
+    ctx.fillText('~30 ATP', mx + mRx + 14, my - 30)
+  }
+  const phaseNames = [
+    'Fase 1 - Glucolisis (citoplasma): glucosa -> 2 piruvato + 2 ATP',
+    'Fase 2 - Piruvato -> acetil-CoA (entrada a matriz)',
+    'Fase 3 - Ciclo de Krebs: libera CO\u2082, NADH, FADH\u2082',
+    'Fase 4 - Cadena transportadora: O\u2082 acepta e-, mucho ATP'
+  ]
+  ctx.fillStyle = 'rgba(0,0,0,.55)'
+  ctx.fillRect(0, 0, w, 22)
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(phaseNames[phase], w/2, 15)
 }
 
 function _bvDrawTranscripcion(ctx, w, h){
@@ -11093,94 +11501,213 @@ function _bvDrawClasif(ctx, w, h){
 }
 
 // ═══ Ciclo celular — visualizador P1 ═══
+// CICLO CELULAR - visualizador P1 (reescrito)
+// Muestra DOS paneles: a la izquierda la rueda del ciclo con la fase activa
+// resaltada; a la derecha una celula que cambia visualmente segun la fase:
+// G1 crece, S muestra el ADN replicandose, G2 verifica con doble dotacion
+// cromosomica, M muestra los cromosomas alineandose y separandose en 2 hijas.
 function _bvDrawCicloCelular(ctx, w, h){
-  // Pie chart con 4 fases del ciclo: G1, S, G2, M
+  const phase = Math.floor(_bv.step) % 4
   const phases = [
-    { name:'G1', frac: 0.4, color:'#5fbc7e' },
-    { name:'S',  frac: 0.25, color:'#3aa5c4' },
-    { name:'G2', frac: 0.2, color:'#ffd76e' },
-    { name:'M',  frac: 0.15, color:'#c45252' }
+    { name:'G1', frac:0.4,  color:'#5fbc7e', label:'Crecimiento' },
+    { name:'S',  frac:0.25, color:'#3aa5c4', label:'Sintesis ADN' },
+    { name:'G2', frac:0.2,  color:'#ffd76e', label:'Verificacion' },
+    { name:'M',  frac:0.15, color:'#c45252', label:'Mitosis' }
   ]
-  const cx = w/2, cy = h/2, r = Math.min(w,h) * 0.32
+  // Panel izquierdo: rueda del ciclo
+  const wheelW = w * 0.45
+  const cx = wheelW/2 + 10, cy = h/2, r = Math.min(wheelW, h) * 0.32
   let start = -Math.PI / 2
-  // Indicador animado que va recorriendo el ciclo
-  const indicatorAngle = -Math.PI/2 + (_bv.t * 0.02) % (Math.PI * 2)
-  for (const p of phases){
+  for (let i = 0; i < phases.length; i++){
+    const p = phases[i]
     const end = start + p.frac * Math.PI * 2
-    ctx.fillStyle = p.color + 'cc'
-    ctx.beginPath()
-    ctx.moveTo(cx, cy)
-    ctx.arc(cx, cy, r, start, end)
-    ctx.closePath()
-    ctx.fill()
-    // Etiqueta
+    ctx.fillStyle = (i === phase) ? p.color : p.color + '55'
+    ctx.beginPath(); ctx.moveTo(cx, cy)
+    ctx.arc(cx, cy, r, start, end); ctx.closePath(); ctx.fill()
+    if (i === phase){
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 3
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, r, start, end); ctx.closePath(); ctx.stroke()
+    }
     const mid = (start + end) / 2
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Inter'; ctx.textAlign = 'center'
-    ctx.fillText(p.name, cx + Math.cos(mid) * r * 0.7, cy + Math.sin(mid) * r * 0.7 + 4)
+    ctx.fillStyle = (i === phase) ? '#fff' : '#d0edd8aa'
+    ctx.font = (i === phase ? 'bold 15px Inter' : 'bold 12px Inter')
+    ctx.textAlign = 'center'
+    ctx.fillText(p.name, cx + Math.cos(mid) * r * 0.72, cy + Math.sin(mid) * r * 0.72 + 4)
     start = end
   }
-  // Indicador
-  ctx.fillStyle = '#fff'
-  ctx.beginPath()
-  ctx.arc(cx + Math.cos(indicatorAngle) * r, cy + Math.sin(indicatorAngle) * r, 6, 0, Math.PI*2)
-  ctx.fill()
-  ctx.strokeStyle = '#0a1a10'; ctx.lineWidth = 2; ctx.stroke()
-  // Centro
   ctx.fillStyle = '#0a1a10'
-  ctx.beginPath(); ctx.arc(cx, cy, r * 0.45, 0, Math.PI * 2); ctx.fill()
-  ctx.strokeStyle = '#5fbc7e'; ctx.stroke()
-  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 12px Inter'
-  ctx.fillText('Ciclo', cx, cy - 4)
-  ctx.fillText('celular', cx, cy + 12)
+  ctx.beginPath(); ctx.arc(cx, cy, r * 0.42, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 1.5; ctx.stroke()
+  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'
+  ctx.fillText('Ciclo', cx, cy - 6); ctx.fillText('celular', cx, cy + 10)
+  ctx.font = 'bold 9px Inter'; ctx.fillStyle = '#ffd76e'
+  if (phase === 0 || phase === 2 || phase === 3){
+    ctx.fillText('checkpoint', cx, cy + 26)
+  }
+  // Panel derecho: celula que cambia segun fase
+  const px = w * 0.5 + 20, py = h/2
+  const cellW = w * 0.45 - 30
+  const cellR = Math.min(cellW/2, h * 0.38)
+  const grow = phase === 0 ? 0.75 : (phase === 1 ? 0.9 : (phase === 2 ? 1.0 : 1.0))
+  const Rcell = cellR * grow
+  ctx.fillStyle = 'rgba(95,188,126,.10)'
+  if (phase < 3){
+    ctx.beginPath(); ctx.ellipse(px + cellW/2, py, Rcell, Rcell*0.88, 0, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2.5; ctx.stroke()
+    ctx.fillStyle = 'rgba(43,110,163,.18)'
+    ctx.beginPath(); ctx.arc(px + cellW/2, py, Rcell*0.45, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#3aa5c4'; ctx.lineWidth = 1.5; ctx.stroke()
+    const nx = px + cellW/2, ny = py
+    const nr = Rcell * 0.45
+    if (phase === 0){
+      ctx.fillStyle = '#3aa5c4'
+      for (let i = 0; i < 6; i++){
+        const a = i * 1.05 + _bv.t * 0.005
+        ctx.beginPath()
+        ctx.arc(nx + Math.cos(a)*nr*0.5, ny + Math.sin(a)*nr*0.5, 3, 0, Math.PI*2); ctx.fill()
+      }
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('cromatina dispersa', nx, ny + nr + 18)
+    } else if (phase === 1){
+      const pulse = (Math.sin(_bv.t * 0.04) + 1) / 2
+      for (let i = 0; i < 4; i++){
+        const a = i * 1.5
+        const dx = Math.cos(a) * nr * 0.45, dy = Math.sin(a) * nr * 0.45
+        ctx.fillStyle = '#3aa5c4'
+        ctx.beginPath(); ctx.arc(nx + dx, ny + dy, 4, 0, Math.PI*2); ctx.fill()
+        ctx.fillStyle = '#ffd76e'
+        ctx.beginPath(); ctx.arc(nx + dx + 6, ny + dy + 6*pulse, 4, 0, Math.PI*2); ctx.fill()
+      }
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('ADN replicandose', nx, ny + nr + 18)
+    } else {
+      for (let i = 0; i < 6; i++){
+        const a = i * 1.05
+        const bx = nx + Math.cos(a)*nr*0.5, by = ny + Math.sin(a)*nr*0.5
+        ctx.fillStyle = '#3aa5c4'
+        ctx.beginPath(); ctx.arc(bx, by, 3.5, 0, Math.PI*2); ctx.fill()
+        ctx.fillStyle = '#ffd76e'
+        ctx.beginPath(); ctx.arc(bx + 5, by + 2, 3.5, 0, Math.PI*2); ctx.fill()
+      }
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('verificacion - doble dotacion', nx, ny + nr + 18)
+    }
+  } else {
+    const sep = ((_bv.t * 0.5) % 100) / 100
+    const off = sep * Rcell * 1.1
+    ctx.fillStyle = 'rgba(95,188,126,.10)'
+    ctx.beginPath(); ctx.ellipse(px + cellW/2 - off*0.5, py, Rcell*0.82, Rcell*0.88, 0, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2.5; ctx.stroke()
+    ctx.beginPath(); ctx.ellipse(px + cellW/2 + off*0.5, py, Rcell*0.82, Rcell*0.88, 0, 0, Math.PI*2); ctx.fill()
+    ctx.stroke()
+    ctx.strokeStyle = '#c45252'; ctx.lineWidth = 3
+    for (let i = -1; i <= 1; i++){
+      const yy = py + i*14
+      ctx.beginPath(); ctx.moveTo(px + cellW/2 - off*0.5 - 6, yy); ctx.lineTo(px + cellW/2 - off*0.5 + 6, yy); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(px + cellW/2 + off*0.5 - 6, yy); ctx.lineTo(px + cellW/2 + off*0.5 + 6, yy); ctx.stroke()
+    }
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('citocinesis - 2 celulas hijas', px + cellW/2, py + Rcell + 18)
+  }
+  ctx.fillStyle = phases[phase].color
+  ctx.font = 'bold 18px Inter'; ctx.textAlign = 'center'
+  ctx.fillText('Fase ' + phases[phase].name + ' - ' + phases[phase].label, px + cellW/2, 24)
 }
 
 // ═══ Enzimas — visualizador P1 ═══
+// ENZIMAS - visualizador P1 (reescrito)
+// Pedagogico: la enzima se ve con su sitio activo en forma de muesca; el
+// sustrato (forma complementaria) se acerca, encaja (ajuste inducido - la
+// enzima se cierra un poco), se rompe en productos, la enzima vuelve libre.
 function _bvDrawEnzimas(ctx, w, h){
-  // Enzima fija (forma de "C" amarilla) y sustrato animado que entra/sale
-  const cx = w/2, cy = h/2
-  // Enzima
+  const phase = Math.floor(_bv.step) % 4
+  const cx = w * 0.42, cy = h/2
+  // Cuerpo de la enzima (verde redondeado con muesca en el sitio activo)
   ctx.fillStyle = '#5fbc7e'
+  ctx.strokeStyle = '#3a8c4e'
+  ctx.lineWidth = 2
   ctx.beginPath()
-  ctx.arc(cx, cy, 60, Math.PI/3, -Math.PI/3, false)
-  ctx.lineTo(cx + 25, cy)
-  ctx.fill()
-  ctx.strokeStyle = '#3a8c4e'; ctx.lineWidth = 2; ctx.stroke()
-  // Etiqueta
+  const r1 = 60
+  const grip = (phase === 1 || phase === 2) ? 1 : 0
+  const valleyDepth = 24 - grip*8
+  ctx.moveTo(cx + r1*0.3, cy - r1*0.9)
+  ctx.bezierCurveTo(cx - r1*0.6, cy - r1*1.1, cx - r1*1.2, cy - r1*0.3, cx - r1, cy)
+  ctx.bezierCurveTo(cx - r1*1.2, cy + r1*0.3, cx - r1*0.6, cy + r1*1.1, cx + r1*0.3, cy + r1*0.9)
+  ctx.bezierCurveTo(cx + r1*0.5, cy + r1*0.4, cx + r1*0.6 + valleyDepth*0.4, cy + 20 - grip*4, cx + r1*0.55, cy + 5)
+  ctx.bezierCurveTo(cx + r1*0.45 + valleyDepth*0.2, cy - 8, cx + r1*0.6 + valleyDepth*0.4, cy - 20 + grip*4, cx + r1*0.5, cy - r1*0.4)
+  ctx.bezierCurveTo(cx + r1*0.5, cy - r1*0.5, cx + r1*0.4, cy - r1*0.7, cx + r1*0.3, cy - r1*0.9)
+  ctx.closePath()
+  ctx.fill(); ctx.stroke()
   ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
-  ctx.fillText('Enzima', cx - 10, cy + 4)
-  // Sustrato: animado entrando, uniéndose y saliendo como producto
-  const cycleT = (_bv.t * 0.025) % 4
-  let sx, sy, color, label
-  if (cycleT < 1){
-    // Aproximándose
-    sx = cx + 200 - cycleT * 140
-    sy = cy
-    color = '#3aa5c4'
-    label = 'Sustrato'
-  } else if (cycleT < 2){
-    // Unido
-    sx = cx + 30
-    sy = cy
-    color = '#ffd76e'
-    label = 'Complejo'
-  } else if (cycleT < 3){
-    // Saliendo como producto
-    sx = cx + 30 + (cycleT - 2) * 140
-    sy = cy
-    color = '#c45252'
-    label = 'Producto'
+  ctx.fillText('Enzima', cx - 20, cy + 4)
+  ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 10px Inter'
+  ctx.fillText('sitio activo', cx + r1*0.05, cy - r1*0.95)
+  ctx.beginPath(); ctx.arc(cx + r1*0.55, cy, 3, 0, Math.PI*2); ctx.fill()
+  // Sustrato/producto segun fase
+  const sub = ((_bv.t * 0.6) % 100) / 100
+  if (phase === 0){
+    const sx = cx + 240 - sub * 140
+    _drawSubstrate(ctx, sx, cy, '#3aa5c4')
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Sustrato', sx, cy + 30)
+    ctx.strokeStyle = '#9ad6ff'; ctx.lineWidth = 2
+    ctx.beginPath(); ctx.moveTo(sx + 24, cy); ctx.lineTo(sx + 36, cy); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(sx + 36, cy); ctx.lineTo(sx + 30, cy - 4); ctx.lineTo(sx + 30, cy + 4); ctx.closePath(); ctx.fill()
+  } else if (phase === 1){
+    const sx = cx + r1*0.7
+    _drawSubstrate(ctx, sx, cy, '#ffd76e')
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Complejo enzima-sustrato', cx + 20, cy - r1 - 8)
+    ctx.fillText('(ajuste inducido)', cx + 20, cy - r1 + 8)
+  } else if (phase === 2){
+    const sx = cx + r1*0.7
+    _drawSubstrate(ctx, sx, cy, '#ffd76e')
+    ctx.fillStyle = '#fff'
+    for (let i = 0; i < 6; i++){
+      const a = i * Math.PI/3 + _bv.t * 0.05
+      const rr = 18 + Math.sin(_bv.t * 0.1 + i) * 4
+      ctx.beginPath()
+      ctx.arc(sx + Math.cos(a)*rr, cy + Math.sin(a)*rr, 1.8, 0, Math.PI*2)
+      ctx.fill()
+    }
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Catalisis - baja energia de activacion', cx + 20, cy - r1 - 4)
   } else {
-    // Espera/regreso al inicio
-    sx = cx + 200
-    sy = cy
-    color = '#3aa5c4'
-    label = 'Sustrato'
+    const offset = sub * 100
+    ctx.fillStyle = '#c45252'
+    ctx.beginPath(); ctx.arc(cx + r1*0.7 + offset, cy - 10, 8, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.arc(cx + r1*0.7 + offset + 6, cy + 14, 8, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#0a1a10'; ctx.stroke()
+    ctx.fillStyle = '#fab' ; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Productos liberados', cx + r1*0.7 + offset + 10, cy - 24)
+    ctx.fillStyle = '#5fbc7e'
+    ctx.fillText('(enzima libre, vuelve a ciclar)', cx - 20, cy + r1 + 16)
   }
+  // Mini-diagrama de energia con/sin enzima
+  const baseY = h - 26
+  ctx.strokeStyle = '#5fbc7e88'; ctx.lineWidth = 1
+  ctx.beginPath(); ctx.moveTo(20, baseY); ctx.lineTo(w - 20, baseY); ctx.stroke()
+  ctx.strokeStyle = '#c45252'; ctx.lineWidth = 1.5
+  ctx.beginPath()
+  ctx.moveTo(20, baseY)
+  ctx.bezierCurveTo(w*0.35, baseY - 36, w*0.5, baseY - 36, w*0.65, baseY)
+  ctx.stroke()
+  ctx.strokeStyle = '#5fbc7e'; ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(20, baseY)
+  ctx.bezierCurveTo(w*0.35, baseY - 16, w*0.5, baseY - 16, w*0.65, baseY)
+  ctx.stroke()
+  ctx.fillStyle = '#c45252'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+  ctx.fillText('sin enzima', 24, baseY - 30)
+  ctx.fillStyle = '#5fbc7e'
+  ctx.fillText('con enzima', 24, baseY - 8)
+}
+function _drawSubstrate(ctx, x, y, color){
   ctx.fillStyle = color
-  ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI * 2); ctx.fill()
-  ctx.strokeStyle = '#0a1a10'; ctx.lineWidth = 2; ctx.stroke()
-  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
-  ctx.fillText(label, sx, sy - 22)
+  ctx.strokeStyle = '#0a1a10'
+  ctx.lineWidth = 1.5
+  ctx.beginPath(); ctx.arc(x, y - 6, 8, 0, Math.PI*2); ctx.fill(); ctx.stroke()
+  ctx.beginPath(); ctx.arc(x + 6, y + 6, 8, 0, Math.PI*2); ctx.fill(); ctx.stroke()
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -11945,6 +12472,46 @@ window.addEventListener('load', () => {
     try { window.checkLast3DaysMode() } catch(e){}
   }, 1000)
 })
+
+// ═══ NAVEGACION INTELIGENTE - cambio de parcial automatico ═══
+// Problema: las secciones [data-parcial="p1|p2|p3"] estan display:none salvo
+// la activa. Si el usuario esta en P2 activo y clickea "Resumen P3" en el
+// panel, el ancla lo lleva al id pero la seccion esta oculta.
+// Solucion: interceptar clicks en <a href="#xxx"> que apunten a secciones
+// [data-parcial]. Si el parcial no es el activo, cambiarlo antes de scrollear.
+window._smartScrollTo = function(targetEl){
+  if (!targetEl) return
+  const sec = targetEl.closest('section[data-parcial]')
+  if (sec){
+    const needed = sec.dataset.parcial
+    const current = (typeof getActiveParcial === 'function') ? getActiveParcial() : null
+    if (needed && needed !== current && typeof window.setActiveParcial === 'function'){
+      window.setActiveParcial(needed)
+      setTimeout(() => {
+        const el = document.getElementById(targetEl.id)
+        if (el) el.scrollIntoView({behavior:'smooth', block:'start'})
+      }, 100)
+      return
+    }
+  }
+  targetEl.scrollIntoView({behavior:'smooth', block:'start'})
+}
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[href^="#"]')
+  if (!a) return
+  const href = a.getAttribute('href')
+  if (!href || href === '#') return
+  const id = href.slice(1)
+  if (!id) return
+  const target = document.getElementById(id)
+  if (!target) return
+  const sec = target.closest('section[data-parcial]')
+  if (sec){
+    e.preventDefault()
+    window._smartScrollTo(target)
+  }
+}, true)
+// FIN NAVEGACION INTELIGENTE
 
 // ═══════════════════════════════════════════════════════════
 //  16. API PÚBLICA (lo que se invoca desde onclick="A.xxx()")
