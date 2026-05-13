@@ -25,65 +25,223 @@
   upgrade-insecure-requests;
 ">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>BioMaster — Plataforma interactiva para estudiar Biología General</title>
-<meta name="description" content="Plataforma interactiva moderna para estudiar Biología General: química celular, biomoléculas, célula, metabolismo, fotosíntesis, respiración, genética, evolución, diversidad biológica y ecología. Diagnóstico inteligente, plan personalizado, simulacros adaptativos y evaluaciones tipo parcial. Ideal para preparación de exámenes y refuerzo de contenidos biológicos.">
-<meta name="keywords" content="biología general, plataforma interactiva biología, simulacros biología, biomoléculas, célula, metabolismo, fotosíntesis, genética, evolución, ecología, diversidad biológica, estudio biología universitario, evaluación tipo parcial">
+<title>BioMaster | Plataforma para Estudiar Biología General Online | Resúmenes, Simulacros y Exámenes</title>
+<meta name="description" content="Plataforma online para estudiar Biología General universitaria en español. Resúmenes interactivos, simulacros de examen con retroalimentación, BioVisuales animados (ADN, fotosíntesis, respiración celular, mitosis), diagnóstico inteligente, plan de estudio personalizado y predicción de aprobación. Ideal para preparar parciales y exámenes finales de Biología.">
+<meta name="keywords" content="biologia general, estudiar biologia online, simulacros biologia, preparar examen biologia, biologia universitaria, resumen biologia general, biologia celular, biologia molecular, genetica, ADN replicacion, fotosintesis, respiracion celular, mitosis meiosis, ecologia, evolucion, biomoleculas, enzimas, examenes biologia, plataforma educativa biologia, flashcards biologia, biologia para examen, estudiar para parcial biologia">
 <meta name="author" content="BioMaster">
 <meta name="theme-color" content="#2f8b4d">
-<!-- Open Graph -->
+<meta name="application-name" content="BioMaster">
+<meta name="apple-mobile-web-app-title" content="BioMaster">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+
+<!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="BioMaster — Plataforma interactiva para estudiar Biología General">
-<meta property="og:description" content="Resúmenes completos, simulacros adaptativos, evaluaciones tipo parcial y apoyo visual interactivo para Biología General. Aprendizaje moderno y premium.">
-<meta property="og:locale" content="es_CR">
-<!-- Twitter -->
+<meta property="og:site_name" content="BioMaster">
+<meta property="og:title" content="BioMaster | Estudia Biología General Online — Simulacros, Resúmenes y BioVisuales">
+<meta property="og:description" content="Domina Biología General con simulacros tipo examen, resúmenes organizados, BioVisuales animados de cada proceso (ADN, fotosíntesis, respiración celular, mitosis) y plan de estudio personalizado. Empieza gratis.">
+<meta property="og:url" content="https://biomaster-prod.vercel.app//">
+<meta property="og:image" content="https://biomaster-prod.vercel.app//img/og-image.jpg">
+<meta property="og:image:secure_url" content="https://biomaster-prod.vercel.app//img/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BioMaster — Plataforma online para estudiar Biología General">
+<meta property="og:locale" content="es_LA">
+<meta property="og:locale:alternate" content="es_MX">
+<meta property="og:locale:alternate" content="es_ES">
+<meta property="og:locale:alternate" content="es_CO">
+<meta property="og:locale:alternate" content="es_AR">
+
+<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BioMaster — Plataforma interactiva para estudiar Biología General">
-<meta name="twitter:description" content="Entrenamiento inteligente para Biología General: simulacros adaptativos, evaluaciones tipo parcial, juegos didácticos y apoyo visual interactivo.">
-<!-- Robots / canonical (ayuda a SEO) -->
-<meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="/">
-<!-- ═══ SEO: JSON-LD ═══
-     Schema.org WebSite + EducationalOrganization + Product
-     Ayuda a Google a entender qué es BioMaster y mostrar rich snippets. -->
+<meta name="twitter:title" content="BioMaster | Estudia Biología General Online">
+<meta name="twitter:description" content="Simulacros tipo examen, resúmenes interactivos, BioVisuales animados y plan personalizado para dominar Biología General universitaria. Empieza gratis.">
+<meta name="twitter:image" content="https://biomaster-prod.vercel.app//img/og-image.jpg">
+<meta name="twitter:image:alt" content="BioMaster — Estudia Biología General">
+
+<!-- Robots / Canonical -->
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="googlebot" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://biomaster-prod.vercel.app//">
+
+<!-- Hreflang (versión en español para LATAM y España) -->
+<link rel="alternate" hreflang="es" href="https://biomaster-prod.vercel.app//">
+<link rel="alternate" hreflang="es-419" href="https://biomaster-prod.vercel.app//">
+<link rel="alternate" hreflang="x-default" href="https://biomaster-prod.vercel.app//">
+
+<!-- Favicons -->
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/icon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/icon-32x32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/img/icon-48x48.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/img/icon-96x96.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/img/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/img/icon-512x512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- ═══ SEO JSON-LD - Schema.org ═══
+     Cubre todos los avisos de Google Search Console:
+     - Organization (con logo e image)
+     - WebSite (con SearchAction)
+     - Product (con offers, hasMerchantReturnPolicy, shippingDetails)
+     - SoftwareApplication (categoría EducationalApplication)
+     - FAQPage (para snippets de preguntas frecuentes)
+     NO incluye aggregateRating ni review FALSOS — esos se agregan cuando haya reseñas reales. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebSite",
+      "@type": "Organization",
+      "@id": "https://biomaster-prod.vercel.app//#organization",
       "name": "BioMaster",
-      "url": "https://biomaster.cr/",
-      "description": "Plataforma interactiva moderna para estudiar Biología General con simulacros adaptativos, evaluaciones tipo parcial y apoyo visual interactivo.",
-      "inLanguage": "es-CR",
+      "alternateName": "BioMaster - Plataforma de Biología General",
+      "url": "https://biomaster-prod.vercel.app//",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://biomaster-prod.vercel.app//img/icon-512x512.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://biomaster-prod.vercel.app//img/og-image.jpg",
+      "description": "Plataforma educativa online para estudiar Biología General universitaria en español. Simulacros, resúmenes, BioVisuales animados, diagnóstico inteligente y plan de estudio personalizado.",
+      "email": "Biomaster.oficial@gmail.com",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://biomaster-prod.vercel.app//#website",
+      "url": "https://biomaster-prod.vercel.app//",
+      "name": "BioMaster",
+      "description": "Estudia Biología General online: simulacros, resúmenes, BioVisuales animados y plan personalizado.",
+      "inLanguage": "es",
+      "publisher": { "@id": "https://biomaster-prod.vercel.app//#organization" },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://biomaster.cr/?q={search_term_string}",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://biomaster-prod.vercel.app//?q={search_term_string}"
+        },
         "query-input": "required name=search_term_string"
       }
     },
     {
-      "@type": "EducationalOrganization",
+      "@type": "SoftwareApplication",
       "name": "BioMaster",
-      "description": "Plataforma educativa independiente para estudiar Biología General a nivel universitario.",
-      "email": "Biomaster.oficial@gmail.com",
-      "areaServed": "CR"
+      "operatingSystem": "Web",
+      "applicationCategory": "EducationalApplication",
+      "description": "Aplicación web para estudiar Biología General universitaria con simulacros adaptativos, resúmenes interactivos, BioVisuales animados y plan de estudio personalizado.",
+      "image": "https://biomaster-prod.vercel.app//img/og-image.jpg",
+      "url": "https://biomaster-prod.vercel.app//",
+      "inLanguage": "es",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "description": "Plan gratuito disponible. Planes Pro de pago para acceso completo."
+      }
     },
     {
       "@type": "Product",
-      "name": "Pase Semestre Completo BioMaster",
-      "description": "Acceso a los tres parciales de Biología General: resúmenes, simulacros adaptativos, evaluaciones tipo parcial, apoyo visual interactivo y diagnóstico inteligente.",
+      "name": "BioMaster Pro — Acceso Semestre Completo",
+      "description": "Acceso completo a los tres parciales de Biología General: todos los resúmenes, simulacros tipo examen, BioVisuales animados, plan de estudio personalizado, diagnóstico inteligente y modo rescate para los últimos 3 días antes del examen.",
+      "image": "https://biomaster-prod.vercel.app//img/product-image.jpg",
       "brand": { "@type": "Brand", "name": "BioMaster" },
+      "category": "Educational software / Online learning platform",
       "offers": {
         "@type": "Offer",
-        "price": "9900",
-        "priceCurrency": "CRC",
-        "availability": "https://schema.org/InStock"
+        "url": "https://biomaster-prod.vercel.app//",
+        "priceCurrency": "USD",
+        "price": "19.90",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": { "@id": "https://biomaster-prod.vercel.app//#organization" },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "applicableCountry": ["CR","MX","CO","AR","CL","PE","ES","US"],
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 7,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "USD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "geoMidpoint": {
+              "@type": "GeoCoordinates",
+              "latitude": 0,
+              "longitude": 0
+            }
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" },
+            "transitTime":  { "@type": "QuantitativeValue", "minValue": 0, "maxValue": 0, "unitCode": "DAY" }
+          }
+        }
       }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Para quién es BioMaster?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BioMaster está hecho para estudiantes universitarios que cursan Biología General o materias similares, en cualquier país de habla hispana. Sirve para preparar parciales, exámenes finales y reforzar contenido del curso."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué temas cubre BioMaster?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cubre los tres bloques clásicos de Biología General: química celular y biomoléculas, célula y metabolismo (incluyendo fotosíntesis y respiración celular), y genética, evolución y diversidad biológica con ecología."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Hay versión gratuita?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. La versión gratuita incluye diagnóstico inicial, vista previa de cada parcial, una muestra de los simulacros y acceso a un BioVisual de demostración."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué son los BioVisuales?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Animaciones interactivas que muestran procesos biológicos paso a paso: replicación del ADN con helicasa y polimerasa, fotosíntesis dentro del cloroplasto, respiración celular en la mitocondria, ciclo celular, acción enzimática y más. Ayudan a entender procesos que en texto resultan abstractos."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo cancelar y pedir reembolso?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Si dentro de los primeros 7 días el plan Pro no te resulta útil, te devolvemos el dinero sin preguntas."
+          }
+        }
+      ]
     }
   ]
 }
-</script>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+</script><text y='.9em' font-size='90'>🧬</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f5faf6;--surface:#fff;--soft:#eef7f0;--soft2:#f8fbf8;--text:#183526;--muted:#667c70;--border:rgba(24,53,38,.12);--shadow:0 16px 42px rgba(18,46,32,.08);--green:#2f8b4d;--red:#c45252;--yellow:#c89a12;--blue:#2b6ea3;--greenSoft:rgba(47,139,77,.14);--redSoft:rgba(196,82,82,.14);--yellowSoft:rgba(200,154,18,.16);--blueSoft:rgba(43,110,163,.14);--radius:24px;--fs:16px}
