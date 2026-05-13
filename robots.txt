@@ -1,0 +1,18 @@
+# robots.txt para BioMaster
+# https://biomaster.cr/
+
+User-agent: *
+Allow: /
+
+# Bots especificos (todos permitidos)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap
+Sitemap: https://biomaster.cr/sitemap.xml
