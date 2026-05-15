@@ -1332,6 +1332,65 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
   #bioLandingBg{display:none!important}
   #lp-precio .lp-plan{transform:none!important;transition:none!important}}
 
+/* ═══════════════════════════════════════════════════════════
+   PAGO RESULTADO — Overlay post-PayPal
+   Aparece cuando la URL incluye #pago-confirmado o #pago-cancelado
+   ═══════════════════════════════════════════════════════════ */
+#payResultOverlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.72);
+  display:none;align-items:center;justify-content:center;
+  padding:1rem;backdrop-filter:blur(6px)}
+#payResultOverlay.show{display:flex}
+.pay-result-box{
+  background:#fff;
+  border-radius:20px;
+  max-width:560px;width:100%;
+  padding:2rem 2rem 1.6rem;
+  box-shadow:0 32px 80px rgba(0,0,0,.45);
+  position:relative;
+  animation:payBoxIn .35s ease}
+@keyframes payBoxIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pay-result-icon{
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 1rem;font-weight:700}
+.pay-result-icon.success{background:rgba(74,222,128,.15);border:2px solid rgba(74,222,128,.4);color:#15803d}
+.pay-result-icon.cancel{background:rgba(251,191,36,.12);border:2px solid rgba(251,191,36,.35);color:#92400e}
+.pay-result-title{
+  text-align:center;font-size:1.25rem;font-weight:800;
+  margin:0 0 .45rem;color:#1a1a1a}
+.pay-result-sub{
+  text-align:center;color:#555;
+  font-size:.93rem;line-height:1.55;margin-bottom:1.1rem}
+.pay-result-steps{
+  background:rgba(74,222,128,.07);
+  border:1px solid rgba(74,222,128,.22);
+  border-radius:12px;padding:.9rem 1rem .9rem 1.2rem;
+  margin-bottom:1rem}
+.pay-result-steps strong{font-size:.85rem;display:block;margin-bottom:.35rem;color:#1a1a1a}
+.pay-result-steps ol{
+  padding-left:1.3rem;margin:0;
+  font-size:.87rem;line-height:1.75;color:#333}
+.pay-result-warn{
+  background:rgba(251,191,36,.1);
+  border:1px solid rgba(251,191,36,.32);
+  border-radius:10px;padding:.75rem .95rem;
+  font-size:.84rem;line-height:1.5;
+  color:#5c3d00;margin-bottom:1.2rem}
+.pay-result-btns{
+  display:flex;flex-wrap:wrap;gap:.45rem;justify-content:center;
+  margin-bottom:.9rem}
+.pay-result-close{
+  display:block;width:100%;text-align:center;
+  font-size:.8rem;color:#999;cursor:pointer;
+  background:none;border:none;padding:.25rem;
+  text-decoration:underline;text-underline-offset:2px}
+.pay-result-close:hover{color:#555}
+@media(max-width:480px){
+  .pay-result-box{padding:1.4rem 1.1rem 1.1rem;border-radius:16px}
+  .pay-result-btns .btn,.pay-result-btns .btn-primary{width:100%;text-align:center;justify-content:center}}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1855,6 +1914,56 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       </div>
     </div>
   </footer>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGO RESULTADO — Overlay post-PayPal
+     Visible cuando la URL incluye #pago-confirmado o #pago-cancelado.
+     No toca Supabase, auth, roles, ni pagos automáticos.
+     ═══════════════════════════════════════════════════════════ -->
+<div id="payResultOverlay" role="dialog" aria-modal="true" aria-labelledby="payResultTitle">
+  <div class="pay-result-box">
+
+    <!-- Contenido: pago confirmado -->
+    <div id="payResultConfirmado">
+      <div class="pay-result-icon success">✓</div>
+      <h2 class="pay-result-title" id="payResultTitle">Pago recibido o en revisión</h2>
+      <p class="pay-result-sub">Gracias por tu compra. Tu acceso Pro se activa manualmente después de confirmar el pago.</p>
+      <div class="pay-result-steps">
+        <strong>¿Qué hacer ahora?</strong>
+        <ol>
+          <li>Inicia sesión en BioMaster.</li>
+          <li>Usa el mismo correo con el que pagaste en PayPal.</li>
+          <li>Si pagaste con un correo diferente, escríbenos indicando el correo con el que te registraste en BioMaster.</li>
+          <li>La activación puede tardar unos minutos mientras confirmamos el pago.</li>
+        </ol>
+      </div>
+      <div class="pay-result-warn">
+        ⚠️ <strong>La activación todavía no es automática.</strong> No cierres tu cuenta de BioMaster; revisaremos el pago y activaremos el acceso manualmente.
+      </div>
+      <div class="pay-result-btns">
+        <button class="btn-primary btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');window.openAuthFromLanding('login')">Iniciar sesión</button>
+        <button class="btn" onclick="document.getElementById('payResultOverlay').classList.remove('show')">Ir a BioMaster</button>
+        <button class="btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver planes</button>
+        <button class="btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');window.openLegal('contacto')">Contactar soporte</button>
+      </div>
+      <button class="pay-result-close" onclick="document.getElementById('payResultOverlay').classList.remove('show')">Cerrar este mensaje</button>
+    </div>
+
+    <!-- Contenido: pago cancelado -->
+    <div id="payResultCancelado" style="display:none">
+      <div class="pay-result-icon cancel">✕</div>
+      <h2 class="pay-result-title">Pago no completado</h2>
+      <p class="pay-result-sub">El pago no se completó. Puedes volver a intentarlo desde los planes o continuar usando la versión gratuita sin costo.</p>
+      <div class="pay-result-btns">
+        <button class="btn-primary btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver planes</button>
+        <button class="btn" onclick="document.getElementById('payResultOverlay').classList.remove('show')">Continuar en BioMaster</button>
+        <button class="btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');window.openLegal('contacto')">Contactar soporte</button>
+      </div>
+      <button class="pay-result-close" onclick="document.getElementById('payResultOverlay').classList.remove('show')">Cerrar este mensaje</button>
+    </div>
+
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -4805,6 +4914,8 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           <button class="tab-btn" onclick="A.adminTab(this,'paneUsers')">👥 Usuarios</button>
           <button class="tab-btn" onclick="A.adminTab(this,'panePlans')">💳 Planes y pagos</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneProgress')">📊 Progreso</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneVenc')">⏰ Vencimientos</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneAlertas')">🔔 Alertas</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Herramientas</button>
         </div>
         <div class="tab-pane active" id="paneFb">
@@ -4870,6 +4981,31 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           </p>
           <div id="adminProgressTable" style="margin-top:.5rem">Cargando…</div>
         </div>
+        <!-- ═══ VENCIMIENTOS ═══ -->
+        <div class="tab-pane" id="paneVenc">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem">
+            <strong style="font-size:.92rem">Control de vencimientos</strong>
+            <button class="btn" onclick="A.adminRefreshVenc()" style="font-size:.78rem">↻ Refrescar</button>
+          </div>
+          <p class="muted" style="font-size:.78rem;margin-bottom:.7rem">
+            Usuarios con plan activo o vencido, agrupados por tiempo restante. Podés extender o revocar desde acá.
+          </p>
+          <div id="adminVencStats" class="grid4" style="margin-bottom:1rem"></div>
+          <div id="adminVencList">Cargando…</div>
+        </div>
+
+        <!-- ═══ ALERTAS INTERNAS ═══ -->
+        <div class="tab-pane" id="paneAlertas">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem">
+            <strong style="font-size:.92rem">Alertas internas</strong>
+            <button class="btn" onclick="A.adminRefreshAlertas()" style="font-size:.78rem">↻ Refrescar</button>
+          </div>
+          <p class="muted" style="font-size:.78rem;margin-bottom:.7rem">
+            Alertas calculadas con datos existentes. No requieren configuración externa.
+          </p>
+          <div id="adminAlertasList">Cargando datos de progreso primero…</div>
+        </div>
+
         <div class="tab-pane" id="paneTools">
           <p class="muted" style="font-size:.85rem;margin-bottom:.6rem">Las acciones sensibles (promover, degradar, eliminar) se ejecutan vía Edge Functions del lado servidor. Nunca desde el cliente.</p>
           <strong style="font-size:.88rem">Roles</strong>
@@ -6034,65 +6170,146 @@ async function renderAdminPanel(){
   document.getElementById('adminRoleBadge').innerHTML =
     `Sesión: <strong>${escapeHtml(currentSession.profile.email)}</strong> · <span class="account-badge badge-admin">👑 admin</span>`
 
-  // Stats agregadas
-  const [{ count: profileCount }, { count: feedbackCount }] = await Promise.all([
+  // Stats agregadas — incluye plan data para métricas de vencimiento
+  const now = new Date()
+  const in7d = new Date(now.getTime() + 7 * 86400000)
+  const [
+    { count: profileCount },
+    { count: feedbackCount },
+    { count: pendingFbCount },
+    { data: planData }
+  ] = await Promise.all([
     sb.from('profiles').select('*', { count:'exact', head:true }),
-    sb.from('feedback').select('*', { count:'exact', head:true })
+    sb.from('feedback').select('*', { count:'exact', head:true }),
+    sb.from('feedback').select('*', { count:'exact', head:true }).eq('status','pendiente'),
+    sb.from('profiles').select('plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at').limit(500)
   ])
+
+  const hasAnyPlanFn = u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3
+  const activePro    = planData?.filter(u => hasAnyPlanFn(u) && u.plan_expires_at && new Date(u.plan_expires_at) > now).length || 0
+  const expiredPro   = planData?.filter(u => hasAnyPlanFn(u) && u.plan_expires_at && new Date(u.plan_expires_at) < now).length || 0
+  const expiringSoon = planData?.filter(u => hasAnyPlanFn(u) && u.plan_expires_at && new Date(u.plan_expires_at) > now && new Date(u.plan_expires_at) < in7d).length || 0
+
   document.getElementById('adminStatCards').innerHTML = `
-    <div class="stat-card"><div class="sv">${profileCount ?? '—'}</div><div class="sl">Usuarios</div></div>
-    <div class="stat-card"><div class="sv">${feedbackCount ?? '—'}</div><div class="sl">Feedbacks</div></div>
-    <div class="stat-card"><div class="sv">${S.stats.xp||0}</div><div class="sl">Tu XP</div></div>
-    <div class="stat-card"><div class="sv">${S.stats.simsDone||0}</div><div class="sl">Tus simulacros</div></div>`
+    <div class="stat-card">
+      <div class="sv">${profileCount ?? '—'}</div><div class="sl">Usuarios</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--green)">
+      <div class="sv" style="color:var(--green)">${activePro}</div><div class="sl">Pro activos</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--yellow)">
+      <div class="sv" style="color:var(--yellow)">${expiringSoon}</div><div class="sl">Vencen en 7d</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--red)">
+      <div class="sv" style="color:var(--red)">${expiredPro}</div><div class="sl">Plan vencido</div>
+    </div>
+    <div class="stat-card">
+      <div class="sv">${feedbackCount ?? '—'}</div><div class="sl">Feedbacks</div>
+    </div>
+    <div class="stat-card" style="border-top:3px solid var(--yellow)">
+      <div class="sv" style="color:var(--yellow)">${pendingFbCount ?? '—'}</div><div class="sl">Fb. pendientes</div>
+    </div>`
 
   // Renderizar todas las pestañas en paralelo
   await Promise.all([
     _renderAdminFeedback(),
     _renderAdminUsers(),
-    _renderAdminPlans()
+    _renderAdminPlans(),
+    _renderAdminVencimientos()
   ])
 }
+
+// Estado del filtro de feedback (en window para acceso desde onclick en HTML)
+window._adminFbFilter = 'todos'
 
 async function _renderAdminFeedback(){
   const { data: fbs, error: fe } = await sb
     .from('feedback')
     .select('id,type,text,status,admin_reply,created_at,user_id,experience_text,is_public,profiles(name,email)')
     .order('created_at', { ascending:false })
-    .limit(100)
+    .limit(200)
   const fbList = document.getElementById('adminFbList')
   if (!fbList) return
-  if (fe){ fbList.innerHTML = '<span class="bad">⚠ '+escapeHtml(fe.message)+'</span>' }
-  else if (!fbs?.length){ fbList.innerHTML = '<span class="muted">Sin feedback aún.</span>' }
-  else {
-    fbList.innerHTML = fbs.map(f => {
-      const expBlock = f.experience_text
-        ? `<div style="margin:.4rem 0;padding:.55rem .75rem;background:var(--greenSoft);border-left:3px solid var(--green);border-radius:6px;font-size:.88rem">
-            <strong>📝 Experiencia:</strong> ${escapeHtml(f.experience_text)}
-            ${f.is_public ? '<span class="fb-status fb-resuelto" style="margin-left:.4rem">📢 Pública</span>' : ''}
-          </div>`
-        : ''
-      const publicBtn = f.experience_text
-        ? (f.is_public
-            ? `<button class="btn" onclick="A.toggleFeedbackPublic(${f.id}, false)">🔒 Quitar público</button>`
-            : `<button class="btn primary" onclick="A.toggleFeedbackPublic(${f.id}, true)">📢 Hacer público</button>`)
-        : ''
-      return `<div class="reco-item">
+  if (fe){ fbList.innerHTML = '<span class="bad">⚠ '+escapeHtml(fe.message)+'</span>'; return }
+
+  // Guardar en cache para re-filtrar sin releer
+  window._adminFbCache = fbs || []
+  _renderAdminFbFiltered()
+}
+
+function _renderAdminFbFiltered(){
+  const fbList = document.getElementById('adminFbList')
+  if (!fbList) return
+  const fbs = window._adminFbCache || []
+
+  // Contar por tipo para los tabs
+  const tipos = {}
+  for (const f of fbs){ tipos[f.type] = (tipos[f.type]||0)+1 }
+  const tiposOrden = ['todos','testimonio','sugerencia','error','duda','pago-acceso','contenido','biovisual']
+  const tipoLabels = { todos:'Todos', testimonio:'Testimonios', sugerencia:'Sugerencias', error:'Errores', duda:'Dudas', 'pago-acceso':'Pagos/Acceso', contenido:'Contenido', biovisual:'BioVisual' }
+  const tipoIconos = { todos:'📋', testimonio:'⭐', sugerencia:'💡', error:'🐛', duda:'❓', 'pago-acceso':'💰', contenido:'📚', biovisual:'🔬' }
+
+  let filtered = window._adminFbFilter === 'todos' ? fbs : fbs.filter(f => f.type === window._adminFbFilter)
+
+  // Separar: pendientes primero, luego el resto
+  const pendientes = filtered.filter(f => f.status === 'pendiente')
+  const otros      = filtered.filter(f => f.status !== 'pendiente')
+  filtered = [...pendientes, ...otros]
+
+  const filterBar = tiposOrden.map(t => {
+    const count = t === 'todos' ? fbs.length : (tipos[t]||0)
+    if (t !== 'todos' && !count) return ''
+    const active = window._adminFbFilter === t
+    return `<button class="btn${active?' primary':''}" style="font-size:.73rem"
+      onclick="window._adminFbFilter='${t}';window._renderAdminFbFiltered()">
+      ${tipoIconos[t]||''} ${tipoLabels[t]||t} (${count})
+    </button>`
+  }).filter(Boolean).join('')
+
+  if (!filtered.length){
+    fbList.innerHTML = `<div style="margin-bottom:.5rem;display:flex;gap:.3rem;flex-wrap:wrap">${filterBar}</div><span class="muted">Sin feedback con ese filtro.</span>`
+    return
+  }
+
+  const cards = filtered.map(f => {
+    const isTestimonio = f.type === 'testimonio'
+    const borderColor = f.status === 'pendiente' ? 'var(--yellow)' : f.status === 'resuelto' ? 'var(--green)' : 'var(--border)'
+    const expBlock = f.experience_text
+      ? `<div style="margin:.4rem 0;padding:.55rem .75rem;background:var(--greenSoft);border-left:3px solid var(--green);border-radius:6px;font-size:.88rem">
+          <strong>📝 Experiencia:</strong> ${escapeHtml(f.experience_text)}
+          ${f.is_public ? '<span class="fb-status fb-resuelto" style="margin-left:.4rem">📢 Pública</span>' : ''}
+        </div>`
+      : ''
+    const publicBtn = (f.experience_text || isTestimonio)
+      ? (f.is_public
+          ? `<button class="btn" onclick="A.toggleFeedbackPublic(${f.id}, false)">🔒 Quitar público</button>`
+          : `<button class="btn primary" onclick="A.toggleFeedbackPublic(${f.id}, true)">📢 ${isTestimonio?'Aprobar testimonio':'Hacer público'}</button>`)
+      : ''
+    const typeIcon = tipoIconos[f.type] || '📋'
+    return `<div class="reco-item" style="border-left:3px solid ${borderColor}">
       <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap">
-        <strong>${escapeHtml(f.type)}</strong>
-        <span class="fb-status fb-${f.status}">${f.status}</span>
+        <div>
+          <span style="font-size:.8rem;background:var(--soft);padding:.15rem .5rem;border-radius:6px;font-weight:700">${typeIcon} ${escapeHtml(f.type)}</span>
+          <span class="fb-status fb-${f.status}" style="margin-left:.3rem">${f.status}</span>
+          ${f.is_public ? '<span class="fb-status fb-resuelto" style="margin-left:.3rem">📢 público</span>' : ''}
+        </div>
+        <small class="muted">${new Date(f.created_at).toLocaleString()}</small>
       </div>
-      <div style="margin:.4rem 0">${escapeHtml(f.text)}</div>
+      <div style="margin:.5rem 0;padding:.5rem .7rem;background:var(--soft2);border-radius:8px;font-size:.87rem">${escapeHtml(f.text)}</div>
       ${expBlock}
-      <small class="muted">${escapeHtml(f.profiles?.name || '—')} (${escapeHtml(f.profiles?.email || '—')}) · ${new Date(f.created_at).toLocaleString()}</small>
-      <div style="margin-top:.4rem;display:flex;gap:.3rem;flex-wrap:wrap">
+      <small class="muted">${escapeHtml(f.profiles?.name || '—')} · ${escapeHtml(f.profiles?.email || '—')}</small>
+      <div style="margin-top:.5rem;display:flex;gap:.3rem;flex-wrap:wrap">
         ${publicBtn}
         <button class="btn" onclick="A.setFbStatus(${f.id},'leido')">📖 Leído</button>
         <button class="btn primary" onclick="A.setFbStatus(${f.id},'resuelto')">✅ Resuelto</button>
         <button class="btn danger" onclick="A.setFbStatus(${f.id},'descartado')">🗑 Descartar</button>
       </div>
-    </div>`}).join('')
-  }
+    </div>`
+  }).join('')
+
+  fbList.innerHTML = `<div style="margin-bottom:.6rem;display:flex;gap:.3rem;flex-wrap:wrap">${filterBar}</div>${cards}`
 }
+window._renderAdminFbFiltered = _renderAdminFbFiltered
 
 async function toggleFeedbackPublic(id, makePublic){
   if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
@@ -6120,28 +6337,44 @@ async function _renderAdminUsers(){
   if (ue){ userList.innerHTML = '<span class="bad">⚠ '+escapeHtml(ue.message)+'</span>' }
   else if (!users?.length){ userList.innerHTML = '<span class="muted">Sin usuarios.</span>' }
   else {
+    const now = new Date()
+    const in7d = new Date(now.getTime() + 7 * 86400000)
     userList.innerHTML = users.map(u => {
       const isMe = u.id === currentSession?.user?.id
       const safeEmail = escapeHtml(u.email).replace(/'/g,'&#39;')
-      const planTag = u.plan_full ? '<span class="fb-status fb-resuelto">⭐ Full</span>'
-                    : u.plan_p1 && u.plan_p2 ? '<span class="fb-status fb-resuelto">⭐ P1+P2</span>'
-                    : u.plan_p1 ? '<span class="fb-status fb-leido">📘 P1</span>'
-                    : u.plan_p2 ? '<span class="fb-status fb-leido">📗 P2</span>'
-                    : '<span class="fb-status fb-pendiente">free</span>'
-      const expIcon = u.plan_expires_at && new Date(u.plan_expires_at) < new Date() ? ' ⏰' : ''
-      const hasAnyPlan = u.plan_full || u.plan_p1 || u.plan_p2
-      return `<div class="reco-item">
+      // Plan tags incluyendo P3
+      const parciales = [u.plan_p1&&'P1', u.plan_p2&&'P2', u.plan_p3&&'P3'].filter(Boolean)
+      const planTag = u.plan_full
+        ? '<span class="fb-status fb-resuelto">⭐ Full</span>'
+        : parciales.length === 3
+          ? '<span class="fb-status fb-resuelto">⭐ P1+P2+P3</span>'
+          : parciales.length
+            ? `<span class="fb-status fb-leido">📘 ${parciales.join('+')}</span>`
+            : '<span class="fb-status fb-pendiente">free</span>'
+
+      const hasAnyPlan = u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3
+      const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
+      const isExpired  = exp && exp < now
+      const expiresSoon = exp && exp >= now && exp < in7d
+      const expBadge = isExpired
+        ? ' <span style="background:var(--redSoft);color:var(--red);padding:.1rem .35rem;border-radius:5px;font-size:.7rem;font-weight:700">VENCIDO</span>'
+        : expiresSoon
+          ? ` <span style="background:#fff3cd;color:#856404;padding:.1rem .35rem;border-radius:5px;font-size:.7rem;font-weight:700">⚠ vence pronto</span>`
+          : ''
+      const rowStyle = isExpired ? 'opacity:.75;border-left:3px solid var(--red)' : expiresSoon ? 'border-left:3px solid var(--yellow)' : ''
+
+      return `<div class="reco-item" style="${rowStyle}">
       <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
         <div>
           <strong>${escapeHtml(u.name||'(sin nombre)')}</strong>
           <span class="fb-status ${u.role==='admin'?'fb-resuelto':'fb-leido'}">${u.role}</span>
-          ${planTag}${expIcon}
+          ${planTag}${expBadge}
           ${isMe?'<span class="account-badge badge-admin" style="margin-left:.3rem">tú</span>':''}
-          <br><small class="muted">${escapeHtml(u.email)} · ${new Date(u.created_at).toLocaleDateString()}${u.plan_expires_at?' · vence '+new Date(u.plan_expires_at).toLocaleDateString():''}</small>
+          <br><small class="muted">${escapeHtml(u.email)} · Registro: ${new Date(u.created_at).toLocaleDateString()}${exp?' · Vence: '+exp.toLocaleDateString():''}</small>
         </div>
         <div style="display:flex;gap:.3rem;flex-wrap:wrap">
-          <button class="btn primary" onclick="A.adminQuickGrant('${safeEmail}')">⬆ Mejorar plan</button>
-          ${hasAnyPlan?`<button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar plan</button>`:''}
+          <button class="btn primary" onclick="A.adminQuickGrant('${safeEmail}')">⬆ Gestionar acceso</button>
+          ${hasAnyPlan?`<button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar</button>`:''}
           ${u.role==='admin'
             ? `<button class="btn" onclick="A.adminRowAction('demote','${safeEmail}')">👤 a user</button>`
             : `<button class="btn warn" onclick="A.adminRowAction('promote','${safeEmail}')">👑 a admin</button>`}
@@ -6225,6 +6458,207 @@ async function _renderAdminPlans(){
   // Cargar progreso de TODOS los usuarios (al abrir la pestaña Progreso)
   // Se ejecuta acá una sola vez para que esté listo en la pestaña.
   try { await adminLoadAllProgress() } catch(e){ console.warn('[adminProgress]', e) }
+  // Alertas se calculan después que tengamos _adminProgressData
+  _renderAdminAlertas()
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — Vencimientos
+// ═══════════════════════════════════════════════════════════
+async function _renderAdminVencimientos(){
+  const cont = document.getElementById('adminVencList')
+  const statsCont = document.getElementById('adminVencStats')
+  if (!cont) return
+  cont.innerHTML = '<span class="muted">Cargando…</span>'
+
+  const { data: users, error } = await sb
+    .from('profiles')
+    .select('id,name,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at')
+    .or('plan_p1.eq.true,plan_p2.eq.true,plan_p3.eq.true,plan_full.eq.true')
+    .order('plan_expires_at', { ascending: true, nullsFirst: false })
+    .limit(300)
+
+  if (error){ cont.innerHTML = '<span class="bad">⚠ '+escapeHtml(error.message)+'</span>'; return }
+  if (!users?.length){ cont.innerHTML = '<span class="muted">Sin usuarios con plan.</span>'; return }
+
+  const now  = new Date()
+  const in1d = new Date(now.getTime() + 1  * 86400000)
+  const in3d = new Date(now.getTime() + 3  * 86400000)
+  const in7d = new Date(now.getTime() + 7  * 86400000)
+
+  const groups = {
+    expired:  { label:'🔴 Vencidos',          color:'var(--red)',    items: [] },
+    today:    { label:'🚨 Vencen hoy',         color:'#ff6b35',      items: [] },
+    in3d:     { label:'🟠 Vencen en 3 días',   color:'var(--yellow)', items: [] },
+    in7d:     { label:'🟡 Vencen en 7 días',   color:'var(--yellow)', items: [] },
+    active:   { label:'🟢 Activos (>7 días)',  color:'var(--green)',  items: [] },
+    noDate:   { label:'⚪ Sin fecha de vencimiento', color:'var(--muted)', items: [] }
+  }
+
+  for (const u of users){
+    const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
+    if (!exp)             groups.noDate.items.push(u)
+    else if (exp < now)   groups.expired.items.push(u)
+    else if (exp < in1d)  groups.today.items.push(u)
+    else if (exp < in3d)  groups.in3d.items.push(u)
+    else if (exp < in7d)  groups.in7d.items.push(u)
+    else                  groups.active.items.push(u)
+  }
+
+  // Stat cards de vencimientos
+  if (statsCont){
+    statsCont.innerHTML = Object.entries(groups).map(([, g]) => `
+      <div class="stat-card" style="border-top:2px solid ${g.color}">
+        <div class="sv" style="color:${g.color}">${g.items.length}</div>
+        <div class="sl" style="font-size:.7rem">${g.label}</div>
+      </div>`).join('')
+  }
+
+  // Helper para card de usuario
+  function _vencCard(u, badgeColor, badgeText){
+    const safeEmail = escapeHtml(u.email).replace(/'/g,"&#39;")
+    const parciales = [u.plan_p1&&'P1', u.plan_p2&&'P2', u.plan_p3&&'P3'].filter(Boolean)
+    const planLabel = u.plan_full ? '⭐ Full' : '📘 ' + (parciales.join('+') || '?')
+    const expFmt = u.plan_expires_at ? new Date(u.plan_expires_at).toLocaleDateString() : '—'
+    const daysLeft = u.plan_expires_at
+      ? Math.ceil((new Date(u.plan_expires_at) - now) / 86400000)
+      : null
+    const daysStr = daysLeft !== null
+      ? (daysLeft < 0 ? `venció hace ${Math.abs(daysLeft)} días` : `vence en ${daysLeft} días`)
+      : 'sin fecha'
+    return `<div class="reco-item" style="border-left:3px solid ${badgeColor}">
+      <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <div>
+          <strong>${escapeHtml(u.name||'(sin nombre)')}</strong>
+          <span style="background:${badgeColor}22;color:${badgeColor};padding:.1rem .4rem;border-radius:6px;font-size:.72rem;font-weight:700;margin-left:.3rem">${badgeText}</span>
+          <span style="margin-left:.3rem;font-size:.78rem;color:var(--muted)">${planLabel}</span>
+          <br>
+          <small class="muted">${escapeHtml(u.email)} · vence ${expFmt} · ${daysStr}</small>
+        </div>
+        <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+          <button class="btn" style="font-size:.72rem"
+            onclick="document.getElementById('adminGrantEmail').value='${safeEmail}';A.adminTab(document.querySelector('#adminSection .tab-btn:nth-child(3)'), 'panePlans');window.scrollTo({top:document.getElementById('adminGrantEmail').getBoundingClientRect().top+window.scrollY-80,behavior:'smooth'})">
+            ⬆ Extender
+          </button>
+          ${u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3
+            ? `<button class="btn danger" style="font-size:.72rem" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revocar</button>`
+            : ''}
+        </div>
+      </div>
+    </div>`
+  }
+
+  // Renderizar grupos
+  let html = ''
+  const groupOrder = ['today','expired','in3d','in7d','active','noDate']
+  for (const key of groupOrder){
+    const g = groups[key]
+    if (!g.items.length) continue
+    html += `<div style="margin-bottom:1rem">
+      <h3 style="font-size:.88rem;margin-bottom:.4rem;color:${g.color}">${g.label} (${g.items.length})</h3>`
+    for (const u of g.items){
+      html += _vencCard(u, g.color, g.label.split(' ').slice(1).join(' '))
+    }
+    html += '</div>'
+  }
+  cont.innerHTML = html
+}
+
+window.adminRefreshVenc = async function(){
+  document.getElementById('adminVencList').innerHTML = '<span class="muted">Cargando…</span>'
+  await _renderAdminVencimientos()
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN — Alertas internas (calculadas con datos existentes)
+// ═══════════════════════════════════════════════════════════
+function _renderAdminAlertas(){
+  const cont = document.getElementById('adminAlertasList')
+  if (!cont) return
+  if (!_adminProgressData.length){
+    cont.innerHTML = '<span class="muted">Esperando datos de progreso… (carga automáticamente al abrir la pestaña Progreso o al refrescar el panel)</span>'
+    return
+  }
+
+  const now  = new Date()
+  const in7d = new Date(now.getTime() + 7 * 86400000)
+  const alerts = []
+
+  for (const r of _adminProgressData){
+    const hasPlan   = r.planAny
+    const exp       = r.planExpires ? new Date(r.planExpires) : null
+    const isExpired = exp && exp < now
+    const expSoon   = exp && exp > now && exp < in7d
+
+    // 🔴 Sin actividad con plan activo
+    if (hasPlan && !isExpired && !r.hasData){
+      alerts.push({ level:'danger', icon:'💤', msg:'Sin actividad con plan activo', user:r.name, email:r.email, plan:r.planLabel, detail:'' })
+    }
+    // 🟠 Plan vencido
+    if (hasPlan && isExpired){
+      alerts.push({ level:'warn', icon:'⏰', msg:'Plan vencido', user:r.name, email:r.email, plan:r.planLabel, detail:`Venció el ${exp.toLocaleDateString()}` })
+    }
+    // 🟡 Vence pronto
+    if (hasPlan && expSoon){
+      const days = Math.ceil((exp - now) / 86400000)
+      alerts.push({ level:'info', icon:'⚠️', msg:`Plan vence en ${days} día${days===1?'':'s'}`, user:r.name, email:r.email, plan:r.planLabel, detail:`Vence ${exp.toLocaleDateString()}` })
+    }
+    // 🔴 Tiene datos pero progreso = 0% (posible bug)
+    if (r.hasData && r.livePct === 0 && r.maxPct === 0){
+      alerts.push({ level:'danger', icon:'🔍', msg:'Datos guardados pero progreso en 0% — posible bug', user:r.name, email:r.email, plan:r.planLabel, detail:`Parcial activo: ${r.activeParcial.toUpperCase()}` })
+    }
+    // 🟡 Progreso alto sin actividad reciente (>90 días)
+    if (r.hasData && r.maxPct >= 50 && r.lastActivity){
+      const daysSince = Math.floor((now - new Date(r.lastActivity)) / 86400000)
+      if (daysSince > 90){
+        alerts.push({ level:'info', icon:'📉', msg:`Actividad caída: sin acceso hace ${daysSince} días`, user:r.name, email:r.email, plan:r.planLabel, detail:`Último acceso: ${new Date(r.lastActivity).toLocaleDateString()}` })
+      }
+    }
+  }
+
+  if (!alerts.length){
+    cont.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--green)">
+      <div style="font-size:2rem">✅</div>
+      <strong>Sin alertas pendientes</strong>
+      <p class="muted" style="font-size:.82rem;margin-top:.4rem">Todos los usuarios con plan están activos y con actividad normal.</p>
+    </div>`
+    return
+  }
+
+  const colors = { danger:'var(--red)', warn:'var(--yellow)', info:'var(--blue)' }
+  const sorted = [...alerts].sort((a,b) => {
+    const order = { danger:0, warn:1, info:2 }
+    return (order[a.level]||3) - (order[b.level]||3)
+  })
+
+  cont.innerHTML = `
+    <p class="muted" style="font-size:.78rem;margin-bottom:.7rem">${sorted.length} alerta${sorted.length===1?'':'s'} detectada${sorted.length===1?'':'s'}. Ordenadas por prioridad.</p>
+    ${sorted.map(a => {
+      const safeEmail = escapeHtml(a.email).replace(/'/g,"&#39;")
+      const col = colors[a.level] || 'var(--muted)'
+      return `<div class="reco-item" style="border-left:3px solid ${col}">
+        <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
+          <div>
+            <span style="font-size:1.1rem">${a.icon}</span>
+            <strong style="color:${col};margin-left:.3rem">${escapeHtml(a.msg)}</strong>
+            <span style="font-size:.72rem;color:var(--muted);margin-left:.4rem">${escapeHtml(a.plan)}</span>
+            <br>
+            <small class="muted">${escapeHtml(a.user)} · ${escapeHtml(a.email)}${a.detail?' · '+escapeHtml(a.detail):''}</small>
+          </div>
+          <div style="display:flex;gap:.3rem;flex-wrap:wrap">
+            <button class="btn" style="font-size:.72rem"
+              onclick="document.getElementById('adminGrantEmail').value='${safeEmail}';A.adminTab(document.querySelector('#adminSection .tab-btn:nth-child(3)'),'panePlans')">
+              Gestionar acceso
+            </button>
+          </div>
+        </div>
+      </div>`
+    }).join('')}`
+}
+
+window.adminRefreshAlertas = async function(){
+  await adminLoadAllProgress()
+  _renderAdminAlertas()
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -6339,7 +6773,9 @@ async function adminLoadAllProgress(){
       crossed50,
       resetCount,
       lastActivity,
-      hasData: !!data
+      hasData: !!data,
+      planExpires: prof.plan_expires_at || null,
+      planAny: !!(prof.plan_full || prof.plan_p1 || prof.plan_p2 || prof.plan_p3)
     }
   })
 
@@ -10662,6 +11098,9 @@ function diagFinish(){
     completed_at: new Date().toISOString()
   }
   savePremiumState(st)
+  // Sync diagnóstico a Supabase: S.data → user_progress, admin lo lee de ahí
+  S[diagKey] = st[diagKey]
+  persistState()
   // Etiquetas según parcial
   const labelsByParcial = {
     p1: { int:'Introducción', bio:'Biomoléculas', cel:'Célula', met:'Metabolismo', ene:'Energía celular' },
@@ -12056,43 +12495,397 @@ function _bvDrawRespiracion(ctx, w, h){
   ctx.fillText(phaseNames[phase], w/2, 15)
 }
 
+// ═══ TRANSCRIPCIÓN Y TRADUCCIÓN — visualizador premium pseudo-3D ═══
+// Fase 0: ARN Polimerasa abre el ADN (hélice pseudo-3D) y sintetiza ARNm
+// Fase 1: ARNm se procesa en el núcleo (splicing, caperuza 5', cola poli-A)
+// Fase 2: ARNm maduro sale por el poro nuclear al citoplasma
+// Fase 3: Ribosoma en el citoplasma lee el ARNm y fabrica proteína (ARNt llega)
 function _bvDrawTranscripcion(ctx, w, h){
-  // Núcleo: ADN→ARNm. Citoplasma: ribosoma traduce ARNm.
-  ctx.fillStyle = 'rgba(43,110,163,.15)'
-  ctx.fillRect(10, 10, w/2 - 20, h - 20) // núcleo
-  ctx.fillStyle = 'rgba(95,188,126,.10)'
-  ctx.fillRect(w/2 + 10, 10, w/2 - 20, h - 20) // citoplasma
-  ctx.fillStyle = '#d0edd8'
-  ctx.font = 'bold 12px Inter'; ctx.textAlign = 'left'
-  ctx.fillText('Núcleo: transcripción', 18, 26)
-  ctx.fillText('Citoplasma: traducción', w/2 + 18, 26)
+  const phase = Math.floor(_bv.step) % 4
+  const t = _bv.t
 
-  // ADN en núcleo
-  ctx.strokeStyle = '#3aa5c4'; ctx.lineWidth = 2
-  ctx.beginPath()
-  for (let x = 30; x < w/2 - 30; x += 4){
-    const y = h/2 + Math.sin(x * 0.2) * 18
-    if (x === 30) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+  // ─── 3D SPHERE: screen-space radial gradient with upper-left highlight ───
+  function sph(sx, sy, sr, r, g, b, al){
+    if (sr < 1) return
+    al = al ?? 1
+    const lx = sx - sr*0.32, ly = sy - sr*0.32
+    const grd = ctx.createRadialGradient(lx, ly, sr*0.04, sx, sy, sr)
+    grd.addColorStop(0,   `rgba(${Math.min(255,r+95)},${Math.min(255,g+95)},${Math.min(255,b+95)},${al})`)
+    grd.addColorStop(0.5, `rgba(${r},${g},${b},${al*0.88})`)
+    grd.addColorStop(1,   `rgba(${Math.max(0,r-65)},${Math.max(0,g-65)},${Math.max(0,b-65)},${al*0.5})`)
+    ctx.fillStyle = grd
+    ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI*2); ctx.fill()
   }
-  ctx.stroke()
-  // ARNm sale del núcleo
-  const tx = (w/2 - 20) + ((_bv.t * 0.4) % (w/2 - 60))
-  ctx.fillStyle = '#ffd76e'
-  ctx.fillRect(tx, h/2 - 4, 30, 8)
-  ctx.fillText('ARNm', tx, h/2 - 8)
-  // Ribosoma
-  ctx.fillStyle = '#a855f7'
-  ctx.beginPath(); ctx.arc(3*w/4, h/2 + 30, 20, 0, Math.PI*2); ctx.fill()
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'center'
-  ctx.fillText('Rib.', 3*w/4, h/2 + 34)
-  // Proteína
-  ctx.fillStyle = '#5fbc7e'
-  for (let i = 0; i < 5; i++){
-    ctx.beginPath(); ctx.arc(3*w/4 + 30 + i*14, h/2 + 30, 6, 0, Math.PI*2); ctx.fill()
-  }
-  ctx.fillStyle = '#d0edd8'; ctx.textAlign = 'left'
-  ctx.fillText('Proteína', 3*w/4 + 30, h/2 + 56)
 
+  // ─── NUCLEUS ────────────────────────────────────────────────────────────
+  function _nucleus(cx, cy, rx, ry){
+    // Membrana externa con gradiente
+    const grd = ctx.createRadialGradient(cx, cy - ry*0.3, ry*0.1, cx, cy, ry)
+    grd.addColorStop(0, 'rgba(43,110,163,.22)')
+    grd.addColorStop(1, 'rgba(43,110,163,.06)')
+    ctx.fillStyle = grd
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2); ctx.fill()
+    ctx.strokeStyle = '#3aa5c4'; ctx.lineWidth = 2.5; ctx.stroke()
+    // Membrana interna (punteada)
+    ctx.strokeStyle = 'rgba(58,165,196,.4)'; ctx.lineWidth = 1.2
+    ctx.setLineDash([4,4])
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx - 9, ry - 7, 0, 0, Math.PI*2); ctx.stroke()
+    ctx.setLineDash([])
+  }
+
+  // ─── TRUE 3D HELIX (horizontal axis, rotates around it over time) ───────
+  // Each nucleotide: x3=position along axis, y3=R*cos(θ), z3=R*sin(θ)
+  // z>0 = toward viewer → bigger & brighter; z<0 = away → smaller & darker
+  function _helix3D(screenCX, screenCY, halfW, R, nPts, rotSpeed, openFrac){
+    const pts = []
+    for (let i = 0; i < nPts; i++){
+      const f = i / nPts
+      const sx0 = screenCX - halfW + f * halfW * 2   // screen-X along axis
+      const θ = f * Math.PI * 5 + t * rotSpeed        // 2.5 full turns + rotation
+      const forked = f > openFrac
+      const spread = forked ? Math.max(0, (f - openFrac) / (1 - openFrac)) * R * 0.8 : 0
+
+      // Strand 1 (green template)
+      const y1 = R * Math.cos(θ), z1 = R * Math.sin(θ)
+      const sr1 = Math.max(2, 4.8 + z1 / R * 1.6)       // bigger when close
+      const al1 = Math.max(0.25, 0.62 + z1 / R * 0.34)  // brighter when close
+      pts.push({ sx: sx0, sy: screenCY + y1 - spread, z: z1, sr: sr1, al: al1, rgb:[75,195,115] })
+
+      // Strand 2 (blue complementary)
+      const y2 = R * Math.cos(θ + Math.PI), z2 = R * Math.sin(θ + Math.PI)
+      const sr2 = Math.max(2, 4.8 + z2 / R * 1.6)
+      const al2 = Math.max(0.25, 0.62 + z2 / R * 0.34)
+      pts.push({ sx: sx0, sy: screenCY + y2 + spread, z: z2, sr: sr2, al: al2, rgb:[58,165,196] })
+
+      // Base pair bridges (only when not forked, every 2nd point)
+      if (!forked && i % 2 === 0){
+        pts.push({ isLine:true,
+          x1: sx0, y1: screenCY + y1,
+          x2: sx0, y2: screenCY + y2,
+          col: i % 4 === 0 ? 'rgba(245,215,80,.55)' : 'rgba(178,100,248,.5)',
+          z: (z1 + z2) / 2
+        })
+      }
+    }
+    // Painter's algorithm: sort by z ascending (back first)
+    const lines = pts.filter(p => p.isLine).sort((a,b) => a.z - b.z)
+    const spheres = pts.filter(p => !p.isLine).sort((a,b) => a.z - b.z)
+    for (const l of lines){
+      ctx.strokeStyle = l.col; ctx.lineWidth = 1.8
+      ctx.beginPath(); ctx.moveTo(l.x1, l.y1); ctx.lineTo(l.x2, l.y2); ctx.stroke()
+    }
+    for (const s of spheres){
+      const [r,g,b] = s.rgb; sph(s.sx, s.sy, s.sr, r, g, b, s.al)
+    }
+  }
+
+  // ═══ FASE 0: TRANSCRIPCIÓN (hélice 3D giratoria) ═══
+  if (phase === 0){
+    const ncx = w*0.38, ncy = h*0.50, nrx = w*0.32, nry = h*0.43
+    _nucleus(ctx, ncx, ncy, nrx, nry)
+
+    const helixHW = w*0.26, helixR = h*0.11
+    const openFrac = Math.min(0.72, (t % 290) / 290)
+    _helix3D(ncx, ncy, helixHW, helixR, 34, 0.016, openFrac)
+
+    // ARN Polymerase: 3D sphere at fork position
+    const polyX = ncx - helixHW + openFrac * helixHW * 2
+    sph(polyX, ncy, 21, 168, 85, 247, 0.92)
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('ARN', polyX, ncy - 3); ctx.fillText('Pol', polyX, ncy + 8)
+
+    // mRNA strand growing below fork
+    const mrnLen = openFrac * helixHW * 2 * 0.85
+    if (mrnLen > 10){
+      ctx.strokeStyle = '#ffd760'; ctx.lineWidth = 3.5; ctx.lineCap = 'round'; ctx.setLineDash([])
+      ctx.beginPath()
+      const mx0 = ncx - helixHW
+      for (let i = 0; i <= mrnLen; i += 5){
+        const mx = mx0 + i, my = ncy + helixR + 22 + Math.sin(i*0.2 + t*0.09) * 9
+        i === 0 ? ctx.moveTo(mx, my) : ctx.lineTo(mx, my)
+      }
+      ctx.stroke()
+      sph(mx0, ncy + helixR + 22, 7, 255, 210, 55, 1)
+      ctx.fillStyle = '#1a0800'; ctx.font = 'bold 6.5px Inter'; ctx.textAlign = 'center'
+      ctx.fillText("5'", mx0, ncy + helixR + 25)
+      if (mrnLen > 28){ ctx.fillStyle = '#ffd760'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'left'; ctx.fillText('ARNm', mx0 + 10, ncy + helixR + 46) }
+    }
+
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left'; ctx.fillText('Núcleo', 14, 40)
+    ctx.fillStyle = '#a0e8b0'; ctx.font = '9.5px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('ADN (hélice 3D giratoria)', ncx, ncy - helixR - 28)
+
+    // Info panel right
+    const rx = w*0.73
+    ctx.fillStyle = 'rgba(0,0,0,.38)'; ctx.beginPath(); ctx.roundRect(rx, h*.05, w*.26, h*.88, 12); ctx.fill()
+    ctx.fillStyle = '#a855f7'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Transcripción', rx + w*.13, h*.14)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9.5px Inter'
+    const il0 = ["ARN Pol lee ADN 3'→5'","Síntesis ARNm 5'→3'",'ADN:A → ARNm:U','ADN:T → ARNm:A','G-C / C-G sin cambio']
+    il0.forEach((l,i) => ctx.fillText(l, rx + w*.13, h*.23 + i*18))
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 9px Inter'
+    ctx.fillText('Clave exam:', rx + w*.13, h*.67)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('ARNm usa U, no T', rx + w*.13, h*.74)
+    ctx.fillText('es monocatenario', rx + w*.13, h*.80)
+  }
+
+  // ═══ FASE 1: PROCESAMIENTO DEL ARNm ═══
+  else if (phase === 1){
+    const ncx = w*0.37, ncy = h*0.50, nrx = w*0.30, nry = h*0.40
+    _nucleus(ctx, ncx, ncy, nrx, nry)
+
+    // pre-mRNA: thick 3D ribbon segments
+    const mrnY = ncy, mrnX0 = ncx - nrx*0.76
+    const segs = [
+      { tp:'cap',    len:13, r:255,g:215,b:60 },
+      { tp:'exon',   len:32, r:75, g:195,b:115 },
+      { tp:'intron', len:26, r:120,g:120,b:120, dash:true },
+      { tp:'exon',   len:34, r:75, g:195,b:115 },
+      { tp:'intron', len:22, r:120,g:120,b:120, dash:true },
+      { tp:'exon',   len:30, r:75, g:195,b:115 },
+      { tp:'polyA',  len:14, r:200,g:70, b:70 },
+    ]
+    let sx = mrnX0
+    for (const seg of segs){
+      ctx.setLineDash(seg.dash ? [5,4] : [])
+      const thick = seg.tp === 'exon' ? 13 : 6
+      // shadow
+      ctx.strokeStyle = 'rgba(0,0,0,.3)'; ctx.lineWidth = thick + 4
+      ctx.beginPath(); ctx.moveTo(sx, mrnY + 2); ctx.lineTo(sx + seg.len, mrnY + 2); ctx.stroke()
+      // main
+      ctx.strokeStyle = `rgba(${seg.r},${seg.g},${seg.b},.85)`; ctx.lineWidth = thick
+      ctx.beginPath(); ctx.moveTo(sx, mrnY); ctx.lineTo(sx + seg.len, mrnY); ctx.stroke()
+      // highlight (3D top edge)
+      ctx.strokeStyle = `rgba(${Math.min(255,seg.r+90)},${Math.min(255,seg.g+90)},${Math.min(255,seg.b+90)},.5)`
+      ctx.lineWidth = seg.tp === 'exon' ? 3 : 1.5
+      ctx.beginPath(); ctx.moveTo(sx, mrnY - thick/2 + 1); ctx.lineTo(sx + seg.len, mrnY - thick/2 + 1); ctx.stroke()
+      sx += seg.len + 3
+    }
+    ctx.setLineDash([])
+
+    // Spliceosome: 5 snRNP subunits as 3D spheres orbiting a central one
+    const spA = t * 0.022
+    const spCX = mrnX0 + 75, spCY = mrnY - 38
+    sph(spCX, spCY, 19, 200, 155, 247, 0.88)
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Splice', spCX, spCY - 3); ctx.fillText('osome', spCX, spCY + 7)
+    for (let i = 0; i < 5; i++){
+      const a = spA + i * Math.PI * 2 / 5
+      sph(spCX + Math.cos(a)*15, spCY + Math.sin(a)*10, 7, 220,120,250, 0.78)
+    }
+    // Connector to intron site
+    ctx.strokeStyle = 'rgba(200,130,250,.4)'; ctx.lineWidth = 1.5; ctx.setLineDash([3,3])
+    ctx.beginPath(); ctx.moveTo(spCX, spCY + 19); ctx.lineTo(mrnX0 + 77, mrnY - 7); ctx.stroke()
+    ctx.setLineDash([])
+
+    // Legend
+    const lgY = mrnY + 28
+    ctx.font = '9px Inter'; ctx.textAlign = 'left'
+    sph(mrnX0, lgY - 4, 5, 75,195,115, 0.9); ctx.fillStyle = '#55c878'; ctx.fillText('Exones (conservados)', mrnX0 + 10, lgY)
+    sph(mrnX0, lgY + 14 - 4, 5, 120,120,120, 0.9); ctx.fillStyle = '#aaa'; ctx.fillText('Intrones (eliminados · · ·)', mrnX0 + 10, lgY + 14)
+    sph(mrnX0 + 148, lgY - 4, 5, 255,215,60, 0.9); ctx.fillStyle = '#ffd760'; ctx.fillText("Cap 5'", mrnX0 + 158, lgY)
+    sph(mrnX0 + 148, lgY + 14 - 4, 5, 200,70,70, 0.9); ctx.fillStyle = '#c84444'; ctx.fillText("Poly-A 3'", mrnX0 + 158, lgY + 14)
+
+    // Info panel right
+    const rx = w*0.71
+    ctx.fillStyle = 'rgba(0,0,0,.36)'; ctx.beginPath(); ctx.roundRect(rx, h*.05, w*.28, h*.88, 12); ctx.fill()
+    ctx.fillStyle = '#a855f7'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Procesamiento', rx + w*.14, h*.14); ctx.fillText('(eucariotas)', rx + w*.14, h*.21)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    const il1 = ["Cap 5' (7-metilguanosina)","→ protege y señala ribosoma","Poly-A 3' (~200 adeninas)","→ estabilidad del ARNm","Splicing: intrones fuera","→ exones se unen en orden"]
+    il1.forEach((l,i) => ctx.fillText(l, rx + w*.14, h*.29 + i*15.5))
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 9px Inter'; ctx.fillText('Procariotas:', rx + w*.14, h*.73)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('SIN splicing (sin intrones)', rx + w*.14, h*.80)
+    ctx.fillText('ARNm listo al instante', rx + w*.14, h*.86)
+  }
+
+  // ═══ FASE 2: SALIDA AL CITOPLASMA (poro nuclear 3D) ═══
+  else if (phase === 2){
+    const ncx = w*0.26, ncy = h*0.50, nrx = w*0.20, nry = h*0.38
+    _nucleus(ctx, ncx, ncy, nrx, nry)
+
+    // Nuclear pore complex: 8 NPC subunits (3D spheres in a ring)
+    const poreX = ncx + nrx - 2, poreY = ncy
+    const nSpokes = 8, spokeR = 14
+    // Dark channel center
+    ctx.fillStyle = 'rgba(4,10,30,.85)'
+    ctx.beginPath(); ctx.ellipse(poreX, poreY, 8, spokeR, 0, 0, Math.PI*2); ctx.fill()
+    // 8 protein subunits arranged around channel
+    for (let i = 0; i < nSpokes; i++){
+      const a = i * Math.PI * 2 / nSpokes
+      const px = poreX + Math.cos(a) * 7    // foreshortened horizontal
+      const py = poreY + Math.sin(a) * spokeR
+      const front = Math.sin(a) < 0  // top half is "closer" visually
+      sph(px, py, 5, 140,210,255, front ? 0.9 : 0.55)
+    }
+    ctx.strokeStyle = 'rgba(100,200,255,.6)'; ctx.lineWidth = 1.5
+    ctx.beginPath(); ctx.ellipse(poreX, poreY, 8, spokeR, 0, 0, Math.PI*2); ctx.stroke()
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 8px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Poro', poreX, poreY - spokeR - 6)
+    ctx.fillText('nuclear', poreX, poreY - spokeR + 4)
+
+    // mRNA threading through and into cytoplasm
+    const progress = Math.min(1, (t % 220) / 200)
+    const mrnStart = ncx - nrx * 0.5
+    const mrnEnd = poreX + 10 + progress * (w * 0.52)
+    ctx.strokeStyle = 'rgba(255,215,80,.2)'; ctx.lineWidth = 8; ctx.lineCap = 'round'
+    ctx.beginPath(); ctx.moveTo(mrnStart, ncy + 3); ctx.lineTo(mrnEnd, ncy + 3); ctx.stroke()
+    ctx.strokeStyle = '#ffd760'; ctx.lineWidth = 4
+    ctx.beginPath()
+    for (let x = mrnStart; x <= mrnEnd; x += 5){
+      const y = ncy + Math.sin((x - mrnStart) * 0.15 + t * 0.07) * 8
+      x === mrnStart ? ctx.moveTo(x, y) : ctx.lineTo(x, y)
+    }
+    ctx.stroke()
+    // 5' cap as 3D sphere
+    const capY = ncy + Math.sin((mrnEnd - mrnStart) * 0.15 + t * 0.07) * 8
+    sph(mrnEnd, capY, 6, 255, 210, 55, 1)
+    if (progress > 0.18){
+      ctx.fillStyle = '#ffd760'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('ARNm maduro →', poreX + 30 + progress * w * 0.22, ncy - 24)
+    }
+
+    // Cytoplasm region
+    const cytX = ncx + nrx + 18
+    ctx.fillStyle = 'rgba(18,55,28,.22)'
+    ctx.beginPath(); ctx.roundRect(cytX, h*.10, w - cytX - 10, h*.80, 14); ctx.fill()
+    ctx.strokeStyle = 'rgba(75,195,100,.32)'; ctx.lineWidth = 1.5; ctx.stroke()
+    ctx.fillStyle = '#90e0a0'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Citoplasma', cytX + (w - cytX - 10)*0.5, h*.18)
+
+    // Ribosome waiting (3D)
+    if (progress > 0.55){
+      const ribX = cytX + (w - cytX - 10)*0.65, ribY = ncy
+      sph(ribX, ribY - 26, 28, 155,75,225, 0.88)
+      sph(ribX, ribY + 17, 20, 135,60,205, 0.85)
+      ctx.fillStyle = '#c8a8f7'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+      ctx.fillText('Ribosoma', ribX, ribY - 58); ctx.fillText('(esperando)', ribX, ribY - 48)
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 7px Inter'
+      ctx.fillText('60S', ribX, ribY - 28); ctx.fillText('40S', ribX, ribY + 20)
+    }
+
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Núcleo', ncx, ncy - nry - 10)
+  }
+
+  // ═══ FASE 3: TRADUCCIÓN (ribosoma 3D) ═══
+  else {
+    // mRNA: 3D-feel ribbon with shadow + highlight
+    const mrnY = h*0.52, mrnX0 = 18, mrnX1 = w - 18
+    const scroll = (t * 0.55) % 24
+    ctx.strokeStyle = 'rgba(255,210,60,.18)'; ctx.lineWidth = 12; ctx.lineCap = 'round'
+    ctx.beginPath(); ctx.moveTo(mrnX0, mrnY + 3); ctx.lineTo(mrnX1, mrnY + 3); ctx.stroke()
+    ctx.strokeStyle = '#ffd760'; ctx.lineWidth = 5
+    ctx.beginPath(); ctx.moveTo(mrnX0, mrnY); ctx.lineTo(mrnX1, mrnY); ctx.stroke()
+    ctx.strokeStyle = 'rgba(255,242,155,.55)'; ctx.lineWidth = 1.8
+    ctx.beginPath(); ctx.moveTo(mrnX0, mrnY - 2); ctx.lineTo(mrnX1, mrnY - 2); ctx.stroke()
+    // Codons
+    const cCols = ['rgba(75,195,115,.72)','rgba(58,165,196,.72)','rgba(168,85,247,.72)','rgba(200,75,75,.72)','rgba(255,200,45,.72)']
+    for (let i = 0; i < 26; i++){
+      const cx = mrnX0 + ((i * 24 - scroll + 700) % (mrnX1 - mrnX0 + 24))
+      if (cx < mrnX0 || cx > mrnX1 - 20) continue
+      ctx.fillStyle = cCols[i % 5]
+      ctx.beginPath(); ctx.roundRect(cx, mrnY - 6, 20, 12, 3); ctx.fill()
+    }
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText("5'", mrnX0 + 10, mrnY - 10); ctx.fillText("3'", mrnX1 - 10, mrnY - 10)
+
+    // ── 3D Ribosome ──────────────────────────────────────────────────────
+    const ribX = w * 0.44
+
+    // 60S large subunit — big 3D sphere
+    sph(ribX, mrnY - 36, 40, 148, 72, 220, 0.9)
+    // Surface texture arcs for volume feel
+    ctx.strokeStyle = 'rgba(180,130,252,.32)'; ctx.lineWidth = 1.2
+    for (let i = 0; i < 4; i++){
+      const a0 = -0.8 + i * 0.5
+      ctx.beginPath(); ctx.arc(ribX - 6 + i*3, mrnY - 32, 30, a0, a0 + 0.7); ctx.stroke()
+    }
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('60S', ribX, mrnY - 60)
+
+    // 40S small subunit
+    sph(ribX, mrnY + 22, 30, 125,58,200, 0.88)
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Inter'
+    ctx.fillText('40S', ribX, mrnY + 36)
+
+    // mRNA channel through ribosome (dark tunnel)
+    ctx.strokeStyle = 'rgba(0,0,0,.55)'; ctx.lineWidth = 9
+    ctx.beginPath(); ctx.moveTo(ribX - 44, mrnY); ctx.lineTo(ribX + 44, mrnY); ctx.stroke()
+    ctx.strokeStyle = '#ffd760'; ctx.lineWidth = 4
+    ctx.beginPath(); ctx.moveTo(ribX - 44, mrnY); ctx.lineTo(ribX + 44, mrnY); ctx.stroke()
+
+    // A, P, E sites as 3D spheres
+    const sites3 = [
+      {x:ribX + 26, l:'A', r:200,g:75,b:75},
+      {x:ribX,      l:'P', r:75,g:195,b:115},
+      {x:ribX - 26, l:'E', r:75,g:145,b:210}
+    ]
+    for (const s of sites3){
+      sph(s.x, mrnY, 10, s.r, s.g, s.b, 0.88)
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 8px Inter'; ctx.textAlign = 'center'
+      ctx.fillText(s.l, s.x, mrnY + 3)
+    }
+
+    // tRNA arriving at site A — L-shaped with 3D amino acid sphere
+    const trnaPhase = (t % 150) / 150
+    const trnaY = mrnY - 72 - Math.sin(trnaPhase * Math.PI) * 28
+    const aaLabels = ['Ala','Val','Gly','Pro','Leu','Ser','Thr','Met','Cys','Arg']
+    const aaIdx = Math.floor(t / 150) % aaLabels.length
+    const aaRGBs = [[75,195,115],[58,165,196],[255,200,45],[168,85,247],[200,75,75],[155,210,255],[200,155,250],[249,115,22],[100,220,160],[230,130,80]]
+    ctx.strokeStyle = 'rgba(58,165,196,.85)'; ctx.lineWidth = 3; ctx.lineCap = 'round'
+    ctx.setLineDash([])
+    ctx.beginPath()
+    ctx.moveTo(ribX + 26, trnaY + 32)  // anticodon end
+    ctx.lineTo(ribX + 26, trnaY + 6)
+    ctx.bezierCurveTo(ribX+26, trnaY-12, ribX+8, trnaY-20, ribX-2, trnaY-20)
+    ctx.lineTo(ribX - 12, trnaY - 20)  // acceptor arm
+    ctx.stroke()
+    const [ar,ag,ab] = aaRGBs[aaIdx % aaRGBs.length]
+    sph(ribX - 12, trnaY - 30, 10, ar, ag, ab, 0.95)
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 7px Inter'; ctx.textAlign = 'center'
+    ctx.fillText(aaLabels[aaIdx], ribX - 12, trnaY - 27)
+    ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 9px Inter'; ctx.fillText('ARNt', ribX + 26, trnaY - 5)
+
+    // Growing protein chain (left)
+    const chainLen = Math.min(9, Math.floor(t / 95) + 1)
+    const chainX0 = ribX - 80
+    ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'right'
+    ctx.fillText('← Proteína', chainX0 - 6, mrnY - 10)
+    for (let i = 0; i < chainLen; i++){
+      const ax = chainX0 - i * 18
+      const ay = mrnY - 28 + Math.sin(i * 0.88) * 8 + Math.cos(i * 1.4) * 5
+      if (i > 0){
+        const pax = chainX0 - (i-1)*18
+        const pay = mrnY - 28 + Math.sin((i-1)*0.88)*8 + Math.cos((i-1)*1.4)*5
+        ctx.strokeStyle = 'rgba(200,200,200,.35)'; ctx.lineWidth = 2.5
+        ctx.beginPath(); ctx.moveTo(ax + 10, ay); ctx.lineTo(pax - 10, pay); ctx.stroke()
+      }
+      const [cr,cg,cb] = aaRGBs[i % aaRGBs.length]
+      sph(ax, ay, 10, cr, cg, cb, 0.9)
+    }
+
+    ctx.fillStyle = '#c8a8f7'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Ribosoma', ribX, mrnY - 82)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('Lee codones → ensambla proteína', ribX, mrnY + 64)
+    ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 8.5px Inter'
+    ctx.fillText('AUG = inicio · UAA/UAG/UGA = stop', ribX, mrnY + 78)
+  }
+
+  // ═══ Phase bar (drawn last = on top) ═══
+  const phBars = [
+    'F1 — Transcripción: ARN Pol lee hélice 3D giratoria y sintetiza ARNm',
+    'F2 — Procesamiento: spliceosome 3D elimina intrones, cap 5\' y poly-A protegen ARNm',
+    'F3 — Exportación: ARNm atraviesa el poro nuclear (complejo proteico de 8 subunidades)',
+    'F4 — Traducción: ribosoma 3D lee codones · ARNt entrega aminoácidos → proteína'
+  ]
+  ctx.fillStyle = 'rgba(0,0,0,.65)'
+  ctx.fillRect(0, 0, w, 27)
+  ctx.fillStyle = '#e4f5ea'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(phBars[phase] || '', w/2, 17)
 }
 
 function _bvDrawEvolucion(ctx, w, h){
@@ -12122,50 +12915,320 @@ function _bvDrawEvolucion(ctx, w, h){
 }
 
 function _bvDrawOrigen(ctx, w, h){
-  // Línea de tiempo horizontal
-  const stages = [
-    {t:'Tierra primitiva', color:'#c45252'},
-    {t:'Moléculas orgánicas', color:'#ffd76e'},
-    {t:'Macromoléculas', color:'#5fbc7e'},
-    {t:'Mundo de ARN', color:'#a855f7'},
-    {t:'Protocélulas', color:'#3aa5c4'},
-    {t:'Primeras células', color:'#5fbc7e'},
-    {t:'Fotosíntesis', color:'#5fbc7e'},
-    {t:'Oxigenación', color:'#9ad6ff'}
-  ]
-  const span = (_bv.t * 0.04) % stages.length
-  ctx.strokeStyle = '#5fbc7e88'; ctx.lineWidth = 2
-  ctx.beginPath(); ctx.moveTo(40, h/2); ctx.lineTo(w - 40, h/2); ctx.stroke()
-  for (let i = 0; i < stages.length; i++){
-    const x = 40 + (i / (stages.length - 1)) * (w - 80)
-    const active = Math.floor(span) === i
-    ctx.fillStyle = active ? stages[i].color : stages[i].color + '55'
-    ctx.beginPath(); ctx.arc(x, h/2, active ? 14 : 8, 0, Math.PI*2); ctx.fill()
-    ctx.fillStyle = active ? '#fff' : '#d0edd888'
-    ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
-    ctx.fillText(stages[i].t, x, h/2 + (i % 2 === 0 ? -22 : 30))
+  const phase = Math.floor(_bv.step) % 8
+  const t = _bv.t
+  const CX = w * .5, CY = h * .50
+
+  function sph(sx, sy, sr, r, g, b, al){
+    if (sr < 1) return; al = al ?? 1
+    const grd = ctx.createRadialGradient(sx-sr*.32,sy-sr*.32,sr*.04,sx,sy,sr)
+    grd.addColorStop(0,`rgba(${Math.min(255,r+90)},${Math.min(255,g+90)},${Math.min(255,b+90)},${al})`)
+    grd.addColorStop(.55,`rgba(${r},${g},${b},${al*.88})`)
+    grd.addColorStop(1,`rgba(${Math.max(0,r-65)},${Math.max(0,g-65)},${Math.max(0,b-65)},${al*.5})`)
+    ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.fill()
   }
+
+  // ── F0: Tierra primitiva ─────────────────────────────────────
+  if (phase === 0){
+    const bg = ctx.createRadialGradient(CX,CY,20,CX,CY,w*.65)
+    bg.addColorStop(0,'rgba(90,28,10,.65)'); bg.addColorStop(1,'rgba(18,6,3,.30)')
+    ctx.fillStyle = bg; ctx.fillRect(0,28,w,h-28)
+    // Molten surface
+    const surf = ctx.createLinearGradient(0,h*.72,0,h)
+    surf.addColorStop(0,'rgba(210,85,18,.75)'); surf.addColorStop(1,'rgba(70,16,4,.50)')
+    ctx.fillStyle = surf
+    ctx.beginPath(); ctx.ellipse(CX,h*1.08,w*.82,h*.56,0,Math.PI,2*Math.PI); ctx.fill()
+    // Atmosphere gases
+    const gases=[{l:'H₂O',x:.15,y:.30,r:80,g:140,b:200},{l:'H₂',x:.38,y:.22,r:200,g:200,b:220},{l:'CH₄',x:.60,y:.28,r:100,g:180,b:80},{l:'NH₃',x:.82,y:.24,r:180,g:100,b:200},{l:'CO₂',x:.26,y:.42,r:165,g:120,b:60}]
+    for(const g of gases){
+      const gx=g.x*w+Math.sin(t*.022+g.x*9)*9, gy=g.y*h+28+Math.cos(t*.016+g.y*10)*7
+      sph(gx,gy,21,g.r,g.g,g.b,.85); ctx.fillStyle='#fff'; ctx.font='bold 9px Inter'; ctx.textAlign='center'; ctx.fillText(g.l,gx,gy+3)
+    }
+    // Lightning
+    const boltOn=Math.sin(t*.085)>0.65
+    if(boltOn){
+      const lx=w*.72,ly0=h*.20,ly1=h*.58
+      ctx.strokeStyle='rgba(255,242,120,.3)'; ctx.lineWidth=10; ctx.beginPath(); ctx.moveTo(lx,ly0); ctx.lineTo(lx-14,ly0+(ly1-ly0)*.38); ctx.lineTo(lx+9,ly0+(ly1-ly0)*.58); ctx.lineTo(lx-9,ly1); ctx.stroke()
+      ctx.strokeStyle='#fff8a0'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(lx,ly0); ctx.lineTo(lx-14,ly0+(ly1-ly0)*.38); ctx.lineTo(lx+9,ly0+(ly1-ly0)*.58); ctx.lineTo(lx-9,ly1); ctx.stroke()
+    }
+    ctx.fillStyle='#c45252'; ctx.font='bold 10px Inter'; ctx.textAlign='right'; ctx.fillText('Sin O₂ libre',w-14,h*.42)
+    ctx.fillStyle='#ffb090'; ctx.font='bold 11px Inter'; ctx.textAlign='center'; ctx.fillText('Atmósfera reductora primitiva — sin oxígeno libre',CX,h*.88)
+  }
+
+  // ── F1: Moléculas orgánicas (Miller-Urey) ──────────────────
+  else if(phase===1){
+    // Flask
+    ctx.fillStyle='rgba(0,50,85,.32)'; ctx.beginPath(); ctx.moveTo(CX-72,CY-95); ctx.lineTo(CX+72,CY-95); ctx.lineTo(CX+52,CY+55); ctx.bezierCurveTo(CX+52,CY+100,CX-52,CY+100,CX-52,CY+55); ctx.lineTo(CX-72,CY-95); ctx.closePath(); ctx.fill()
+    ctx.strokeStyle='rgba(100,200,255,.55)'; ctx.lineWidth=2; ctx.stroke()
+    // Electrodes
+    ctx.strokeStyle='#777'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(CX-72,CY-95); ctx.lineTo(CX-40,CY-68); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(CX+72,CY-95); ctx.lineTo(CX+40,CY-68); ctx.stroke()
+    // Spark
+    if(Math.sin(t*.065)>0.5){
+      ctx.strokeStyle='rgba(255,215,80,.3)'; ctx.lineWidth=9; ctx.beginPath(); ctx.moveTo(CX-40,CY-68); ctx.lineTo(CX-10,CY-76); ctx.lineTo(CX+10,CY-58); ctx.lineTo(CX+40,CY-68); ctx.stroke()
+      ctx.strokeStyle='#ffd760'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(CX-40,CY-68); ctx.lineTo(CX-10,CY-76); ctx.lineTo(CX+10,CY-58); ctx.lineTo(CX+40,CY-68); ctx.stroke()
+    }
+    // Input gases
+    ['H₂','CH₄','NH₃','H₂O'].forEach((g,i)=>{ const gx=CX-46+i*30+Math.sin(t*.02+i)*5,gy=CY-72+Math.cos(t*.018+i)*6; sph(gx,gy,11,120,180,220,.75); ctx.fillStyle='#d0f0ff'; ctx.font='8px Inter'; ctx.textAlign='center'; ctx.fillText(g,gx,gy+3) })
+    // Organic products
+    ['NH₂','COOH','CH₃','NH₂-CH-COOH'].forEach((m,i)=>{ const mx=CX-48+i*30+Math.sin(t*.026+i+2)*5,my=CY+44+Math.sin(t*.02+i*.7)*8; sph(mx,my,10,90,215,140,.85); ctx.fillStyle='#a0ffb8'; ctx.font='7px Inter'; ctx.textAlign='center'; ctx.fillText(m,mx,my+3) })
+    ctx.strokeStyle='rgba(255,215,80,.55)'; ctx.lineWidth=1.8; ctx.setLineDash([4,3]); ctx.beginPath(); ctx.moveTo(CX,CY-38); ctx.lineTo(CX,CY+20); ctx.stroke(); ctx.setLineDash([])
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.textAlign='center'; ctx.fillText('Experimento Miller-Urey (1953): gases simples → aminoácidos',CX,h*.88)
+  }
+
+  // ── F2: Macromoléculas ──────────────────────────────────────
+  else if(phase===2){
+    const aaRGB=[[75,200,120],[58,165,200],[255,200,50],[168,85,247],[200,75,75],[160,215,255]]
+    const step=Math.floor((t*.032)%(8+1))
+    for(let i=0;i<Math.min(step,8);i++){
+      const ax=CX-120+i*36,ay=CY-10+Math.sin(i*.9)*14
+      if(i>0){
+        const pax=CX-120+(i-1)*36,pay=CY-10+Math.sin((i-1)*.9)*14
+        ctx.strokeStyle='rgba(200,200,200,.55)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(pax+14,pay); ctx.lineTo(ax-14,ay); ctx.stroke()
+        ctx.fillStyle='#ffd760'; ctx.font='7.5px Inter'; ctx.textAlign='center'; ctx.fillText('CO-NH',(pax+ax)/2,ay-18)
+      }
+      const[r,g,b]=aaRGB[i%aaRGB.length]; sph(ax,ay,16,r,g,b,.92)
+      ctx.fillStyle='#fff'; ctx.font='bold 8px Inter'; ctx.textAlign='center'; ctx.fillText('aa',ax,ay+3)
+    }
+    ctx.fillStyle='#d0edd8'; ctx.font='bold 10px Inter'; ctx.textAlign='center'; ctx.fillText('Cadena polipeptídica — enlace peptídico CO-NH',CX,CY+40)
+    // Nucleotide strand
+    const nucY=CY+75; ctx.strokeStyle='#a855f7'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(CX-90,nucY); ctx.lineTo(CX+90,nucY); ctx.stroke()
+    for(let i=0;i<7;i++){ sph(CX-84+i*28,nucY-10,8,168,85,247,.8); ctx.fillStyle='#e0c0ff'; ctx.font='7px Inter'; ctx.textAlign='center'; ctx.fillText(['A','U','G','C','A','G','C'][i],CX-84+i*28,nucY-8) }
+    ctx.fillStyle='#c8a8f7'; ctx.font='10px Inter'; ctx.textAlign='center'; ctx.fillText('Nucleótidos → ARN / ADN',CX,nucY+18)
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.fillText('Polímeros en arcillas: aminoácidos → proteínas · nucleótidos → ARN',CX,h*.88)
+  }
+
+  // ── F3: Mundo de ARN ────────────────────────────────────────
+  else if(phase===3){
+    const rotA=t*.012
+    const nPts=14, helR=30, halfH=70
+    const pts=[]
+    for(let i=0;i<nPts;i++){
+      const f=i/nPts,θ=f*Math.PI*4+rotA
+      const sx0=CX-20+f*40,sy=CY-halfH+f*halfH*2
+      const y3=helR*Math.cos(θ),z3=helR*Math.sin(θ)
+      const sr=Math.max(2,5.5+z3/helR*1.8),al=Math.max(.25,.6+z3/helR*.35)
+      const bases=[[168,85,247],[80,195,120],[58,165,196],[255,200,50]]
+      const[r,g,b]=bases[i%4]; pts.push({sx:sx0,sy:sy+y3,z:z3,sr,al,rgb:[r,g,b]})
+      if(i%3===0){
+        const θ2=f*Math.PI*4+rotA+Math.PI
+        const p2={sx:CX+20+f*40,sy:CY-halfH+f*halfH*2+helR*Math.cos(θ2),z:helR*Math.sin(θ2),sr:Math.max(2,5.5+helR*Math.sin(θ2)/helR*1.8),al:Math.max(.25,.6+helR*Math.sin(θ2)/helR*.35),rgb:bases[(i+2)%4]}
+        pts.push(p2)
+        ctx.strokeStyle='rgba(255,255,255,.15)'; ctx.lineWidth=1.2
+        const pj1={sx:sx0,sy:sy+y3},pj2={sx:p2.sx,sy:p2.sy}
+        ctx.beginPath(); ctx.moveTo(pj1.sx,pj1.sy); ctx.lineTo(pj2.sx,pj2.sy); ctx.stroke()
+      }
+    }
+    pts.sort((a,b)=>a.z-b.z); for(const s of pts){ sph(s.sx,s.sy,s.sr,s.rgb[0],s.rgb[1],s.rgb[2],s.al) }
+    // Ribozyme label + arrow
+    ctx.fillStyle='#ffd760'; ctx.font='bold 10px Inter'; ctx.textAlign='center'; ctx.fillText('ARN auto-replicante (ribozima)',CX,CY+90)
+    ctx.fillStyle='#d0edd8'; ctx.font='9px Inter'; ctx.fillText('Puede almacenar información Y catalizar reacciones',CX,CY+106)
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.fillText('Hipótesis Mundo de ARN: ARN fue la primera molécula de la vida',CX,h*.88)
+  }
+
+  // ── F4: Protocélulas ─────────────────────────────────────────
+  else if(phase===4){
+    const pulse=1+Math.sin(t*.03)*.045
+    // Main protocell
+    const gCell=ctx.createRadialGradient(CX-18,CY-18,5,CX,CY,58*pulse)
+    gCell.addColorStop(0,'rgba(75,180,120,.38)'); gCell.addColorStop(.75,'rgba(45,125,80,.18)'); gCell.addColorStop(1,'rgba(25,75,45,.08)')
+    ctx.fillStyle=gCell; ctx.beginPath(); ctx.arc(CX,CY,58*pulse,0,Math.PI*2); ctx.fill()
+    // Bilayer rings
+    ctx.strokeStyle='rgba(80,200,130,.72)'; ctx.lineWidth=6; ctx.beginPath(); ctx.arc(CX,CY,58*pulse,0,Math.PI*2); ctx.stroke()
+    ctx.strokeStyle='rgba(50,150,90,.38)'; ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(CX,CY,(58-9)*pulse,0,Math.PI*2); ctx.stroke()
+    // Lipid head spheres on membrane
+    for(let i=0;i<22;i++){ const a=i*Math.PI*2/22+t*.006; sph(CX+Math.cos(a)*58*pulse,CY+Math.sin(a)*58*pulse,5,80,205,135,.72) }
+    // Encapsulated RNA
+    for(let i=0;i<7;i++){ const a=i*.85+t*.018; sph(CX+Math.cos(a)*16,CY+Math.sin(a)*10,5.5,168,85,247,.75) }
+    ctx.fillStyle='#c8a8f7'; ctx.font='9px Inter'; ctx.textAlign='center'; ctx.fillText('ARN encapsulado',CX,CY+8)
+    // Smaller surrounding protocells
+    [[-105,-25],[130,-35],[-95,65],[115,55]].forEach(([dx,dy],i)=>{ const pR=22+Math.sin(t*.02+i)*2; ctx.fillStyle='rgba(80,180,120,.18)'; ctx.beginPath(); ctx.arc(CX+dx,CY+dy,pR,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(80,180,120,.50)'; ctx.lineWidth=2; ctx.stroke() })
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.fillText('Vesículas lipídicas encapsulan ARN → protocélulas (membrane first)',CX,h*.88)
+  }
+
+  // ── F5: Primeras células anaerobias ──────────────────────────
+  else if(phase===5){
+    const gC=ctx.createRadialGradient(CX-22,CY-22,5,CX,CY,62)
+    gC.addColorStop(0,'rgba(58,130,90,.42)'); gC.addColorStop(1,'rgba(18,58,40,.14)')
+    ctx.fillStyle=gC; ctx.beginPath(); ctx.arc(CX,CY,62,0,Math.PI*2); ctx.fill()
+    ctx.strokeStyle='rgba(80,200,130,.75)'; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(CX,CY,62,0,Math.PI*2); ctx.stroke()
+    ctx.strokeStyle='rgba(80,200,130,.28)'; ctx.lineWidth=1.2; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.arc(CX,CY,55,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([])
+    // Circular DNA
+    ctx.strokeStyle='rgba(58,165,196,.72)'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.ellipse(CX+5,CY,24,15,t*.008,0,Math.PI*2); ctx.stroke()
+    // Ribosomes
+    for(let i=0;i<8;i++){ const a=i*Math.PI/4+t*.008; sph(CX+Math.cos(a)*40,CY+Math.sin(a)*34,4.5,168,85,247,.72) }
+    ctx.fillStyle='#c45252'; ctx.font='bold 9px Inter'; ctx.textAlign='center'; ctx.fillText('Anaerobia — sin O₂',CX,CY+78)
+    // Food arrow
+    sph(CX+100,CY,10,255,200,50,.72); ctx.fillStyle='#ffd760'; ctx.font='8px Inter'; ctx.textAlign='center'; ctx.fillText('org.',CX+100,CY+3)
+    ctx.strokeStyle='rgba(255,215,80,.5)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(CX+88,CY); ctx.lineTo(CX+64,CY); ctx.stroke()
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.fillText('Procariotas anaerobios heterótrofos — consumen materia orgánica acumulada',CX,h*.88)
+  }
+
+  // ── F6: Fotosíntesis (cianobacterias) ───────────────────────
+  else if(phase===6){
+    sph(CX,36,26,255,220,80,.92); ctx.fillStyle='#1a0800'; ctx.font='bold 8px Inter'; ctx.textAlign='center'; ctx.fillText('Sol',CX,39)
+    for(let i=0;i<8;i++){
+      const a=Math.PI/2+(i-3.5)*.20, len=65+i%2*22
+      ctx.strokeStyle=`rgba(255,215,80,${.14+Math.abs(Math.sin(t*.05+i))*.24})`; ctx.lineWidth=8
+      ctx.beginPath(); ctx.moveTo(CX+Math.cos(a)*38,36+Math.sin(a)*38); ctx.lineTo(CX+Math.cos(a)*(38+len),36+Math.sin(a)*(38+len)); ctx.stroke()
+    }
+    // Cyanobacteria
+    [[CX-65,CY+15],[CX+8,CY-5],[CX+72,CY+18]].forEach(([cx,cy])=>{
+      const g=ctx.createRadialGradient(cx-12,cy-12,3,cx,cy,28)
+      g.addColorStop(0,'rgba(58,160,80,.58)'); g.addColorStop(1,'rgba(18,78,40,.22)')
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,27,0,Math.PI*2); ctx.fill()
+      ctx.strokeStyle='rgba(80,200,100,.72)'; ctx.lineWidth=2.2; ctx.stroke()
+      for(let i=0;i<4;i++){ const a=i*Math.PI/2+t*.012; sph(cx+Math.cos(a)*10,cy+Math.sin(a)*8,5,38,160,60,.72) }
+      for(let b=0;b<3;b++){
+        const bP=((t*.03+b*42)%90)/90,bx=cx+(b-1)*12+Math.sin(bP*8)*3.5,by=cy-28-bP*62
+        sph(bx,by,5.5,130,195,255,.72-bP*.5)
+        if(bP<.28){ ctx.fillStyle='#9ad6ff'; ctx.font='7px Inter'; ctx.textAlign='center'; ctx.fillText('O₂',bx,by+2) }
+      }
+    })
+    ctx.fillStyle='#9ad6ff'; ctx.font='bold 10px Inter'; ctx.textAlign='center'; ctx.fillText('6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂',CX,CY+68)
+    ctx.fillStyle='#a0ffb8'; ctx.font='bold 11px Inter'; ctx.fillText('Cianobacterias: primer O₂ libre liberado a la atmósfera',CX,h*.88)
+  }
+
+  // ── F7: Gran Oxidación ──────────────────────────────────────
+  else {
+    for(let i=0;i<22;i++){
+      const angle=i*Math.PI*2/22+t*.007, r=32+((i*39+t*.18)%105)*.75
+      const ox=CX+Math.cos(angle)*r, oy=CY+Math.sin(angle)*r*.55+8
+      if(oy<30||oy>h-22) continue
+      sph(ox,oy,9,130,195,255,.72); ctx.fillStyle='#9ad6ff'; ctx.font='7.5px Inter'; ctx.textAlign='center'; ctx.fillText('O₂',ox,oy+3)
+    }
+    // Aerobic bacterium
+    const gA=ctx.createRadialGradient(CX-16,CY-16,4,CX,CY,32)
+    gA.addColorStop(0,'rgba(75,145,220,.48)'); gA.addColorStop(1,'rgba(28,65,140,.22)')
+    ctx.fillStyle=gA; ctx.beginPath(); ctx.arc(CX,CY,32,0,Math.PI*2); ctx.fill()
+    ctx.strokeStyle='rgba(100,175,255,.68)'; ctx.lineWidth=2.2; ctx.stroke()
+    ctx.fillStyle='#9ad6ff'; ctx.font='bold 9.5px Inter'; ctx.textAlign='center'; ctx.fillText('Aerobio',CX,CY+46)
+    // Timeline strip
+    const tl0=16,tl1=w-16,tlY=h*.82
+    ctx.fillStyle='rgba(0,0,0,.40)'; ctx.fillRect(tl0,tlY-8,tl1-tl0,18)
+    [['4.6 Ga','Tierra'],['3.8 Ga','Células'],['2.7 Ga','Cianob.'],['2.4 Ga','O₂↑']].forEach(([ga,ev],i)=>{
+      const ex=tl0+(i/3)*(tl1-tl0)
+      ctx.fillStyle=i===3?'#9ad6ff':'#d0edd8'; ctx.font=i===3?'bold 8px Inter':'8px Inter'; ctx.textAlign='center'
+      ctx.fillText(ga+' — '+ev,ex,tlY+5)
+    })
+    ctx.fillStyle='#9ad6ff'; ctx.font='bold 11px Inter'; ctx.textAlign='center'; ctx.fillText('Gran Oxidación (~2.4 Ga): O₂ acumulado → aerobios → eucariotas (endosimbiosis)',CX,h*.88)
+  }
+
+  // ── Mini-timeline de fases ─────────────────────────────────
+  const tlY2=h-18,tl0=14,tl1=w-14
+  ctx.fillStyle='rgba(0,0,0,.38)'; ctx.fillRect(tl0,tlY2-6,tl1-tl0,18)
+  const stgIcons=['🌋','⚡','🔗','🧬','🫧','🦠','☀️','💧']
+  for(let i=0;i<8;i++){
+    const tx=tl0+(i/7)*(tl1-tl0), active=i===phase
+    ctx.fillStyle=active?'#ffd760':'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(tx,tlY2,active?5:3,0,Math.PI*2); ctx.fill()
+  }
+  ctx.fillStyle='#ffd760'; ctx.font='bold 8px Inter'; ctx.textAlign='center'; ctx.fillText(stgIcons[phase],(tl0+tl1)/2,tlY2+11)
+
+  // ── Phase bar (top) ─────────────────────────────────────────
+  const phBars8=['F1 — Tierra primitiva: atmósfera reductora con H₂O, H₂, CH₄, NH₃; volcanes y rayos','F2 — Miller-Urey (1953): descarga eléctrica + gases simples → aminoácidos y moléculas orgánicas','F3 — Macromoléculas: aminoácidos → proteínas · nucleótidos → ARN (arcillas como catalizador)','F4 — Mundo de ARN: ARN autorreplicante con función catalítica (ribozima) — 1ª molécula de la vida','F5 — Protocélulas: vesículas lipídicas que encapsulan ARN → precursoras de la célula','F6 — 1ª Células anaerobias: procariotas heterótrofos, sin núcleo, sin O₂, consumen orgánicos','F7 — Fotosíntesis: cianobacterias liberan O₂ por primera vez (fotosíntesis oxigénica)','F8 — Gran Oxidación (~2.4 Ga): O₂ acumula → aerobios → eucariotas por endosimbiosis']
+  ctx.fillStyle='rgba(0,0,0,.68)'; ctx.fillRect(0,0,w,27)
+  ctx.fillStyle='#e4f5ea'; ctx.font='bold 10px Inter'; ctx.textAlign='center'; ctx.fillText(phBars8[phase]||'',w/2,17)
 }
 
 function _bvDrawClasif(ctx, w, h){
-  // Árbol de tres ramas
-  ctx.strokeStyle = '#5fbc7e'
-  ctx.lineWidth = 3
-  // Tronco
-  ctx.beginPath(); ctx.moveTo(w/2, h - 20); ctx.lineTo(w/2, h/2 + 20); ctx.stroke()
-  // Tres ramas
-  const labels = [{x: w/4, t:'Bacteria', c:'#3aa5c4'}, {x: w/2, t:'Archaea', c:'#a855f7'}, {x: 3*w/4, t:'Eukarya', c:'#5fbc7e'}]
-  for (const l of labels){
-    ctx.strokeStyle = l.c
-    ctx.beginPath(); ctx.moveTo(w/2, h/2 + 20); ctx.lineTo(l.x, h/2 - 30); ctx.stroke()
-    ctx.beginPath(); ctx.moveTo(l.x, h/2 - 30); ctx.lineTo(l.x, 60); ctx.stroke()
-    ctx.fillStyle = l.c
-    ctx.beginPath(); ctx.arc(l.x, 50, 14 + Math.sin(_bv.t * 0.05) * 2, 0, Math.PI*2); ctx.fill()
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
-    ctx.fillText(l.t, l.x, 30)
+  const phase = Math.floor(_bv.step) % 5
+  const t = _bv.t
+  const CX = w * .5
+
+  function sph(sx, sy, sr, r, g, b, al){
+    if (sr < 1) return; al = al ?? 1
+    const grd = ctx.createRadialGradient(sx-sr*.32,sy-sr*.32,sr*.04,sx,sy,sr)
+    grd.addColorStop(0,`rgba(${Math.min(255,r+90)},${Math.min(255,g+90)},${Math.min(255,b+90)},${al})`)
+    grd.addColorStop(.55,`rgba(${r},${g},${b},${al*.88})`)
+    grd.addColorStop(1,`rgba(${Math.max(0,r-65)},${Math.max(0,g-65)},${Math.max(0,b-65)},${al*.5})`)
+    ctx.fillStyle = grd; ctx.beginPath(); ctx.arc(sx,sy,sr,0,Math.PI*2); ctx.fill()
   }
-  ctx.fillStyle = '#d0edd8'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
-  ctx.fillText('Ancestro común universal (LUCA)', w/2, h - 4)
+
+  const rootX = CX, rootY = h * .84
+  const divY  = h * .52
+
+  // ── LUCA trunk ───────────────────────────────────────────────
+  const trunkActive = phase === 0
+  ctx.strokeStyle = trunkActive ? '#a0ff80' : 'rgba(80,165,70,.60)'
+  ctx.lineWidth = trunkActive ? 7 : 4; ctx.lineCap = 'round'
+  ctx.beginPath(); ctx.moveTo(rootX, rootY); ctx.lineTo(rootX, divY); ctx.stroke()
+  sph(rootX, rootY, trunkActive ? 24 : 17, 75, 200, 95, trunkActive ? 1.0 : 0.55)
+  ctx.fillStyle = trunkActive ? '#fff' : '#b0ffb0'
+  ctx.font = trunkActive ? 'bold 9px Inter' : '8px Inter'
+  ctx.textAlign = 'center'; ctx.fillText('LUCA', rootX, rootY + 4)
+
+  // ── Three domain branches (visible from phase ≥ 1) ──────────
+  const domains = [
+    { label:'Bacteria',  x: CX - w*.28, nodeY: h*.08, cr:58,  cg:165, cb:196,
+      chars:['Pared: peptidoglicano','Ribosomas 70S','ADN circular (sin histonas)','Metabolismo muy diverso','Sin compartimentos membranosos'],
+      eg:'E. coli · Clostridium · Cianobacterias' },
+    { label:'Archaea',   x: CX,          nodeY: h*.06, cr:168, cg:85,  cb:247,
+      chars:['Sin peptidoglicano','Lípidos de membrana únicos (éteres)','Ribosomas 70S (distintos a bacterias)','ARN polimerasa similar a eucariotas','Extremófilos y mesófilos'],
+      eg:'Methanobacterium · Sulfolobus · Halófilos' },
+    { label:'Eukarya',   x: CX + w*.28, nodeY: h*.08, cr:80,  cg:200, cb:120,
+      chars:['Núcleo membranoso','Organelos (mitocondrias, RE)','Ribosomas 80S','ADN con histonas','Reproducción sexual posible'],
+      eg:'Protistas · Hongos · Plantas · Animales' }
+  ]
+
+  if (phase >= 1){
+    for (let di = 0; di < 3; di++){
+      const dom = domains[di]
+      const domPhase = di + 2
+      const isActive = phase === domPhase
+      const [cr,cg,cb] = [dom.cr, dom.cg, dom.cb]
+      const al = isActive ? 1.0 : 0.38
+
+      // Branch bezier
+      ctx.strokeStyle = `rgba(${cr},${cg},${cb},${isActive ? 0.92 : 0.30})`
+      ctx.lineWidth = isActive ? 5.5 : 2.5; ctx.lineCap = 'round'
+      ctx.beginPath()
+      ctx.moveTo(rootX, divY)
+      ctx.bezierCurveTo(rootX, divY - 28, dom.x, dom.nodeY + 90, dom.x, dom.nodeY + 46)
+      ctx.stroke()
+
+      // Domain node
+      sph(dom.x, dom.nodeY, isActive ? 26 : 18, cr, cg, cb, al)
+      if (isActive){
+        const rR = 26 + Math.sin(t*.062)*9
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},.32)`; ctx.lineWidth = 3
+        ctx.beginPath(); ctx.arc(dom.x, dom.nodeY, rR, 0, Math.PI*2); ctx.stroke()
+      }
+      ctx.fillStyle = isActive ? '#fff' : `rgba(${cr+50},${cg+50},${cb+50},${al})`
+      ctx.font = isActive ? 'bold 11px Inter' : 'bold 9px Inter'
+      ctx.textAlign = 'center'; ctx.fillText(dom.label, dom.x, dom.nodeY + 40)
+
+      // Characteristics panel
+      if (isActive){
+        const panX = Math.max(8, dom.x - 100), panW = 202
+        const panY = dom.nodeY + 52, panH = dom.chars.length * 16 + 30
+        ctx.fillStyle = 'rgba(0,0,0,.48)'; ctx.beginPath(); ctx.roundRect(panX, panY, panW, panH, 10); ctx.fill()
+        ctx.strokeStyle = `rgba(${cr},${cg},${cb},.38)`; ctx.lineWidth = 1.5; ctx.stroke()
+        dom.chars.forEach((c,i)=>{ ctx.fillStyle='#d4eedd'; ctx.font='8.5px Inter'; ctx.textAlign='left'; ctx.fillText('• '+c, panX+8, panY+16+i*16) })
+        ctx.fillStyle=`rgba(${cr},${cg},${cb},.75)`; ctx.font='italic 7.5px Inter'; ctx.textAlign='center'
+        ctx.fillText(dom.eg, dom.x, panY + panH - 6)
+      }
+    }
+  }
+
+  // ── Phase 1: Woese method box ─────────────────────────────────
+  if (phase === 1){
+    const bx = CX - 130, by = h * .28
+    ctx.fillStyle = 'rgba(0,0,0,.48)'; ctx.beginPath(); ctx.roundRect(bx, by, 260, 65, 12); ctx.fill()
+    ctx.strokeStyle = '#ffd760'; ctx.lineWidth = 1.5; ctx.stroke()
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Método de Carl Woese (1977)', CX, by + 16)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('Comparó ARN ribosomal 16S/18S entre organismos', CX, by + 33)
+    ctx.fillText('→ encontró 3 linajes profundos, no 2', CX, by + 49)
+    ctx.fillStyle = '#c8a8f7'; ctx.font = '8px Inter'
+    ctx.fillText('Las arqueas NO son bacterias raras — son dominio aparte', CX, by + 62)
+  }
+
+  // ── Phase bar (top) ─────────────────────────────────────────
+  const phBars5=['F1 — LUCA: ancestro común universal del que descienden los 3 dominios','F2 — Divergencia: Woese comparó ARN ribosomal 16S → 3 ramas filogenéticas, no 2','F3 — Bacteria: procariotas con peptidoglicano, metabolismo diverso · E. coli, Salmonella, Cianobacterias','F4 — Archaea: procariotas SIN peptidoglicano, lípidos únicos · extremófilos y mesófilos','F5 — Eukarya: núcleo membranoso, organelos, ribosomas 80S · protistas, hongos, plantas, animales']
+  ctx.fillStyle = 'rgba(0,0,0,.68)'; ctx.fillRect(0, 0, w, 27)
+  ctx.fillStyle = '#e4f5ea'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center'
+  ctx.fillText(phBars5[phase] || '', w/2, 17)
 }
 
 // ═══ Ciclo celular — visualizador P1 ═══
@@ -13210,6 +14273,8 @@ const A = {
   adminProgressFilter: window.adminProgressFilter,
   adminProgressSort: window.adminProgressSort,
   adminRefreshProgress: window.adminRefreshProgress,
+  adminRefreshVenc: window.adminRefreshVenc,
+  adminRefreshAlertas: window.adminRefreshAlertas,
   // cobertura/dominio
   syncTopic, saveST, filterDomain, showDomainDetail,
   // juego
@@ -15525,6 +16590,27 @@ window.toggleMobSidebar = function(){
     <div class="loader-tip">Cargando…</div>
   </div>
 </div>
+
+<script>
+/* Pago resultado — detecta hash de retorno PayPal (solo frontend, sin Supabase) */
+(function(){
+  var h = window.location.hash;
+  if(h !== '#pago-confirmado' && h !== '#pago-cancelado') return;
+  function mostrarOverlay(){
+    var ov = document.getElementById('payResultOverlay');
+    if(!ov) return;
+    var esConfirmado = (h === '#pago-confirmado');
+    document.getElementById('payResultConfirmado').style.display = esConfirmado ? '' : 'none';
+    document.getElementById('payResultCancelado').style.display = esConfirmado ? 'none' : '';
+    ov.classList.add('show');
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', mostrarOverlay);
+  } else {
+    mostrarOverlay();
+  }
+})();
+</script>
 
 </body>
 </html>
