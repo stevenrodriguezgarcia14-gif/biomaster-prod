@@ -297,7 +297,7 @@ a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit;c
 .toolbar{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
 .warn{padding:.8rem 1rem;border-radius:16px;background:var(--yellowSoft);color:rgb(133,98,0);border:1px solid var(--border);font-size:.88rem}
 .option{display:flex;align-items:flex-start;gap:.6rem;padding:.7rem .8rem;border-radius:14px;border:1px solid var(--border);background:var(--surface);cursor:pointer;transition:all .2s;font-size:.88rem}
-.option:hover{background:var(--soft)}.option.correct{background:var(--greenSoft);border-color:var(--green)}.option.wrong{background:var(--redSoft);border-color:var(--red)}
+.option:hover{background:var(--soft)}.option.option-pending{background:var(--blueSoft);border-color:var(--blue)}.option.correct{background:var(--greenSoft);border-color:var(--green)}.option.wrong{background:var(--redSoft);border-color:var(--red)}
 .mcq{display:grid;gap:.5rem;margin-top:.6rem}
 .feedback{display:none;margin-top:.6rem;padding:.75rem .9rem;border-radius:14px;font-size:.85rem;line-height:1.6}
 .feedback.show{display:block}.good{background:var(--greenSoft);color:#166534}.bad{background:var(--redSoft);color:#991b1b}
@@ -314,8 +314,23 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 .admin-panel h3{color:var(--red);margin:0 0 .8rem}
 .reco-item{padding:.7rem;border-radius:12px;background:var(--soft);border:1px solid var(--border);margin-bottom:.5rem;font-size:.85rem}
 .reco-item strong{display:block}
-.rank-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
-.rank-row:last-child{border-bottom:none}.rank-medal{font-size:1.1rem;width:28px}
+.rank-tabs{display:flex;gap:.4rem;margin-bottom:.75rem;flex-wrap:wrap}
+.rank-tab-btn{padding:.38rem .85rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--muted)}
+.rank-tab-btn.active{background:var(--green);color:#fff;border-color:transparent}
+.rank-tab-btn:hover:not(.active){background:var(--soft)}
+.rank-list{display:flex;flex-direction:column;gap:.45rem}
+.rank-row{display:grid;grid-template-columns:auto 1fr;gap:.5rem .75rem;align-items:center;padding:.6rem .75rem;border-radius:14px;border:1px solid var(--border);background:var(--surface)}
+.rank-me{border-color:var(--green)!important;background:var(--greenSoft)!important}
+.rank-left{display:flex;align-items:center;gap:.5rem;min-width:0}
+.rank-medal{font-size:1.1rem;flex-shrink:0;min-width:1.8rem;text-align:center}
+.rank-pos{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--soft);font-size:.72rem;font-weight:800;color:var(--muted)}
+.rank-name{font-weight:700;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-you{font-size:.72rem;font-weight:400;color:var(--green);margin-left:.25rem}
+.rank-right{display:flex;flex-direction:column;gap:.22rem}
+.rank-bar-wrap{height:5px;border-radius:999px;background:var(--soft);overflow:hidden}
+.rank-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--green),#6ddf9a);transition:width .6s}
+.rank-meta{display:flex;gap:.5rem;font-size:.76rem;color:var(--muted)}
+.rank-meta strong{color:var(--text);font-size:.8rem}
 .history-row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.82rem;gap:.5rem}
 .history-row:last-child{border-bottom:none}
 .tab-bar{display:flex;gap:.4rem;margin-bottom:.8rem;flex-wrap:wrap}
@@ -1719,7 +1734,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       <div class="lp-pricing-monthly">
         <div>
           <strong>¿Preferís pagar mes a mes?</strong>
-          <p>Pase Mensual Completo (incluye P1, P2 y P3) — <strong>₡2.900 / mes</strong>, cancelás cuando querás. Si vas a estudiar más de 3 meses, te conviene el Pase Semestre.</p>
+          <p>Pase Mensual Completo (incluye P1, P2 y P3) — <strong>₡2.900 / mes</strong>, sin permanencia. Si vas a estudiar más de 3 meses, te conviene el Pase Semestre.</p>
         </div>
         <button class="lp-btn-secondary" data-plan-cta="mensual">Activar mensual →</button>
       </div>
@@ -1761,7 +1776,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         </div>
       </div>
 
-      <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:1.5rem">💡 Garantía de reembolso de 7 días en cualquier plan, sin preguntas. Sin permanencia, sin renovación automática (excepto Mensual).</p>
+      <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:1.5rem">💡 Garantía de reembolso de 7 días en cualquier plan, sin preguntas. Sin permanencia, sin renovación automática. Todos los pagos son manuales — no se cobra automáticamente.</p>
     </div>
   </section>
 
@@ -1793,7 +1808,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
             <li>Te coordinaremos la forma de pago disponible para tu país.</li>
           </ol>
           <div class="lp-pago-coming">
-            <span>🔜</span> Pagos con tarjeta para LATAM próximamente con OnvoPay.
+            <span>🔜</span> Pagos con tarjeta para LATAM próximamente.
           </div>
           <a href="mailto:Biomaster.oficial@gmail.com?subject=Solicitud%20acceso%20Pro%20BioMaster&body=Hola%2C%20quiero%20acceder%20al%20plan%20Pro%20desde%20[tu%20pa%C3%ADs].%20Mi%20correo%20registrado%20es%3A%20" class="lp-pago-cta lp-pago-cta-outline">Escribir por correo →</a>
         </div>
@@ -1852,7 +1867,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
       <h2>Preguntas frecuentes</h2>
       <p class="lp-section-sub">Si tenés otra pregunta, escribinos desde el panel de feedback dentro de la plataforma.</p>
       <div class="lp-faq">
-        <details><summary>¿Qué incluye exactamente la vista previa gratuita?</summary><div class="lp-faq-body">El primer subtema del resumen de cada tema (de ambos parciales), las primeras 5 preguntas del examen, un simulacro corto de 5 preguntas por día, una ronda de muestra del juego BioMatch y una decena de flashcards básicas. Es suficiente para entender la calidad y el formato del producto. No es suficiente para estudiar para el parcial.</div></details>
+        <details><summary>¿Qué incluye exactamente la vista previa gratuita?</summary><div class="lp-faq-body">El primer subtema del resumen de cada tema (de los tres parciales disponibles), las primeras 5 preguntas del examen, un simulacro corto de 5 preguntas por día, una ronda de muestra del juego BioMatch y una decena de flashcards básicas. Es suficiente para entender la calidad y el formato del producto. No es suficiente para estudiar para el parcial.</div></details>
         <details><summary>¿Cuál plan me conviene? P1, P2, P3 o Semestre Completo</summary><div class="lp-faq-body"><strong>Pase Parcial 1, 2 o 3 (₡3.900 c/u · 60 días):</strong> si solo te queda aprobar uno de los parciales. <strong>Pase Semestre Completo (₡9.900 · 6 meses):</strong> el plan más elegido. Comprando los tres parciales por separado pagarías ₡11.700; con el Semestre pagás ₡9.900 (ahorrás ₡1.800) y tenés acceso a todo desde el día 1 hasta el final del ciclo. <strong>Pase Mensual (₡2.900/mes):</strong> si querés probar antes de comprometerte. Si vas a estudiar 3+ meses, te conviene el Semestre.</div></details>
         <details><summary>Si compro Pase P1, ¿puedo después comprar el P2 por separado?</summary><div class="lp-faq-body">Sí, podés comprarlo después. Pero comprar los tres parciales por separado (₡3.900 cada uno) costaría ₡11.700 en total; el Semestre Completo cuesta ₡9.900 (ahorrás ₡1.800). Si todavía estás en tiempo del semestre, lo mejor es pasarte al Semestre desde el inicio o pedinos el upgrade proporcional. Escribinos desde el panel de feedback.</div></details>
         <details><summary>¿Por qué el plan gratis no incluye más?</summary><div class="lp-faq-body">Porque el valor real está en las funciones que te ahorran tiempo y mejoran tu probabilidad de aprobar: el diagnóstico que te dice exactamente qué te falta, el plan personalizado por fecha de examen, el panel "Qué estudiar hoy", la predicción de aprobación, los simulacros ilimitados y el resumen completo. Esas funciones son las que justifican que pagues. Si las regaláramos, la plataforma no podría sostenerse.</div></details>
@@ -2051,7 +2066,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <div class="pw-trust">
       <span>✓ Reembolso 7 días</span>
       <span>✓ Sin permanencia</span>
-      <span>✓ Cancelás cuando querás</span>
+      <span>✓ Sin renovación automática</span>
     </div>
   </div>
 </div>
@@ -3168,7 +3183,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
               <div class="subitem" data-keywords="ciclo de vida eucariotas meiosis fecundacion cigoto gametos haploides diploide mitosis crecimiento"><strong>4.3.4 Divisiones celulares mitóticas y meióticas en el ciclo de vida de eucariotas</strong><ul class="list"><li>La <strong>meiosis</strong> forma gametos haploides en organismos con reproducción sexual.</li><li>La <strong>fecundación</strong> une dos gametos y restablece el número diploide.</li><li>A partir del <em>cigoto</em>, la mitosis permite crecimiento, desarrollo y formación del organismo multicelular.</li><li>En el ciclo de vida eucariota, meiosis, fecundación y mitosis se complementan.</li><li><span class="mark-yellow">Clave:</span> meiosis reduce cromosomas; fecundación los restituye; mitosis mantiene el número cromosómico en células somáticas.</li></ul></div>
               <div class="subitem" data-keywords="base fisica herencia gen alelo locus genotipo fenotipo homocigoto heterocigoto"><strong>4.4.1 Base física de la herencia: conceptos básicos</strong><ul class="list"><li><strong>Gen:</strong> unidad de información hereditaria.</li><li><strong>Alelo:</strong> versión alternativa de un gen.</li><li><strong>Locus:</strong> posición que ocupa un gen en un cromosoma.</li><li><strong>Genotipo:</strong> composición genética de un individuo; <strong>fenotipo:</strong> manifestación observable.</li><li><strong>Homocigoto:</strong> dos alelos iguales; <strong>heterocigoto:</strong> dos alelos diferentes.</li><li><span class="mark-yellow">Clave:</span> no confundir genotipo con fenotipo; el fenotipo resulta de la expresión del genotipo y su interacción con el ambiente.</li></ul></div>
               <div class="subitem" data-keywords="herencia mendeliana idea general alelos segregacion fecundacion dominancia simple un gen"><strong>4.4.1.1 Herencia mendeliana: idea general</strong><ul class="list"><li>La <strong>herencia mendeliana</strong> explica cómo se transmiten ciertos caracteres de una generación a otra mediante <em>alelos</em>.</li><li>Se basa en la <strong>segregación de alelos</strong> durante la formación de gametos y en la <strong>combinación de esos alelos</strong> durante la fecundación.</li><li>Sus principios funcionan mejor en caracteres determinados por <em>un solo gen con dominancia simple</em>.</li><li><span class="mark-yellow">Clave:</span> la herencia mendeliana conecta los conceptos básicos de gen, alelo y genotipo con las proporciones observadas en la descendencia.</li><li><span class="mark-red">Error:</span> no todos los caracteres hereditarios siguen patrones mendelianos simples.</li></ul></div>
-              <div class="subitem" data-keywords="leyes de mendel segregacion distribucion independiente punnett dihibrido cruce de prueba ligamiento"><strong>4.4.2 Leyes de Mendel</strong><ul class="list"><li><strong>Ley de segregación:</strong> los dos alelos de un par se separan durante la formación de gametos.</li><li><strong>Ley de distribución independiente:</strong> genes en distintos cromosomas se reparten de forma independiente.</li><li>Los <strong>cuadros de Punnett</strong> permiten predecir genotipos y fenotipos esperados en la descendencia.</li><li>En un cruce <em>dihíbrido independiente</em>, la proporción fenotípica clásica en F2 es <strong>9:3:3:1</strong>.</li><li>El <em>cruce de prueba</em> ayuda a inferir el genotipo de un individuo con fenotipo dominante.</li><li><span class="mark-yellow">Cálculo:</span> puede requerir cuadros de Punnett, probabilidades, proporciones monohíbridas y dihíbridas.</li><li><span class="mark-red">Error:</span> la independencia mendeliana no aplica igual cuando hay ligamiento genético.</li></ul></div>
+              <div class="subitem" data-keywords="leyes de mendel segregacion distribucion independiente punnett dihibrido cruce de prueba ligamiento"><strong>4.4.2 Leyes de Mendel</strong><ul class="list"><li><strong>Ley de segregación:</strong> los dos alelos de un par se separan durante la formación de gametos.</li><li><strong>Ley de distribución independiente:</strong> genes en distintos cromosomas se reparten de forma independiente.</li><li>Los <strong>cuadros de Punnett</strong> permiten predecir genotipos y fenotipos esperados en la descendencia.</li><li>En un cruce <em>dihíbrido independiente</em>, la proporción fenotípica clásica en F2 es <strong>9:3:3:1</strong>.</li><li>El <em>cruce de prueba</em> ayuda a inferir el genotipo de un individuo con fenotipo dominante.</li><li><span class="mark-green">Ejemplo resuelto — cruce monohíbrido Aa × Aa:</span> Sea A = dominante (ej. tallo alto), a = recesivo (ej. tallo bajo). Cada progenitor produce gametos A y a en igual proporción. El cuadro de Punnett entrega: <strong>1 AA : 2 Aa : 1 aa</strong> (proporción genotípica 1:2:1). En fenotipo: 3 con tallo alto (AA + Aa) : 1 con tallo bajo (aa) → proporción fenotípica <strong>3:1</strong>. Frecuencia del heterocigoto Aa = 2/4 = 50 %. <span class="mark-red">Error:</span> confundir 1:2:1 (genotipo) con 3:1 (fenotipo); son proporciones distintas.</li><li><span class="mark-green">Ejemplo resuelto — cruce dihíbrido AaBb × AaBb:</span> Con segregación independiente, se obtienen 9 combinaciones con al menos un A dominante y un B dominante : 3 A dominante, b homocigoto : 3 a homocigoto, B dominante : 1 aabb → proporción fenotípica <strong>9:3:3:1</strong>. Esta proporción es clave de examen.</li><li><span class="mark-yellow">Cálculo:</span> puede requerir cuadros de Punnett, probabilidades, proporciones monohíbridas y dihíbridas.</li><li><span class="mark-red">Error:</span> la independencia mendeliana no aplica igual cuando hay ligamiento genético.</li></ul></div>
               <div class="subitem" data-keywords="codominancia dominancia incompleta alelos multiples ABO poligenia pleiotropia epigenetica"><strong>4.4.7 Patrones no mendelianos</strong><ul class="list"><li>Dominancia incompleta: heterocigoto con fenotipo intermedio.</li><li>Codominancia: ambos alelos expresados (ej. tipo AB).</li><li>ABO: 3 alelos IA, IB, i → 6 genotipos.</li><li>Herencia poligénica: varios genes → rasgo continuo (estatura, color piel).</li><li>Pleiotropía: un gen → múltiples efectos fenotípicos.</li></ul></div>
               <div class="subitem" data-keywords="epigenetica metilacion ADN histonas expresion genica activar silenciar genes ambiente"><strong>4.4.8 Epigenética</strong><ul class="list"><li>La <strong>epigenética</strong> estudia cambios <em>heredables</em> en la expresión génica <strong>sin modificar la secuencia de bases del ADN</strong>.</li><li>Puede involucrar <em>metilación del ADN</em> y <em>modificaciones de histonas</em>.</li><li>Estos mecanismos <em>activan o silencian</em> genes según el tipo celular, la etapa del desarrollo o el ambiente.</li><li>Ayuda a explicar por qué células con el <em>mismo ADN</em> pueden tener funciones diferentes.</li><li><span class="mark-red">Error:</span> epigenética no significa mutación; la secuencia del ADN puede permanecer igual.</li></ul></div>
               <div class="subitem" data-keywords="ligamiento genetico cromosoma crossing over recombinantes proporciones independencia"><strong>4.4.9 Ligamiento genético</strong><ul class="list"><li>Genes ubicados en el <strong>mismo cromosoma</strong> tienden a heredarse juntos.</li><li>Cuanto más cerca están dos genes, <em>menos probable</em> es que se separen por entrecruzamiento.</li><li>El <strong>crossing over</strong> puede romper el ligamiento y generar <em>recombinación</em>.</li><li>El ligamiento <em>modifica las proporciones</em> esperadas si se comparan con la independencia mendeliana.</li><li><span class="mark-yellow">Cálculo:</span> puede relacionarse con proporciones de recombinantes y no recombinantes si el curso lo pide.</li><li><span class="mark-red">Error:</span> no asumir independencia de genes solo porque se está trabajando con dos caracteres.</li></ul></div>
@@ -3269,7 +3284,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
               <div class="subitem" data-keywords="teoria sintetica evolucion genetica mendeliana mutacion recombinacion seleccion natural poblaciones frecuencias alelicas"><strong>5.1.2 Teoría sintética de la evolución</strong><ul class="list"><li>La <strong>teoría sintética</strong> integra <em>genética mendeliana, mutación, recombinación, selección natural y evolución de poblaciones</em>.</li><li>La evolución se entiende como <strong>cambio en frecuencias alélicas</strong> a lo largo del tiempo.</li><li>Une los mecanismos hereditarios con el cambio evolutivo observado en poblaciones.</li><li><span class="mark-yellow">Clave:</span> la teoría sintética conecta genética y evolución.</li></ul></div>
               <div class="subitem" data-keywords="evidencias evolucion fosiles anatomia comparada embriologia biogeografia bioquimica genetica homologas analogas vestigiales convergente"><strong>5.1.3 Evidencias de la evolución</strong><ul class="list"><li>La evolución se apoya en <em>fósiles, anatomía comparada, embriología, biogeografía, bioquímica y genética</em>.</li><li>Estructuras <strong>homólogas</strong> indican <em>ancestro común</em>; estructuras <strong>análogas</strong> reflejan <em>evolución convergente</em>.</li><li>Las <em>estructuras vestigiales</em> apoyan la idea de cambio evolutivo.</li><li>Las <em>similitudes moleculares</em> entre especies reflejan parentesco evolutivo.</li><li><span class="mark-red">Error:</span> homólogas y análogas no son equivalentes.</li></ul></div>
               <div class="subitem" data-keywords="genetica de poblaciones acervo genico frecuencias alelicas genotipicas mutacion seleccion deriva flujo genico"><strong>5.2.1 Genética de poblaciones</strong><ul class="list"><li>Estudia la distribución de <em>alelos y genotipos</em> en una población.</li><li>La evolución, a este nivel, consiste en <strong>cambios en las frecuencias alélicas</strong> a lo largo del tiempo.</li><li>El conjunto de alelos de una población constituye su <strong>acervo génico</strong>.</li><li><em>Mutación, selección, deriva genética y flujo génico</em> pueden modificar ese acervo.</li><li><span class="mark-yellow">Clave:</span> evolución poblacional = cambio en frecuencias alélicas, no cambio individual.</li><li><span class="mark-yellow">Cálculo:</span> puede requerir interpretar frecuencias alélicas y genotípicas.</li></ul></div>
-              <div class="subitem" data-keywords="hardy weinberg equilibrio frecuencia alélica genotipica p2 2pq q2 heterocigotos"><strong>5.2.2 Hardy-Weinberg</strong><ul class="list"><li>p² + 2pq + q² = 1. Heterocigotos = 2pq.</li><li>5 condiciones: sin mutación, sin selección, apareamiento al azar, sin migración, tamaño grande.</li><li><span class="mark-yellow">Clave:</span> si la población se desvía del equilibrio → evolución actuando.</li><li>Describe el <strong>equilibrio genético</strong> esperado en una población ideal.</li><li>Si <em>p</em> es la frecuencia de un alelo y <em>q</em> la del otro, entonces <strong>p + q = 1</strong>.</li><li>Las frecuencias genotípicas esperadas son <strong>p², 2pq y q²</strong>.</li><li>Si una población se desvía del equilibrio, <em>algún factor evolutivo</em> está actuando.</li><li><span class="mark-yellow">Cálculo:</span> puede requerir hallar p, q, p², 2pq, q², frecuencia de heterocigotos o portadores.</li></ul></div>
+              <div class="subitem" data-keywords="hardy weinberg equilibrio frecuencia alélica genotipica p2 2pq q2 heterocigotos"><strong>5.2.2 Hardy-Weinberg</strong><ul class="list"><li>p² + 2pq + q² = 1. Heterocigotos = 2pq.</li><li>5 condiciones: sin mutación, sin selección, apareamiento al azar, sin migración, tamaño grande.</li><li><span class="mark-yellow">Clave:</span> si la población se desvía del equilibrio → evolución actuando.</li><li>Describe el <strong>equilibrio genético</strong> esperado en una población ideal.</li><li>Si <em>p</em> es la frecuencia de un alelo y <em>q</em> la del otro, entonces <strong>p + q = 1</strong>.</li><li>Las frecuencias genotípicas esperadas son <strong>p², 2pq y q²</strong>.</li><li>Si una población se desvía del equilibrio, <em>algún factor evolutivo</em> está actuando.</li><li><span class="mark-green">Ejemplo resuelto paso a paso:</span> Supón que la frecuencia del alelo a en una población es q = 0.3. <br>Paso 1 — Hallar p: p = 1 − q = 1 − 0.3 = <strong>0.7</strong>. <br>Paso 2 — Calcular frecuencias genotípicas: <br>&nbsp;&nbsp;&nbsp;• Homocigotos dominantes AA = p² = 0.7² = <strong>0.49</strong> (49%). <br>&nbsp;&nbsp;&nbsp;• Heterocigotos Aa = 2pq = 2 × 0.7 × 0.3 = <strong>0.42</strong> (42%). <br>&nbsp;&nbsp;&nbsp;• Homocigotos recesivos aa = q² = 0.3² = <strong>0.09</strong> (9%). <br>Paso 3 — Verificación: 0.49 + 0.42 + 0.09 = 1.00 ✓. <br>Paso 4 — Interpretación: si en la población real el 12% son aa en lugar del 9% esperado, la frecuencia de q está aumentando → alguna fuerza evolutiva actúa. <span class="mark-red">Error común:</span> olvidar que aa = q² (no q). Para hallar q desde la frecuencia de aa recesivos, se toma la raíz cuadrada: q = √(frecuencia de aa).</li><li><span class="mark-yellow">Cálculo:</span> puede requerir hallar p, q, p², 2pq, q², frecuencia de heterocigotos o portadores.</li></ul></div>
               <div class="subitem" data-keywords="cambios adaptativos frecuencias alelicas seleccion natural ambiente adaptacion variacion existente"><strong>5.2.3 Cambios adaptativos en las frecuencias alélicas</strong><ul class="list"><li>Si un alelo mejora <em>supervivencia o reproducción</em>, puede aumentar su frecuencia en la población.</li><li>La <strong>selección natural</strong> favorece combinaciones heredables ventajosas en un <em>ambiente específico</em>.</li><li>Cuando cambia el ambiente, también puede cambiar qué rasgos resultan favorables.</li><li>Las adaptaciones surgen por <em>selección sobre variación existente</em>, no por necesidad consciente del organismo.</li><li><span class="mark-red">Error:</span> adaptativo no significa "querido" o "buscado" por el organismo.</li></ul></div>
               <div class="subitem" data-keywords="seleccion natural estabilizadora direccional disruptiva sexual artificial deriva flujo genico mutacion"><strong>5.2.4–5 Causas y tipos de selección</strong><ul class="list"><li>Mutación = fuente original de nuevos alelos.</li><li>Deriva genética, flujo génico, efecto fundador, consanguinidad.</li><li>Selección estabilizadora: favorece promedio. Direccional: favorece un extremo. Disruptiva: favorece extremos.</li><li>La <strong>mutación</strong> es la fuente original de nuevos alelos.</li><li>La <strong>deriva genética</strong> produce cambios <em>azarosos</em>, sobre todo en poblaciones pequeñas.</li><li>El <em>efecto fundador</em> y el <em>cuello de botella</em> son casos importantes de deriva genética.</li><li>El <strong>flujo génico</strong> ocurre cuando individuos o gametos se mueven entre poblaciones.</li><li>La <strong>consanguinidad</strong> aumenta la probabilidad de homocigosis.</li><li><span class="mark-yellow">Clave:</span> no todos los cambios evolutivos se deben a selección natural.</li></ul></div>
               <div class="subitem" data-keywords="seleccion sexual exito apareamiento competencia eleccion pareja ornamentos cortejo dimorfismo sexual"><strong>5.2.6 Selección sexual</strong><ul class="list"><li>Favorece rasgos que aumentan el <strong>éxito de apareamiento</strong>, aunque no siempre mejoren supervivencia.</li><li>Puede actuar por <em>competencia entre individuos del mismo sexo</em> o por <em>elección de pareja</em>.</li><li>Explica <em>ornamentos, conductas de cortejo y dimorfismo sexual</em> en muchas especies.</li><li><span class="mark-yellow">Clave:</span> éxito evolutivo también depende de dejar descendencia.</li></ul></div>
@@ -3282,7 +3297,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
         </details>
         <details class="topic-card topic-green" open data-search-section="resumen">
           <summary class="summary-line" style="cursor:pointer">
-            <div class="summary-left"><span class="num">6</span><div><strong>Tema 6. Diversidad biológica</strong><div class="muted">Origen de la vida, dominios, protistas, hongos, plantas, animales.</div></div></div>
+            <div class="summary-left"><span class="num">6</span><div><strong>Tema 6. Diversidad biológica</strong><div class="muted">Origen de la vida y primeras células (6.1). Los temas 6.2–6.4 corresponden al Parcial 3.</div></div></div>
             <div class="summary-right">
               <select data-topic="t6" onchange="A.syncTopic('t6',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select>
               <button class="btn fav-btn" data-fav="Tema 6" onclick="A.toggleFav(this)">☆ Fav</button>
@@ -3295,9 +3310,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
               <div class="subitem" data-keywords="formacion planeta tierra primitiva volcanica temperatura radiacion tormentas atmosfera oxigeno evolucion quimica"><strong>6.1.1 Etapas principales: formación del planeta</strong><ul class="list"><li>La Tierra primitiva se formó hace <em>miles de millones de años</em> bajo condiciones muy diferentes a las actuales.</li><li>Presentaba fuerte <em>actividad volcánica</em>, altas temperaturas, <em>radiación intensa</em> y frecuentes <em>tormentas eléctricas</em>.</li><li>La <strong>atmósfera primitiva</strong> tenía composición distinta y casi <em>ausencia de oxígeno libre</em>.</li><li>Estas condiciones influyen en las hipótesis sobre <em>evolución química</em> y origen de la vida.</li><li><span class="mark-yellow">Clave:</span> el origen de la vida se estudia dentro del contexto físico-químico del planeta primitivo.</li></ul></div>
               <div class="subitem" data-keywords="teorias origen vida abiogenesis oparin haldane fuentes hidrotermales sintesis prebiotica procesos fisicoquimicos"><strong>6.1.2 Teorías del origen de la vida</strong><ul class="list"><li>La <strong>abiogénesis moderna</strong> propone que la vida surgió a partir de <em>materia no viva</em> mediante procesos fisicoquímicos graduales.</li><li><strong>Oparin y Haldane</strong> sugirieron que moléculas simples pudieron originar compuestos orgánicos más complejos.</li><li>Otras propuestas exploran ambientes como <em>fuentes hidrotermales</em> y síntesis prebiótica en distintos escenarios.</li><li>El objetivo de estas teorías es explicar el origen de sistemas biológicos a partir de <em>procesos naturales</em>.</li><li><span class="mark-red">Error:</span> teoría del origen de la vida no significa que ya se haya observado la formación completa de una célula en laboratorio.</li></ul></div>
               <div class="subitem" data-keywords="macromoleculas protocelulas primeras celulas procariotas anaerobias heterotrofas fotosinteticas oxigeno"><strong>6.1.3 Formación de macromoléculas, protocélulas y primeras células</strong><ul class="list"><li>Moléculas orgánicas simples pudieron originar <em>macromoléculas</em> con funciones cada vez más complejas.</li><li>Las <strong>protocélulas</strong> habrían sido agregados con <em>membranas rudimentarias</em> y cierta organización química interna.</li><li>Las primeras células probablemente fueron <strong>procariotas, anaerobias y heterótrofas</strong>.</li><li>Más adelante aparecieron organismos <em>fotosintéticos</em> que contribuyeron al aumento del oxígeno atmosférico.</li><li><span class="mark-yellow">Clave:</span> protocélula no equivale a célula moderna completa; representa una etapa previa.</li></ul></div>
-              <div class="subitem" data-keywords="bacteria archaea eukarya dominio pared peptidoglicano ribosomas 70S 80S"><strong>6.2 Dominios y reinos</strong><ul class="list"><li>Bacteria: peptidoglicano en pared, ribosomas 70S, sin histonas.</li><li>Archaea: sin peptidoglicano clásico, lípidos con enlaces éter, con histonas.</li><li>Eukarya: orgánulos membranosos, ribosomas 80S.</li><li>Gram+: peptidoglicano grueso. Gram-: peptidoglicano delgado.</li><li>Los <strong>tres dominios</strong> son <em>Bacteria, Archaea y Eukarya</em>.</li><li>Bacteria y Archaea son <em>procariotas</em>, pero difieren en pared celular, membrana, enzimas y rasgos moleculares.</li><li><strong>Eukarya</strong> incluye organismos con <em>núcleo verdadero</em> y orgánulos membranosos.</li><li>La clasificación moderna considera evidencias <em>celulares, bioquímicas y moleculares</em>.</li><li><span class="mark-red">Error:</span> no meter a todas las células sin núcleo en el mismo grupo sin distinguir bacterias de arqueas.</li></ul></div>
-              <div class="subitem" data-keywords="liquen hongo alga micorriza raiz simbiosis dinoflagelados diatomeas quitridiomicetos briofitas pteridofitas gimnospermas angiospermas"><strong>6.3 Hongos, protistas y plantas</strong><ul class="list"><li>Liquen = hongo + alga/cianobacteria. Micorriza = raíz + hongo.</li><li>Dinoflagelados → marea roja. Diatomeas → tierra de diatomeas.</li><li>Quitridiomicetos: esporas flageladas.</li><li>Briofitas → Pteridofitas → Gimnospermas → Angiospermas.</li><li>Los <strong>protistas</strong> forman un grupo muy diverso; algunos son <em>autótrofos</em> y otros <em>heterótrofos</em>.</li><li>Los <strong>hongos</strong> son heterótrofos por <em>absorción</em> y tienen pared celular de <em>quitina</em>.</li><li>En <strong>plantas</strong> se observa una tendencia evolutiva hacia mayor complejidad estructural, <em>tejidos vasculares</em> y menor dependencia del agua para la reproducción.</li><li>Las <em>relaciones simbióticas</em> como líquenes y micorrizas son ecológicamente importantes.</li><li><span class="mark-yellow">Clave:</span> hongos no son plantas y no realizan fotosíntesis.</li></ul></div>
-              <div class="subitem" data-keywords="animales porifera cnidaria platyhelminthes anelida artropoda mollusca nematodo echinodermata chordata vertebrados"><strong>6.4 Animales (phyla clave)</strong><ul class="list"><li>Porífera: sin tejidos. Cnidaria: simetría radial.</li><li>Platyhelminthes: acelomados. Nematodos: seudocelomados.</li><li>Anélida: lombriz. Echinodermata: sistema vascular acuífero.</li><li>Arthropoda: exoesqueleto quitinoso. Mollusca: gastrópodo, bivalvo, cefalópodo.</li><li>Chordata: notocordio, cordón nervioso dorsal, cola postanal.</li><li>La clasificación animal puede compararse por <em>simetría corporal, presencia de tejidos, cavidad corporal y desarrollo embrionario</em>.</li><li><strong>Poríferos</strong> carecen de tejidos verdaderos.</li><li><strong>Cnidarios</strong> presentan tejidos y simetría radial.</li><li>En grupos <em>bilaterales</em>, la condición <strong>acelomada, seudocelomada o celomada</strong> ayuda a diferenciarlos.</li><li><span class="mark-yellow">Clave:</span> Chordata se reconoce por notocordio, cordón nervioso dorsal, hendiduras faríngeas y cola postanal al menos en alguna etapa del desarrollo.</li></ul></div>
+              <!-- 6.2, 6.3, 6.4 pertenecen al Parcial 3 — ver resumenP3 -->
             </div>
           </div>
         </details>
@@ -3612,7 +3625,7 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
           </div>
 
           <!-- 6.3 VIRUS, VIROIDES, PRIONES Y PROCARIOTAS -->
-          <div class="subitem" data-keywords="virus acelular material genetico ADN ARN capside envoltura bacteriofago parasito intracelular obligado huesped"><strong>6.3 Diversidad de los virus, priones y procariotas — 6.3.1 Estructura y características de los virus</strong>
+          <div class="subitem" data-keywords="virus acelular material genetico ADN ARN capside envoltura bacteriofago parasito intracelular obligado huesped ciclo litico lisogenico profago lisis replicacion viral"><strong>6.3 Diversidad de los virus, priones y procariotas — 6.3.1 Estructura y características de los virus</strong>
             <ul class="list">
               <li>Los virus son <strong>entidades acelulares</strong> formadas por material genético y una cubierta proteica.</li>
               <li>El material genético viral puede ser <strong>ADN o ARN</strong>, según el tipo de virus.</li>
@@ -3624,7 +3637,11 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
               <li>Los virus pueden infectar bacterias, plantas, animales y otros organismos.</li>
               <li>Los que infectan bacterias se llaman <strong>bacteriófagos</strong>.</li>
               <li>En biología se consideran <em>parásitos intracelulares obligados</em>.</li>
+              <li><strong>Ciclo lítico:</strong> el virus infecta la célula huésped, toma el control de su maquinaria, replica su material genético y ensambla nuevas partículas virales. Finalmente la célula se rompe (<em>lisis</em>) liberando cientos de virus nuevos. La célula muere al final del ciclo. <span class="mark-yellow">Clave de examen:</span> ciclo lítico = infección activa + destrucción celular.</li>
+              <li><strong>Ciclo lisogénico:</strong> el material genético del virus se integra al cromosoma del huésped como <em>profago</em>. La célula se divide normalmente durante muchas generaciones sin que el virus produzca partículas nuevas. Ante ciertos estímulos (radiación, estrés químico), el profago puede activarse e iniciar el ciclo lítico. <span class="mark-yellow">Clave de examen:</span> ciclo lisogénico = virus "dormido" integrado al ADN del huésped, no destruye la célula de inmediato.</li>
+              <li><strong>Comparación:</strong> en el ciclo lítico la célula muere al final; en el lisogénico la célula puede sobrevivir mucho tiempo con el genoma viral integrado, y el virus puede "despertar" posteriormente.</li>
               <li><span class="mark-yellow">Idea clave:</span> un virus solo puede replicarse dentro de una célula viva.</li>
+              <li><span class="mark-red">Error común:</span> creer que todo virus destruye la célula de inmediato. En el ciclo lisogénico el virus puede permanecer inactivo durante muchas generaciones.</li>
               <li><span class="mark-red">Error común:</span> decir que los virus son células muy pequeñas o que pertenecen a algún reino biológico normal.</li>
             </ul>
           </div>
@@ -4783,11 +4800,10 @@ window.STRIPE_LINK_MENSUAL  = window.BIOMASTER_CONFIG.STRIPE_LINK_MENSUAL
     <!-- ═══ RANKING ═══ -->
     <section class="section" id="ranking">
       <div class="section-head">
-        <div><h2>🏆 Ranking global</h2><p class="module-desc">Top 50 por XP. Solo aparecen usuarios registrados (no invitados).</p></div>
+        <div><h2>🏆 Ranking global</h2><p class="module-desc">Top 50 usuarios. Ordená por XP, precisión o simulacros completados. Solo cuentas registradas.</p></div>
       </div>
       <div class="card panel">
         <div id="rankPanel">Cargando ranking…</div>
-        <button class="btn" style="margin-top:.6rem" onclick="A.loadRanking()">↻ Actualizar</button>
       </div>
     </section>
 
@@ -5701,6 +5717,8 @@ function renderSessionUI(){
 }
 
 function renderFeedbackForm(){
+  const _prevText = document.getElementById('fbText')?.value || ''
+  const _prevExp  = document.getElementById('fbExperience')?.value || ''
   document.getElementById('feedbackBox').innerHTML = `
     <div class="auth-field"><label>Tipo</label>
       <select id="fbType">
@@ -5730,6 +5748,9 @@ function renderFeedbackForm(){
       <p class="muted" style="font-size:.8rem;margin:.3rem 0 .6rem">Borra todo TU progreso (XP, racha, partidas, logros). No borra tu cuenta.</p>
       <button class="btn danger" onclick="A.resetMyProgress()">🧹 Borrar mi progreso</button>
     </div>`
+  // Restaurar texto que el usuario había escrito antes de que se reconstruyera el form
+  if (_prevText){ const el = document.getElementById('fbText'); if (el) el.value = _prevText }
+  if (_prevExp){  const el = document.getElementById('fbExperience'); if (el) el.value = _prevExp }
   // Mostrar/ocultar campo experiencia según tipo
   const fbType = document.getElementById('fbType')
   const wrap = document.getElementById('fbExperienceWrap')
@@ -5738,6 +5759,8 @@ function renderFeedbackForm(){
     fbType.addEventListener('change', sync)
     sync()
   }
+  // Si había experiencia restaurada, mostrar el campo aunque el tipo no sea 'testimonio' todavía
+  if (_prevExp && wrap) wrap.style.display = ''
 }
 
 function escapeHtml(s){
@@ -5902,7 +5925,20 @@ function startSim(theme){
   renderSim()
 }
 
+window._simPending = undefined
+window._simSelectPending = function(i){
+  window._simPending = i
+  document.querySelectorAll('#simMcq .option').forEach(function(lbl, idx){
+    lbl.classList.toggle('option-pending', idx === i)
+    const r = lbl.querySelector('input[type="radio"]')
+    if (r) r.checked = (idx === i)
+  })
+  const btn = document.getElementById('simConfirmBtn')
+  if (btn) btn.style.display = ''
+}
+
 function renderSim(){
+  window._simPending = undefined
   const c = document.getElementById('simContainer')
   if (!c) return
   if (!simState.qs.length){ c.innerHTML = '<p class="muted">No hay simulacro activo.</p>'; return }
@@ -5917,10 +5953,11 @@ function renderSim(){
     </div>
     <strong>${escapeHtml(q.q)}</strong>
     <div class="mcq" id="simMcq">
-      ${q.ops.map((o,i) => `<label class="option" onclick="A.answerSim(${i})"><input type="radio" name="sq" value="${i}"><span>${escapeHtml(o)}</span></label>`).join('')}
+      ${q.ops.map((o,i) => `<label class="option" onclick="window._simSelectPending(${i})"><input type="radio" name="sq" value="${i}"><span>${escapeHtml(o)}</span></label>`).join('')}
     </div>
     <div class="feedback" id="simFb"></div>
     <div class="toolbar" style="margin-top:.6rem">
+      <button class="btn primary" id="simConfirmBtn" onclick="if(typeof window._simPending==='number')A.answerSim(window._simPending)" style="display:none">Confirmar →</button>
       <button class="btn primary" id="simNextBtn" onclick="A.nextSim()" style="display:none">Siguiente →</button>
     </div>
   </div>`
@@ -5929,6 +5966,8 @@ function renderSim(){
 function answerSim(i){
   if (simState.ans) return
   simState.ans = true
+  const confirmBtn = document.getElementById('simConfirmBtn')
+  if (confirmBtn) confirmBtn.style.display = 'none'
   const q = simState.qs[simState.idx]
   const ok = i === q.a
   if (ok){ simState.hits++; recordAnswer(true, q.theme) }
@@ -6075,22 +6114,74 @@ window.refreshFlashForParcial = refreshFlashForParcial
 async function loadRanking(){
   const panel = document.getElementById('rankPanel')
   if (!panel) return
-  panel.textContent = '🔄 Cargando…'
-  // Usa la función SECURITY DEFINER public_ranking en vez de exponer
-  // las tablas base. Esto evita abrir RLS de profiles/user_progress.
+  panel.innerHTML = '<span class="muted">🔄 Cargando…</span>'
   const { data, error } = await sb.rpc('public_ranking', { top_n: 50 })
   if (error){ panel.innerHTML = '<span class="bad">⚠ ' + escapeHtml(error.message) + '</span>'; return }
-  if (!data?.length){ panel.textContent = 'Sin usuarios en el ranking aún.'; return }
+  if (!data?.length){ panel.innerHTML = '<span class="muted">Sin usuarios en el ranking aún.</span>'; return }
+  window._rankData = data
+  if (!window._rankTab) window._rankTab = 'xp'
+  _renderRanking()
+}
+
+function _renderRanking(){
+  const panel = document.getElementById('rankPanel')
+  if (!panel || !window._rankData) return
+  const tab = window._rankTab || 'xp'
   const myId = currentSession?.user?.id
-  panel.innerHTML = data.map((r, i) => {
-    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1)
+
+  const sorted = [...window._rankData].sort((a, b) => {
+    if (tab === 'precision') return (b.accuracy||0) - (a.accuracy||0)
+    if (tab === 'sims')      return (b.sims_done||0) - (a.sims_done||0)
+    return (b.xp||0) - (a.xp||0)
+  })
+
+  const maxVal = tab === 'precision'
+    ? 100
+    : tab === 'sims'
+      ? Math.max(...sorted.map(r => r.sims_done||0), 1)
+      : Math.max(...sorted.map(r => r.xp||0), 1)
+
+  const tabs = [
+    { id:'xp',        label:'🥇 XP'         },
+    { id:'precision', label:'🎯 Precisión'   },
+    { id:'sims',      label:'⚡ Simulacros'  },
+  ]
+
+  const rows = sorted.map((r, i) => {
     const isMe = r.id === myId
-    return `<div class="rank-row" style="${isMe?'font-weight:800;color:var(--green)':''}">
-      <span><span class="rank-medal">${medal}</span> ${escapeHtml(r.name)} ${isMe?'(tú)':''}</span>
-      <span><strong>${r.xp||0} XP</strong> · ${r.accuracy||0}% · ${Math.round((r.study_secs||0)/60)}min</span>
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉'
+      : `<span class="rank-pos">${i+1}</span>`
+    const barVal = tab === 'precision' ? (r.accuracy||0)
+      : tab === 'sims' ? (r.sims_done||0)
+      : (r.xp||0)
+    const barPct = Math.round(barVal / maxVal * 100)
+    return `<div class="rank-row${isMe?' rank-me':''}">
+      <div class="rank-left">
+        <span class="rank-medal">${medal}</span>
+        <span class="rank-name">${escapeHtml(r.name)}${isMe?'<span class="rank-you">(tú)</span>':''}</span>
+      </div>
+      <div class="rank-right">
+        <div class="rank-bar-wrap"><div class="rank-bar-fill" style="width:${barPct}%"></div></div>
+        <div class="rank-meta">
+          <strong>${r.xp||0} XP</strong>
+          <span>·</span>
+          <span>${r.accuracy||0}%</span>
+          <span>·</span>
+          <span>${r.sims_done||0} sims</span>
+        </div>
+      </div>
     </div>`
   }).join('')
+
+  panel.innerHTML = `
+    <div class="rank-tabs">
+      ${tabs.map(t => `<button class="rank-tab-btn${t.id===tab?' active':''}" onclick="window._rankTab='${t.id}';window._renderRanking()">${t.label}</button>`).join('')}
+    </div>
+    <div class="rank-list">${rows}</div>
+    <button class="btn" style="margin-top:.75rem;width:100%" onclick="A.loadRanking()">↻ Actualizar</button>
+  `
 }
+window._renderRanking = _renderRanking
 
 // ═══════════════════════════════════════════════════════════
 //  12. FEEDBACK
@@ -12009,8 +12100,18 @@ function _bvSetup(){
 function _bvFrame(){
   if (!_bv.ctx || !_bv.canvas) return
   const ctx = _bv.ctx
-  const w = _bv.canvas.getBoundingClientRect().width
-  const h = _bv.canvas.getBoundingClientRect().height
+  const rect = _bv.canvas.getBoundingClientRect()
+  const w = rect.width, h = rect.height
+  if (w < 10 || h < 10){
+    _bv.rafId = requestAnimationFrame(_bvFrame)
+    return
+  }
+  const dpr = window.devicePixelRatio || 1
+  if (_bv.canvas.width !== Math.round(w * dpr) || _bv.canvas.height !== Math.round(h * dpr)){
+    _bv.canvas.width = Math.round(w * dpr)
+    _bv.canvas.height = Math.round(h * dpr)
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  }
   ctx.clearRect(0, 0, w, h)
 
   // Fondo radial sutil
@@ -12582,10 +12683,10 @@ function _bvDrawTranscripcion(ctx, w, h){
   // ═══ FASE 0: TRANSCRIPCIÓN (hélice 3D giratoria) ═══
   if (phase === 0){
     const ncx = w*0.38, ncy = h*0.50, nrx = w*0.32, nry = h*0.43
-    _nucleus(ctx, ncx, ncy, nrx, nry)
+    _nucleus(ncx, ncy, nrx, nry)
 
     const helixHW = w*0.26, helixR = h*0.11
-    const openFrac = Math.min(0.72, (t % 290) / 290)
+    const openFrac = Math.min(0.72, Math.max(0.12, (t % 290) / 290))
     _helix3D(ncx, ncy, helixHW, helixR, 34, 0.016, openFrac)
 
     // ARN Polymerase: 3D sphere at fork position
@@ -12628,12 +12729,19 @@ function _bvDrawTranscripcion(ctx, w, h){
     ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
     ctx.fillText('ARNm usa U, no T', rx + w*.13, h*.74)
     ctx.fillText('es monocatenario', rx + w*.13, h*.80)
+
+    // Qué observar — barra inferior
+    ctx.fillStyle = 'rgba(0,0,0,.60)'; ctx.fillRect(0, h - 23, w, 23)
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+    ctx.fillText('Qué observar:', 10, h - 8)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('la ARN Pol (esfera morada) recorre el ADN y el ARNm (línea amarilla) crece bajo la horquilla', 100, h - 8)
   }
 
   // ═══ FASE 1: PROCESAMIENTO DEL ARNm ═══
   else if (phase === 1){
     const ncx = w*0.37, ncy = h*0.50, nrx = w*0.30, nry = h*0.40
-    _nucleus(ctx, ncx, ncy, nrx, nry)
+    _nucleus(ncx, ncy, nrx, nry)
 
     // pre-mRNA: thick 3D ribbon segments
     const mrnY = ncy, mrnX0 = ncx - nrx*0.76
@@ -12699,12 +12807,19 @@ function _bvDrawTranscripcion(ctx, w, h){
     ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
     ctx.fillText('SIN splicing (sin intrones)', rx + w*.14, h*.80)
     ctx.fillText('ARNm listo al instante', rx + w*.14, h*.86)
+
+    // Qué observar — barra inferior
+    ctx.fillStyle = 'rgba(0,0,0,.60)'; ctx.fillRect(0, h - 23, w, 23)
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+    ctx.fillText('Qué observar:', 10, h - 8)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('el spliceosoma (esfera violeta) elimina intrones grises y conserva exones verdes → ARNm maduro', 100, h - 8)
   }
 
   // ═══ FASE 2: SALIDA AL CITOPLASMA (poro nuclear 3D) ═══
   else if (phase === 2){
     const ncx = w*0.26, ncy = h*0.50, nrx = w*0.20, nry = h*0.38
-    _nucleus(ctx, ncx, ncy, nrx, nry)
+    _nucleus(ncx, ncy, nrx, nry)
 
     // Nuclear pore complex: 8 NPC subunits (3D spheres in a ring)
     const poreX = ncx + nrx - 2, poreY = ncy
@@ -12727,7 +12842,7 @@ function _bvDrawTranscripcion(ctx, w, h){
     ctx.fillText('nuclear', poreX, poreY - spokeR + 4)
 
     // mRNA threading through and into cytoplasm
-    const progress = Math.min(1, (t % 220) / 200)
+    const progress = Math.max(0.3, Math.min(1, (t % 220) / 200))
     const mrnStart = ncx - nrx * 0.5
     const mrnEnd = poreX + 10 + progress * (w * 0.52)
     ctx.strokeStyle = 'rgba(255,215,80,.2)'; ctx.lineWidth = 8; ctx.lineCap = 'round'
@@ -12755,19 +12870,24 @@ function _bvDrawTranscripcion(ctx, w, h){
     ctx.fillStyle = '#90e0a0'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center'
     ctx.fillText('Citoplasma', cytX + (w - cytX - 10)*0.5, h*.18)
 
-    // Ribosome waiting (3D)
-    if (progress > 0.55){
-      const ribX = cytX + (w - cytX - 10)*0.65, ribY = ncy
-      sph(ribX, ribY - 26, 28, 155,75,225, 0.88)
-      sph(ribX, ribY + 17, 20, 135,60,205, 0.85)
-      ctx.fillStyle = '#c8a8f7'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
-      ctx.fillText('Ribosoma', ribX, ribY - 58); ctx.fillText('(esperando)', ribX, ribY - 48)
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 7px Inter'
-      ctx.fillText('60S', ribX, ribY - 28); ctx.fillText('40S', ribX, ribY + 20)
-    }
+    // Ribosome waiting (3D) — siempre visible en F3, el ARNm se dirige aquí
+    const ribX = cytX + (w - cytX - 10)*0.65, ribY = ncy
+    sph(ribX, ribY - 26, 28, 155,75,225, 0.88)
+    sph(ribX, ribY + 17, 20, 135,60,205, 0.85)
+    ctx.fillStyle = '#c8a8f7'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'center'
+    ctx.fillText('Ribosoma', ribX, ribY - 58); ctx.fillText('(esperando)', ribX, ribY - 48)
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 7px Inter'
+    ctx.fillText('60S', ribX, ribY - 28); ctx.fillText('40S', ribX, ribY + 20)
 
     ctx.fillStyle = '#9ad6ff'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'center'
     ctx.fillText('Núcleo', ncx, ncy - nry - 10)
+
+    // Qué observar — barra inferior
+    ctx.fillStyle = 'rgba(0,0,0,.60)'; ctx.fillRect(0, h - 23, w, 23)
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+    ctx.fillText('Qué observar:', 10, h - 8)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('el ARNm (línea amarilla) atraviesa el poro nuclear (8 subunidades) y llega al ribosoma en el citoplasma', 100, h - 8)
   }
 
   // ═══ FASE 3: TRADUCCIÓN (ribosoma 3D) ═══
@@ -12873,6 +12993,13 @@ function _bvDrawTranscripcion(ctx, w, h){
     ctx.fillText('Lee codones → ensambla proteína', ribX, mrnY + 64)
     ctx.fillStyle = '#ffd76e'; ctx.font = 'bold 8.5px Inter'
     ctx.fillText('AUG = inicio · UAA/UAG/UGA = stop', ribX, mrnY + 78)
+
+    // Qué observar — barra inferior
+    ctx.fillStyle = 'rgba(0,0,0,.60)'; ctx.fillRect(0, h - 23, w, 23)
+    ctx.fillStyle = '#ffd760'; ctx.font = 'bold 9px Inter'; ctx.textAlign = 'left'
+    ctx.fillText('Qué observar:', 10, h - 8)
+    ctx.fillStyle = '#d0edd8'; ctx.font = '9px Inter'
+    ctx.fillText('el ribosoma (60S+40S) lee codones y el ARNt deposita aminoácidos: la proteína (esferas de colores) crece a la izquierda', 100, h - 8)
   }
 
   // ═══ Phase bar (drawn last = on top) ═══
