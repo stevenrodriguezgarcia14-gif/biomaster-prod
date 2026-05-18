@@ -446,8 +446,9 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 /* ═══════════════════════════════════════════════════════════
    LANDING PAGE (puerta de entrada antes del login)
    ═══════════════════════════════════════════════════════════ */
-#landingPage{position:fixed;inset:0;z-index:900;background:var(--bg);overflow-y:auto;display:none}
+#landingPage{position:fixed;inset:0;z-index:900;background:var(--bg);overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;display:none}
 #landingPage.show{display:block}
+body.lp-open{overflow:hidden}
 .lp-nav{position:sticky;top:0;background:rgba(245,250,246,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:10}
 .theme-dark .lp-nav{background:rgba(13,31,19,.93)}
 .lp-nav-inner{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem;flex-wrap:wrap}
@@ -1508,7 +1509,7 @@ window.PAYPAL_PLANS = {
 }
 </script>
 </head>
-<body>
+<body class="lp-open">
 <div class="toast" id="toastEl"></div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1801,6 +1802,13 @@ window.PAYPAL_PLANS = {
           <button class="lp-plan-cta secondary" data-plan-cta="p3">Pagar con PayPal →</button>
         </div>
 
+      </div>
+
+      <!-- Disponibilidad internacional — trust indicator post-grilla -->
+      <div style="text-align:center;margin:1.4rem 0 0;display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap">
+        <span style="display:inline-flex;align-items:center;gap:.45rem;padding:.5rem 1.1rem;background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.18);border-radius:99px;font-size:.8rem;color:rgba(255,255,255,.58);font-weight:500;line-height:1.35">
+          🌐 Disponible desde cualquier país &mdash; PayPal acepta tarjetas de crédito y débito internacionales, sin cuenta PayPal requerida
+        </span>
       </div>
 
       <!-- Plan mensual como opción separada -->
@@ -6726,6 +6734,7 @@ async function onSessionChanged(){
     document.getElementById('authOverlay').style.display = 'none'
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.remove('show')
+    document.body.classList.remove('lp-open')
     try { initApp() } catch(e){ console.error('[initApp]', e); toast('⚠ Error al cargar la app, recarga la página.', true) }
     // Iniciar auto-refresh del profile mientras la sesión esté activa
     _startProfilePolling()
@@ -6737,6 +6746,7 @@ async function onSessionChanged(){
     document.getElementById('authOverlay').style.display = 'none'
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.add('show')
+    document.body.classList.add('lp-open')
     authSwitchTab('login')
     // limpiar cualquier residuo visual
     document.getElementById('adminBtn').style.display = 'none'
@@ -17369,6 +17379,7 @@ initJuegos()
       // Hay sesión persistida → procesarla ya, ocultar landing
       const lp = document.getElementById('landingPage')
       if (lp) lp.classList.remove('show')
+      document.body.classList.remove('lp-open')
       handleAuthSession(session)
       // ═══ TRIGGER INTRO DETERMINISTA ═══
       // El usuario está entrando a la app con sesión activa → disparamos intro.
@@ -17377,12 +17388,14 @@ initJuegos()
       // Sin sesión → la landing es la primera pantalla (ya visible por default)
       const lp = document.getElementById('landingPage')
       if (lp) lp.classList.add('show')
+      document.body.classList.add('lp-open')
       document.getElementById('authOverlay').style.display = 'none'
     }
   } catch(e){
     console.error('[boot] error obteniendo sesión:', e)
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.add('show')
+    document.body.classList.add('lp-open')
     document.getElementById('authOverlay').style.display = 'none'
   }
   // ═══ TESTIMONIOS PÚBLICOS EN PORTADA ═══
@@ -17402,6 +17415,7 @@ initJuegos()
 window.openAuthFromLanding = function(tab){
   const lp = document.getElementById('landingPage')
   if (lp) lp.classList.remove('show')
+  document.body.classList.remove('lp-open')
   document.getElementById('authOverlay').style.display = 'flex'
   authSwitchTab(tab === 'register' ? 'register' : 'login')
 }
@@ -17410,11 +17424,13 @@ window.closeAuthToLanding = function(){
   document.getElementById('authOverlay').style.display = 'none'
   const lp = document.getElementById('landingPage')
   if (lp) lp.classList.add('show')
+  document.body.classList.add('lp-open')
 }
 
 window.enterAsGuestFromLanding = function(){
   const lp = document.getElementById('landingPage')
   if (lp) lp.classList.remove('show')
+  document.body.classList.remove('lp-open')
   enterGuest()
   // ═══ TRIGGER INTRO DETERMINISTA ═══
   try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
