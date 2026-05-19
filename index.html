@@ -397,7 +397,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 .prog-bar{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;border:1px solid var(--border)}
 .prog-fill{height:100%;border-radius:999px;background:var(--green);transition:width .6s}
 @media(max-width:1180px){.layout,.hero-grid,.hero-stats,.grid2,.grid3,.grid4,.subtopic-grid{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
-@media(max-width:640px){.topbar-inner{flex-direction:column;align-items:flex-start}.menu{gap:.25rem}}
+@media(max-width:640px){.menu{gap:.25rem}}
 /* Juegos didácticos nuevos (BioDetective / Puzzle / Escape) */
 .bgm-clue{display:flex;align-items:flex-start;gap:.5rem;padding:.6rem .8rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);margin-bottom:.4rem;cursor:pointer;transition:all .15s;font-size:.88rem}
 .bgm-clue:hover{background:var(--soft)}
@@ -446,7 +446,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 /* ═══════════════════════════════════════════════════════════
    LANDING PAGE (puerta de entrada antes del login)
    ═══════════════════════════════════════════════════════════ */
-#landingPage{position:fixed;inset:0;z-index:900;background:var(--bg);overflow-y:auto;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;display:none}
+#landingPage{position:fixed;inset:0;z-index:900;background:var(--bg);overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;display:none}
 #landingPage.show{display:block}
 body.lp-open{overflow:hidden}
 .lp-nav{position:sticky;top:0;background:rgba(245,250,246,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:10}
@@ -455,6 +455,13 @@ body.lp-open{overflow:hidden}
 .lp-nav-links{display:flex;gap:1.2rem;font-size:.88rem;font-weight:600;color:var(--muted);align-items:center;flex-wrap:wrap}
 .lp-nav-links a{cursor:pointer;transition:color .2s}
 .lp-nav-links a:hover{color:var(--green)}
+@media(max-width:768px){
+  .lp-nav-links a{display:none}
+  .lp-nav-inner{gap:.6rem}
+  .lp-nav-links{gap:.4rem}
+  .lp-nav-links button{padding:.45rem .75rem!important;font-size:.8rem!important}
+  .lp-nav .brand small{display:none}
+}
 
 .lp-hero{padding:0;text-align:center;position:relative;overflow:hidden;background:linear-gradient(160deg,#071a0f 0%,#0a2215 40%,#0d2a1a 70%,#071a0f 100%)}
 .lp-hero::before,.lp-hero::after{display:none}
@@ -1124,12 +1131,12 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
    ═══════════════════════════════════════════════════════════ */
 @media(max-width:768px){
   /* Menú topbar: una sola fila con scroll horizontal */
-  .menu{overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;gap:.2rem!important}
+  .menu{overflow-x:auto;overflow-y:hidden;flex-wrap:nowrap!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px;gap:.2rem!important;flex:1;min-width:0}
   .menu::-webkit-scrollbar{display:none}
   /* Ocultar chips menos críticos en mobile */
   .chip-secondary{display:none!important}
-  /* Topbar: mantener horizontal, una sola fila */
-  .topbar-inner{flex-direction:row!important;align-items:center;gap:.35rem}
+  /* Topbar: mantener horizontal, una sola fila sin wrap */
+  .topbar-inner{flex-direction:row!important;align-items:center;gap:.35rem;flex-wrap:nowrap}
   /* Sidebar: oculta por defecto en mobile */
   .sidebar{display:none!important}
   .sidebar.mob-open{
@@ -1145,6 +1152,10 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
   .card.panel{padding:.8rem;margin-top:.6rem}
   /* hero-grid aside siempre accesible */
   .hero-grid aside{display:block}
+  /* Más padding lateral en mobile */
+  .container{width:min(1420px,100% - 2.5rem)}
+  /* Dropdown de búsqueda: position:fixed para salir del overflow-y:hidden del menu */
+  #searchDrop{position:fixed!important;top:60px!important;left:.75rem!important;right:.75rem!important;width:auto!important;max-height:50vh}
 }
 @keyframes mobSlide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
 
@@ -1156,6 +1167,20 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
   align-items:center;justify-content:center;color:var(--text);
   padding:0;line-height:1}
 @media(max-width:768px){.mob-nav-btn{display:flex}}
+
+/* Dropdown "Más" del topbar — oculto por defecto, visible con .show */
+.menu-more-wrap{position:relative;flex-shrink:0}
+.menu-more-pop{
+  display:none;position:absolute;top:calc(100% + .4rem);right:0;
+  z-index:200;background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;box-shadow:var(--shadow);padding:.4rem;
+  min-width:200px;white-space:nowrap}
+.menu-more-pop.show{display:block}
+.menu-more-pop a{
+  display:block;padding:.5rem .85rem;border-radius:10px;
+  font-size:.85rem;font-weight:600;color:var(--text);
+  transition:background .15s;text-decoration:none}
+.menu-more-pop a:hover{background:var(--soft)}
 
 /* Botón cerrar sidebar mobile */
 .mob-nav-close{
@@ -2273,12 +2298,12 @@ window.PAYPAL_PLANS = {
       <button id="btnEstudio" class="active" onclick="A.setMode('estudio')">📖 Estudio</button>
       <button id="btnExamen" onclick="A.setMode('examen')">📝 Examen</button>
     </div>
-    <button class="btn" onclick="A.toggleTheme()" title="Cambiar tema">🎨</button>
-    <button class="btn" onclick="A.exportData()" title="Descargar mi progreso (JSON)">⬇️</button>
-    <button class="btn" onclick="document.getElementById('importFile').click()" title="Importar progreso (JSON)">⬆️</button>
+    <button class="btn chip-secondary" onclick="A.toggleTheme()" title="Cambiar tema">🎨</button>
+    <button class="btn chip-secondary" onclick="A.exportData()" title="Descargar mi progreso (JSON)">⬇️</button>
+    <button class="btn chip-secondary" onclick="document.getElementById('importFile').click()" title="Importar progreso (JSON)">⬆️</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="A.importData(this)">
     <div style="position:relative">
-      <input type="text" id="searchInput" placeholder="🔍 Buscar…" style="width:140px;padding:.45rem .8rem;font-size:.8rem" oninput="A.search(this.value)" autocomplete="off">
+      <input type="text" id="searchInput" placeholder="🔍 Buscar…" style="width:clamp(80px,20vw,140px);padding:.45rem .8rem;font-size:.8rem" oninput="A.search(this.value)" autocomplete="off">
       <div id="searchDrop" style="position:absolute;top:110%;right:0;width:340px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);z-index:200;display:none;max-height:400px;overflow-y:auto;padding:.5rem"></div>
     </div>
     <button class="btn" id="adminBtn" onclick="A.openAdmin()" style="display:none" title="Panel de administración">⚙️ Admin</button>
@@ -11902,13 +11927,15 @@ window._openPayPalModal = function(plan){
       <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <input type="hidden" name="cmd" value="_s-xclick" />
         <input type="hidden" name="hosted_button_id" value="${cfg.buttonId}" />
-        <input type="hidden" name="currency_code" value="USD" />
+        <input type="hidden" name="return" value="https://biomaster-prod.vercel.app/#pago-confirmado" />
+        <input type="hidden" name="cancel_return" value="https://biomaster-prod.vercel.app/#pago-cancelado" />
         <input type="image"
           src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynowCC_LG.gif"
           border="0" name="submit"
           title="PayPal — forma segura y fácil de pagar en línea."
           alt="Pagar con PayPal"
           style="display:block;margin:0 auto;cursor:pointer" />
+        <p class="pm-paypal-loading" style="display:none;text-align:center;margin:.6rem 0 0;font-size:.85rem;color:var(--muted)">Redirigiendo a PayPal…</p>
       </form>
       <p class="pm-paypal-note">Se abre PayPal en la misma pestaña. Podés pagar con tarjeta sin cuenta PayPal.</p>
     </div>
@@ -11931,6 +11958,15 @@ window._openPayPalModal = function(plan){
       Cancelar
     </button>
   `
+  const _ppForm = content.querySelector('form')
+  if (_ppForm) {
+    _ppForm.addEventListener('submit', function(){
+      const _img = _ppForm.querySelector('input[type=image]')
+      const _lbl = _ppForm.querySelector('.pm-paypal-loading')
+      if (_img) { _img.style.pointerEvents = 'none'; _img.style.opacity = '.4' }
+      if (_lbl) _lbl.style.display = 'block'
+    }, { once: true })
+  }
   modal.classList.add('show')
 }
 
@@ -17620,10 +17656,10 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
 ;(function(){
   const lp = document.getElementById('landingPage')
   if (!lp || !('IntersectionObserver' in window)) return
-  const targets = lp.querySelectorAll(
+  const jsTargets = lp.querySelectorAll(
     '.lp-section,.lp-feat,.lp-plan,.lp-step,.lp-test,.lp-prob-col,.lp-pago-card,.lp-compare-item,.lp-faq details'
   )
-  targets.forEach((el, i) => {
+  jsTargets.forEach((el, i) => {
     el.classList.add('lp-reveal')
     if (i % 3 === 1) el.classList.add('lp-reveal-delay-1')
     if (i % 3 === 2) el.classList.add('lp-reveal-delay-2')
@@ -17632,8 +17668,16 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('lp-visible'); io.unobserve(e.target) }
     })
-  }, { threshold: 0.08 })
-  targets.forEach(el => io.observe(el))
+  }, { threshold: 0, rootMargin: '0px 0px 80px 0px' })
+  // Observar todos los .lp-reveal: los añadidos por JS + los que ya estaban en el HTML
+  lp.querySelectorAll('.lp-reveal').forEach(el => io.observe(el))
+  // Revelar inmediatamente los ya visibles al cargar (evita flash de contenido invisible)
+  requestAnimationFrame(() => {
+    lp.querySelectorAll('.lp-reveal:not(.lp-visible)').forEach(el => {
+      const r = el.getBoundingClientRect()
+      if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('lp-visible'); io.unobserve(el) }
+    })
+  })
 })()
 
 // ── Partículas biológicas en hero ────────────────────────────
