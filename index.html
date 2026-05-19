@@ -1511,6 +1511,45 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .lp-sinpe-alt-body{margin-top:.75rem;color:rgba(255,255,255,.75)}
 @media(max-width:480px){.lp-paypal-btns-grid{grid-template-columns:1fr}}
 
+/* ═══════════════════════════════════════════════════════════
+   PREVIEW DE PRODUCTO — Sección "Así se ve por dentro"
+   ═══════════════════════════════════════════════════════════ */
+.lp-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2rem}
+@media(max-width:900px){.lp-preview-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}}
+.lp-preview-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:1.2rem;display:flex;flex-direction:column;gap:.75rem;transition:border-color .3s,background .3s}
+.lp-preview-card:hover{border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.05)}
+.lp-preview-label{font-size:.78rem;font-weight:800;color:#4ade80;letter-spacing:.3px}
+.lp-preview-screen{background:#0b1d11;border:1px solid rgba(74,222,128,.15);border-radius:12px;padding:1rem;flex:1}
+.lp-preview-desc{font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.5;margin:0}
+.mock-progress-dots{display:flex;gap:.3rem;margin-bottom:.65rem}
+.mock-dot{width:22px;height:5px;border-radius:99px;background:rgba(255,255,255,.12)}
+.mock-dot.done{background:#4ade80;opacity:.55}
+.mock-dot.active{background:#4ade80}
+.mock-question{font-size:.84rem;color:#fff;line-height:1.5;margin:0 0 .7rem;font-weight:600}
+.mock-opts{display:flex;flex-direction:column;gap:.32rem}
+.mock-opt{font-size:.77rem;padding:.38rem .65rem;border-radius:8px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.62);background:rgba(255,255,255,.04)}
+.mock-opt.correct{background:rgba(74,222,128,.14);border-color:rgba(74,222,128,.45);color:#4ade80;font-weight:700}
+.mock-plan-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.65rem;flex-wrap:wrap;gap:.3rem}
+.mock-badge-green{font-size:.7rem;font-weight:800;background:rgba(74,222,128,.18);color:#4ade80;border:1px solid rgba(74,222,128,.3);border-radius:99px;padding:.2rem .6rem}
+.mock-countdown{font-size:.7rem;color:rgba(255,255,255,.45)}
+.mock-task{font-size:.78rem;padding:.3rem .55rem;border-radius:8px;margin-bottom:.28rem;color:rgba(255,255,255,.55)}
+.mock-task.done{color:rgba(255,255,255,.28);text-decoration:line-through}
+.mock-task.active{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:#fff;font-weight:700}
+.mock-approval-wrap{margin-top:.7rem;padding-top:.55rem;border-top:1px solid rgba(255,255,255,.07)}
+.mock-approval-lbl{font-size:.7rem;color:rgba(255,255,255,.45);margin-bottom:.3rem;display:block}
+.mock-approval-row{display:flex;align-items:center;gap:.6rem}
+.mock-bar{height:7px;flex:1;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.mock-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#2f8b4d,#4ade80)}
+.mock-approval-val{font-size:.85rem;font-weight:800;color:#4ade80;flex-shrink:0}
+.mock-map-item{display:flex;align-items:center;gap:.5rem;margin-bottom:.48rem}
+.mock-map-name{font-size:.75rem;color:rgba(255,255,255,.65);width:86px;flex-shrink:0}
+.mock-map-bar{flex:1;height:7px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.mock-map-fill{height:100%;border-radius:99px}
+.mock-map-fill.green{background:linear-gradient(90deg,#2f8b4d,#4ade80)}
+.mock-map-fill.yellow{background:linear-gradient(90deg,#a07012,#f0c54a)}
+.mock-map-fill.red{background:linear-gradient(90deg,#8b2f2f,#e05252)}
+.mock-map-pct{font-size:.75rem;font-weight:700;width:28px;text-align:right;color:rgba(255,255,255,.65)}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1554,7 +1593,8 @@ window.PAYPAL_PLANS = {
         <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted);font-size:.72rem">Biología General</small></div>
       </div>
       <div class="lp-nav-links">
-        <a onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Cómo funciona</a>
+        <a onclick="document.getElementById('lp-preview').scrollIntoView({behavior:'smooth'})">La plataforma</a>
+        <a onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Funciones</a>
         <a onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Precio</a>
         <a onclick="document.getElementById('lp-faq').scrollIntoView({behavior:'smooth'})">Preguntas</a>
         <button class="lp-btn-secondary" style="padding:.55rem 1.1rem;font-size:.85rem" onclick="window.openAuthFromLanding('login')">Iniciar sesión</button>
@@ -1568,22 +1608,22 @@ window.PAYPAL_PLANS = {
     <canvas id="bioCanvas" aria-hidden="true"></canvas>
     <div class="container lp-hero-inner">
       <span class="lp-eyebrow">🧬 Plataforma interactiva para Biología General</span>
-      <h1>Estudiá Biología General <span class="hl">con método, práctica y dirección.</span></h1>
-      <p class="lp-sub">Diagnóstico inicial, plan de estudio personalizado por fecha del examen, simulacros adaptativos y predicción de aprobación. Todo en una sola plataforma. Vista previa gratuita disponible.</p>
+      <h1>Aprobá tu parcial de Biología General. <span class="hl">Con diagnóstico, plan diario y práctica real.</span></h1>
+      <p class="lp-sub">En 15 minutos de diagnóstico sabés exactamente en qué tema estás débil, qué estudiar hoy y cuánto te falta para llegar preparado al examen.</p>
       <div class="lp-cta-row">
-        <button class="lp-btn-primary" onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver planes Pro →</button>
-        <button class="lp-btn-secondary" onclick="window.openAuthFromLanding('register')">Probar vista previa gratis</button>
+        <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Empezar gratis →</button>
+        <button class="lp-btn-secondary" onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver los planes</button>
       </div>
       <div class="lp-trust">
         <div class="lp-trust-item">✓ Garantía 7 días</div>
         <div class="lp-trust-item">✓ Sin permanencia</div>
-        <div class="lp-trust-item">✓ Vista previa sin tarjeta</div>
+        <div class="lp-trust-item">✓ Gratis sin tarjeta</div>
       </div>
       <div class="lp-hero-stats">
-        <div class="lp-stat"><div class="lp-stat-num">15</div><div class="lp-stat-lbl">Preguntas de diagnóstico</div></div>
-        <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-lbl">Preguntas con feedback</div></div>
-        <div class="lp-stat"><div class="lp-stat-num">∞</div><div class="lp-stat-lbl">Simulacros adaptativos</div></div>
-        <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">Parciales completos</div></div>
+        <div class="lp-stat"><div class="lp-stat-num">15</div><div class="lp-stat-lbl">preguntas para tu diagnóstico inicial</div></div>
+        <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-lbl">preguntas de práctica con feedback</div></div>
+        <div class="lp-stat"><div class="lp-stat-num">∞</div><div class="lp-stat-lbl">simulacros sin límite</div></div>
+        <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">parciales universitarios (P1, P2, P3)</div></div>
       </div>
     </div>
   </section>
@@ -1719,6 +1759,85 @@ window.PAYPAL_PLANS = {
     </div>
   </section>
 
+  <!-- Vista previa del producto — 3 pantallas clave -->
+  <section class="lp-section lp-mid-dark lp-wave-up" id="lp-preview">
+    <div class="container">
+      <span class="lp-eyebrow lp-reveal">👁 Mirá cómo se ve</span>
+      <h2>Así es BioMaster por dentro</h2>
+      <p class="lp-section-sub">Estas son las tres pantallas que más vas a usar. Sin sorpresas después de registrarte.</p>
+      <div class="lp-preview-grid">
+
+        <div class="lp-preview-card lp-reveal">
+          <div class="lp-preview-label">🎯 Diagnóstico inteligente</div>
+          <div class="lp-preview-screen">
+            <div class="mock-progress-dots">
+              <span class="mock-dot done"></span><span class="mock-dot done"></span><span class="mock-dot active"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+            </div>
+            <p class="mock-question">¿Cuál es la función principal de las mitocondrias?</p>
+            <div class="mock-opts">
+              <div class="mock-opt">Síntesis de proteínas</div>
+              <div class="mock-opt correct">✓ Producción de ATP — respiración celular</div>
+              <div class="mock-opt">Digestión intracelular</div>
+            </div>
+          </div>
+          <p class="lp-preview-desc">15 preguntas en 5–7 minutos. Al terminar sabés exactamente en qué tema estás débil y cuál tenés que estudiar desde cero.</p>
+        </div>
+
+        <div class="lp-preview-card lp-reveal lp-reveal-delay-1">
+          <div class="lp-preview-label">📅 Qué estudiar hoy</div>
+          <div class="lp-preview-screen">
+            <div class="mock-plan-header">
+              <span class="mock-badge-green">📅 Hoy · 3 tareas</span>
+              <span class="mock-countdown">Parcial en 12 días</span>
+            </div>
+            <div class="mock-task done">✓ Repasar Fotosíntesis (3.2)</div>
+            <div class="mock-task active">→ Simulacro: Metabolismo (10 pregs.)</div>
+            <div class="mock-task">○ Revisar errores frecuentes</div>
+            <div class="mock-approval-wrap">
+              <span class="mock-approval-lbl">Predicción de aprobación</span>
+              <div class="mock-approval-row">
+                <div class="mock-bar"><div class="mock-bar-fill" style="width:67%"></div></div>
+                <span class="mock-approval-val">67%</span>
+              </div>
+            </div>
+          </div>
+          <p class="lp-preview-desc">Sin parálisis de decisión. Cada día entrás y sabés qué hacer en el tiempo que tenés disponible.</p>
+        </div>
+
+        <div class="lp-preview-card lp-reveal lp-reveal-delay-2">
+          <div class="lp-preview-label">📊 Mapa de dominio</div>
+          <div class="lp-preview-screen">
+            <div class="mock-map-item">
+              <span class="mock-map-name">Biomoléculas</span>
+              <div class="mock-map-bar"><div class="mock-map-fill green" style="width:82%"></div></div>
+              <span class="mock-map-pct">82%</span>
+            </div>
+            <div class="mock-map-item">
+              <span class="mock-map-name">Célula</span>
+              <div class="mock-map-bar"><div class="mock-map-fill green" style="width:75%"></div></div>
+              <span class="mock-map-pct">75%</span>
+            </div>
+            <div class="mock-map-item">
+              <span class="mock-map-name">Metabolismo</span>
+              <div class="mock-map-bar"><div class="mock-map-fill yellow" style="width:48%"></div></div>
+              <span class="mock-map-pct">48%</span>
+            </div>
+            <div class="mock-map-item">
+              <span class="mock-map-name">Fotosíntesis</span>
+              <div class="mock-map-bar"><div class="mock-map-fill red" style="width:31%"></div></div>
+              <span class="mock-map-pct">31%</span>
+            </div>
+          </div>
+          <p class="lp-preview-desc">Se actualiza después de cada simulacro. Ves en qué tema estás fuerte y cuál necesita más atención.</p>
+        </div>
+
+      </div>
+      <div style="text-align:center;margin-top:2rem">
+        <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Empezar gratis y verlo en vivo →</button>
+      </div>
+    </div>
+  </section>
+
   <!-- Pricing premium-first · Estructura por parcial -->
   <section class="lp-section lp-dark lp-wave-down" id="lp-precio">
     <div class="container">
@@ -1735,7 +1854,7 @@ window.PAYPAL_PLANS = {
       <div class="lp-pricing-4">
 
         <!-- PASE PRIMER PARCIAL -->
-        <div class="lp-plan">
+        <div class="lp-plan lp-reveal">
           <span class="lp-plan-tag" style="background:var(--blue)">📘 Solo Parcial 1</span>
           <h3>Pase Parcial 1</h3>
           <p class="lp-plan-desc">Acceso completo al primer parcial: introducción, biomoléculas, célula, metabolismo, fotosíntesis y respiración.</p>
@@ -1757,7 +1876,7 @@ window.PAYPAL_PLANS = {
         </div>
 
         <!-- PASE SEMESTRE COMPLETO (DESTACADO) -->
-        <div class="lp-plan featured">
+        <div class="lp-plan featured lp-reveal lp-reveal-delay-1">
           <span class="lp-plan-tag">⭐ Más elegido · ahorrás 15%</span>
           <h3>Pase Semestre Completo</h3>
           <p class="lp-plan-desc">Los tres parciales del semestre, acceso desde el día 1 hasta el final del ciclo. La opción que más conviene a quienes llevan el curso completo.</p>
@@ -1783,7 +1902,7 @@ window.PAYPAL_PLANS = {
         </div>
 
         <!-- PASE SEGUNDO PARCIAL -->
-        <div class="lp-plan">
+        <div class="lp-plan lp-reveal lp-reveal-delay-2">
           <span class="lp-plan-tag" style="background:var(--green)">📗 Solo Parcial 2</span>
           <h3>Pase Parcial 2</h3>
           <p class="lp-plan-desc">Acceso completo al segundo parcial: bases genéticas, evolución y biotecnología. Evaluación tipo parcial íntegra.</p>
@@ -1805,7 +1924,7 @@ window.PAYPAL_PLANS = {
         </div>
 
         <!-- PASE TERCER PARCIAL (NUEVO P3) -->
-        <div class="lp-plan">
+        <div class="lp-plan lp-reveal lp-reveal-delay-3">
           <span class="lp-plan-tag" style="background:#a855f7">📕 Solo Parcial 3</span>
           <h3>Pase Parcial 3</h3>
           <p class="lp-plan-desc">Acceso completo al tercer parcial: origen de la vida, sistemática, diversidad biológica (virus, procariotas, protistas, plantas, hongos, animales) y ecología.</p>
@@ -1849,9 +1968,9 @@ window.PAYPAL_PLANS = {
       <div class="lp-free-strip">
         <div>
           <strong>¿Querés ver primero de qué se trata?</strong>
-          <p>El plan <span class="lp-free-tag">Vista previa gratuita</span> te muestra una muestra mínima del contenido (un subtema introductorio, 5 preguntas del examen y un simulacro corto diario). Es para entender el producto, no para estudiar para el parcial.</p>
+          <p>El plan <span class="lp-free-tag">Acceso gratuito</span> te muestra una muestra del contenido (un subtema introductorio, 5 preguntas del examen y un simulacro corto diario). Es para entender el producto antes de decidir.</p>
         </div>
-        <button class="lp-btn-secondary" onclick="window.openAuthFromLanding('register')">Empezar vista previa</button>
+        <button class="lp-btn-secondary" onclick="window.openAuthFromLanding('register')">Empezar gratis</button>
       </div>
 
       <!-- Disclaimer legal mini -->
@@ -1873,7 +1992,7 @@ window.PAYPAL_PLANS = {
           </div>
           <div class="lp-compare-item">
             <strong>🤔 Quiero probar primero</strong>
-            <p>Empezá con la Vista previa gratuita. Si te convence, activá el Plan Mensual ($9.99) y decidís después.</p>
+            <p>Empezá con el acceso gratuito. Si te convence, activá el Plan Mensual ($9.99) y decidís después.</p>
           </div>
           <div class="lp-compare-item">
             <strong>💸 Tengo presupuesto ajustado</strong>
@@ -1892,48 +2011,20 @@ window.PAYPAL_PLANS = {
       <h2>Pagá de forma segura con PayPal</h2>
       <p class="lp-section-sub">PayPal funciona desde cualquier país, con tarjeta de crédito, débito o saldo PayPal. Acepta Visa, Mastercard, American Express y más. Sin cuenta PayPal requerida.</p>
 
-      <!-- Bloque PayPal principal -->
-      <div class="lp-paypal-main lp-reveal">
-        <div class="lp-paypal-main-left">
-          <div class="lp-paypal-badge">
-            <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" style="height:40px;border-radius:6px">
-            <span class="lp-paypal-secure-lbl">Pago 100% seguro</span>
-          </div>
-          <h3 style="margin:.9rem 0 .4rem;font-size:1.15rem">¿Por qué PayPal?</h3>
-          <ul class="lp-paypal-why">
-            <li>🌎 Funciona desde Costa Rica, México, Colombia, Perú, Argentina y cualquier país</li>
-            <li>💳 Acepta tarjeta de crédito o débito sin cuenta PayPal</li>
-            <li>🔒 Transacción cifrada y protegida por PayPal</li>
-            <li>✅ Confirmación inmediata · acceso activado en menos de 24 h</li>
-          </ul>
+      <!-- Bloque PayPal principal — trust info, sin duplicar los planes del pricing -->
+      <div class="lp-reveal" style="background:rgba(255,255,255,.05);border:1px solid rgba(74,222,128,.18);border-radius:22px;padding:2rem;margin-bottom:1.4rem">
+        <div class="lp-paypal-badge" style="margin-bottom:.9rem">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_111x69.jpg" alt="PayPal" style="height:40px;border-radius:6px">
+          <span class="lp-paypal-secure-lbl">Pago 100% seguro</span>
         </div>
-        <div class="lp-paypal-main-right">
-          <p style="font-size:.88rem;color:var(--muted);margin-bottom:.8rem">Elegí tu plan y pagá directo:</p>
-          <div class="lp-paypal-btns-grid">
-            <button class="lp-paypal-plan-btn" data-plan-cta="mensual">
-              <span class="lp-ppb-name">Plan Mensual</span>
-              <span class="lp-ppb-price">$9.99<small>/mes</small></span>
-            </button>
-            <button class="lp-paypal-plan-btn" data-plan-cta="p1">
-              <span class="lp-ppb-name">Pase P1</span>
-              <span class="lp-ppb-price">$11.99<small>· 60 días</small></span>
-            </button>
-            <button class="lp-paypal-plan-btn" data-plan-cta="p2">
-              <span class="lp-ppb-name">Pase P2</span>
-              <span class="lp-ppb-price">$11.99<small>· 60 días</small></span>
-            </button>
-            <button class="lp-paypal-plan-btn" data-plan-cta="p3">
-              <span class="lp-ppb-name">Pase P3</span>
-              <span class="lp-ppb-price">$11.99<small>· 60 días</small></span>
-            </button>
-            <button class="lp-paypal-plan-btn featured" data-plan-cta="semestre">
-              <span class="lp-ppb-tag">⭐ Más elegido</span>
-              <span class="lp-ppb-name">Semestre Completo</span>
-              <span class="lp-ppb-price">$24.99<small>· 6 meses</small></span>
-            </button>
-          </div>
-          <p style="font-size:.76rem;color:var(--muted);margin-top:.7rem;line-height:1.5">Después del pago, usá el mismo correo con el que te registraste en BioMaster. El acceso Pro se activa en menos de 24 h.</p>
-        </div>
+        <h3 style="margin:0 0 .6rem;font-size:1.1rem">¿Por qué PayPal?</h3>
+        <ul class="lp-paypal-why" style="margin-bottom:1.2rem">
+          <li>🌎 Funciona desde Costa Rica, México, Colombia, Perú, Argentina y cualquier país</li>
+          <li>💳 Acepta tarjeta de crédito o débito sin cuenta PayPal requerida</li>
+          <li>🔒 Transacción cifrada y protegida por PayPal</li>
+          <li>✅ Confirmación inmediata · acceso activado en menos de 24 h</li>
+        </ul>
+        <a onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})" style="display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;background:var(--green);color:#fff;padding:.65rem 1.4rem;border-radius:12px;font-weight:800;font-size:.9rem;text-decoration:none">Ver todos los planes →</a>
       </div>
 
       <!-- SINPE secundario — Costa Rica -->
@@ -1959,7 +2050,7 @@ window.PAYPAL_PLANS = {
       <div class="lp-pago-card lp-pago-free" style="margin-top:1.2rem">
         <div class="lp-pago-icon">🆓</div>
         <h3>Cualquier país</h3>
-        <p class="lp-pago-desc">La <strong>vista previa gratuita</strong> funciona sin tarjeta, sin SINPE y sin trámites desde cualquier país.</p>
+        <p class="lp-pago-desc">El <strong>acceso gratuito</strong> funciona sin tarjeta, sin SINPE y sin trámites desde cualquier país.</p>
           <ul class="lp-pago-included">
             <li>Diagnóstico de muestra</li>
             <li>Primer subtema de cada tema</li>
@@ -1975,31 +2066,22 @@ window.PAYPAL_PLANS = {
   <!-- Testimonios -->
   <section class="lp-section lp-dark lp-wave-down" id="lp-testimonios">
     <div class="container">
-      <h2>Lo que dicen estudiantes que ya la usaron</h2>
-      <p class="lp-section-sub">Testimonios reales de usuarios de BioMaster. Si compartís tu experiencia desde el panel de feedback dentro de la app y la aprobamos, aparece acá.</p>
+      <h2>Lo que dicen los estudiantes</h2>
+      <p class="lp-section-sub">Testimonios verificados de usuarios de BioMaster. Cada uno es enviado desde el panel de la app y publicado con permiso del autor.</p>
       <!-- Los testimonios públicos se cargan desde Supabase (feedbacks con is_public=true).
-           Si no hay feedbacks públicos aún, mostramos los placeholders de abajo
-           (ediables y bien identificados como "Estudiante beta" para no engañar). -->
+           Cuando hay testimonios aprobados, el JS reemplaza el contenido del grid. -->
       <div class="lp-testimonials" id="lpTestimonialsGrid">
-        <div class="lp-test" data-placeholder="1">
-          <div class="lp-test-stars">★★★★★</div>
-          <p class="lp-test-text">"Llegué al segundo parcial sintiendo que no sabía nada. Los simulacros me dijeron exactamente qué subtema repasar y pasé de 60 a 85 en una semana."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">A</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
-        </div>
-        <div class="lp-test" data-placeholder="1">
-          <div class="lp-test-stars">★★★★★</div>
-          <p class="lp-test-text">"La evaluación tipo parcial con feedback inmediato es lo que más me sirvió. No tener que adivinar si la respuesta estaba bien fue la diferencia."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">M</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
-        </div>
-        <div class="lp-test" data-placeholder="1">
-          <div class="lp-test-stars">★★★★★</div>
-          <p class="lp-test-text">"Los juegos parecen tontos hasta que te das cuenta de que estás repasando codones a las 11pm sin darte cuenta. BioMatch es adictivo."</p>
-          <div class="lp-test-author"><div class="lp-test-avatar">D</div><div><div class="lp-test-name">Estudiante beta</div><div class="lp-test-role">Biología General</div></div></div>
+        <div style="grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:2.5rem 1rem;gap:1.1rem">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);display:flex;align-items:center;justify-content:center;font-size:1.6rem">💬</div>
+          <div>
+            <h3 style="font-size:1.05rem;margin-bottom:.45rem;color:var(--text)">Los primeros testimonios están llegando</h3>
+            <p style="color:var(--muted);font-size:.88rem;max-width:460px;margin:0 auto;line-height:1.6">Esta sección muestra experiencias reales de estudiantes. Cada testimonio es enviado desde el panel de la app y revisado antes de publicarse aquí.</p>
+          </div>
+          <button class="lp-btn-primary" style="font-size:.88rem;padding:.6rem 1.5rem" onclick="window.openAuthFromLanding('register')">Empezar gratis y ser de los primeros →</button>
         </div>
       </div>
       <p class="muted" style="text-align:center;font-size:.78rem;margin-top:1rem;font-style:italic">
-        ¿Querés compartir tu experiencia? Iniciá sesión y mandanos tu feedback desde el panel.
-        Lo revisamos y, con tu permiso, lo publicamos acá.
+        ¿Ya usaste BioMaster? Iniciá sesión, andá al panel de feedback y compartí tu experiencia. Con tu permiso, la publicamos acá.
       </p>
     </div>
   </section>
@@ -2010,7 +2092,7 @@ window.PAYPAL_PLANS = {
       <h2>Preguntas frecuentes</h2>
       <p class="lp-section-sub">Si tenés otra pregunta, escribinos desde el panel de feedback dentro de la plataforma.</p>
       <div class="lp-faq">
-        <details><summary>¿Qué incluye exactamente la vista previa gratuita?</summary><div class="lp-faq-body">El primer subtema del resumen de cada tema (de los tres parciales disponibles), las primeras 5 preguntas del examen, un simulacro corto de 5 preguntas por día, una ronda de muestra del juego BioMatch y una decena de flashcards básicas. Es suficiente para entender la calidad y el formato del producto. No es suficiente para estudiar para el parcial.</div></details>
+        <details><summary>¿Qué incluye el plan gratuito?</summary><div class="lp-faq-body">El primer subtema del resumen de cada tema (de los tres parciales disponibles), las primeras 5 preguntas del examen, un simulacro corto de 5 preguntas por día, una ronda de muestra del juego BioMatch y una decena de flashcards básicas. Es suficiente para entender la calidad y el formato del producto. No es suficiente para estudiar para el parcial completo.</div></details>
         <details><summary>¿Cuál plan me conviene? P1, P2, P3 o Semestre Completo</summary><div class="lp-faq-body"><strong>Pase Parcial 1, 2 o 3 ($11.99 c/u · 60 días):</strong> si solo te queda aprobar uno de los parciales. <strong>Semestre Completo ($24.99 · 6 meses):</strong> el plan más elegido. Comprando los tres pases por separado pagarías $35.97; con el Semestre pagás $24.99 (ahorrás $10.98) y tenés acceso a todo desde el día 1. <strong>Plan Mensual ($9.99/mes):</strong> si querés probar antes de comprometerte. Si vas a estudiar 3+ meses, te conviene el Semestre.</div></details>
         <details><summary>Si compro Pase P1, ¿puedo después comprar el P2 por separado?</summary><div class="lp-faq-body">Sí, podés comprarlo después. Pero comprar los tres pases por separado ($11.99 cada uno) costaría $35.97 en total; el Semestre Completo cuesta $24.99 (ahorrás $10.98). Si todavía estás en tiempo del semestre, lo mejor es pasarte al Semestre desde el inicio o pedinos el upgrade proporcional. Escribinos desde el panel de feedback.</div></details>
         <details><summary>¿Por qué el plan gratis no incluye más?</summary><div class="lp-faq-body">Porque el valor real está en las funciones que te ahorran tiempo y mejoran tu probabilidad de aprobar: el diagnóstico que te dice exactamente qué te falta, el plan personalizado por fecha de examen, el panel "Qué estudiar hoy", la predicción de aprobación, los simulacros ilimitados y el resumen completo. Esas funciones son las que justifican que pagues. Si las regaláramos, la plataforma no podría sostenerse.</div></details>
@@ -2027,7 +2109,7 @@ window.PAYPAL_PLANS = {
   <section class="container">
     <div class="lp-final-cta">
       <h2>El examen no se va a aplazar.</h2>
-      <p>Empezá hoy con el plan gratis y mirá tu mapa de dominio cambiar en menos de una semana.</p>
+      <p>Empezá gratis hoy. En 15 minutos tenés tu diagnóstico, tu plan y sabés exactamente qué estudiar mañana.</p>
       <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Crear mi cuenta gratis →</button>
     </div>
   </section>
@@ -2038,11 +2120,12 @@ window.PAYPAL_PLANS = {
       <div class="lp-footer-grid" style="grid-template-columns:1.5fr 1fr 1fr 1fr">
         <div>
           <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:28px;height:28px;object-fit:contain;border-radius:6px"></div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">Biología General</small></div></div>
-          <p style="max-width:320px;line-height:1.6">Plataforma interactiva moderna para estudiar Biología General. Diseñada para reforzar y practicar contenidos biológicos a nivel universitario. <strong>Producto educativo independiente.</strong></p>
+          <p style="max-width:320px;line-height:1.6">Diagnóstico, plan personalizado y práctica real para aprobar Biología General universitaria. Para estudiantes en toda LATAM. <strong>Producto educativo independiente.</strong></p>
         </div>
         <div>
           <h4>Plataforma</h4>
           <ul>
+            <li><a onclick="document.getElementById('lp-preview').scrollIntoView({behavior:'smooth'})">La plataforma</a></li>
             <li><a onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Funciones</a></li>
             <li><a onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Precio</a></li>
             <li><a onclick="document.getElementById('lp-faq').scrollIntoView({behavior:'smooth'})">Preguntas frecuentes</a></li>
@@ -2067,7 +2150,7 @@ window.PAYPAL_PLANS = {
         </div>
       </div>
       <div class="lp-footer-bottom">
-        <div>© <span id="lpYear"></span> BioMaster · Hecho en Costa Rica 🇨🇷</div>
+        <div>© <span id="lpYear"></span> BioMaster · Diseñado para LATAM 🌎</div>
         <div style="max-width:600px">BioMaster es una herramienta de estudio independiente. Los resultados académicos dependen del esfuerzo individual de cada estudiante. No garantizamos aprobación de ningún examen.</div>
       </div>
     </div>
@@ -2085,19 +2168,19 @@ window.PAYPAL_PLANS = {
     <!-- Contenido: pago confirmado -->
     <div id="payResultConfirmado">
       <div class="pay-result-icon success">✓</div>
-      <h2 class="pay-result-title" id="payResultTitle">Pago recibido o en revisión</h2>
-      <p class="pay-result-sub">Gracias por tu compra. Tu acceso Pro se activa manualmente después de confirmar el pago.</p>
+      <h2 class="pay-result-title" id="payResultTitle">¡Gracias por tu compra!</h2>
+      <p class="pay-result-sub">Tu pago fue recibido. El acceso Pro se activa en menos de 24 horas una vez confirmado — generalmente mucho antes.</p>
       <div class="pay-result-steps">
         <strong>¿Qué hacer ahora?</strong>
         <ol>
-          <li>Inicia sesión en BioMaster.</li>
-          <li>Usa el mismo correo con el que pagaste en PayPal.</li>
-          <li>Si pagaste con un correo diferente, escríbenos indicando el correo con el que te registraste en BioMaster.</li>
-          <li>La activación puede tardar unos minutos mientras confirmamos el pago.</li>
+          <li>Iniciá sesión en BioMaster con el mismo correo con el que pagaste en PayPal.</li>
+          <li>Cuando el acceso esté listo, verás el plan activo en tu perfil.</li>
+          <li>Si pagaste con un correo diferente al de tu cuenta, escribinos indicando ambos correos.</li>
         </ol>
       </div>
-      <div class="pay-result-warn">
-        ⚠️ <strong>La activación todavía no es automática.</strong> No cierres tu cuenta de BioMaster; revisaremos el pago y activaremos el acceso manualmente.
+      <div class="pay-result-steps" style="background:rgba(74,222,128,.07);border-color:rgba(74,222,128,.22)">
+        <strong style="color:#15803d">📩 ¿No ves el acceso Pro en 24 horas?</strong>
+        <p style="font-size:.85rem;margin-top:.3rem;color:#333;line-height:1.5">Escribinos a <strong>Biomaster.oficial@gmail.com</strong> con tu comprobante de pago y el correo de tu cuenta BioMaster.</p>
       </div>
       <div class="pay-result-btns">
         <button class="btn-primary btn" onclick="document.getElementById('payResultOverlay').classList.remove('show');window.openAuthFromLanding('login')">Iniciar sesión</button>
@@ -2292,15 +2375,16 @@ window.PAYPAL_PLANS = {
         <a href="#ranking" onclick="document.getElementById('menuMorePop').classList.remove('show')">🏆 Ranking</a>
         <a href="#feedback" onclick="document.getElementById('menuMorePop').classList.remove('show')">💬 Feedback</a>
         <a href="#soporte" onclick="document.getElementById('menuMorePop').classList.remove('show')">📩 Soporte</a>
+        <div style="border-top:1px solid var(--border);margin:.35rem 0"></div>
+        <button onclick="A.exportData();document.getElementById('menuMorePop').classList.remove('show')" style="display:block;width:100%;padding:.5rem .85rem;border-radius:10px;font-size:.85rem;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;text-align:left">⬇️ Exportar progreso</button>
+        <button onclick="document.getElementById('importFile').click();document.getElementById('menuMorePop').classList.remove('show')" style="display:block;width:100%;padding:.5rem .85rem;border-radius:10px;font-size:.85rem;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;text-align:left">⬆️ Importar progreso</button>
       </div>
     </div>
+    <button class="chip" onclick="A.toggleTheme()" title="Cambiar tema" style="padding:.38rem .7rem;flex-shrink:0">🎨</button>
     <div class="mode-sw">
       <button id="btnEstudio" class="active" onclick="A.setMode('estudio')">📖 Estudio</button>
       <button id="btnExamen" onclick="A.setMode('examen')">📝 Examen</button>
     </div>
-    <button class="btn chip-secondary" onclick="A.toggleTheme()" title="Cambiar tema">🎨</button>
-    <button class="btn chip-secondary" onclick="A.exportData()" title="Descargar mi progreso (JSON)">⬇️</button>
-    <button class="btn chip-secondary" onclick="document.getElementById('importFile').click()" title="Importar progreso (JSON)">⬆️</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="A.importData(this)">
     <div style="position:relative">
       <input type="text" id="searchInput" placeholder="🔍 Buscar…" style="width:clamp(80px,20vw,140px);padding:.45rem .8rem;font-size:.8rem" oninput="A.search(this.value)" autocomplete="off">
@@ -4841,239 +4925,14 @@ window.PAYPAL_PLANS = {
         </div>
       </details>
 
-      <!-- SIMULACRO FINAL PREMIUM P3 — INTERACTIVO -->
-      <script>
-      var _sp3bd=0,_sp3bda={};
-      function simP3Verificar(){
-        var kw=[['filogen','sistemat'],['peptidoglicano'],['quitin'],['alfa-proteo','proteobacteri','alfa proteo'],['boca'],['gametofito'],['hongo','raiz','raíz','planta'],['logist'],['10'],['liquen']];
-        var nrm=function(s){return(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')};
-        var ok=0;
-        kw.forEach(function(k,i){
-          var inp=document.getElementById('sp3q'+(i+1));if(!inp)return;
-          var v=nrm(inp.value);
-          var pass=k.some(function(w){return v.indexOf(nrm(w))>=0});
-          inp.style.border=pass?'2px solid #22c55e':'2px solid #ef4444';
-          inp.style.background=pass?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)';
-          var fb=document.getElementById('sp3fb'+(i+1));
-          if(fb){fb.textContent=pass?'✓':'✗';fb.style.color=pass?'#22c55e':'#ef4444';}
-          if(pass)ok++;
-        });
-        var sa=document.getElementById('sp3sa');if(sa)sa.textContent=ok+'/10';_sp3Tot();
-      }
-      function _sp3Tot(){
-        var a=parseInt((document.getElementById('sp3sa')||{}).textContent)||0;
-        var t=document.getElementById('sp3st');if(t)t.textContent=(a+_sp3bd)+'/25';
-      }
-      function sp3Rev(n){
-        var el=document.getElementById('sp3a'+n),btn=document.getElementById('sp3rb'+n);
-        if(!el)return;var show=el.style.display==='none';
-        el.style.display=show?'block':'none';
-        if(btn)btn.textContent=show?'▼ Ocultar':'▶ Ver respuesta';
-        document.querySelectorAll('[data-sp3m="'+n+'"]').forEach(function(b){b.style.display=show?'inline-block':'none';});
-      }
-      function sp3Mark(n,ok){
-        _sp3bda[n]=ok;var c=0;
-        Object.keys(_sp3bda).forEach(function(k){if(_sp3bda[k])c++;});
-        _sp3bd=c;
-        var bd=document.getElementById('sp3sbd');if(bd)bd.textContent=_sp3bd+'/'+Object.keys(_sp3bda).length;
-        _sp3Tot();
-        document.querySelectorAll('[data-sp3m="'+n+'"]').forEach(function(b){
-          var isOk=b.getAttribute('data-sp3ok')==='1';
-          b.style.opacity=(isOk===ok)?'1':'.3';b.style.fontWeight=(isOk===ok)?'700':'400';
-        });
-      }
-      function sp3Reset(){
-        _sp3bd=0;_sp3bda={};
-        for(var i=1;i<=10;i++){var inp=document.getElementById('sp3q'+i);if(inp){inp.value='';inp.style.border='1px solid var(--border)';inp.style.background='var(--soft)';}var fb=document.getElementById('sp3fb'+i);if(fb)fb.textContent='';}
-        for(var j=11;j<=25;j++){var a=document.getElementById('sp3a'+j);if(a)a.style.display='none';var rb=document.getElementById('sp3rb'+j);if(rb)rb.textContent='▶ Ver respuesta';}
-        document.querySelectorAll('[data-sp3m]').forEach(function(b){b.style.opacity='1';b.style.fontWeight='400';b.style.display='none';});
-        var sa=document.getElementById('sp3sa');if(sa)sa.textContent='0/10';
-        var bd=document.getElementById('sp3sbd');if(bd)bd.textContent='0/0';
-        var st=document.getElementById('sp3st');if(st)st.textContent='0/25';
-      }
-      </script>
-      <details style="margin-top:.6rem">
-        <summary style="cursor:pointer;padding:.6rem .9rem;background:rgba(234,179,8,.08);border-radius:8px;font-weight:700;font-size:.93rem;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(234,179,8,.25)">📋 Simulacro Final Premium — 25 preguntas interactivas <span class="muted" style="font-size:.78rem;font-weight:400;margin-left:.3rem">validación + autoevaluación</span></summary>
-        <div style="padding:.7rem 0">
-          <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.8rem;padding:.45rem .75rem;background:rgba(234,179,8,.06);border-radius:8px;border:1px solid rgba(234,179,8,.18);font-size:.81rem">
-            <span style="color:var(--muted)">📊 Puntaje:</span>
-            <span><strong>A:</strong> <span id="sp3sa" style="color:var(--green);font-weight:700">0/10</span></span>
-            <span><strong>B–D:</strong> <span id="sp3sbd" style="color:var(--green);font-weight:700">0/0</span></span>
-            <span style="font-weight:700"><strong>Total:</strong> <span id="sp3st" style="color:var(--green)">0/25</span></span>
-            <button onclick="sp3Reset()" style="margin-left:auto;font-size:.74rem;padding:.18rem .65rem;border-radius:6px;border:1px solid var(--border);background:var(--soft);cursor:pointer;color:var(--muted)">↺ Reiniciar</button>
-          </div>
-          <!-- SECCIÓN A — INTERACTIVA -->
-          <div class="card panel" style="margin-bottom:.7rem;padding:.8rem">
-            <p style="font-size:.85rem;font-weight:700;color:rgba(139,92,246,.9);margin:0 0 .65rem">Sección A — Complete los espacios <span style="font-size:.76rem;font-weight:400;color:var(--muted)">(escribe y verifica)</span></p>
-            <div style="display:flex;flex-direction:column;gap:.55rem;font-size:.82rem">
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">1.</span>La rama de la biología que reconstruye relaciones evolutivas se llama<input id="sp3q1" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:190px"><span id="sp3fb1" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">2.</span>La pared celular de las bacterias contiene<input id="sp3q2" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:190px"><span id="sp3fb2" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">3.</span>La pared celular de los hongos contiene<input id="sp3q3" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:190px"><span id="sp3fb3" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">4.</span>Las mitocondrias se originaron evolutivamente a partir de<input id="sp3q4" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:220px"><span id="sp3fb4" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">5.</span>En los protóstomos, el blastoporo da origen a la<input id="sp3q5" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:150px"><span id="sp3fb5" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">6.</span>La fase dominante en briofitas es el<input id="sp3q6" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:160px"><span id="sp3fb6" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">7.</span>Las micorrizas son simbiosis entre<input id="sp3q7" type="text" placeholder="hongo y…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:190px"><span id="sp3fb7" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">8.</span>El modelo de crecimiento que incluye la capacidad de carga se llama<input id="sp3q8" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:140px"><span id="sp3fb8" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">9.</span>La regla del 10% indica que aproximadamente<input id="sp3q9" type="text" placeholder="%" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:70px"><span id="sp3fb9" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span>% de la energía pasa al siguiente nivel trófico.</div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.3rem"><span style="font-weight:700;color:var(--muted);min-width:1.4rem">10.</span>Los pioneros típicos de la sucesión primaria son los<input id="sp3q10" type="text" placeholder="respuesta…" style="margin-left:.3rem;padding:.18rem .5rem;border-radius:5px;border:1px solid var(--border);background:var(--soft);font-size:.82rem;width:150px"><span id="sp3fb10" style="margin-left:.25rem;font-weight:700;font-size:.88rem"></span></div>
-            </div>
-            <button onclick="simP3Verificar()" style="margin-top:.8rem;padding:.32rem 1rem;border-radius:7px;border:none;background:rgba(139,92,246,.14);color:rgba(139,92,246,.95);font-weight:700;font-size:.82rem;cursor:pointer">✓ Verificar respuestas A</button>
-          </div>
-          <!-- SECCIÓN B — INTERACTIVA -->
-          <div class="card panel" style="margin-bottom:.7rem;padding:.8rem">
-            <p style="font-size:.85rem;font-weight:700;color:rgba(99,102,241,.9);margin:0 0 .6rem">Sección B — Comparativas <span style="font-size:.76rem;font-weight:400;color:var(--muted)">(revela y autoevalúa)</span></p>
-            <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.82rem">
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">11.</span> Compare ciclo lítico vs lisogénico en virus.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb11" onclick="sp3Rev(11)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="11" data-sp3ok="1" onclick="sp3Mark(11,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="11" data-sp3ok="0" onclick="sp3Mark(11,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a11" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Lítico:</strong> virus replica de inmediato, célula muere por lisis, libera virus nuevos. <strong>Lisogénico:</strong> genoma viral se integra como profago, célula vive y se divide normalmente; puede activarse por estrés.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">12.</span> Compare protóstomos vs deuteróstomos en términos de blastoporo y formación del celoma.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb12" onclick="sp3Rev(12)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="12" data-sp3ok="1" onclick="sp3Mark(12,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="12" data-sp3ok="0" onclick="sp3Mark(12,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a12" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Protóstomos:</strong> blastoporo → boca; celoma esquizocélico. <strong>Deuteróstomos:</strong> blastoporo → ano; celoma enterocélico.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">13.</span> Compare nicho ecológico vs hábitat.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb13" onclick="sp3Rev(13)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="13" data-sp3ok="1" onclick="sp3Mark(13,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="13" data-sp3ok="0" onclick="sp3Mark(13,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a13" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Hábitat:</strong> lugar físico donde vive la especie. <strong>Nicho:</strong> rol funcional completo: recursos, condiciones, interacciones, tiempo de actividad.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">14.</span> Compare productividad primaria bruta vs neta.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb14" onclick="sp3Rev(14)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="14" data-sp3ok="1" onclick="sp3Mark(14,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="14" data-sp3ok="0" onclick="sp3Mark(14,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a14" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>PPB:</strong> energía total capturada por productores. <strong>PPN:</strong> PPB menos respiración del productor; biomasa disponible para herbívoros.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">15.</span> Compare sucesión primaria vs secundaria.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb15" onclick="sp3Rev(15)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="15" data-sp3ok="1" onclick="sp3Mark(15,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="15" data-sp3ok="0" onclick="sp3Mark(15,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a15" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Primaria:</strong> sin suelo previo (roca, lava), muy lenta, pioneros líquenes. <strong>Secundaria:</strong> suelo conservado tras perturbación, más rápida, pioneros herbáceos.</div>
-              </div>
-            </div>
-          </div>
-          <!-- SECCIÓN C — INTERACTIVA -->
-          <div class="card panel" style="margin-bottom:.7rem;padding:.8rem">
-            <p style="font-size:.85rem;font-weight:700;color:rgba(16,185,129,.9);margin:0 0 .6rem">Sección C — Escenarios <span style="font-size:.76rem;font-weight:400;color:var(--muted)">(revela y autoevalúa)</span></p>
-            <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.82rem">
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">16.</span> Una bacteria Gram-positiva pierde su pared de peptidoglicano. ¿Qué consecuencias predices en (a) su tinción, (b) su supervivencia frente a la lisozima, (c) su resistencia a la penicilina?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb16" onclick="sp3Rev(16)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="16" data-sp3ok="1" onclick="sp3Mark(16,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="16" data-sp3ok="0" onclick="sp3Mark(16,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a16" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">(a) Pierde la tinción Gram positiva. (b) Más sensible a lisozima. (c) Indiferente a penicilina (ya no produce peptidoglicano). Probablemente se lisa osmóticamente.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">17.</span> Si todas las angiospermas desaparecieran mañana, ¿qué efecto predices en (a) polinizadores, (b) herbívoros, (c) gimnospermas?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb17" onclick="sp3Rev(17)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="17" data-sp3ok="1" onclick="sp3Mark(17,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="17" data-sp3ok="0" onclick="sp3Mark(17,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a17" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">(a) Colapso masivo de polinizadores dependientes de flores. (b) Pérdida del recurso alimentario de muchos herbívoros. (c) Las gimnospermas no se afectan directamente (polinización por viento), pero la comunidad cambia radicalmente.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">18.</span> Si los descomponedores fúngicos de un bosque desaparecen, ¿qué pasa con (a) el ciclo del carbono, (b) la productividad primaria, (c) la regeneración del suelo?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb18" onclick="sp3Rev(18)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="18" data-sp3ok="1" onclick="sp3Mark(18,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="18" data-sp3ok="0" onclick="sp3Mark(18,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a18" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">(a) Carbono queda atrapado en biomasa muerta; ciclo bloqueado. (b) Productividad cae al no liberarse nutrientes. (c) Suelo se empobrece.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">19.</span> En una isla con una especie invasora sin depredadores naturales, ¿cómo predices que se comportará la población (modelo, factores limitantes posibles)?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb19" onclick="sp3Rev(19)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="19" data-sp3ok="1" onclick="sp3Mark(19,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="19" data-sp3ok="0" onclick="sp3Mark(19,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a19" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">Modelo exponencial al principio (sin limitantes). Eventualmente choca con K por agotamiento de recursos, enfermedades densodependientes o degradación del hábitat. Puede causar colapso ecológico local.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">20.</span> Si una planta florece dos semanas antes por aumento de temperatura, pero su polinizador no adelanta su llegada, ¿qué tipo de fallo ecológico ocurre?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb20" onclick="sp3Rev(20)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="20" data-sp3ok="1" onclick="sp3Mark(20,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="20" data-sp3ok="0" onclick="sp3Mark(20,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a20" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65"><strong>Desincronización fenológica.</strong> La planta pierde polinización eficiente; el polinizador pierde recurso. Ambos linajes pueden declinar.</div>
-              </div>
-            </div>
-          </div>
-          <!-- SECCIÓN D — INTERACTIVA -->
-          <div class="card panel" style="margin-bottom:.4rem;padding:.8rem">
-            <p style="font-size:.85rem;font-weight:700;color:rgba(239,68,68,.9);margin:0 0 .6rem">Sección D — Razonamiento profundo <span style="font-size:.76rem;font-weight:400;color:var(--muted)">(revela y autoevalúa)</span></p>
-            <div style="display:flex;flex-direction:column;gap:.6rem;font-size:.82rem">
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">21.</span> ¿Por qué un equinodermo está más emparentado con un ser humano que con un caracol, aunque externamente no se parezca al humano?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb21" onclick="sp3Rev(21)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="21" data-sp3ok="1" onclick="sp3Mark(21,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="21" data-sp3ok="0" onclick="sp3Mark(21,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a21" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(239,68,68,.06);border-radius:6px;line-height:1.65">Equinodermos y cordados son <strong>deuteróstomos</strong> (blastoporo → ano, segmentación radial, celoma enterocélico). Los caracoles son protóstomos. La filogenia se basa en rasgos profundos del desarrollo, no en la apariencia adulta.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">22.</span> Mencione tres evidencias estructurales o moleculares que apoyen la teoría endosimbiótica.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb22" onclick="sp3Rev(22)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="22" data-sp3ok="1" onclick="sp3Mark(22,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="22" data-sp3ok="0" onclick="sp3Mark(22,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a22" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(239,68,68,.06);border-radius:6px;line-height:1.65">(a) Doble membrana en mitocondrias y cloroplastos; (b) ADN circular propio similar al bacteriano; (c) ribosomas 70S (tipo bacteriano, no 80S). Además: división por fisión binaria y tamaño similar al de bacterias.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">23.</span> ¿Por qué la conjugación bacteriana es importante en la propagación de la resistencia a antibióticos?</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb23" onclick="sp3Rev(23)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="23" data-sp3ok="1" onclick="sp3Mark(23,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="23" data-sp3ok="0" onclick="sp3Mark(23,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a23" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(239,68,68,.06);border-radius:6px;line-height:1.65">La conjugación transfiere plásmidos entre bacterias, <strong>incluso entre especies distintas</strong>, llevando genes de resistencia rápidamente. Explica por qué la resistencia se propaga mucho más rápido que por mutación.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">24.</span> Explique por qué la cadena trófica rara vez excede 4-5 niveles.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb24" onclick="sp3Rev(24)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="24" data-sp3ok="1" onclick="sp3Mark(24,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="24" data-sp3ok="0" onclick="sp3Mark(24,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a24" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(239,68,68,.06);border-radius:6px;line-height:1.65"><strong>Regla del 10%:</strong> solo ~10% de la energía pasa a cada nivel. Tras 4-5 niveles queda tan poca energía que no sustenta poblaciones estables. Por eso los carnívoros tope son raros y las cadenas son cortas.</div>
-              </div>
-              <div style="padding:.5rem .65rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-                <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">25.</span> Explique por qué la pérdida del permafrost por cambio climático podría retroalimentar el calentamiento.</p>
-                <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
-                  <button id="sp3rb25" onclick="sp3Rev(25)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.35);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">▶ Ver respuesta</button>
-                  <button data-sp3m="25" data-sp3ok="1" onclick="sp3Mark(25,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ Lo sabía</button>
-                  <button data-sp3m="25" data-sp3ok="0" onclick="sp3Mark(25,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ No lo sabía</button>
-                </div>
-                <div id="sp3a25" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(239,68,68,.06);border-radius:6px;line-height:1.65">El permafrost almacena enormes cantidades de carbono congelado. Al descongelarse, los descomponedores liberan CO₂ y CH₄ → más calentamiento → más descongelamiento. Bucle de <strong>retroalimentación positiva</strong>.</div>
-              </div>
-            </div>
-          </div>
+      <!-- Práctica interactiva P3 en sección Simulacros -->
+      <div style="margin-top:1.4rem;padding:1.1rem 1.3rem;border-radius:16px;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.22);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.9rem">
+        <div>
+          <strong style="font-size:.95rem;color:#a855f7;display:block;margin-bottom:.25rem">⚡ Simulacros interactivos P3</strong>
+          <p style="margin:0;font-size:.83rem;color:var(--muted);line-height:1.55">Selección de respuestas · Validación automática · Score final · Feedback inmediato.<br>Accede a los simulacros completos de P3 en la sección <strong>⚡ Simulacros y práctica</strong>.</p>
         </div>
-      </details>
+        <button class="btn primary" style="white-space:nowrap;flex-shrink:0" onclick="document.getElementById('simulacros').scrollIntoView({behavior:'smooth'})">⚡ Ir a Simulacros →</button>
+      </div>
     </section>
 
     <!-- ═══ CASOS HIPOTÉTICOS P3 ═══ -->
@@ -5460,7 +5319,7 @@ window.PAYPAL_PLANS = {
     <!-- ═══ SIMULACROS ═══ -->
     <section class="section" id="simulacros">
       <div class="section-head">
-        <div><h2>⚡ Simulacros y práctica</h2><p class="module-desc">Preguntas aleatorias del parcial activo. Botones de tema cambian según el parcial seleccionado en el topbar.</p></div>
+        <div><h2>⚡ Simulacros y práctica</h2><p class="module-desc">Preguntas de opción múltiple para P1, P2 y P3. Seleccioná un tema o mezclá todos. Modo Estudio: feedback inmediato. Modo Examen: score al final. Los botones cambian según el parcial activo en el topbar.</p></div>
       </div>
       <div id="simFreeWarn" class="warn" style="display:none;margin-bottom:.8rem">
         👁 <strong>Vista previa:</strong> en plan gratuito tenés <strong>1 simulacro de 5 preguntas por día</strong>. En Pro son ilimitados, de 10 preguntas, con seguimiento automático en tu mapa de dominio.
@@ -5496,6 +5355,7 @@ window.PAYPAL_PLANS = {
         <strong style="font-size:.82rem;display:block;margin-bottom:.4rem;color:#a855f7">📕 Tercer parcial</strong>
         <div class="toolbar" style="margin-bottom:.8rem">
           <button class="btn primary" onclick="A.startSim('all')">⚡ Mezclado P3</button>
+          <button class="btn" onclick="A.startSim('ori')">🌱 Origen vida</button>
           <button class="btn" onclick="A.startSim('dom')">🌳 Sistemática</button>
           <button class="btn" onclick="A.startSim('virpro')">🦠 Virus/Proc.</button>
           <button class="btn" onclick="A.startSim('euk')">🌿 Eucariotas</button>
@@ -6209,7 +6069,48 @@ const E23Q = [
   {q:'37. Las micorrizas:',ops:['A) Son un tipo de liquen','B) Reúnen energía solar','C) Reúnen nutrientes inorgánicos','D) Asociaciones de basidiomicetos'],a:2,exp:'Simbiosis raíz-hongo: amplifica absorción mineral.',theme:'ori'},
   {q:'38. Combinación de fotoautótrofo y hongo:',ops:['A) Endomicorriza','B) Ectomicorriza','C) Liquen','D) Patógeno'],a:2,exp:'Liquen.',theme:'ori'},
   {q:'39. Campo de la biología que estudia la biodiversidad como producto de la evolución:',ops:['A) Sistemática','B) Taxonomía','C) Geología','D) Ecología'],a:0,exp:'Sistemática.',theme:'ori'},
-  {q:'40. Una célula n + n es:',ops:['A) Monocarióta','B) Diploide','C) Cenocítica','D) Dicarióta'],a:3,exp:'n+n = dicarióta.',theme:'ori'}
+  {q:'40. Una célula n + n es:',ops:['A) Monocarióta','B) Diploide','C) Cenocítica','D) Dicarióta'],a:3,exp:'n+n = dicarióta.',theme:'ori'},
+
+  // ═══ EXPANSIÓN P2 — Genética molecular (gen) ═══
+  {q:'¿Qué ocurre durante la transcripción?',ops:['A) La información del ARNm se usa para sintetizar proteínas','B) El ADN se replica con ADN polimerasa','C) El ADN sirve como molde para sintetizar ARN mensajero','D) Los ribosomas fabrican ARN propio'],a:2,exp:'Transcripción: ADN → ARNm (ARN polimerasa lee la hebra molde en dirección 3\'→5\' y sintetiza el ARNm 5\'→3\'). La traducción convierte el ARNm en proteína.',theme:'gen'},
+  {q:'¿Cuántos codones del código genético son codones de parada (stop)?',ops:['A) 1 (solo UAA)','B) 2 (UAA y UAG)','C) 3 (UAA, UAG y UGA)','D) 4'],a:2,exp:'Los tres codones de parada son UAA ("ocre"), UAG ("ámbar") y UGA ("ópalo"). Ninguno codifica aminoácido; terminan la traducción.',theme:'gen'},
+  {q:'El crossing-over entre cromátidas no hermanas ocurre durante:',ops:['A) Anafase I','B) Interfase S','C) Profase I de meiosis (paquiteno)','D) Metafase II'],a:2,exp:'El entrecruzamiento ocurre en paquiteno (profase I), cuando los homólogos están completamente sinapsiados. Intercambia segmentos → variabilidad genética.',theme:'gen'},
+  {q:'La epistasia es cuando:',ops:['A) Dos genes están en el mismo cromosoma','B) Un gen enmascara la expresión de otro gen no alélico','C) Un gen produce múltiples fenotipos (pleiotropía)','D) Los gametos se forman por mitosis'],a:1,exp:'Epistasia: un locus afecta la expresión de otro locus diferente. Diferente a la dominancia, que ocurre entre alelos del mismo locus.',theme:'gen'},
+  {q:'La pleiotropía significa que:',ops:['A) Un gen tiene múltiples alelos en la población','B) Varios genes controlan una sola característica','C) Un solo gen influye en múltiples características fenotípicas','D) Los cromosomas se duplican dos veces'],a:2,exp:'Pleiotropía: un gen → múltiples fenotipos. Ej: el gen HBB mutado causa anemia falciforme con efectos en glóbulos rojos, bazo, riñón y muchos órganos.',theme:'gen'},
+  {q:'En la herencia poligénica (como la estatura), la distribución fenotípica en la población es:',ops:['A) Discreta con 3 fenotipos','B) Bimodal','C) Continua en forma de campana normal','D) Solo dos fenotipos extremos'],a:2,exp:'Múltiples genes con efecto aditivo producen distribución continua. La estatura, el color de piel y el peso son ejemplos típicos.',theme:'gen'},
+  {q:'¿Cuál es la función de los intrones en el ARN pre-mensajero?',ops:['A) Codifican los aminoácidos más importantes de la proteína','B) Son secuencias no codificantes eliminadas por splicing antes de la traducción','C) Estabilizan el ARNm en el ribosoma','D) Son los codones de inicio AUG'],a:1,exp:'Intrones: secuencias no codificantes que se eliminan por splicing (esplisosoma). Exones: secuencias que permanecen en el ARNm maduro y se traducen.',theme:'gen'},
+  {q:'¿Cuáles cromosomas determinan el sexo en humanos?',ops:['A) Cromosomas 1 y 2 (los más grandes)','B) Cromosomas X e Y: XX = hembra, XY = macho','C) Solo el gen SRY independientemente del cromosoma','D) Cualquier par autosómico puede hacerlo'],a:1,exp:'En el sistema XY de determinación del sexo, el cromosoma Y lleva el gen SRY que dirige el desarrollo testicular. Sin Y → desarrollo ovárico por defecto.',theme:'gen'},
+  {q:'¿Cuál es el resultado genotípico de cruzar Aa × Aa?',ops:['A) Todos los descendientes son AA','B) 1/4 AA : 2/4 Aa : 1/4 aa','C) Todos son heterocigotos Aa','D) 1/2 AA : 1/2 aa'],a:1,exp:'Cuadro de Punnett: 1 AA, 2 Aa, 1 aa. Fenotípicamente (con dominancia completa): 3/4 dominantes : 1/4 recesivos.',theme:'gen'},
+  {q:'Un organismo tetraploide (4n) se origina por:',ops:['A) Mitosis extra sin citocinesis','B) Cruce entre especies diferentes sin más cambios','C) Duplicación del genoma completo sin división celular (poliploidía)','D) Una mutación puntual en el ADN'],a:2,exp:'La poliploidía ocurre cuando el genoma se duplica. Es más común en plantas (trigo 6n, fresa 8n) y puede producir especiación instantánea.',theme:'gen'},
+  {q:'¿Cuál enzima es responsable de sintetizar el cebador (primer) durante la replicación del ADN?',ops:['A) Helicasa','B) ADN polimerasa I','C) Ligasa','D) Primasa'],a:3,exp:'La primasa (una ARN polimerasa) sintetiza el cebador de ARN necesario porque la ADN polimerasa no puede iniciar una nueva cadena; solo puede extender una existente.',theme:'gen'},
+  {q:'¿Qué son los genes ligados al sexo?',ops:['A) Genes que solo expresan los hombres','B) Genes ubicados en los cromosomas sexuales (X o Y) con patrones de herencia distintos entre sexos','C) Genes que determinan solo el sexo del organismo','D) Genes que se activan durante la pubertad'],a:1,exp:'Los genes ligados al X (hemofilia, daltonismo) se heredan de forma diferente en hombres y mujeres. Los hombres XY solo tienen un alelo X → son hemicigotos.',theme:'gen'},
+
+  // ═══ EXPANSIÓN P2 — Evolución (evo) — DE 4 A 19 PREGUNTAS ═══
+  {q:'¿Cuáles son los cuatro postulados de Darwin y Wallace para la selección natural?',ops:['A) Mutación, migración, deriva, selección','B) Variación heredable en la población, más individuos nacen de los que sobreviven, la supervivencia no es aleatoria, los rasgos favorables se heredan','C) Herencia, mutación, especiación, extinción','D) Reproducción, migración, aislamiento, selección'],a:1,exp:'Darwin y Wallace: 1) variación heredable existe, 2) se producen más individuos de los que pueden sobrevivir, 3) la supervivencia no es azar (depende de los rasgos), 4) los rasgos ventajosos se heredan.',theme:'evo'},
+  {q:'El equilibrio de Hardy-Weinberg se mantiene solo si se cumplen las 5 condiciones. ¿Cuáles son?',ops:['A) Selección natural intensa, mutación frecuente, población grande, migración y apareamiento al azar','B) Sin mutación, sin selección, apareamiento al azar, sin migración y población infinitamente grande','C) Sin mutación, con migración, apareamiento selectivo, sin deriva y población pequeña','D) Con mutación, sin selección, apareamiento al azar, con migración y población grande'],a:1,exp:'H-W: las 5 condiciones evitan el cambio evolutivo. Si alguna se rompe, las frecuencias alélicas cambian → hay evolución.',theme:'evo'},
+  {q:'En una población, el 9% muestra el fenotipo recesivo (aa). Bajo H-W, ¿qué porcentaje son portadores (Aa)?',ops:['A) 3%','B) 42%','C) 9%','D) 18%'],a:1,exp:'q² = 0.09 → q = 0.3 → p = 0.7. Portadores: 2pq = 2(0.7)(0.3) = 0.42 = 42%. Una baja frecuencia de afectados puede ocultar muchos portadores.',theme:'evo'},
+  {q:'La deriva genética tiene mayor efecto evolutivo en:',ops:['A) Poblaciones grandes con alta variación','B) Poblaciones pequeñas donde el azar cambia significativamente las frecuencias alélicas','C) Poblaciones con fuerte selección estabilizadora','D) Especies de ciclos de vida largos'],a:1,exp:'La deriva es cambio aleatorio de frecuencias alélicas. En poblaciones pequeñas el azar tiene gran peso (como una pequeña muestra puede distorsionar la proporción real).',theme:'evo'},
+  {q:'El efecto fundador es un caso especial de:',ops:['A) Flujo génico','B) Selección natural','C) Cuello de botella (deriva genética extrema)','D) Mutación dirigida'],a:2,exp:'El efecto fundador ocurre cuando un pequeño grupo funda una nueva población. Como cuello de botella, reduce la diversidad genética respecto a la población original.',theme:'evo'},
+  {q:'La selección estabilizadora actúa sobre la distribución fenotípica de una población:',ops:['A) Desplazando la media hacia uno de los extremos','B) Favoreciendo los dos extremos y eliminando el intermedio','C) Favoreciendo el fenotipo promedio y eliminando los extremos','D) Sin cambiar la distribución'],a:2,exp:'Estabilizadora: la campana se vuelve más angosta (menor varianza). Ejemplo: peso al nacer en humanos (muy bajo o muy alto aumenta la mortalidad).',theme:'evo'},
+  {q:'La selección disruptiva puede llevar a qué resultado evolutivo a largo plazo?',ops:['A) Mayor uniformidad en la población','B) Reducción de la variación genética','C) Equilibrio de H-W sin cambios','D) Eventual especiación simpátrica al separar dos fenotipos extremos'],a:3,exp:'Selección disruptiva: favorece ambos extremos, elimina el intermedio → puede dividir la población en dos → especiación sin barrera geográfica.',theme:'evo'},
+  {q:'La similitud entre las aletas de un delfín (mamífero) y la aleta pectoral de un pez son ejemplo de:',ops:['A) Evolución divergente','B) Estructuras homólogas con ancestro común','C) Evolución convergente','D) Evolución paralela entre parientes cercanos'],a:2,exp:'Convergente: linajes distantes (mamífero y pez) adquieren formas similares por presión selectiva equivalente (nadar en agua). Análogos, no homólogos.',theme:'evo'},
+  {q:'¿Qué evidencia de la evolución se obtiene del registro fósil?',ops:['A) Solo la anatomía de organismos actuales','B) El orden cronológico y las transiciones entre grupos a lo largo del tiempo geológico','C) Solo la edad de la Tierra','D) Solo datos sobre extinciones masivas'],a:1,exp:'El registro fósil muestra formas de vida pasadas, formas intermedias, cambios graduales o abruptos en linajes, y el orden de aparición de grupos principales.',theme:'evo'},
+  {q:'¿Cuál mecanismo evolutivo involucra la transferencia de individuos (y sus alelos) entre poblaciones?',ops:['A) Deriva genética','B) Selección natural','C) Flujo génico (migración)','D) Mutación'],a:2,exp:'El flujo génico homogeniza las frecuencias alélicas entre poblaciones, reduce la diferenciación y puede introducir nuevos alelos. Contrarresta la deriva y la selección local.',theme:'evo'},
+  {q:'La macroevolución se refiere a:',ops:['A) Cambios de frecuencias alélicas dentro de una sola población','B) Cambios evolutivos a gran escala: origen de nuevos taxones y patrones filogenéticos mayores','C) Solo la especiación por poliploidía en plantas','D) Los cambios en un único gen a lo largo del tiempo'],a:1,exp:'Macroevolución: cambios por encima del nivel de especie (cladogénesis, radiaciones adaptativas, extinciones masivas). Microevolución: cambio de frecuencias alélicas en una población.',theme:'evo'},
+  {q:'El aislamiento reproductivo postcigótico incluye:',ops:['A) Diferencia de hábitat que impide el encuentro','B) Diferencia temporal en el período reproductivo','C) Esterilidad del híbrido o inviabilidad del cigoto híbrido','D) Morfología genital incompatible'],a:2,exp:'Postcigótico: la fecundación ocurre, pero el híbrido es inviable (muere antes de reproducirse) o estéril (ejemplo: la mula = caballo × burro).',theme:'evo'},
+  {q:'La hipótesis del equilibrio puntuado (Gould y Eldredge, 1972) propone que:',ops:['A) La evolución es siempre lenta y gradual','B) Largas etapas de estabilidad morfológica (estasis) son interrumpidas por cambios rápidos','C) Solo ocurre macroevolución','D) Los fósiles muestran cambios continuos y graduales siempre'],a:1,exp:'Equilibrio puntuado: estasis larga + cambios rápidos (geológicamente) asociados a especiación en poblaciones pequeñas. Contrasta con el filismo de Darwin.',theme:'evo'},
+  {q:'¿Qué es la selección sexual?',ops:['A) Selección de parejas al azar','B) Selección de rasgos que aumentan el éxito de apareamiento, aunque puedan reducir la supervivencia','C) Lo mismo que la selección natural','D) Solo ocurre en aves'],a:1,exp:'Selección sexual: favorece rasgos que aumentan el éxito reproductivo (plumas del pavo real, cuernos del ciervo). Puede producir dimorfismo sexual marcado.',theme:'evo'},
+  {q:'La evidencia molecular de la evolución usa principalmente:',ops:['A) Solo el registro fósil estratigráfico','B) Comparación de secuencias de ADN, ARN y proteínas entre especies para reconstruir filogenias','C) Solo la anatomía comparada de organismos vivos','D) Solo la embriología comparada'],a:1,exp:'La filogenia molecular compara secuencias (ARNr 16S, citocromo c, secuencias genómicas) para estimar relaciones evolutivas y tiempos de divergencia (reloj molecular).',theme:'evo'},
+
+  // ═══ EXPANSIÓN P2 — Origen y Diversidad (ori) ═══
+  {q:'¿Cuál fue el primer tipo metabólico de los primeros seres vivos en la Tierra?',ops:['A) Fotoautótrofos aerobios','B) Quimiolitoautótrofos','C) Heterótrofos anaerobios','D) Autótrofos oxigénicos'],a:2,exp:'La primera vida surgió en atmósfera sin O₂. Los primeros organismos eran heterótrofos anaerobios que consumían moléculas orgánicas del "caldo primordial".',theme:'ori'},
+  {q:'¿Cuál propiedad diferencia a las Archaea de las Bacterias a nivel de membrana?',ops:['A) Las Archaea tienen peptidoglicano en la pared','B) Las Archaea tienen lípidos de membrana con enlace éter y sin peptidoglicano','C) Las Bacterias tienen lípidos con enlace éter','D) Son idénticas a nivel de membrana'],a:1,exp:'Archaea: lípidos con glicerol + cadenas de isopreno unidas por enlace éter. Bacteria: lípidos con glicerol + ácidos grasos unidos por enlace éster.',theme:'ori'},
+  {q:'Los hongos Basidiomycota se caracterizan por:',ops:['A) Esporas flageladas y acuáticas','B) Esporas dentro de ascos (sacos)','C) Esporas producidas en basidios (champiñones, roya, cornezuelo)','D) No producir esporas'],a:2,exp:'Basidiomicetos: sus esporas se forman sobre basidios. Incluyen los champiñones, setas venenosas, roya de cereales, carbón del maíz y el hongo de las setas que conocemos.',theme:'ori'},
+  {q:'Las diatomeas son protistas con:',ops:['A) Pared de quitina','B) Exoesqueleto de sílice (SiO₂) y son importantes productores primarios acuáticos','C) Ausencia de fotosíntesis','D) Flagelos pero sin pared celular'],a:1,exp:'Las diatomeas tienen frústulos de sílice intrincados. Son responsables de gran parte de la fotosíntesis oceánica y sus depósitos forman la tierra de diatomeas.',theme:'ori'},
+  {q:'¿Cuál organismo es un ejemplo clásico de protista parásito causante de enfermedad en humanos?',ops:['A) Aspergillus niger (hongo)','B) Plasmodium falciparum (causante de malaria)','C) Staphylococcus aureus (bacteria)','D) Taenia solium (platelminto)'],a:1,exp:'Plasmodium falciparum (apicomplejo protista) es transmitido por el mosquito Anopheles y causa la malaria, una de las enfermedades infecciosas más mortales.',theme:'ori'},
+  {q:'La diferencia principal entre angiospermas y gimnospermas es:',ops:['A) Las angiospermas no tienen semillas','B) Las angiospermas tienen flores y semillas encerradas en frutos; las gimnospermas tienen semillas desnudas','C) Las gimnospermas tienen flores grandes y vistosas','D) Las angiospermas son más antiguas evolutivamente'],a:1,exp:'Angiospermas: flores, polinización frecuente por animales, semillas en frutos (protegen y dispersan). Gimnospermas: conos, semillas expuestas (desnudas).',theme:'ori'},
+  {q:'Los hongos Ascomycota (ascomicetos) incluyen:',ops:['A) Solo champiñones venenosos','B) Levaduras (Saccharomyces), mohos (Penicillium, Aspergillus) y trufas','C) Solo hongos de la roya de cereales','D) Todos los líquenes exclusivamente'],a:1,exp:'Ascomycota es el filo fúngico más diverso: levaduras (fermentación), Penicillium (antibiótico), Aspergillus (fermentación, micotoxinas), trufas y morillas.',theme:'ori'},
+  {q:'¿Cuál campo de la biología reconstruye las relaciones evolutivas usando datos moleculares, morfológicos y paleontológicos?',ops:['A) Taxonomía clásica','B) Ecología de comunidades','C) Sistemática filogenética','D) Fisiología comparada'],a:2,exp:'La sistemática filogenética integra caracteres morfológicos, secuencias de ADN/ARN y datos fósiles para inferir árboles evolutivos (cladogramas/filogramas) con métodos estadísticos.',theme:'ori'}
 ]
 
 const FLASHCARDS = [
@@ -7126,9 +7027,12 @@ function startSim(theme){
   // ═══ PREMIUM GATING ═══
   const access = checkSimulacroAccess()
   if (!access.allowed) return
-  // ═══ MULTI-PARCIAL: usar banco P1 o P2 según parcial activo ═══
+  // ═══ MULTI-PARCIAL: banco por parcial activo (P1→E1Q, P2→E23Q, P3→EXAM_P3_BANK) ═══
   const activeP = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
-  const bank = activeP === 'p1' ? E1Q : E23Q
+  let bank
+  if (activeP === 'p1') bank = E1Q
+  else if (activeP === 'p3') bank = EXAM_P3_BANK.map(q => ({q:q.q, ops:q.o, a:q.a, theme:q.theme, exp:q.f||''}))
+  else bank = E23Q
   const pool = theme === 'all' ? bank : bank.filter(q => q.theme === theme)
   if (pool.length === 0){
     toast('No hay preguntas para ese tema en el parcial activo.', true)
@@ -11173,7 +11077,66 @@ const E1Q = [
   {q:'37. ¿Qué ocurre con una célula vegetal en una solución hipertónica?',ops:['A) Se hincha (turgencia)','B) Se mantiene igual','C) Sufre plasmólisis','D) Se rompe'],a:2,exp:'En medio hipertónico el agua sale: la vacuola se contrae y la membrana se separa de la pared celular. Esto se llama plasmólisis.',theme:'cel'},
   {q:'38. ¿Cuál de los siguientes NO es un nivel de organización?',ops:['A) Tejido','B) Órgano','C) Comunidad','D) Hipótesis'],a:3,exp:'Los niveles van de átomo a biósfera. La hipótesis es parte del método científico, no un nivel de organización.',theme:'int'},
   {q:'39. ¿Cuál es la diferencia entre transporte activo y pasivo?',ops:['A) El activo no usa proteínas','B) El pasivo gasta ATP','C) El activo gasta ATP, el pasivo no','D) Son lo mismo'],a:2,exp:'Transporte activo: contra gradiente, gasta ATP. Pasivo: a favor de gradiente, sin ATP. La difusión facilitada también es pasiva.',theme:'cel'},
-  {q:'40. La función del oxígeno en la respiración celular es:',ops:['A) Producir ATP directamente','B) Aceptar electrones al final de la cadena','C) Generar glucosa','D) Romper proteínas'],a:1,exp:'El oxígeno NO produce ATP directamente. Acepta electrones al final de la cadena, formando agua, lo que mantiene el flujo de electrones y permite la quimiósmosis.',theme:'ene'}
+  {q:'40. La función del oxígeno en la respiración celular es:',ops:['A) Producir ATP directamente','B) Aceptar electrones al final de la cadena','C) Generar glucosa','D) Romper proteínas'],a:1,exp:'El oxígeno NO produce ATP directamente. Acepta electrones al final de la cadena, formando agua, lo que mantiene el flujo de electrones y permite la quimiósmosis.',theme:'ene'},
+
+  // ═══ EXPANSIÓN P1 — Introducción y método científico (int) ═══
+  {q:'¿Qué propiedad distingue fundamentalmente a los seres vivos de la materia inerte?',ops:['A) Estar compuesto de carbono orgánico','B) Tener metabolismo, homeostasis y capacidad de reproducirse','C) Ser visible a simple vista','D) Contener oxígeno en su estructura química'],a:1,exp:'Los seres vivos realizan metabolismo, mantienen homeostasis y se reproducen. El carbono también lo tiene la materia no viva (CO₂, carbonatos).',theme:'int'},
+  {q:'Una hipótesis científica válida debe ser:',ops:['A) Verdadera siempre que la proponga un experto','B) Basada solo en observación previa sin predicciones','C) Falsable y capaz de generar predicciones comprobables','D) Aceptada por unanimidad antes de probarse'],a:2,exp:'La falsabilidad (Popper) es clave: una hipótesis que no pueda en principio ser refutada no es científica. Debe poder generar predicciones que se puedan probar.',theme:'int'},
+  {q:'¿Qué nivel de organización sigue inmediatamente al tejido, de menor a mayor?',ops:['A) Célula','B) Organismo','C) Sistema','D) Órgano'],a:3,exp:'El orden es: Célula → Tejido → Órgano → Sistema → Organismo → Población → Comunidad → Ecosistema → Biósfera.',theme:'int'},
+  {q:'En un experimento controlado, la variable independiente es:',ops:['A) La que se mide como resultado del tratamiento','B) La que el investigador manipula deliberadamente','C) La que se mantiene constante en todos los grupos','D) El grupo sin tratamiento (control negativo)'],a:1,exp:'Variable independiente: la que el investigador cambia. Variable dependiente: la que se mide. Variables controladas: las que se mantienen iguales en todos los grupos.',theme:'int'},
+  {q:'¿Cuál de los siguientes es un ejemplo de retroalimentación negativa?',ops:['A) El parto se acelera conforme más oxitocina se libera','B) La glucosa alta en sangre estimula la secreción de insulina, que reduce la glucosa','C) La hemorragia produce más vasodilatación y más sangrado','D) La fiebre aumenta el metabolismo, lo que produce más calor'],a:1,exp:'Retroalimentación negativa: la respuesta contrarresta el estímulo inicial (corrección del error). Retroalimentación positiva: la respuesta amplifica el estímulo (como el parto).',theme:'int'},
+  {q:'¿En qué se diferencia una teoría científica de una hipótesis?',ops:['A) La teoría es solo una suposición no probada','B) La hipótesis siempre tiene más evidencia que la teoría','C) Una teoría es una explicación amplia respaldada por abundante y variada evidencia, ya probada repetidamente','D) No existe diferencia entre ambas'],a:2,exp:'Teoría científica ≠ "suposición": es la explicación más robusta y probada disponible (teoría de la evolución, teoría celular, teoría atómica).',theme:'int'},
+  {q:'El nivel de organización biológica que incluye TODOS los ecosistemas del planeta es:',ops:['A) Bioma','B) Ecosistema','C) Biósfera','D) Comunidad global'],a:2,exp:'Biósfera: la totalidad de los seres vivos y sus ambientes en la Tierra. Bioma: región con comunidades características (selva tropical, desierto). Ecosistema: comunidad + factores abióticos.',theme:'int'},
+  {q:'¿Cuál de los siguientes niveles de organización es el MÁS inclusivo?',ops:['A) Órgano','B) Sistema de órganos','C) Biósfera','D) Ecosistema'],a:2,exp:'La biósfera incluye todos los ecosistemas del planeta. El ecosistema incluye comunidades. La comunidad incluye poblaciones. Las poblaciones incluyen organismos.',theme:'int'},
+
+  // ═══ EXPANSIÓN P1 — Biomoléculas (bio) ═══
+  {q:'La fórmula empírica general de un monosacárido es:',ops:['A) (CH₂O)n','B) (CHNO)n','C) (CO₂H)n','D) (CH₃)n'],a:0,exp:'Los monosacáridos tienen la relación 1C:2H:1O → (CH₂O)n. Glucosa: C₆H₁₂O₆. Pentosas (ribosa): C₅H₁₀O₅.',theme:'bio'},
+  {q:'El enlace glicosídico une:',ops:['A) Dos aminoácidos por condensación','B) Un ácido graso a glicerol','C) Dos monosacáridos con pérdida de una molécula de agua','D) Dos nucleótidos'],a:2,exp:'El enlace glicosídico se forma entre el grupo OH del carbono anomérico de un monosacárido y el OH de otro, liberando agua (deshidratación). Forma di- y polisacáridos.',theme:'bio'},
+  {q:'Celulosa y glucógeno comparten el mismo monómero (glucosa), pero difieren principalmente en:',ops:['A) Uno tiene fructosa y el otro glucosa','B) Su función (estructural vs almacenamiento) y tipo de enlace glucosídico (β-1,4 vs α-1,4)','C) Solo difieren en longitud de cadena','D) La celulosa es animal y el glucógeno vegetal'],a:1,exp:'Celulosa: β(1→4), cadenas lineales que forman fibras rígidas (pared celular vegetal). Glucógeno: α(1→4)/(1→6), ramificado, fácil de degradar para energía rápida.',theme:'bio'},
+  {q:'Un ácido graso saturado se distingue de uno insaturado porque:',ops:['A) El saturado tiene uno o más dobles enlaces C=C','B) El saturado no tiene dobles enlaces C=C y es sólido a temperatura ambiente','C) El insaturado siempre es sólido','D) El saturado tiene menos carbono que el insaturado'],a:1,exp:'Saturado: sin dobles enlaces → cadenas lineales que se empaquetan → sólido (grasa animal). Insaturado: con dobles enlaces → doblamientos → líquido (aceite vegetal).',theme:'bio'},
+  {q:'¿Cuál lípido es esteroide y cumple función en la fluidez de la membrana celular animal?',ops:['A) Triglicérido de reserva','B) Cera de cutícula vegetal','C) Colesterol','D) Fosfolípido de membrana'],a:2,exp:'El colesterol (esteroide) se intercala entre los fosfolípidos de la membrana: en frío la estabiliza y en calor la amortigua, manteniendo la fluidez óptima.',theme:'bio'},
+  {q:'En el ADN bicatenario, la proporción de Adenina siempre es igual a la de:',ops:['A) Guanina','B) Citosina','C) Timina','D) Uracilo'],a:2,exp:'Regla de Chargaff: A = T (2 puentes de hidrógeno) y C = G (3 puentes de hidrógeno). En el ARN, A se aparea con U (no existe T).',theme:'bio'},
+  {q:'La estructura secundaria de una proteína incluye:',ops:['A) La secuencia lineal de aminoácidos','B) La forma tridimensional global de la cadena','C) Las hélices alfa y láminas beta estabilizadas por puentes de hidrógeno','D) La asociación de varias subunidades proteicas'],a:2,exp:'1ª estructura: secuencia. 2ª estructura: hélices-α y láminas-β (puentes de hidrógeno entre el CO y NH de la cadena principal). 3ª: forma 3D global. 4ª: subunidades.',theme:'bio'},
+  {q:'¿Cuál macromolécula puede funcionar tanto como material genético como catalizador biológico?',ops:['A) ADN','B) Proteína','C) ARN (ribozima)','D) Lípido'],a:2,exp:'El ARN puede almacenar información (ARNm) y catalizar reacciones (ribozimas, como el ARNr que forma el enlace peptídico). Esto sustenta la hipótesis del mundo de ARN.',theme:'bio'},
+  {q:'¿Cuál es la diferencia entre el azúcar del ADN y el del ARN?',ops:['A) El ADN tiene ribosa con OH en C2; el ARN tiene desoxirribosa sin OH en C2','B) El ADN tiene desoxirribosa (sin OH en C2); el ARN tiene ribosa (con OH en C2)','C) Ambos tienen el mismo azúcar','D) El ARN tiene glucosa y el ADN tiene fructosa'],a:1,exp:'Desoxirribosa (ADN): le falta un oxígeno en C2 → más estable. Ribosa (ARN): tiene OH en C2 → más reactiva y menos estable que el ADN.',theme:'bio'},
+  {q:'Los fosfolípidos de la membrana se organizan con las colas hidrófobas:',ops:['A) Hacia el exterior acuoso','B) Hacia ambos lados por igual','C) En el interior de la bicapa, alejadas del agua','D) Formando una capa molécula'],a:2,exp:'Las cabezas polares (hidrófilas) miran hacia el agua (exterior e interior celular). Las colas apolares (hidrófobas) se ocultan en el interior de la bicapa, lejos del agua.',theme:'bio'},
+  {q:'¿Cuáles son los cuatro grupos funcionales principales que diferencian a los 20 aminoácidos?',ops:['A) Solo la cadena lateral (grupo R) varía; el resto es idéntico en todos','B) El grupo amino, carboxilo, R y el átomo de H central','C) Solo el grupo amino varía','D) El tamaño y el peso molecular'],a:0,exp:'Todos los aminoácidos tienen: NH₂ (amino), COOH (carboxilo), H y grupo R variable. El grupo R es lo que hace único a cada uno de los 20 aminoácidos.',theme:'bio'},
+
+  // ═══ EXPANSIÓN P1 — Célula (cel) ═══
+  {q:'¿Cuál organelo procesa, modifica con azúcares y dirige las proteínas a su destino final?',ops:['A) Ribosoma','B) Mitocondria','C) Aparato de Golgi','D) Lisosoma'],a:2,exp:'El aparato de Golgi es el "sistema de correo postal" de la célula: recibe vesículas del RER, modifica proteínas (glicosilación), las empaqueta y las envía a su destino.',theme:'cel'},
+  {q:'Los lisosomas realizan su función digestiva porque:',ops:['A) Tienen ADN circular y ribosomas propios','B) Contienen enzimas hidrolíticas activas en pH ácido (~pH 5)','C) Son orgánulos fotosintéticos','D) Tienen ribosomas 70S propios'],a:1,exp:'Los lisosomas mantienen pH ácido interno (~5) gracias a bombas de protones. Sus hidrolasas ácidas digieren macromoléculas, orgánulos dañados (autofagia) y patógenos.',theme:'cel'},
+  {q:'El citoesqueleto eucariota está compuesto por:',ops:['A) Solo filamentos de actina','B) Solo microtúbulos de tubulina','C) Microfilamentos (actina), filamentos intermedios y microtúbulos (tubulina)','D) Peptidoglicano y celulosa'],a:2,exp:'Los tres componentes del citoesqueleto: actina (movimiento, división), filamentos intermedios (soporte mecánico), microtúbulos (huso mitótico, transporte, flagelos).',theme:'cel'},
+  {q:'¿Cuál estructura controla el tráfico de moléculas entre el núcleo y el citoplasma?',ops:['A) Nucléolo','B) Cromatina condensada','C) Poros nucleares en la envoltura nuclear','D) Membrana plasmática'],a:2,exp:'Los complejos de poro nuclear son estructuras gigantes (~120 MDa) que regulan selectivamente la importación (proteínas ribosomales, factores de transcripción) y exportación (ARNm, ribosomas).',theme:'cel'},
+  {q:'La fagocitosis se diferencia de la pinocitosis en que:',ops:['A) Son procesos idénticos','B) La fagocitosis ingiere grandes partículas sólidas; la pinocitosis ingiere gotas de líquido','C) La pinocitosis gasta más ATP que la fagocitosis','D) La fagocitosis no requiere membrana plasmática'],a:1,exp:'Ambas son endocitosis. Fagocitosis: partículas sólidas grandes (bacterias, células muertas). Pinocitosis: líquido con solutos. Las dos requieren energía y membrana.',theme:'cel'},
+  {q:'¿En qué difiere el retículo endoplásmico rugoso (RER) del liso (REL)?',ops:['A) El RER tiene cloroplastos adheridos','B) El RER tiene ribosomas adheridos y sintetiza proteínas de exportación o membrana; el REL no tiene ribosomas y sintetiza lípidos','C) El REL sintetiza más proteínas que el RER','D) Solo el REL está conectado al núcleo'],a:1,exp:'RER: ribosomas → proteínas secretadas, de membrana, lisosomales. REL: sin ribosomas → síntesis de lípidos y esteroides, detoxificación, almacenamiento de Ca²⁺.',theme:'cel'},
+  {q:'¿Cuál proceso de transporte celular requiere proteínas transportadoras y consume ATP?',ops:['A) Difusión simple','B) Difusión facilitada','C) Ósmosis','D) Transporte activo (ej: bomba Na⁺/K⁺)'],a:3,exp:'El transporte activo mueve sustancias contra su gradiente de concentración → requiere ATP. La bomba Na⁺/K⁺ bombea 3 Na⁺ fuera y 2 K⁺ adentro por cada ATP.',theme:'cel'},
+  {q:'¿Cuáles células del organismo humano NO tienen núcleo en su estado maduro?',ops:['A) Células musculares (son multinucleadas pero tienen núcleo)','B) Glóbulos rojos maduros (eritrocitos)','C) Neuronas','D) Células hepáticas (hepatocitos)'],a:1,exp:'Los eritrocitos maduros de mamíferos pierden el núcleo y los orgánulos durante la diferenciación, maximizando el espacio para la hemoglobina.',theme:'cel'},
+  {q:'Las uniones estrechas (tight junctions) entre células epiteliales sirven para:',ops:['A) Comunicación eléctrica directa entre células','B) Adhesión mecánica ante tensión','C) Sello impermeable que impide el paso de moléculas entre células','D) Síntesis de proteínas de membrana'],a:2,exp:'Las uniones estrechas sellan el espacio entre células epiteliales, impidiendo que sustancias pasen por la vía paracelular (ej: el epitelio intestinal controla qué pasa al torrente sanguíneo).',theme:'cel'},
+  {q:'¿Cuál es el destino del piruvato cuando la célula tiene suficiente oxígeno?',ops:['A) Se convierte en lactato en el citoplasma','B) Entra a la mitocondria y se convierte en acetil-CoA','C) Se exporta al exterior de la célula','D) Se almacena como glucógeno directamente'],a:1,exp:'Con O₂ disponible: piruvato entra a la mitocondria → descarboxilación oxidativa → acetil-CoA + CO₂ + NADH → ciclo de Krebs. Sin O₂: fermentación (lactato o etanol).',theme:'cel'},
+
+  // ═══ EXPANSIÓN P1 — Metabolismo y enzimas (met) ═══
+  {q:'El ATP es la "moneda energética" celular porque:',ops:['A) Es el más abundante en la célula','B) La hidrólisis de su enlace fosfato terminal libera ~30 kJ/mol, energía que impulsa reacciones endergónicas','C) Contiene glucosa en su estructura','D) Es un lípido que almacena energía de largo plazo'],a:1,exp:'El ATP tiene tres fosfatos. La hidrólisis de ATP → ADP + Pᵢ libera energía libre (ΔG < 0), que se acopla a reacciones endergónicas como movimiento muscular o síntesis de macromoléculas.',theme:'met'},
+  {q:'Una reacción con ΔG negativo es:',ops:['A) Endergónica y no ocurre espontáneamente','B) Exergónica: libera energía libre y ocurre espontáneamente (ΔG < 0)','C) Requiere siempre aporte de energía externa','D) No tiene cambio neto de energía'],a:1,exp:'ΔG < 0 → reacción exergónica → espontánea. ΔG > 0 → endergónica → no espontánea (requiere energía). Las reacciones de hidrólisis de ATP son exergónicas.',theme:'met'},
+  {q:'¿Qué proceso rompe macromoléculas mediante la adición de una molécula de agua?',ops:['A) Síntesis por deshidratación','B) Fosforilación oxidativa','C) Hidrólisis','D) Oxidación beta'],a:2,exp:'Hidrólisis (griego: hydro = agua, lysis = romper): usa H₂O para romper enlaces. Deshidratación hace lo contrario: forma polímeros liberando H₂O.',theme:'met'},
+  {q:'El NAD⁺ en el metabolismo celular actúa principalmente como:',ops:['A) Enzima que cataliza reacciones','B) Portador de electrones e iones H⁺ (agente oxidante que se reduce a NADH)','C) Fuente de carbono para la biosíntesis','D) Cofactor estructural permanente de enzimas'],a:1,exp:'NAD⁺ + 2e⁻ + H⁺ → NADH. El NADH luego dona sus electrones a la cadena de transporte, impulsando la síntesis de ATP. El FADH₂ es otro portador similar.',theme:'met'},
+  {q:'¿Cuál factor NO afecta la actividad enzimática?',ops:['A) Temperatura (afecta la tasa de colisiones y la desnaturalización)','B) pH (afecta las cargas del sitio activo)','C) Concentración del sustrato (afecta la saturación)','D) El color de la solución en que trabaja la enzima'],a:3,exp:'La temperatura, el pH y la concentración del sustrato afectan la cinética enzimática. El color de la solución no tiene efecto directo sobre la actividad de la enzima.',theme:'met'},
+  {q:'El modelo de ajuste inducido (induced fit) propone que:',ops:['A) El sitio activo es completamente rígido y solo encaja un sustrato específico (llave-cerradura)','B) El sitio activo cambia de forma activamente al unirse al sustrato, optimizando la catálisis','C) La enzima destruye al sustrato sin recuperarse','D) El sustrato cambia de forma para encajar en el sitio activo'],a:1,exp:'Modelo induced fit (Koshland, 1958): el sitio activo es flexible y se moldea al sustrato al unirse. Esto optimiza la catálisis y explica la especificidad enzimática.',theme:'met'},
+  {q:'La regulación alostérica de una enzima consiste en:',ops:['A) Un inhibidor competitivo en el sitio activo','B) Cambio de forma de la enzima al unirse un modulador en un sitio diferente al activo (sitio alostérico)','C) Temperatura alta que activa la enzima','D) Solo retroalimentación positiva'],a:1,exp:'Alostérico (griego: otro sitio): el modulador se une a un sitio diferente al activo → cambia la forma → altera la actividad. Puede ser activador o inhibidor. Clave en la regulación metabólica.',theme:'met'},
+  {q:'En términos de electrones, la oxidación es:',ops:['A) Ganancia de electrones','B) Pérdida de electrones','C) No involucra electrones','D) Solo ocurre en presencia de oxígeno'],a:1,exp:'OIL-RIG: Oxidation Is Loss (de electrones), Reduction Is Gain. La oxidación siempre va acompañada de una reducción. El oxígeno es un oxidante común pero no el único.',theme:'met'},
+  {q:'La inhibición por retroalimentación negativa al final de una vía metabólica:',ops:['A) Acelera la producción cuando hay exceso del producto final','B) Inhibe la enzima que inicia la vía cuando el producto final se acumula','C) Solo afecta al ARN ribosómico','D) No existe en sistemas biológicos reales'],a:1,exp:'Feedback inhibition: el producto final de una vía inhibe (generalmente alostéricamente) la primera enzima de esa vía. Mecanismo de ahorro: se produce lo que se necesita.',theme:'met'},
+
+  // ═══ EXPANSIÓN P1 — Fotosíntesis y Respiración Celular (ene) ═══
+  {q:'Los fotosistemas I (PSI) y II (PSII) difieren en que:',ops:['A) Solo el PSI existe en las plantas verdes','B) El PSII absorbe luz a ~680 nm y sus electrones se transfieren a la cadena de transporte; el PSI absorbe a ~700 nm y reduce NADP⁺ a NADPH','C) Solo el PSII produce NADPH directamente','D) El PSI está localizado en el estroma, no en tilacoides'],a:1,exp:'PSII (P680) → cadena de transporte (síntesis de ATP) → PSI (P700) → reduce NADP⁺ a NADPH. El PSII es donde se fotoliza el agua y se libera O₂.',theme:'ene'},
+  {q:'¿Cuál es la fuente de electrones en la fotosíntesis oxigénica de las plantas?',ops:['A) CO₂ del ambiente','B) NADPH del ciclo de Calvin','C) El agua (H₂O), que se fotoliza en el PSII','D) La glucosa almacenada'],a:2,exp:'La fotólisis del agua: 2H₂O → 4H⁺ + 4e⁻ + O₂. Los electrones reemplazan los que perdió el PSII al absorber luz. El O₂ es subproducto de esta reacción.',theme:'ene'},
+  {q:'¿Cuántas moléculas de CO₂ se fijan en cada vuelta del ciclo de Calvin?',ops:['A) 6','B) 3','C) 1','D) 2'],a:2,exp:'En cada vuelta del ciclo de Calvin, Rubisco fija 1 CO₂ a RuBP (5C), generando 2 moléculas de 3-PGA (3C). Para producir 1 G3P neto se necesitan 3 vueltas.',theme:'ene'},
+  {q:'La ATP sintasa genera ATP porque:',ops:['A) Usa glucosa directamente como sustrato','B) Los protones (H⁺) fluyen a través de ella a favor de gradiente, haciendo girar el eje y acoplando la síntesis de ATP','C) Oxida NADH directamente sin gradiente','D) Absorbe luz solar para activarse'],a:1,exp:'Quimiósmosis (Mitchell): el flujo de H⁺ a través de la ATP sintasa (de espacio intermembrana a la matriz) hace girar el complejo F₀, que acciona la síntesis de ATP en el complejo F₁.',theme:'ene'},
+  {q:'El piruvato se convierte en acetil-CoA mediante:',ops:['A) La glucólisis en el citoplasma','B) La fermentación en ausencia de O₂','C) La descarboxilación oxidativa por el complejo piruvato deshidrogenasa en la matriz mitocondrial','D) El ciclo de Calvin en el estroma del cloroplasto'],a:2,exp:'La descarboxilación oxidativa: piruvato + CoA + NAD⁺ → acetil-CoA + CO₂ + NADH. Este complejo enzimático está en la matriz y conecta la glucólisis con el ciclo de Krebs.',theme:'ene'},
+  {q:'Las plantas C4 reducen la fotorrespiración porque:',ops:['A) Tienen menos cantidad de la enzima Rubisco','B) Fijan CO₂ en células del mesófilo con PEP carboxilasa y lo concentran en las células de la vaina del haz donde está Rubisco','C) No realizan el ciclo de Calvin','D) Realizan fotosíntesis solo de noche cuando hace frío'],a:1,exp:'C4 (maíz, caña de azúcar): PEP carboxilasa (alta afinidad por CO₂) fija CO₂ en mesófilo → se transporta como C4 a la vaina → se libera CO₂ concentrado cerca de Rubisco → mínima fotorrespiración.',theme:'ene'},
+  {q:'En la fermentación láctica, el piruvato se convierte en lactato para:',ops:['A) Producir ATP adicional directamente','B) Regenerar NAD⁺ a partir de NADH y permitir que la glucólisis continúe','C) Enviar señales al núcleo celular','D) Neutralizar ácidos en el medio extracelular'],a:1,exp:'La fermentación no produce ATP extra. Regenera NAD⁺ (oxidando NADH → lactato) para que la glucólisis siga produciendo 2 ATP/glucosa en ausencia de O₂.',theme:'ene'},
+  {q:'¿Cuántos ATP netos produce la glucólisis completa de una molécula de glucosa?',ops:['A) 36-38 ATP (rendimiento total de la respiración)','B) 4 ATP (bruto)','C) 2 ATP (neto: 4 producidos menos 2 invertidos)','D) 0 ATP'],a:2,exp:'Glucólisis: se invierten 2 ATP (fase preparatoria) y se producen 4 ATP (fase de ganancia) → 2 ATP neto. El gran rendimiento (30-34 ATP más) viene de la cadena de transporte.',theme:'ene'},
+  {q:'¿Qué produce el ciclo de Krebs por cada vuelta (por cada acetil-CoA oxidado)?',ops:['A) 16 ATP directamente','B) 2 CO₂, 3 NADH, 1 FADH₂ y 1 GTP','C) Solo glucosa regenerada','D) 6 NADH y 6 CO₂ por vuelta'],a:1,exp:'Por vuelta del ciclo: 2 CO₂ (liberados), 3 NADH, 1 FADH₂, 1 GTP. El NADH y FADH₂ se oxidan en la cadena de transporte → la mayoría del ATP celular.',theme:'ene'},
+  {q:'¿Dónde se localizan los complejos proteicos de la cadena de transporte de electrones en la mitocondria?',ops:['A) En la matriz mitocondrial','B) En la membrana externa','C) En la membrana interna (crestas mitocondriales)','D) En el espacio intermembrana'],a:2,exp:'Los complejos I, II, III y IV están embebidos en la membrana interna mitocondrial. Aquí bombean H⁺ hacia el espacio intermembrana, generando el gradiente para la ATP sintasa.',theme:'ene'},
+  {q:'Las plantas CAM (como los cactus y agaves) fijan el CO₂:',ops:['A) Solo de día con estomas abiertos','B) De noche con estomas abiertos (CO₂ → ácidos orgánicos) y lo usan en el ciclo de Calvin de día con estomas cerrados','C) Sin necesidad de estomas','D) En el agua subterránea que absorben'],a:1,exp:'CAM (metabolismo ácido de las crasuláceas): apertura de estomas de noche para evitar desecación. Fijan CO₂ en ácidos (malato). De día, cierran estomas y liberan CO₂ al ciclo de Calvin.',theme:'ene'}
 ]
 
 // ═══════════════════════════════════════════════════════════
@@ -12952,7 +12915,220 @@ const EXAM_P3_BANK = [
     f:'Ecosistema = organismos + medio físico + interacciones. La biósfera es el conjunto de todos los ecosistemas.' },
   { q:'La capacidad de carga de un ambiente se refiere a:', theme:'eco',
     o:['El número máximo de individuos de una especie que el ambiente puede sostener establemente','La cantidad de luz que recibe','El número total de especies','El peso total de biomasa'], a:0,
-    f:'La capacidad de carga (K) es el límite poblacional sostenible determinado por recursos disponibles.' }
+    f:'La capacidad de carga (K) es el límite poblacional sostenible determinado por recursos disponibles.' },
+
+  // ═══ EXPANSIÓN P3 — Origen de la vida (ori) ═══
+  { q:'¿Qué son las protocélulas en el contexto del origen de la vida?', theme:'ori',
+    o:['Bacterias primitivas completas con metabolismo','Estructuras prebióticas: vesículas lipídicas con moléculas autorreplicantes que podrían crecer y dividirse','Virus primitivos sin cápside','Cianobacterias ancestrales del mar primitivo'], a:1,
+    f:'Las protocélulas son el paso previo a la primera célula viva: vesículas de lípidos que encapsulan ARN o moléculas similares. Modelos experimentales existen.' },
+  { q:'La atmósfera primitiva de la Tierra era diferente a la actual principalmente porque:', theme:'ori',
+    o:['Tenía más oxígeno (30%) y menos nitrógeno','Era reductora: contenía N₂, CO₂, CH₄, NH₃ y muy poco O₂','Solo tenía vapor de agua y argón inerte','Tenía abundante O₃ (ozono) desde el principio'], a:1,
+    f:'La atmósfera primitiva era reductora (sin O₂ libre). El O₂ atmosférico apareció tras la Gran Oxidación (~2.4 Ga) causada por las cianobacterias.' },
+  { q:'¿Cuál es la evidencia más directa de que las mitocondrias tienen origen en una bacteria?', theme:'ori',
+    o:['Tienen membrana','Tienen ADN circular propio, ribosomas 70S y se reproducen por fisión binaria','Son pequeñas','Producen ATP como las bacterias'], a:1,
+    f:'Evidencias de la teoría endosimbiótica: ADN circular, ribosomas 70S, antibióticos que inhiben sus ribosomas, reproducción por fisión binaria, doble membrana.' },
+  { q:'¿Qué es un ribozima y por qué es relevante para la hipótesis del mundo de ARN?', theme:'ori',
+    o:['Una enzima que degrada ARN (ARNasa)','Una bacteria extremófila que usa ARN como fuente de energía','Una molécula de ARN con actividad catalítica que puede funcionar como enzima','Un virus de ARN de doble cadena'], a:2,
+    f:'Los ribozimas (ARN catalítico) demuestran que el ARN puede almacenar información Y catalizar reacciones → el ARN pudo preceder al sistema ADN-proteína.' },
+  { q:'La "Gran Oxidación" atmosférica (~2.4 Ga) fue producida por:', theme:'ori',
+    o:['Erupciones volcánicas masivas de O₂','La fotosíntesis oxigénica de las cianobacterias','El meteorito que extinguió a los dinosaurios','El origen de los organismos eucariotas'], a:1,
+    f:'Las cianobacterias acumularon O₂ por fotosíntesis. Este O₂ fue inicialmente tóxico para los anaerobios existentes y remodeló completamente la biosfera.' },
+  { q:'¿Cuál experimento demostró que el ADN (no las proteínas) es el material hereditario?', theme:'ori',
+    o:['Miller y Urey (1953)','Meselson y Stahl (1958)','Avery, MacLeod y McCarty (1944): transformación bacteriana','Watson y Crick (1953)'], a:2,
+    f:'Avery et al. usaron cepas bacterianas y mostraron que solo el ADN (no ARN ni proteínas) transfería el rasgo de virulencia de cepa a cepa.' },
+  { q:'¿Por qué el origen de la vida requería ausencia de O₂ atmosférico?', theme:'ori',
+    o:['El O₂ sería muy beneficioso para las primeras células','El O₂ destruiría por oxidación las moléculas orgánicas antes de que pudieran ensamblarse','El O₂ aún no había sido creado en el universo','El O₂ no reacciona con las moléculas orgánicas simples'], a:1,
+    f:'El O₂ es un potente oxidante: habría destruido las moléculas orgánicas que se estaban formando abiótiamente. La atmósfera reductora fue condición necesaria.' },
+  { q:'La teoría endosimbiótica en serie propone que:', theme:'ori',
+    o:['Las dos simbiosis (mitocondria y cloroplasto) ocurrieron simultáneamente','Primero se engulló una alfaproteobacteria (→ mitocondria) y después una cianobacteria (→ cloroplasto)','Las arqueas engullieron virus para obtener organelos','El cloroplasto se formó antes que la mitocondria'], a:1,
+    f:'Margulis: primer evento → mitocondria (presente en TODAS las eucariotas). Segundo evento → cloroplasto (solo en eucariotas fotosintéticas: algas y plantas).' },
+  { q:'Los primeros seres vivos en la Tierra obtenían energía principalmente de:', theme:'ori',
+    o:['La luz solar por fotosíntesis oxigénica','Moléculas orgánicas abióticas del ambiente (quimio-heterotrofía anaerobia)','La quimiosíntesis de compuestos de azufre','La respiración aerobia con O₂'], a:1,
+    f:'Los primeros organismos eran heterótrofos anaerobios que consumían moléculas orgánicas ya presentes en el "caldo primordial". La fotosíntesis y respiración aerobia evolucionaron después.' },
+  { q:'¿Cuál fue la contribución de Pasteur al estudio del origen de la vida?', theme:'ori',
+    o:['Propuso la síntesis abiótica de aminoácidos','Demostró con el frasco cuello de cisne que los microbios no surgen espontáneamente','Descubrió el ARN catalítico (ribozima)','Propuso la teoría endosimbiótica'], a:1,
+    f:'Pasteur refutó definitivamente la generación espontánea con su experimento del frasco cuello de cisne (1859): el caldo se pudría solo cuando el cuello recto permitía entrada de microorganismos.' },
+
+  // ═══ EXPANSIÓN P3 — Sistemática y Taxonomía (dom) ═══
+  { q:'¿Cuál es la diferencia entre taxonomía y sistemática?', theme:'dom',
+    o:['Son sinónimos exactos','Taxonomía nombra, describe y clasifica; sistemática incluye eso más la reconstrucción de relaciones evolutivas (filogenia)','Solo la sistemática clasifica organismos','La taxonomía solo estudia organismos fósiles'], a:1,
+    f:'Taxonomía: nomenclatura y clasificación. Sistemática: disciplina más amplia que reconstruye la historia evolutiva y produce clasificaciones que reflejan filogenias.' },
+  { q:'¿Qué información usa la sistemática filogenómica moderna para clasificar?', theme:'dom',
+    o:['Solo morfología externa','Solo el registro fósil','Morfología, bioquímica, secuencias de ADN/ARN y datos de comportamiento integrados','Solo el hábitat del organismo'], a:2,
+    f:'La sistemática moderna (filogenómica) integra morfología con secuencias moleculares (ARNr 16S/18S, genes de proteínas conservadas) para inferir filogenias con métodos estadísticos (Bayesiano, máxima verosimilitud).' },
+  { q:'¿Qué es un grupo parafilético?', theme:'dom',
+    o:['Un ancestro y TODOS sus descendientes (clado completo)','Un ancestro y ALGUNOS de sus descendientes (excluye algunos linajes)','Organismos sin ninguna relación evolutiva entre sí','Organismos que comparten el mismo hábitat'], a:1,
+    f:'Parafilético: incluye el ancestro y parte de sus descendientes pero excluye otros. Ej: "reptiles" excluye a las aves, que también son reptiles. No es un grupo válido en cladística.' },
+  { q:'¿Por qué se prefieren los grupos monofiléticos (clados) en la clasificación biológica moderna?', theme:'dom',
+    o:['Son más fáciles de nombrar','Son más grandes y tienen más especies','Reflejan relaciones evolutivas reales (ancestro + TODOS sus descendientes)','Son más antiguos que los grupos parafiléticos'], a:2,
+    f:'Los clados reflejan la historia evolutiva: todo lo que desciende de un ancestro común está incluido. Los sistemas cladísticos modernos intentan que todos los taxones reconocidos sean monofiléticos.' },
+  { q:'¿Cuál organismo pertenece al dominio Archaea?', theme:'dom',
+    o:['Escherichia coli (bacteria intestinal)','Methanobacterium (produce metano en ambientes anaerobios)','Saccharomyces cerevisiae (levadura de pan)','Plasmodium falciparum (causa malaria)'], a:1,
+    f:'Las metanógenas son Archaea que producen CH₄ en ambientes anaerobios (intestino, pantanos). E. coli es Bacteria. Levadura y Plasmodium son Eukarya.' },
+  { q:'La nomenclatura binomial de Linneo usa como idioma base:', theme:'dom',
+    o:['Griego moderno','Inglés del siglo XVIII','Latín científico (o palabras latinizadas)','Francés académico'], a:2,
+    f:'Linneo eligió el latín por ser la lengua académica universal del siglo XVIII. Hoy se mantiene por convenio internacional: ICZN (animales), ICN (plantas), ICNB (bacterias).' },
+  { q:'¿Qué nos indica el reloj molecular en sistemática?', theme:'dom',
+    o:['La temperatura del ambiente donde vivieron los ancestros','La velocidad de crecimiento de los fósiles','Tasas de mutación acumuladas que permiten estimar cuándo divergieron dos linajes','El número de genes compartidos entre dos especies'], a:2,
+    f:'Reloj molecular: asumiendo tasa de mutación relativamente constante en ciertos genes, el número de diferencias entre dos secuencias permite estimar el tiempo de divergencia.' },
+  { q:'¿Por qué "peces" no es un clado válido desde la perspectiva cladística?', theme:'dom',
+    o:['Porque son muy diversos morfológicamente','Porque los tetrápodos (incluidos humanos) también descienden del mismo ancestro "pez"','Porque no comparten exactamente la misma morfología','Porque son organismos muy primitivos'], a:1,
+    f:'Un clado debe incluir a TODOS los descendientes de un ancestro. Los "peces" excluyen a los tetrápodos, que también son peces modificados → grupo parafilético, inválido en cladística.' },
+  { q:'¿En qué dominio de la vida se colocan organismos con núcleo verdadero y organelos membranosos?', theme:'dom',
+    o:['Bacteria','Archaea','Eukarya','Virus (no pertenecen a ningún dominio)'], a:2,
+    f:'Eukarya: núcleo con envoltura nuclear, organelos membranosos (mitocondria, RE, Golgi), cromosomas lineales. Incluye protistas, hongos, plantas y animales.' },
+  { q:'¿Cuántos reinos reconoce el sistema de seis reinos más usado en biología universitaria?', theme:'dom',
+    o:['2 reinos (Prokaryota y Eukaryota)','4 reinos (Monera, Protista, Plantae, Animalia)','6 reinos (Bacteria, Archaea, Protista, Fungi, Plantae, Animalia)','Solo 1 reino (Regnum Naturae)'], a:2,
+    f:'El sistema de 6 reinos: Bacteria, Archaea (procariotas) y Protista, Fungi, Plantae, Animalia (eucariotas). Hay propuestas más recientes basadas en filogenómica.' },
+
+  // ═══ EXPANSIÓN P3 — Virus, Priones y Procariotas (virpro) ═══
+  { q:'¿Cuáles son los componentes esenciales de un virus simple (virión)?', theme:'virpro',
+    o:['Membrana plasmática y ADN circular','Material genético (ADN o ARN, nunca ambos) y cápside proteica','Ribosomas y material genético circular','Membrana y flagelo bacteriano'], a:1,
+    f:'Virus = ácido nucleico (ADN o ARN, pero nunca los dos a la vez) + cápside proteica. Los virus envueltos también tienen membrana lipídica del hospedador.' },
+  { q:'Un retrovirus como el VIH se caracteriza por:', theme:'virpro',
+    o:['Tener ADN de doble cadena','Usar la transcriptasa inversa para copiar su ARN en ADN e integrarlo al genoma del hospedador','Replicarse en el citoplasma sin integrarse','Ser resistente a todos los antirretrovirales'], a:1,
+    f:'Retrovirus: ARN → ADN (por transcriptasa inversa) → se integra al cromosoma como provirus → se replica con la célula. El VIH infecta células T CD4⁺.' },
+  { q:'La lisogenia viral implica que:', theme:'virpro',
+    o:['El virus destruye inmediatamente a la célula hospedadora','El genoma viral se integra en el cromosoma del hospedador y se replica con él (ciclo latente)','El virus ataca únicamente a plantas','El virus no tiene material genético cuando está latente'], a:1,
+    f:'Ciclo lisogénico: ADN viral (profago) se integra → se replica con la bacteria. Puede activarse → ciclo lítico (replica el virus y lisa la célula). El VIH en células humanas sigue este principio.' },
+  { q:'¿Por qué los antibióticos no son eficaces contra infecciones virales?', theme:'virpro',
+    o:['Porque los virus son demasiado grandes para ser afectados','Porque los virus no tienen pared de peptidoglicano, ribosomas 70S ni metabolismo propio que atacar','Porque el sistema inmune neutraliza los antibióticos','Porque los virus viven exclusivamente en el núcleo celular'], a:1,
+    f:'Los antibióticos atacan estructuras exclusivamente bacterianas (pared celular, ribosoma 70S, ADN girasa). Los virus usan la maquinaria del hospedador → necesitan antivirales específicos.' },
+  { q:'La transformación bacteriana involucra:', theme:'virpro',
+    o:['Un bacteriófago como vector intermediario','Pilus sexual y contacto directo entre células','Captación de ADN libre del ambiente por la bacteria','División binaria con intercambio de material'], a:2,
+    f:'Transformación: la bacteria capta ADN libre del medio. Base de la biotecnología moderna (introducción de plásmidos). Avery demostró que el ADN (no proteínas) transforma bacterias.' },
+  { q:'¿Cuál estructura bacteriana protege contra el sistema inmune del hospedador y contribuye a la formación de biofilms?', theme:'virpro',
+    o:['Endospora','Flagelo','Cápsula polisacarídica y fimbrias','Ribosoma 70S'], a:2,
+    f:'La cápsula polisacarídica protege de la fagocitosis (los macrófagos no pueden engullir bien a la bacteria encapsulada). Las fimbrias permiten adherirse. Los biofilms son más resistentes a antibióticos.' },
+  { q:'¿Por qué las Archaea termófilas extremas pueden sobrevivir a temperaturas superiores a 80°C?', theme:'virpro',
+    o:['Tienen pared de peptidoglicano más gruesa','Sus proteínas y lípidos de membrana con enlace éter están adaptados para funcionar a altas temperaturas','Tienen más mitocondrias que generan calor','Producen más ATP para compensar el daño térmico'], a:1,
+    f:'Archaea termófilas (Thermus aquaticus, Pyrolobus fumarii): lípidos con enlace éter más termoestables, proteínas con más aminoácidos hidrofóbicos e iones estabilizadores. La Taq polimerasa viene de ellas.' },
+  { q:'¿Cuál es el rol fundamental de las bacterias en el ciclo biogeoquímico del nitrógeno?', theme:'virpro',
+    o:['Solo son descomponedoras de materia orgánica','Fijación de N₂ atmosférico, nitrificación y desnitrificación — procesos esenciales para la vida','Producen O₂ por fotosíntesis en el suelo','Solo causan enfermedades sin beneficio ecológico'], a:1,
+    f:'Ciclo del N: fijadoras (Rhizobium) → NH₃. Nitrificantes → NO₃⁻. Desnitrificantes → N₂ devuelto a la atmósfera. Sin bacterias, el nitrógeno quedaría inaccesible para la biosfera.' },
+  { q:'¿Cuál es la diferencia entre un virus ARN de sentido positivo y uno de sentido negativo?', theme:'virpro',
+    o:['Su tamaño físico','Los de sentido positivo pueden ser traducidos directamente por los ribosomas del hospedador; los de sentido negativo necesitan ARN polimerasa viral primero','Su hospedador específico','Su forma icosaédrica vs helicoidal'], a:1,
+    f:'ARN(+): actúa directamente como ARNm → traducción inmediata. ARN(−): complementario al ARNm → la ARN polimerasa dependiente de ARN viral debe hacer el ARN(+) primero.' },
+  { q:'¿Qué estructura bacteriana permite adherirse a células hospedadoras y es el órgano de la conjugación?', theme:'virpro',
+    o:['Endospora','Pili (pilus): fimbrias largas especializadas','Flagelo polar','Cápsula de polisacárido'], a:1,
+    f:'Los pili (pilus F o pilus sexual) se extienden hacia otra bacteria y forman el tubo para transferir el plásmido F durante la conjugación. Las fimbrias cortas son para adherencia general.' },
+  { q:'La tinción de Gram permite distinguir dos grupos bacterianos porque:', theme:'virpro',
+    o:['La edad de la bacteria afecta su color','Las gram+ tienen pared gruesa de peptidoglicano que retiene el cristal violeta; las gram− tienen pared delgada más membrana externa que la pierde','Solo las gram− tienen flagelos','Las gram+ son siempre patógenas y las gram− no'], a:1,
+    f:'Gram+: capa gruesa de peptidoglicano retiene cristal violeta → azul/púrpura. Gram−: peptidoglicano delgado + membrana externa → pierde cristal violeta → rosa/rojo (safranina).' },
+  { q:'¿Cuál de los siguientes NO es una característica de los virus?', theme:'virpro',
+    o:['Son acelulares (sin estructura celular)','Contienen ADN o ARN (nunca ambos)','Realizan su propio metabolismo de forma independiente','Son parásitos intracelulares obligados'], a:2,
+    f:'Los virus NO tienen metabolismo propio: no realizan glucólisis, respiración ni biosíntesis por sí solos. Dependen completamente de la maquinaria metabólica del hospedador.' },
+
+  // ═══ EXPANSIÓN P3 — Eucariotas: Protistas, Plantas, Hongos (euk) ═══
+  { q:'¿Por qué "Protista" no es un clado válido en la clasificación moderna?', theme:'euk',
+    o:['Porque son muy pequeños','Porque es un grupo parafilético (no incluye a todos los descendientes del ancestro eucariota común)','Porque solo incluye organismos unicelulares','Porque no realizan fotosíntesis'], a:1,
+    f:'Protista es un grupo de conveniencia (parafilético): los eucariotas que no son plantas, hongos ni animales. Las algas verdes están más cerca de las plantas que de las amebas.' },
+  { q:'¿Por qué los helechos aún dependen del agua libre para reproducirse?', theme:'euk',
+    o:['Porque sus esporas necesitan sumergirse en agua para germinar','Porque sus anterozoides flagelados deben nadar por una película de agua hasta el arquegonio para fertilizar','Porque no tienen tejido vascular para conducir el agua','Porque sus semillas son acuáticas'], a:1,
+    f:'Las pteridofitas tienen generación sexual que requiere agua libre: los anterozoides (gametos masculinos móviles) nadan hasta el arquegonio. Por eso prosperan en ambientes húmedos.' },
+  { q:'¿Cuál fue la innovación clave que permitió a las angiospermas dominar la flora terrestre?', theme:'euk',
+    o:['Ser más grandes que las gimnospermas','La doble fertilización (produce endospermo nutritivo) y la flor que coevolucionó con polinizadores','Tener esporas más resistentes a la sequía','Reproducirse solo por viento (polinización anemófila)'], a:1,
+    f:'Flor → atrae polinizadores → dispersión génica eficiente. Doble fertilización → endospermo (3n) nutritivo para el embrión. Fruto → protege y dispersa semillas. Combinación ganadora.' },
+  { q:'Los hongos Ascomycota incluyen organismos de gran importancia en biotecnología:', theme:'euk',
+    o:['Solo hongos venenosos de sombrero grande','Levaduras (Saccharomyces), mohos (Penicillium, Aspergillus), trufas y cornezuelo del centeno','Solo hongos de la roya de cereales','Todos los líquenes sin excepción'], a:1,
+    f:'Ascomycota es el filo más diverso de hongos. Saccharomyces: fermentación (cerveza, vino, pan). Penicillium: penicilina. Aspergillus: salsa de soya, ácido cítrico. Morchella: trufa negra.' },
+  { q:'¿Cuál alga produce aproximadamente el 50% del oxígeno que respiramos?', theme:'euk',
+    o:['Las algas kelp gigantes de los mares fríos','El fitoplancton oceánico (diatomeas, dinoflagelados y cianobacterias)','Las plantas terrestres en combinación con musgos','Los cloroplastos libres en el suelo'], a:1,
+    f:'El fitoplancton marino (especialmente diatomeas y cianobacterias) es responsable de ~50% de la fotosíntesis global. Las selvas tropicales aportan otro porcentaje significativo en tierra.' },
+  { q:'¿Cuál grupo de protistas incluye el agente causal de la malaria?', theme:'euk',
+    o:['Diatomeas (bacillariofitas)','Amebas de vida libre','Apicomplexa (Plasmodium)','Kinetoplástidos (Trypanosoma)'], a:2,
+    f:'Plasmodium (apicomplejo) causa la malaria. Los apicomplejos tienen un complejo apical especializado para invadir células hospedadoras. Toxoplasma y Cryptosporidium también pertenecen a este grupo.' },
+  { q:'¿Cuál es la diferencia entre esporofito y gametofito en la alternancia de generaciones?', theme:'euk',
+    o:['Son la misma generación con diferente nombre','El esporofito (2n) produce esporas por meiosis; el gametofito (n) produce gametos por mitosis','El esporofito produce gametos y el gametofito produce esporas','Ambos son haploides (n)'], a:1,
+    f:'Alternancia de generaciones: esporofito 2n → meiosis → esporas n → gametofito n → mitosis → gametos n → fecundación → cigoto 2n → esporofito 2n.' },
+  { q:'¿Cuál hongo es esencial para la producción de cerveza, vino y pan leudado?', theme:'euk',
+    o:['Aspergillus niger','Penicillium chrysogenum','Saccharomyces cerevisiae','Amanita muscaria'], a:2,
+    f:'Saccharomyces cerevisiae (ascomiceto): fermentación alcohólica → glucosa → etanol + CO₂. El CO₂ hace subir el pan; el etanol queda en las bebidas. Una de las especies más útiles para la humanidad.' },
+  { q:'¿Cuál es la principal diferencia nutricional entre los hongos y las plantas?', theme:'euk',
+    o:['Los hongos realizan fotosíntesis como las plantas','Los hongos son heterótrofos por absorción; las plantas son autótrofas por fotosíntesis','Los hongos son autótrofos quimiosintéticos','No hay diferencia nutricional entre ambos'], a:1,
+    f:'Plantas: autótrofas (luz + CO₂ → glucosa). Hongos: heterótrofos por absorción (secretan enzimas → absorben nutrientes digeridos del entorno). Ambos tienen pared celular pero diferente (celulosa vs quitina).' },
+  { q:'¿Por qué las briofitas (musgos) generalmente son pequeñas y crecen en ambientes húmedos?', theme:'euk',
+    o:['No tienen clorofila funcional','Carecen de tejidos vasculares y necesitan agua libre para la fertilización de sus gametos','Son parásitas de otras plantas','Sus esporas son demasiado pesadas para dispersarse'], a:1,
+    f:'Sin xilema ni floema, el agua se mueve por difusión y capilaridad → tamaño limitado. Los anterozoides flagelados necesitan agua libre para llegar al arquegonio → dependen de ambientes húmedos.' },
+  { q:'La doble fertilización en angiospermas produce:', theme:'euk',
+    o:['Dos embriones idénticos (2n cada uno)','Un embrión (2n) más endospermo (3n) nutritivo','Solo el embrión, sin tejido de reserva','Un cigoto haploide y un endospermo diploide'], a:1,
+    f:'Doble fertilización exclusiva de angiospermas: 1er espermatozoide + óvulo → embrión (2n). 2do espermatozoide + 2 núcleos polares (n+n) → endospermo (3n). El endospermo alimenta al embrión.' },
+
+  // ═══ EXPANSIÓN P3 — Animales (ani) ═══
+  { q:'¿Cuáles son los cuatro rasgos diagnósticos de los cordados (presentes en alguna etapa)?', theme:'ani',
+    o:['Columna vertebral, cabeza diferenciada, extremidades y endotermia','Notocorda, cordón nervioso dorsal hueco, hendiduras faríngeas y cola postanal','Solo la columna vertebral de los vertebrados','Tres capas germinativas, celoma y segmentación'], a:1,
+    f:'Los 4 rasgos de Chordata: notocorda (soporte), cordón nervioso dorsal hueco, hendiduras faríngeas (en embriones humanos se convierten en otras estructuras) y cola postanal en alguna etapa.' },
+  { q:'¿Qué diferencia a los mamíferos monotremas del resto de los mamíferos?', theme:'ani',
+    o:['Los monotremas no tienen pelo ni glándulas mamarias','Los monotremas ponen huevos (ovíparos) aunque sí tienen pelo y glándulas mamarias','Los monotremas no tienen sangre caliente','Los monotremas son marsupiales australianos'], a:1,
+    f:'Monotremas (ornitorrinco, equidna): únicos mamíferos ovíparos. Tienen pelo, leche (pero sin pezones verdaderos) y termorregulación. Son el grupo más basal de mamíferos vivos.' },
+  { q:'¿Cuál filo animal es el más diverso en número de especies conocidas?', theme:'ani',
+    o:['Chordata (vertebrados e invertebrados)','Annelida (gusanos segmentados)','Arthropoda (artrópodos)','Mollusca (moluscos)'], a:2,
+    f:'Arthropoda tiene más de 1 millón de especies descritas. Solo los insectos representan ~75% de todas las especies animales. Su exoesqueleto de quitina y apéndices articulados son sus rasgos diagnósticos.' },
+  { q:'Los equinodermos son evolutivamente importantes porque:', theme:'ani',
+    o:['Son los animales más primitivos sin celoma','Son deuterostomados y los únicos invertebrados con simetría radial secundaria, emparentados con los cordados','Son articulados como los artrópodos','Son los organismos marinos más abundantes'], a:1,
+    f:'Los equinodermos son deuterostomados (comparten desarrollo embrionario con cordados). Tienen simetría radial secundaria (de larva bilateral) y sistema ambulacral hidráulico.' },
+  { q:'¿Cuál fue la innovación evolutiva clave que permitió a los amniotas colonizar completamente el medio terrestre?', theme:'ani',
+    o:['El desarrollo de pulmones eficientes','El origen de las cuatro extremidades (tetrápodos)','El huevo amniota (con amnios, corion, alantoides y saco vitelino) que no necesita agua externa','El origen de la endotermia'], a:2,
+    f:'El huevo amniota: membranas extraembrionarias protegen el embrión de la desecación, permiten intercambio gaseoso y aportan nutrientes. Emancipación total del agua para la reproducción.' },
+  { q:'¿Cuál es la diferencia entre metamorfosis completa (holometábola) e incompleta (hemimetábola)?', theme:'ani',
+    o:['Son términos sinónimos sin diferencia real','Completa: huevo→larva→pupa→adulto; Incompleta: huevo→ninfa→adulto (sin estadio de pupa)','Incompleta tiene más estadios de desarrollo','Completa no tiene estadio de larva'], a:1,
+    f:'Holometábola (mariposas, moscas, escarabajos): larva diferente al adulto, reorganización en pupa. Hemimetábola (saltamontes, cucarachas): ninfas parecidas al adulto, solo crecen y desarrollan alas.' },
+  { q:'¿Cuál fue la innovación clave que permitió a los vertebrados diversificarse como depredadores activos eficientes?', theme:'ani',
+    o:['El desarrollo de pulmones','El origen de las extremidades con dígitos','La aparición de mandíbulas (gnatóstomos)','El origen de la endotermia'], a:2,
+    f:'Las mandíbulas (derivadas de arcos branquiales) permitieron atrapar y procesar presas grandes → radiación adaptativa masiva. Los agnatos (lampreas) sin mandíbula son filtradores o parásitos.' },
+  { q:'¿Qué diferencia a los animales ectotérmicos de los endotérmicos?', theme:'ani',
+    o:['Ectotérmicos producen calor interno; endotérmicos dependen del ambiente','Ectotérmicos: temperatura corporal varía con el ambiente. Endotérmicos (aves, mamíferos): regulan temperatura internamente','Son sinónimos para "sangre fría" y "sangre caliente"','Los ectotérmicos son siempre acuáticos'], a:1,
+    f:'Ectotérmicos: dependen del calor externo (más eficientes energéticamente). Endotérmicos: gastan mucha energía manteniendo temperatura constante, pero pueden ser activos en ambientes fríos.' },
+  { q:'¿Cuáles animales tienen sistema circulatorio ABIERTO?', theme:'ani',
+    o:['Mamíferos y aves (todos los vertebrados)','Artrópodos y moluscos (excepto cefalópodos como pulpos y calamares)','Solo los peces cartilaginosos','Todos los invertebrados sin excepción'], a:1,
+    f:'Sistema circulatorio abierto: la hemolinfa baña directamente los órganos en senos (hemocele). Artrópodos (insectos, crustáceos) y moluscos (excepto cefalópodos que tienen sistema cerrado).' },
+  { q:'¿Cuál es el rasgo diagnóstico del filo Cnidaria que lo distingue de todos los demás animales?', theme:'ani',
+    o:['Poseer celoma verdadero','Tener célula urticante especializada: el cnidocito con nematocistos','Ser deuterostomados','Tener simetría bilateral'], a:1,
+    f:'Los cnidocitos (con nematocistos) son exclusivos de los cnidarios. Disparan filamentos urticantes para capturar presas y defenderse. Medusas, anémonas, corales e hidras tienen cnidocitos.' },
+  { q:'¿Qué son los protóstomos y en qué se diferencian de los deuteróstomos?', theme:'ani',
+    o:['Protóstomos son los más modernos; deuteróstomos los más primitivos','En protóstomos el blastoporo se convierte en boca; en deuteróstomos el blastoporo se convierte en ano','Son sinónimos en embriología animal','La diferencia es solo en el número de capas germinativas'], a:1,
+    f:'Protóstomos (moluscos, anélidos, artrópodos): blastoporo → boca. Deuteróstomos (equinodermos, cordados): blastoporo → ano. Esta diferencia en desarrollo embrionario refleja linajes evolutivos distintos.' },
+  { q:'¿Cuál filo animal incluye a los organismos más simples sin verdaderos tejidos diferenciados?', theme:'ani',
+    o:['Cnidaria','Platyhelminthes','Porifera (esponjas)','Nematoda'], a:2,
+    f:'Las esponjas (Porifera) son los animales más basales: sin simetría definida, sin tejidos verdaderos, sin órganos. Sus células son relativamente autónomas y totipotentes.' },
+
+  // ═══ EXPANSIÓN P3 — Ecología (eco) ═══
+  { q:'¿Cuál es la diferencia entre cadena alimentaria y red trófica?', theme:'eco',
+    o:['Son sinónimos exactos sin diferencia','La cadena es una secuencia lineal (A→B→C); la red conecta múltiples cadenas en un patrón complejo de alimentación','La red solo incluye productores y descomponedores','La cadena incluye los factores abióticos del ecosistema'], a:1,
+    f:'Las cadenas alimentarias reales casi no existen: cada especie tiene múltiples presas y depredadores. La red trófica es la representación realista de las relaciones de alimentación en un ecosistema.' },
+  { q:'El nicho ecológico de una especie incluye:', theme:'eco',
+    o:['Solo el lugar físico donde vive (hábitat)','Solo la dieta del organismo','El rol funcional completo: qué come, qué lo come, cuándo está activo, sus tolerancias abióticas y cómo afecta el ambiente','El territorio que defiende activamente'], a:2,
+    f:'Nicho (Hutchinson): espacio multidimensional de condiciones y recursos que usa una especie. Hábitat es el lugar; nicho es el "oficio". Dos especies no pueden compartir exactamente el mismo nicho (exclusión competitiva).' },
+  { q:'¿Qué es la sucesión primaria en ecología?', theme:'eco',
+    o:['La sustitución de una comunidad madura por una más joven','El establecimiento gradual de comunidades en sustrato desnudo sin vida previa (roca, lava, glaciar retirado)','El cambio estacional de especies en un bosque','La recolonización de un ecosistema después de un incendio'], a:1,
+    f:'Sucesión primaria: comienza en sustrato sin suelo ni vida previa. Los líquenes pioneros atacan la roca, inician la formación de suelo, y permiten la llegada de musgos, luego herbáceas, arbustos, y finalmente bosque.' },
+  { q:'La relación entre tiburón y pez rémora (el rémora recoge restos sin dañar al tiburón) es:', theme:'eco',
+    o:['Mutualismo (+/+)','Parasitismo (+/−)','Comensalismo (+/0)','Depredación (+/−) con control de la presa'], a:2,
+    f:'Comensalismo: el rémora se beneficia (+, obtiene alimento y transporte), el tiburón ni se beneficia ni se perjudica (0). Mutualismo sería si el tiburón también obtuviera beneficio.' },
+  { q:'¿Cuál es la eficiencia trófica aproximada entre niveles de una cadena alimentaria?', theme:'eco',
+    o:['100% (la energía se conserva perfectamente)','50% (la mitad se transfiere)','10% (solo el 10% de la energía pasa al nivel siguiente)','1% (casi toda la energía se pierde)'], a:2,
+    f:'Regla del 10%: el 90% de la energía se pierde como calor metabólico, heces, partes no comestibles en cada nivel. Por eso las cadenas alimentarias tienen pocas eslabones (~4-5).' },
+  { q:'¿Cuál es la diferencia entre competencia intraespecífica e interespecífica?', theme:'eco',
+    o:['Son lo mismo, solo cambia el nombre según el autor','Intraespecífica: entre individuos de la misma especie. Interespecífica: entre individuos de especies diferentes por recursos compartidos','Intraespecífica solo ocurre en depredadores tope','Interespecífica no afecta las densidades poblacionales'], a:1,
+    f:'La competencia intraespecífica puede ser más intensa porque los conespecíficos tienen idéntico nicho. La interespecífica impulsa la diferenciación de nicho para reducir la solapamiento (exclusión competitiva).' },
+  { q:'La depredación como interacción ecológica generalmente:', theme:'eco',
+    o:['Elimina siempre a las presas de un ecosistema a largo plazo','Mantiene equilibrios poblacionales y genera presiones evolutivas en ambas especies (coevolución)','Solo afecta a los herbívoros del segundo nivel trófico','No tiene ningún efecto en la evolución de las especies involucradas'], a:1,
+    f:'La depredación impulsa la coevolución: las presas desarrollan camuflaje, toxinas, velocidad; los depredadores desarrollan mejor vista, velocidad, veneno. Además regula las densidades poblacionales.' },
+  { q:'¿Qué mide el índice de diversidad de Shannon-Wiener?', theme:'eco',
+    o:['Solo el número total de individuos en un ecosistema','La diversidad de especies considerando riqueza (número) y equitatividad (distribución)','Solo el número de especies (riqueza de especies)','El tamaño promedio de las poblaciones del ecosistema'], a:1,
+    f:'Índice de Shannon (H\'): combina riqueza (número de especies) y equitatividad (distribución de individuos entre ellas). H\' alta = muchas especies bien distribuidas. H\' baja = pocas especies o dominadas por una.' },
+  { q:'¿Cuál es la diferencia entre producción primaria bruta (PPB) y neta (PPN)?', theme:'eco',
+    o:['Son iguales','PPB = total de fotosíntesis. PPN = PPB menos la energía usada en la respiración de los propios productores','Solo la PPN incluye la respiración de los consumidores','La PPB incluye la respiración de todos los organismos del ecosistema'], a:1,
+    f:'PPB: toda la energía fijada por fotosíntesis. Los productores también respiran → PPN = PPB − respiración de los productores. La PPN es la energía realmente disponible para los herbívoros.' },
+  { q:'¿Por qué los ecosistemas tropicales generalmente tienen mayor diversidad de especies?', theme:'eco',
+    o:['Solo porque están más cerca del ecuador y tienen más luz solar','Por alta productividad primaria, estabilidad climática durante millones de años, mayor área y complejidad de hábitats, y mayor tiempo evolutivo','Solo porque reciben más lluvia que cualquier otro bioma','Porque tienen menos competidores y depredadores que los biomas templados'], a:1,
+    f:'La alta diversidad tropical se explica por varias hipótesis: tiempo evolutivo largo, estabilidad climática, alta productividad, complejidad estructural (estratos de selva), y área geográfica mayor.' },
+  { q:'El mutualismo obligado (simbiosis obligada) ocurre cuando:', theme:'eco',
+    o:['Los dos organismos pueden sobrevivir perfectamente por separado','Ambos organismos han perdido la capacidad de sobrevivir independientemente el uno del otro','Solo uno de los dos organismos necesita al otro','La relación es temporal y estacional'], a:1,
+    f:'Ej: líquenes (hongo + alga/cianobacteria): el alga no puede sobrevivir en roca seca; el hongo no puede fotosintetizar. La simbiosis es obligada para ambos. También la mayoría de las micorrizas.' },
+  { q:'¿Qué es la resiliencia de un ecosistema y qué factores la aumentan?', theme:'eco',
+    o:['La capacidad de resistir cualquier perturbación sin cambiar','La velocidad y grado de recuperación tras una perturbación; la aumenta la alta biodiversidad y complejidad de la red trófica','Solo el número de especies presentes','La capacidad de producir energía rápidamente'], a:1,
+    f:'Resiliencia: capacidad de recuperarse tras una perturbación. Resistencia: capacidad de no cambiar durante la perturbación. La alta biodiversidad y redundancia funcional aumentan la resiliencia del ecosistema.' }
 ]
 
 let _examP3State = null
