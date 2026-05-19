@@ -11924,19 +11924,13 @@ window._openPayPalModal = function(plan){
     </div>
     ${emailNote}
     <div class="pm-paypal-wrap">
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-        <input type="hidden" name="cmd" value="_s-xclick" />
-        <input type="hidden" name="hosted_button_id" value="${cfg.buttonId}" />
-        <input type="hidden" name="return" value="https://biomaster-prod.vercel.app/#pago-confirmado" />
-        <input type="hidden" name="cancel_return" value="https://biomaster-prod.vercel.app/#pago-cancelado" />
-        <input type="image"
-          src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynowCC_LG.gif"
-          border="0" name="submit"
-          title="PayPal — forma segura y fácil de pagar en línea."
+      <button class="_pp-pay-btn" type="button" style="background:none;border:none;cursor:pointer;display:block;margin:0 auto;padding:0">
+        <img src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynowCC_LG.gif"
           alt="Pagar con PayPal"
-          style="display:block;margin:0 auto;cursor:pointer" />
-        <p class="pm-paypal-loading" style="display:none;text-align:center;margin:.6rem 0 0;font-size:.85rem;color:var(--muted)">Redirigiendo a PayPal…</p>
-      </form>
+          title="PayPal — forma segura y fácil de pagar en línea."
+          style="display:block" />
+      </button>
+      <p class="_pp-msg" style="display:none;text-align:center;margin:.6rem 0 0;font-size:.85rem;color:var(--muted)">Redirigiendo a PayPal…</p>
       <p class="pm-paypal-note">Se abre PayPal en la misma pestaña. Podés pagar con tarjeta sin cuenta PayPal.</p>
     </div>
     <details class="pm-sinpe-alt">
@@ -11958,13 +11952,24 @@ window._openPayPalModal = function(plan){
       Cancelar
     </button>
   `
-  const _ppForm = content.querySelector('form')
-  if (_ppForm) {
-    _ppForm.addEventListener('submit', function(){
-      const _img = _ppForm.querySelector('input[type=image]')
-      const _lbl = _ppForm.querySelector('.pm-paypal-loading')
-      if (_img) { _img.style.pointerEvents = 'none'; _img.style.opacity = '.4' }
-      if (_lbl) _lbl.style.display = 'block'
+  const _ppBtn = content.querySelector('._pp-pay-btn')
+  if (_ppBtn) {
+    _ppBtn.addEventListener('click', function(){
+      const _img = _ppBtn.querySelector('img')
+      const _msg = content.querySelector('._pp-msg')
+      if (_img) { _img.style.opacity = '.4'; _img.style.pointerEvents = 'none' }
+      if (_msg) _msg.style.display = 'block'
+      _ppBtn.disabled = true
+      const _url = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=' + cfg.buttonId +
+        '&return=' + encodeURIComponent('https://biomaster-prod.vercel.app/#pago-confirmado') +
+        '&cancel_return=' + encodeURIComponent('https://biomaster-prod.vercel.app/#pago-cancelado')
+      setTimeout(function(){
+        if (!document.querySelector('._pp-pay-btn')) return
+        if (_msg) _msg.innerHTML = '⚠️ No se pudo redirigir automáticamente. <a href="' + _url + '" target="_blank" rel="noopener" style="color:var(--green);font-weight:700;text-decoration:underline">Abrí PayPal acá →</a>'
+        if (_img) _img.style.opacity = '1'
+        _ppBtn.disabled = false
+      }, 5000)
+      window.location.href = _url
     }, { once: true })
   }
   modal.classList.add('show')
