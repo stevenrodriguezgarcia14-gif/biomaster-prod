@@ -16,7 +16,7 @@
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https:;
-  connect-src 'self' https://*.supabase.co wss://*.supabase.co;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co https://ipapi.co;
   frame-src https://www.paypal.com https://www.sandbox.paypal.com;
   object-src 'none';
   base-uri 'self';
@@ -706,6 +706,23 @@ body.lp-open{overflow:hidden}
 .pw-cta:disabled{opacity:.6;cursor:not-allowed}
 .pw-trust{display:flex;justify-content:center;gap:1rem;margin-top:.8rem;font-size:.74rem;color:var(--muted);flex-wrap:wrap}
 @media(max-width:560px){.pw-feature-grid{grid-template-columns:1fr}.pw-plans-mini{grid-template-columns:1fr}}
+
+/* ═══ COUNTRY MODAL ═══ */
+#countryModal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1050;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+#countryModal.show{display:flex}
+@media(min-width:600px){#countryModal{align-items:center;padding:1rem}}
+.cm-box{background:var(--surface);border-radius:28px 28px 0 0;padding:2rem 1.6rem 2.2rem;width:100%;max-width:420px;border:1px solid var(--border);box-shadow:0 -8px 40px rgba(0,0,0,.18);animation:cmSlideUp .32s cubic-bezier(.22,.68,0,1.18)}
+@media(min-width:600px){.cm-box{border-radius:24px;box-shadow:0 32px 80px rgba(0,0,0,.22)}}
+@keyframes cmSlideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.cm-icon{font-size:2.4rem;text-align:center;display:block;margin-bottom:.5rem}
+.cm-box h3{font-family:Merriweather,serif;font-size:1.2rem;text-align:center;margin-bottom:.3rem;color:var(--text)}
+.cm-sub{text-align:center;color:var(--muted);font-size:.87rem;margin-bottom:1.3rem;line-height:1.55}
+#cmSelect{width:100%;padding:.75rem 2.4rem .75rem 1rem;border-radius:12px;border:1.5px solid var(--border);background:var(--soft);color:var(--text);font-size:.97rem;font-family:inherit;margin-bottom:1rem;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667c70' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;background-size:1rem;cursor:pointer;transition:border-color .2s}
+#cmSelect:focus{outline:none;border-color:var(--green);background-color:var(--surface)}
+.cm-save{width:100%;padding:.82rem;border-radius:14px;background:var(--green);color:#fff;border:none;font-size:.97rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s,transform .12s;letter-spacing:.01em}
+.cm-save:active{transform:scale(.98)}.cm-save:disabled{opacity:.55;cursor:not-allowed}
+.cm-skip{display:block;text-align:center;margin-top:.75rem;color:var(--muted);font-size:.82rem;cursor:pointer;background:none;border:none;font-family:inherit;padding:.35rem;width:100%;transition:color .15s}
+.cm-skip:hover{color:var(--text)}
 
 /* ═══ DIAGNÓSTICO INICIAL ═══ */
 .diag-card{padding:1.5rem;background:linear-gradient(135deg,var(--greenSoft),var(--soft));border:2px dashed var(--green);border-radius:20px;margin-bottom:1.2rem}
@@ -2296,6 +2313,51 @@ window.PAYPAL_PLANS = {
       <span>✓ Sin permanencia</span>
       <span>✓ Sin renovación automática</span>
     </div>
+  </div>
+</div>
+
+<!-- ═══ COUNTRY MODAL ═══ -->
+<div id="countryModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="cm-box">
+    <span class="cm-icon" aria-hidden="true">🌍</span>
+    <h3 id="cmTitle">¿Desde qué país estudias?</h3>
+    <p class="cm-sub">Ayúdanos a conocer de dónde viene la comunidad BioMaster.<br>Solo toma un segundo.</p>
+    <select id="cmSelect" aria-label="Seleccionar país" onchange="document.getElementById('cmSaveBtn').disabled=!this.value">
+      <option value="">— Seleccioná tu país —</option>
+      <optgroup label="Latinoamérica">
+        <option value="CR">🇨🇷 Costa Rica</option>
+        <option value="MX">🇲🇽 México</option>
+        <option value="CO">🇨🇴 Colombia</option>
+        <option value="GT">🇬🇹 Guatemala</option>
+        <option value="HN">🇭🇳 Honduras</option>
+        <option value="SV">🇸🇻 El Salvador</option>
+        <option value="NI">🇳🇮 Nicaragua</option>
+        <option value="PA">🇵🇦 Panamá</option>
+        <option value="VE">🇻🇪 Venezuela</option>
+        <option value="EC">🇪🇨 Ecuador</option>
+        <option value="PE">🇵🇪 Perú</option>
+        <option value="BO">🇧🇴 Bolivia</option>
+        <option value="PY">🇵🇾 Paraguay</option>
+        <option value="UY">🇺🇾 Uruguay</option>
+        <option value="AR">🇦🇷 Argentina</option>
+        <option value="CL">🇨🇱 Chile</option>
+        <option value="CU">🇨🇺 Cuba</option>
+        <option value="DO">🇩🇴 República Dominicana</option>
+        <option value="PR">🇵🇷 Puerto Rico</option>
+      </optgroup>
+      <optgroup label="Iberoamérica">
+        <option value="ES">🇪🇸 España</option>
+        <option value="PT">🇵🇹 Portugal</option>
+        <option value="BR">🇧🇷 Brasil</option>
+      </optgroup>
+      <optgroup label="Otro">
+        <option value="US">🇺🇸 Estados Unidos</option>
+        <option value="CA">🇨🇦 Canadá</option>
+        <option value="OTHER">🌐 Otro país</option>
+      </optgroup>
+    </select>
+    <button class="cm-save" id="cmSaveBtn" disabled onclick="window._saveCountryFromModal()">Guardar y continuar →</button>
+    <button class="cm-skip" onclick="window._skipCountryModal()">Ahora no</button>
   </div>
 </div>
 
@@ -5850,6 +5912,7 @@ window.PAYPAL_PLANS = {
           <button class="tab-btn" onclick="A.adminTab(this,'paneVenc')">⏰ Vencimientos</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneAlertas')">🔔 Alertas</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Herramientas</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneCountries');A.adminRefreshCountries()">🌍 Países</button>
         </div>
         <div class="tab-pane active" id="paneFb">
           <div id="adminFbList">Cargando…</div>
@@ -5959,6 +6022,18 @@ window.PAYPAL_PLANS = {
             <button class="btn" onclick="A.renderAdminPanel()">↻ Refrescar datos del panel</button>
           </div>
           <div id="adminControlMsg" class="feedback" style="margin-top:.8rem"></div>
+        </div>
+
+        <!-- ═══ PAÍSES ═══ -->
+        <div class="tab-pane" id="paneCountries">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem">
+            <strong style="font-size:.92rem">Distribución geográfica de usuarios</strong>
+            <button class="btn" onclick="A.adminRefreshCountries()" style="font-size:.78rem">↻ Refrescar</button>
+          </div>
+          <p class="muted" style="font-size:.78rem;margin-bottom:.7rem">
+            País detectado automáticamente por IP o seleccionado por el usuario. Los usuarios sin país verán el modal en su próxima sesión.
+          </p>
+          <div id="adminCountriesContent">Abrí esta pestaña para cargar los datos.</div>
         </div>
       </div>
     </section>
@@ -6619,7 +6694,7 @@ async function handleAuthSession(session){
       try {
         const { data: real } = await sb
           .from('profiles')
-          .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at')
+          .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at,country,country_code')
           .eq('id', session.user.id)
           .maybeSingle()
         if (real) Object.assign(profile, real)
@@ -6667,6 +6742,8 @@ async function onSessionChanged(){
     // ═══ TRIGGER INTRO DETERMINISTA ═══
     // Cualquier cambio a estado logueado dispara la intro (una vez por carga).
     try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
+    // Pedir país si el usuario no tiene uno registrado (2s de delay para no interrumpir el render inicial)
+    if (!currentSession.isGuest) setTimeout(() => _checkAndPromptCountry(), 2200)
   } else {
     // No hay sesión → volver a la landing (no al overlay directo)
     document.getElementById('authOverlay').style.display = 'none'
@@ -7424,12 +7501,189 @@ async function renderAdminPanel(){
     _renderAdminFeedback(),
     _renderAdminUsers(),
     _renderAdminPlans(),
-    _renderAdminVencimientos()
+    _renderAdminVencimientos(),
+    _renderAdminCountries()
   ])
 }
 
 // Estado del filtro de feedback (en window para acceso desde onclick en HTML)
 window._adminFbFilter = 'todos'
+
+// ═══════════════════════════════════════════════════════════
+//  SISTEMA DE PAÍS — Detección automática, captura y analytics
+// ═══════════════════════════════════════════════════════════
+const _CM_NAMES = {
+  CR:'Costa Rica',MX:'México',CO:'Colombia',GT:'Guatemala',HN:'Honduras',
+  SV:'El Salvador',NI:'Nicaragua',PA:'Panamá',VE:'Venezuela',EC:'Ecuador',
+  PE:'Perú',BO:'Bolivia',PY:'Paraguay',UY:'Uruguay',AR:'Argentina',CL:'Chile',
+  CU:'Cuba',DO:'República Dominicana',PR:'Puerto Rico',ES:'España',PT:'Portugal',
+  BR:'Brasil',US:'Estados Unidos',CA:'Canadá',OTHER:'Otro'
+}
+const _CM_FLAGS = {
+  CR:'🇨🇷',MX:'🇲🇽',CO:'🇨🇴',GT:'🇬🇹',HN:'🇭🇳',SV:'🇸🇻',NI:'🇳🇮',PA:'🇵🇦',
+  VE:'🇻🇪',EC:'🇪🇨',PE:'🇵🇪',BO:'🇧🇴',PY:'🇵🇾',UY:'🇺🇾',AR:'🇦🇷',CL:'🇨🇱',
+  CU:'🇨🇺',DO:'🇩🇴',PR:'🇵🇷',ES:'🇪🇸',PT:'🇵🇹',BR:'🇧🇷',US:'🇺🇸',CA:'🇨🇦',OTHER:'🌐'
+}
+
+async function _detectCountryByIP(){
+  try {
+    const ctrl = new AbortController()
+    const timer = setTimeout(() => ctrl.abort(), 5000)
+    const res = await fetch('https://ipapi.co/json/', { signal: ctrl.signal })
+    clearTimeout(timer)
+    if (!res.ok) return null
+    const d = await res.json()
+    if (d.error || !d.country_code) return null
+    return { code: d.country_code, name: d.country_name }
+  } catch(e){ return null }
+}
+
+async function _saveCountryToProfile(code, name, source){
+  if (!currentSession?.user?.id) return false
+  try {
+    const { error } = await sb.from('profiles').update({
+      country: name,
+      country_code: code,
+      country_source: source || 'user',
+      country_detected_at: new Date().toISOString()
+    }).eq('id', currentSession.user.id)
+    if (error) return false
+    if (currentSession.profile){
+      currentSession.profile.country = name
+      currentSession.profile.country_code = code
+    }
+    return true
+  } catch(e){ return false }
+}
+
+async function _checkAndPromptCountry(){
+  if (!currentSession || currentSession.isGuest) return
+  if (currentSession.profile?.country) return // ya tiene país
+
+  // Intentar detección silenciosa por IP
+  const detected = await _detectCountryByIP()
+  if (detected?.code && detected.code.length === 2){
+    const ok = await _saveCountryToProfile(detected.code, detected.name, 'auto')
+    if (ok) return // guardado silencioso, sin molestar al usuario
+  }
+
+  // Detección fallida → mostrar modal (solo una vez por usuario en localStorage)
+  const modalKey = 'bm_cm_' + currentSession.user.id
+  if (localStorage.getItem(modalKey) === 'shown') return
+
+  // Pre-seleccionar el país detectado si está en nuestro listado
+  if (detected?.code && _CM_NAMES[detected.code]){
+    const sel = document.getElementById('cmSelect')
+    const btn = document.getElementById('cmSaveBtn')
+    if (sel){ sel.value = detected.code; if (btn) btn.disabled = false }
+  }
+  _showCountryModal()
+}
+
+function _showCountryModal(){
+  const modal = document.getElementById('countryModal')
+  if (!modal) return
+  modal.classList.add('show')
+}
+
+function _closeCountryModal(markShown){
+  const modal = document.getElementById('countryModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  if (markShown && currentSession?.user?.id){
+    try { localStorage.setItem('bm_cm_' + currentSession.user.id, 'shown') } catch(e){}
+  }
+}
+
+async function _saveCountryFromModal(){
+  const sel = document.getElementById('cmSelect')
+  const btn = document.getElementById('cmSaveBtn')
+  if (!sel?.value) return
+  const code = sel.value
+  const name = _CM_NAMES[code] || code
+  if (btn){ btn.disabled = true; btn.textContent = 'Guardando…' }
+  const ok = await _saveCountryToProfile(code, name, 'user')
+  if (ok){
+    _closeCountryModal(true)
+    toast('✅ ¡Gracias! País guardado.')
+  } else {
+    if (btn){ btn.disabled = false; btn.textContent = 'Guardar y continuar →' }
+    toast('⚠ No se pudo guardar. Intenta de nuevo.', true)
+  }
+}
+
+function _skipCountryModal(){
+  _closeCountryModal(false) // No marcar como shown → preguntará la próxima sesión
+}
+
+window._saveCountryFromModal = _saveCountryFromModal
+window._skipCountryModal = _skipCountryModal
+
+async function _renderAdminCountries(){
+  const el = document.getElementById('adminCountriesContent')
+  if (!el) return
+  el.innerHTML = 'Cargando…'
+  try {
+    const { data, error } = await sb
+      .from('profiles')
+      .select('country,country_code,plan_p1,plan_p2,plan_p3,plan_full')
+    if (error){ el.innerHTML = '<span class="bad">⚠ '+escapeHtml(error.message)+'</span>'; return }
+
+    const total = data?.length || 0
+    const withCountry = (data || []).filter(u => u.country)
+    const without = total - withCountry.length
+
+    const byCode = {}
+    withCountry.forEach(u => {
+      const k = u.country_code || 'OTHER'
+      if (!byCode[k]) byCode[k] = { code: k, name: u.country, count: 0, pro: 0 }
+      byCode[k].count++
+      if (u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3) byCode[k].pro++
+    })
+    const sorted = Object.values(byCode).sort((a,b) => b.count - a.count)
+    const maxN = sorted[0]?.count || 1
+
+    el.innerHTML = `
+      <div class="grid4" style="margin-bottom:1rem">
+        <div class="stat-card"><div class="sv">${total}</div><div class="sl">Total usuarios</div></div>
+        <div class="stat-card" style="border-top:3px solid var(--green)">
+          <div class="sv" style="color:var(--green)">${withCountry.length}</div><div class="sl">Con país</div>
+        </div>
+        <div class="stat-card" style="border-top:3px solid var(--yellow)">
+          <div class="sv" style="color:var(--yellow)">${without}</div><div class="sl">Sin país</div>
+        </div>
+        <div class="stat-card"><div class="sv">${sorted.length}</div><div class="sl">Países distintos</div></div>
+      </div>
+      ${sorted.length === 0
+        ? '<p class="muted">Todavía no hay datos de país registrados.</p>'
+        : sorted.map(c => {
+          const pct = withCountry.length ? Math.round(c.count/withCountry.length*100) : 0
+          const bar = Math.round(c.count/maxN*100)
+          const flag = _CM_FLAGS[c.code] || '🌐'
+          return `<div class="reco-item" style="margin-bottom:.35rem;padding:.65rem 1rem">
+            <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+              <span style="font-size:1.3rem;min-width:1.6rem;text-align:center">${flag}</span>
+              <div style="flex:1;min-width:100px">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:.4rem;margin-bottom:.2rem">
+                  <strong style="font-size:.88rem">${escapeHtml(c.name)}</strong>
+                  <span class="muted" style="font-size:.76rem;white-space:nowrap">${c.count} · ${pct}%</span>
+                </div>
+                <div style="height:5px;border-radius:3px;background:var(--soft);overflow:hidden">
+                  <div style="height:100%;width:${bar}%;background:var(--green);border-radius:3px"></div>
+                </div>
+              </div>
+              ${c.pro ? `<span class="fb-status fb-resuelto" style="white-space:nowrap">⭐ ${c.pro} Pro</span>` : ''}
+            </div>
+          </div>`
+        }).join('')
+      }
+      ${without > 0 ? `<p class="muted" style="font-size:.77rem;margin-top:.8rem">
+        ⏳ ${without} usuario${without!==1?'s':''} sin país. Se les pedirá en su próxima sesión.
+      </p>` : ''}
+    `
+  } catch(e){ el.innerHTML = '<span class="bad">⚠ Error al cargar.</span>' }
+}
+window.adminRefreshCountries = () => _renderAdminCountries()
 
 async function _renderAdminFeedback(){
   const { data: fbs, error: fe } = await sb
