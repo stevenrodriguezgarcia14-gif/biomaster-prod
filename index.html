@@ -5792,6 +5792,7 @@ window.PAYPAL_PLANS = {
             <option value="sugerencia">Sugerencia</option>
             <option value="error">Reporte de error</option>
             <option value="pregunta">Pregunta</option>
+            <option value="testimonio">Testimonio / Experiencia 💬</option>
             <option value="otro">Otro</option>
           </select>
         </div>
@@ -7313,7 +7314,15 @@ async function loadRanking(){
   const { data, error } = await sb.rpc('public_ranking', { top_n: 50 })
   if (error){ panel.innerHTML = '<span class="bad">⚠ ' + escapeHtml(error.message) + '</span>'; return }
   if (!data?.length){ panel.innerHTML = '<span class="muted">Sin usuarios en el ranking aún.</span>'; return }
-  window._rankData = data
+  // Normalizar nombres de campo: la función SQL puede retornar user_id/display_name (versión vieja)
+  // o id/name (versión nueva). El frontend siempre espera id/name/xp/accuracy/sims_done.
+  window._rankData = data.map(r => ({
+    id:        r.id        || r.user_id      || '',
+    name:      r.name      || r.display_name || '—',
+    xp:        r.xp        || 0,
+    accuracy:  r.accuracy  || 0,
+    sims_done: r.sims_done || 0,
+  }))
   if (!window._rankTab) window._rankTab = 'xp'
   _renderRanking()
 }
@@ -7393,7 +7402,11 @@ async function submitFeedback(){
   if (text.length > 2000) return showMsg('fbResult','bad','⚠ Máximo 2000 caracteres.')
   if (experience && experience.length < 30) return showMsg('fbResult','bad','⚠ Si vas a compartir experiencia, escribí al menos 30 caracteres.')
   if (experience.length > 300) return showMsg('fbResult','bad','⚠ La experiencia no puede pasar de 300 caracteres.')
-  const payload = { user_id: currentSession.user.id, type, text }
+  // Mapeo de tipos frontend → valores aceptados por el constraint de Supabase
+  // DB acepta: 'bug', 'sugerencia', 'testimonio'
+  const _fbTypeMap = { error:'bug', pregunta:'sugerencia', otro:'sugerencia' }
+  const dbType = _fbTypeMap[type] || type
+  const payload = { user_id: currentSession.user.id, type: dbType, text }
   if (experience) payload.experience_text = experience
   const { error } = await sb.from('feedback').insert(payload)
   if (error) return showMsg('fbResult','bad','⚠ ' + error.message)
