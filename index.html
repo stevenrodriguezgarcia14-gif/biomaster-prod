@@ -1567,6 +1567,149 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .mock-map-fill.red{background:linear-gradient(90deg,#8b2f2f,#e05252)}
 .mock-map-pct{font-size:.75rem;font-weight:700;width:28px;text-align:right;color:rgba(255,255,255,.65)}
 
+/* ═══════════════════════════════════════════════════════════════════
+   SISTEMA SOCIAL — Grupos, Misiones y Chat
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Tabs de comunidad ── */
+.com-tabs{display:flex;gap:.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.com-tab{padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);font-weight:700;font-size:.82rem;cursor:pointer;transition:all .18s}
+.com-tab:hover{border-color:var(--green);color:var(--green)}
+.com-tab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.com-panel{display:none}
+.com-panel.active{display:block}
+
+/* ── Tarjeta de grupo ── */
+.group-card{display:flex;flex-direction:column;gap:.5rem;padding:1.1rem 1.2rem;border-radius:18px;background:var(--surface);border:1.5px solid var(--border);transition:border-color .18s,box-shadow .18s}
+.group-card:hover{border-color:var(--green);box-shadow:0 4px 18px rgba(47,139,77,.1)}
+.group-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.group-card-name{font-weight:800;font-size:.97rem;color:var(--text)}
+.group-card-meta{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.group-badge{display:inline-flex;align-items:center;gap:.2rem;padding:.18rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--greenSoft);color:var(--green)}
+.group-badge.parcial-p1{background:var(--blueSoft);color:var(--blue)}
+.group-badge.parcial-p2{background:var(--greenSoft);color:var(--green)}
+.group-badge.parcial-p3{background:var(--yellowSoft);color:var(--yellow)}
+.group-card-desc{font-size:.83rem;color:var(--muted);line-height:1.45}
+.group-card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:.2rem}
+.group-members-pill{font-size:.78rem;color:var(--muted);font-weight:600}
+.group-code{font-size:.72rem;font-family:monospace;background:var(--soft);padding:.15rem .5rem;border-radius:8px;color:var(--muted);letter-spacing:.08em}
+.group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.9rem}
+@media(max-width:600px){.group-grid{grid-template-columns:1fr}}
+
+/* ── Formulario de creación de grupo ── */
+.social-form{background:var(--soft);border-radius:18px;padding:1.2rem;border:1px solid var(--border);margin-bottom:1.2rem}
+.social-form-title{font-weight:800;font-size:.95rem;margin-bottom:.8rem}
+.social-form .auth-field{margin-bottom:.7rem}
+.social-form .auth-field label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:.3rem}
+.social-form input,.social-form select,.social-form textarea{width:100%;padding:.6rem .85rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:.88rem;color:var(--text);font-family:inherit;box-sizing:border-box}
+.social-form input:focus,.social-form select:focus,.social-form textarea:focus{outline:none;border-color:var(--green)}
+
+/* ── Barra de progreso de misión ── */
+.mission-card{border-radius:18px;background:var(--surface);border:1.5px solid var(--border);padding:1.1rem 1.2rem;transition:border-color .18s}
+.mission-card:hover{border-color:var(--green)}
+.mission-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.5rem}
+.mission-card-title{font-weight:800;font-size:.95rem}
+.mission-type-pill{padding:.18rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700}
+.mission-type-pill.community{background:var(--blueSoft);color:var(--blue)}
+.mission-type-pill.group{background:var(--greenSoft);color:var(--green)}
+.mission-desc{font-size:.82rem;color:var(--muted);line-height:1.45;margin-bottom:.75rem}
+.mission-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem}
+.mission-progress-label{font-size:.78rem;font-weight:700;color:var(--muted)}
+.mission-progress-pct{font-size:.78rem;font-weight:800;color:var(--green)}
+.mission-bar{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:.6rem}
+.mission-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4ade80);border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.mission-bar-fill.complete{background:linear-gradient(90deg,#2f8b4d,#22c55e)}
+.mission-card-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem}
+.mission-reward{font-size:.78rem;color:var(--muted);font-weight:600}
+.mission-reward strong{color:var(--yellow)}
+.mission-ends{font-size:.72rem;color:var(--muted)}
+.mission-joined-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;background:var(--greenSoft);color:var(--green)}
+.missions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.9rem}
+@media(max-width:600px){.missions-grid{grid-template-columns:1fr}}
+
+/* ── Tipos de misión grupal ── */
+.mission-type-pill.collaborative_sim{background:rgba(59,130,246,.13);color:#3b82f6}
+.mission-type-pill.group_competition{background:rgba(239,68,68,.12);color:#ef4444}
+.mission-type-pill.shared_progress{background:rgba(168,85,247,.12);color:#a855f7}
+.mission-type-pill.consistency{background:rgba(245,158,11,.13);color:#d97706}
+.mission-type-pill.collective_performance{background:rgba(16,185,129,.13);color:#059669}
+/* ── Estado de misión ── */
+.mission-status-badge{display:inline-flex;align-items:center;gap:.22rem;font-size:.68rem;font-weight:700;padding:.15rem .5rem;border-radius:999px}
+.mission-status-badge.expired{background:rgba(107,114,128,.12);color:var(--muted)}
+.mission-status-badge.completed{background:rgba(16,185,129,.13);color:#059669}
+.mission-status-badge.active{background:rgba(59,130,246,.13);color:#3b82f6}
+/* ── Progreso grupal ── */
+.mission-group-section{margin:.55rem 0 .35rem;padding:.5rem .65rem;background:var(--soft);border-radius:10px}
+.mission-group-row{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;margin-bottom:.25rem}
+.mission-group-label{color:var(--muted);font-weight:600}
+.mission-group-val{font-weight:800;color:var(--text)}
+.mission-members-row{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--muted);margin-top:.2rem}
+.mission-members-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block}
+.mission-members-dot.empty{background:var(--border)}
+/* ── Timer de urgencia ── */
+.mission-timer-row{display:flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:700;margin-top:.2rem}
+.mission-timer-row.urgent{color:#ef4444}
+.mission-timer-row.soon{color:#d97706}
+.mission-timer-row.ok{color:var(--muted)}
+/* ── Alerta sin grupo ── */
+.mission-no-group-alert{padding:1rem 1.2rem;background:rgba(245,158,11,.1);border:1.5px solid rgba(245,158,11,.3);border-radius:14px;margin-bottom:1.2rem;display:flex;align-items:flex-start;gap:.7rem}
+.mission-no-group-icon{font-size:1.4rem;flex-shrink:0}
+.mission-no-group-text strong{display:block;font-size:.9rem;margin-bottom:.15rem}
+.mission-no-group-text p{font-size:.8rem;color:var(--muted);margin:0}
+/* ── Admin misiones ── */
+.admin-mission-row{display:flex;align-items:flex-start;gap:.7rem;padding:.65rem .8rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);margin-bottom:.5rem;flex-wrap:wrap}
+.admin-mission-info{flex:1;min-width:0}
+.admin-mission-title{font-weight:800;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-mission-meta{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+.admin-mission-controls{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.admin-mission-bar{height:5px;background:var(--soft);border-radius:999px;margin-top:.4rem}
+.admin-mission-bar-fill{height:100%;background:var(--green);border-radius:999px;transition:width .3s}
+.mission-generate-banner{padding:.9rem 1.1rem;background:rgba(59,130,246,.08);border:1.5px dashed rgba(59,130,246,.3);border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.7rem;margin-bottom:1.2rem}
+.mission-generate-banner strong{font-size:.9rem}
+.mission-generate-banner p{font-size:.78rem;color:var(--muted);margin:.1rem 0 0}
+
+/* ── Chat ── */
+.chat-container{display:flex;flex-direction:column;gap:.5rem}
+.chat-select-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
+.chat-select-row select{flex:1;min-width:180px;padding:.55rem .85rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:.88rem;color:var(--text);font-family:inherit}
+.chat-select-row select:focus{outline:none;border-color:var(--green)}
+.chat-messages{flex:1;min-height:280px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:.55rem;padding:.8rem;background:var(--soft);border-radius:16px;border:1px solid var(--border)}
+.chat-msg{display:flex;flex-direction:column;max-width:75%;gap:.15rem}
+.chat-msg.own{align-self:flex-end;align-items:flex-end}
+.chat-msg.other{align-self:flex-start;align-items:flex-start}
+.chat-bubble{padding:.55rem .85rem;border-radius:16px;font-size:.87rem;line-height:1.45;word-break:break-word}
+.chat-msg.own .chat-bubble{background:var(--green);color:#fff;border-bottom-right-radius:4px}
+.chat-msg.other .chat-bubble{background:var(--surface);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px}
+.chat-msg-meta{font-size:.7rem;color:var(--muted);padding:0 .3rem}
+.chat-input-row{display:flex;gap:.5rem;margin-top:.6rem}
+.chat-input{flex:1;padding:.6rem .9rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:.88rem;color:var(--text);font-family:inherit;resize:none}
+.chat-input:focus{outline:none;border-color:var(--green)}
+.chat-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:2rem 1rem}
+.chat-no-group{text-align:center;color:var(--muted);font-size:.88rem;padding:2.5rem 1rem}
+.chat-no-group strong{display:block;font-size:1.3rem;margin-bottom:.4rem}
+
+/* ── Invite code row ── */
+.invite-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
+.invite-row input{flex:1;min-width:140px;padding:.55rem .85rem;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:.88rem;color:var(--text);font-family:inherit}
+.invite-row input:focus{outline:none;border-color:var(--green)}
+
+/* ── Sección miembros del grupo ── */
+.member-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.member-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .7rem;border-radius:999px;font-size:.78rem;font-weight:600;background:var(--soft);border:1px solid var(--border)}
+.member-chip.leader{background:var(--greenSoft);border-color:var(--green);color:var(--green)}
+.member-chip.leader::before{content:'👑 '}
+
+/* ── Mi grupo activo ── */
+.active-group-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;padding:.75rem 1rem;border-radius:14px;background:linear-gradient(135deg,var(--greenSoft),var(--soft));border:1.5px solid var(--green);margin-bottom:1rem}
+.active-group-bar-name{font-weight:800;font-size:.9rem;color:var(--green)}
+.active-group-bar-meta{font-size:.78rem;color:var(--muted)}
+
+/* ── Social empty state ── */
+.social-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.social-empty-icon{font-size:2.2rem;margin-bottom:.5rem}
+.social-empty-title{font-weight:800;font-size:.95rem;color:var(--text);margin-bottom:.3rem}
+.social-empty-sub{font-size:.83rem;line-height:1.5}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -2694,6 +2837,8 @@ window.Analytics = (function(){
       <a href="#mapa">🗺 Mapa de dominio</a>
       <a href="#ranking">🏆 Ranking</a>
       <a href="#feedback">💬 Feedback</a>
+      <div class="nav-sec-lbl">🤝 Comunidad</div>
+      <a href="#comunidad">👥 Grupos y Misiones</a>
     </nav>
   </aside>
 
@@ -6041,6 +6186,116 @@ window.Analytics = (function(){
       </div>
     </section>
 
+    <!-- ═══ COMUNIDAD: Grupos, Misiones y Chat ═══ -->
+    <section class="section" id="comunidad">
+      <div class="section-head">
+        <div>
+          <h2>🤝 Comunidad</h2>
+          <p class="module-desc">Estudiá en grupo, completá misiones y chateá con otros estudiantes de BioMaster.</p>
+        </div>
+      </div>
+
+      <!-- Tabs de navegación -->
+      <div class="com-tabs">
+        <button class="com-tab active" onclick="window.Social.switchTab('grupos',this)">👥 Grupos</button>
+        <button class="com-tab"        onclick="window.Social.switchTab('misiones',this)">🎯 Misiones</button>
+        <button class="com-tab"        onclick="window.Social.switchTab('chat',this)">💬 Chat</button>
+      </div>
+
+      <!-- ── Panel: Grupos ── -->
+      <div class="com-panel active" id="com-panel-grupos">
+
+        <!-- Grupo activo del usuario -->
+        <div id="myGroupBar" style="display:none"></div>
+
+        <!-- Formulario: unirse por código -->
+        <div class="social-form" style="margin-bottom:1rem">
+          <div class="social-form-title">🔗 Unirse a un grupo por código</div>
+          <div class="invite-row">
+            <input id="inviteCodeInput" type="text" placeholder="Código de 6 letras (ej: AB3F7K)" maxlength="10" style="text-transform:uppercase">
+            <button class="btn primary" onclick="window.Social.joinByCode()">Unirse →</button>
+          </div>
+          <div id="joinGroupResult" class="feedback" style="margin-top:.4rem"></div>
+        </div>
+
+        <!-- Formulario: crear grupo (toggle) -->
+        <div style="margin-bottom:1rem">
+          <button class="btn" id="toggleCreateGroupBtn" onclick="window.Social.toggleCreateGroup()">➕ Crear nuevo grupo</button>
+        </div>
+        <div class="social-form" id="createGroupForm" style="display:none">
+          <div class="social-form-title">Nuevo grupo de estudio</div>
+          <div class="auth-field">
+            <label>Nombre del grupo</label>
+            <input id="newGroupName" type="text" placeholder="Ej: Equipo Mitosis CR" maxlength="50">
+          </div>
+          <div class="auth-field">
+            <label>Descripción (opcional)</label>
+            <input id="newGroupDesc" type="text" placeholder="Ej: Estudiantes de UCR, P2" maxlength="200">
+          </div>
+          <div class="auth-field">
+            <label>Parcial enfocado</label>
+            <select id="newGroupParcial">
+              <option value="all">Todos los parciales</option>
+              <option value="p1">Parcial 1</option>
+              <option value="p2">Parcial 2</option>
+              <option value="p3">Parcial 3</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem">
+            <button class="btn primary" onclick="window.Social.createGroup()">✅ Crear grupo</button>
+            <button class="btn" onclick="window.Social.toggleCreateGroup()">Cancelar</button>
+          </div>
+          <div id="createGroupResult" class="feedback" style="margin-top:.5rem"></div>
+        </div>
+
+        <!-- Lista de grupos públicos -->
+        <div>
+          <strong style="font-size:.9rem;display:block;margin-bottom:.7rem">🌐 Grupos públicos</strong>
+          <div id="groupsListContainer">
+            <div class="social-empty">
+              <div class="social-empty-icon">⏳</div>
+              <div class="social-empty-sub">Cargando grupos…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Panel: Misiones ── -->
+      <div class="com-panel" id="com-panel-misiones">
+        <!-- Misiones activas del usuario -->
+        <div style="margin-bottom:1.2rem">
+          <strong style="font-size:.9rem;display:block;margin-bottom:.7rem">⚡ Mis misiones activas</strong>
+          <div id="myMissionsContainer">
+            <div class="social-empty">
+              <div class="social-empty-icon">⏳</div>
+              <div class="social-empty-sub">Cargando misiones…</div>
+            </div>
+          </div>
+        </div>
+        <!-- Misiones disponibles para unirse -->
+        <div>
+          <strong style="font-size:.9rem;display:block;margin-bottom:.7rem">🎯 Misiones disponibles</strong>
+          <div id="availableMissionsContainer">
+            <div class="social-empty">
+              <div class="social-empty-icon">⏳</div>
+              <div class="social-empty-sub">Cargando…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Panel: Chat ── -->
+      <div class="com-panel" id="com-panel-chat">
+        <div id="chatPanelInner">
+          <div class="chat-no-group">
+            <strong>💬</strong>
+            <p>Únete a un grupo para acceder al chat en tiempo real.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
     <!-- ═══ ADMIN PANEL ═══ -->
     <section class="section" id="adminSection" style="display:none">
       <div class="section-head">
@@ -6059,6 +6314,7 @@ window.Analytics = (function(){
           <button class="tab-btn" onclick="A.adminTab(this,'paneAlertas')">🔔 Alertas</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Herramientas</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneCountries');A.adminRefreshCountries()">🌍 Países</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneMissions');window.adminRefreshMissions()">🎯 Misiones</button>
         </div>
         <div class="tab-pane active" id="paneFb">
           <div id="adminFbList">Cargando…</div>
@@ -6181,6 +6437,35 @@ window.Analytics = (function(){
           </p>
           <div id="adminCountriesContent">Abrí esta pestaña para cargar los datos.</div>
         </div>
+
+        <!-- ═══ MISIONES GRUPALES ═══ -->
+        <div class="tab-pane" id="paneMissions">
+          <div class="mission-generate-banner">
+            <div>
+              <strong>⚡ Generación automática de misiones</strong>
+              <p>Crea misiones grupales para todos los grupos activos basándose en las plantillas académicas.</p>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="btn primary" onclick="window.adminGenerateMissions(this)" style="font-size:.82rem">🚀 Generar ahora</button>
+              <button class="btn" onclick="window.adminExpireMissions(this)" style="font-size:.82rem">⏰ Expirar vencidas</button>
+              <button class="btn" onclick="window.adminRefreshMissions()" style="font-size:.78rem">↻ Refrescar</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:1rem" id="adminMissionStats"></div>
+          <div style="margin-bottom:.6rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
+            <strong style="font-size:.88rem">Misiones activas y recientes</strong>
+            <select id="adminMissionFilter" onchange="window.adminRefreshMissions()" style="padding:.35rem .6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-size:.78rem;margin-left:auto">
+              <option value="all">Todos los estados</option>
+              <option value="active">Solo activas</option>
+              <option value="expired">Solo expiradas</option>
+              <option value="completed">Solo completadas</option>
+            </select>
+          </div>
+          <div id="adminMissionsList">
+            <div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Abrí esta pestaña para cargar las misiones.</div></div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -7366,6 +7651,7 @@ async function endSim(silent=false){
   S.stats.xp = (S.stats.xp || 0) + simState.hits * 5
   const pct = total > 0 ? Math.round(simState.hits / total * 100) : 0
   window.Analytics?.trackSimulacroCompleted(simState.hits, total, pct, simState.theme, simState.parcial)
+  window.Social?.onSimCompleted(simState.hits, total, simState.parcial)
   await persistState()
   renderHero(); renderHistory(); renderRecommendations(); checkAchievements()
   if (!silent){
@@ -7858,6 +8144,145 @@ async function _renderAdminCountries(){
   } catch(e){ el.innerHTML = '<span class="bad">⚠ Error al cargar.</span>' }
 }
 window.adminRefreshCountries = () => _renderAdminCountries()
+
+// ══════════════════════════════════════════════════════════════════
+// ADMIN: PANEL DE MISIONES GRUPALES
+// ══════════════════════════════════════════════════════════════════
+
+async function _renderAdminMissions(){
+  const listEl  = document.getElementById('adminMissionsList')
+  const statsEl = document.getElementById('adminMissionStats')
+  if (!listEl) return
+
+  const filter = document.getElementById('adminMissionFilter')?.value || 'all'
+  listEl.innerHTML = '<div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Cargando…</div></div>'
+
+  // Toda la data viene del RPC SECURITY DEFINER — bypasea RLS y GRANTs
+  const statusParam = filter === 'all' ? null : filter
+  const { data: missions, error } = await sb.rpc('get_admin_missions_view', {
+    p_limit: 60, p_status: statusParam
+  })
+
+  // Stats: contar desde los resultados (o totales vía RPC sin filtro)
+  if (statsEl) {
+    const { data: all } = await sb.rpc('get_admin_missions_view', { p_limit: 200, p_status: null })
+    const rows = all || []
+    const active    = rows.filter(r => r.status === 'active').length
+    const expired   = rows.filter(r => r.status === 'expired').length
+    const completed = rows.filter(r => r.status === 'completed').length
+    // Contar plantillas via RPC también para evitar grants
+    const { data: tpls } = await sb.rpc('get_admin_missions_view', { p_limit: 1, p_status: null })
+      .then(() => sb.from('mission_templates').select('id', { count:'exact', head:true }))
+      .catch(() => ({ count: 0 }))
+    statsEl.innerHTML = [
+      { label:'Activas',     val: active,      color:'var(--blue)'   },
+      { label:'Expiradas',   val: expired,     color:'var(--muted)'  },
+      { label:'Completadas', val: completed,   color:'var(--green)'  },
+      { label:'Plantillas',  val: tpls?.count ?? '?', color:'var(--yellow)' }
+    ].map(s => `
+      <div style="padding:.55rem .8rem;border-radius:12px;background:var(--surface);border:1px solid var(--border);min-width:90px;text-align:center">
+        <div style="font-size:1.35rem;font-weight:900;color:${s.color}">${s.val}</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:.1rem">${s.label}</div>
+      </div>`).join('')
+  }
+
+  if (error) {
+    listEl.innerHTML = `<div style="padding:1rem;background:rgba(239,68,68,.08);border-radius:12px;border:1px solid rgba(239,68,68,.2)">
+      <strong style="color:#ef4444">Error al cargar misiones</strong>
+      <p style="font-size:.82rem;margin:.3rem 0 0;color:var(--muted)">${error.message}</p>
+      <p style="font-size:.78rem;margin:.4rem 0 0;color:var(--muted)">Si ves "function does not exist", ejecutá primero <code>20260522_fix_grants_definitivo.sql</code> en Supabase.</p>
+    </div>`
+    return
+  }
+
+  if (!missions?.length) {
+    listEl.innerHTML = '<div class="social-empty"><div class="social-empty-icon">📭</div><div class="social-empty-sub">Sin misiones en este estado. Usá "Generar ahora" para crear misiones automáticas para todos los grupos.</div></div>'
+    return
+  }
+
+  const metricShort = { simulacros_completed:'sims', correct_answers:'resp.', xp_earned:'XP', all_participated:'todos' }
+  const statusColor = { active:'var(--blue)', expired:'var(--muted)', completed:'var(--green)', scheduled:'var(--yellow)' }
+
+  listEl.innerHTML = missions.map(m => {
+    const pct       = m.pct ?? 0
+    const groupName = m.group_name || (m.type === 'community' ? '🌐 Comunitaria' : '—')
+    const ends      = m.ends_at ? new Date(m.ends_at).toLocaleString('es-CR',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'
+    const timerInfo = m.ends_at && m.status === 'active' ? ` · vence ${ends}` : ''
+    const safeTitle = String(m.title || '').replace(/"/g,'&quot;')
+    return `<div class="admin-mission-row">
+      <div class="admin-mission-info">
+        <div class="admin-mission-title" title="${safeTitle}">${safeTitle}</div>
+        <div class="admin-mission-meta">
+          <span style="color:${statusColor[m.status]||'var(--muted)'}">● ${m.status}</span>
+          · ${m.subtype || m.type} · ${(m.parcial||'').toUpperCase()}
+          ${m.topic ? '· T' + m.topic : ''}
+          · Grupo: ${groupName}${timerInfo}
+          · ${m.participants||0} participantes
+        </div>
+        <div class="admin-mission-bar" style="width:100%">
+          <div class="admin-mission-bar-fill" style="width:${pct}%;background:${pct>=100?'var(--green)':'var(--blue)'}"></div>
+        </div>
+        <div style="font-size:.7rem;color:var(--muted);margin-top:.2rem">
+          ${m.current_value||0}/${m.target_value} ${metricShort[m.target_metric]||''} · ${pct}% · +${m.reward_xp} XP
+        </div>
+      </div>
+      <div class="admin-mission-controls">
+        ${m.status === 'active' ? `
+          <button class="btn" style="font-size:.72rem;color:var(--red)"
+            onclick="window.adminCancelMission('${m.id}',this)">✕ Cancelar</button>` : ''}
+        ${m.status === 'expired' || m.status === 'completed' ? `
+          <button class="btn" style="font-size:.72rem"
+            onclick="window.adminReactivateMission('${m.id}',this)">↺ Reactivar</button>` : ''}
+      </div>
+    </div>`
+  }).join('')
+}
+
+window.adminRefreshMissions = () => _renderAdminMissions()
+
+window.adminGenerateMissions = async function(btn){
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando…' }
+  try {
+    const { data, error } = await sb.rpc('auto_generate_group_missions', { p_max_per_group: 3 })
+    if (error) { window.toast('Error: ' + error.message); return }
+    window.toast(`✅ ${data ?? 0} misiones generadas`)
+    _renderAdminMissions()
+  } catch(e){ window.toast('Error: ' + e.message) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generar ahora' } }
+}
+
+window.adminExpireMissions = async function(btn){
+  if (btn) { btn.disabled = true; btn.textContent = '⏳…' }
+  try {
+    const { data, error } = await sb.rpc('expire_old_missions')
+    if (error) { window.toast('Error: ' + error.message); return }
+    window.toast(`✅ ${data ?? 0} misiones expiradas`)
+    _renderAdminMissions()
+  } catch(e){ window.toast('Error: ' + e.message) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '⏰ Expirar vencidas' } }
+}
+
+window.adminCancelMission = async function(missionId, btn){
+  if (!confirm('¿Cancelar esta misión? El progreso de los grupos se perderá.')) return
+  if (btn) btn.disabled = true
+  const { error } = await sb.from('missions')
+    .update({ status: 'expired', is_active: false })
+    .eq('id', missionId)
+  if (error) { window.toast('Error: ' + error.message); if (btn) btn.disabled = false; return }
+  window.toast('Misión cancelada')
+  _renderAdminMissions()
+}
+
+window.adminReactivateMission = async function(missionId, btn){
+  if (btn) btn.disabled = true
+  const newEnds = new Date(Date.now() + 48 * 3600 * 1000).toISOString()
+  const { error } = await sb.from('missions')
+    .update({ status: 'active', is_active: true, ends_at: newEnds })
+    .eq('id', missionId)
+  if (error) { window.toast('Error: ' + error.message); if (btn) btn.disabled = false; return }
+  window.toast('Misión reactivada por 48 horas')
+  _renderAdminMissions()
+}
 
 async function _renderAdminFeedback(){
   const { data: fbs, error: fe } = await sb
@@ -18477,6 +18902,690 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       }
     })
   }, { threshold: 0.25 }).observe(sec)
+})()
+
+// ══════════════════════════════════════════════════════════════════
+// SISTEMA SOCIAL — window.Social
+// Grupos de estudio · Misiones · Chat en tiempo real (Supabase Realtime)
+// ══════════════════════════════════════════════════════════════════
+;(function(){
+  'use strict'
+
+  // ── Estado interno ──────────────────────────────────────────────
+  let _myGroups     = []   // grupos del usuario
+  let _activeGroup  = null // grupo seleccionado para chat
+  let _chatChannel  = null // canal Realtime activo
+  let _chatNames    = {}   // cache user_id → name para el chat
+  let _initialized  = false
+
+  // ── Helpers ─────────────────────────────────────────────────────
+  function _sb(){ return typeof sb !== 'undefined' ? sb : null }
+  function _uid(){ try { return _sb()?.auth?.getUser ? null : window._currentSession?.user?.id } catch(e){ return null } }
+
+  async function _getUserId(){
+    if (!_sb()) return null
+    const { data } = await _sb().auth.getUser()
+    return data?.user?.id || null
+  }
+
+  function _fmt(ts){
+    const d = new Date(ts)
+    const pad = n => String(n).padStart(2,'0')
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}`
+  }
+
+  function _daysLeft(endsAt){
+    if (!endsAt) return null
+    const ms = new Date(endsAt) - Date.now()
+    if (ms <= 0) return 0
+    return Math.ceil(ms / 86400000)
+  }
+
+  function _parcialLabel(p){
+    return { p1:'P1', p2:'P2', p3:'P3', all:'Todos' }[p] || p
+  }
+
+  // ── Inicialización ───────────────────────────────────────────────
+  async function init(){
+    if (_initialized) return
+    _initialized = true
+    const uid = await _getUserId()
+    if (!uid) return
+    await _loadMyGroups(uid)
+  }
+
+  // ── Tab switcher ────────────────────────────────────────────────
+  function switchTab(tab, btn){
+    document.querySelectorAll('.com-tab').forEach(b => b.classList.remove('active'))
+    document.querySelectorAll('.com-panel').forEach(p => p.classList.remove('active'))
+    if (btn) btn.classList.add('active')
+    const panel = document.getElementById('com-panel-' + tab)
+    if (panel) panel.classList.add('active')
+
+    if (tab === 'grupos')   _renderGroups()
+    if (tab === 'misiones') _renderMissions()
+    if (tab === 'chat')     _renderChatPanel()
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECCIÓN: GRUPOS
+  // ═══════════════════════════════════════════════════════════════
+
+  async function _loadMyGroups(uid){
+    if (!_sb() || !uid) return
+    const { data } = await _sb()
+      .from('group_members')
+      .select('group_id, role, groups(id, name, description, parcial, invite_code, max_members, created_at)')
+      .eq('user_id', uid)
+    _myGroups = (data || []).map(row => ({ ...row.groups, myRole: row.role }))
+    if (_myGroups.length > 0 && !_activeGroup) _activeGroup = _myGroups[0]
+  }
+
+  async function _renderGroups(){
+    const uid = await _getUserId()
+    if (!uid) {
+      document.getElementById('groupsListContainer').innerHTML =
+        '<div class="social-empty"><div class="social-empty-icon">🔒</div><div class="social-empty-title">Iniciá sesión</div><div class="social-empty-sub">Debés estar registrado para ver y unirte a grupos.</div></div>'
+      return
+    }
+
+    await _loadMyGroups(uid)
+    _renderMyGroupBar()
+
+    // Cargar grupos públicos
+    const { data: publicGroups, error } = await _sb().rpc('get_public_groups', { p_limit: 24 })
+    const container = document.getElementById('groupsListContainer')
+    if (error || !publicGroups?.length) {
+      container.innerHTML = '<div class="social-empty"><div class="social-empty-icon">🌱</div><div class="social-empty-title">Aún no hay grupos</div><div class="social-empty-sub">¡Sé el primero en crear un grupo de estudio!</div></div>'
+      return
+    }
+
+    const myGroupIds = new Set(_myGroups.map(g => g.id))
+
+    container.innerHTML = `<div class="group-grid">${
+      publicGroups.map(g => {
+        const isMember = myGroupIds.has(g.id)
+        const full = g.member_count >= g.max_members
+        return `<div class="group-card">
+          <div class="group-card-header">
+            <span class="group-card-name">${_esc(g.name)}</span>
+            <div class="group-card-meta">
+              <span class="group-badge parcial-${g.parcial}">${_parcialLabel(g.parcial)}</span>
+              ${isMember ? '<span class="group-badge" style="background:var(--greenSoft);color:var(--green)">✓ Unido</span>' : ''}
+            </div>
+          </div>
+          ${g.description ? `<div class="group-card-desc">${_esc(g.description)}</div>` : ''}
+          <div class="group-card-footer">
+            <span class="group-members-pill">👤 ${g.member_count}/${g.max_members}</span>
+            <span class="group-code">${g.invite_code}</span>
+          </div>
+          ${!isMember
+            ? `<button class="btn primary" style="font-size:.8rem;margin-top:.4rem" ${full ? 'disabled' : ''} onclick="window.Social.joinGroup('${g.id}',this)">${full ? '🔒 Lleno' : 'Unirse →'}</button>`
+            : `<button class="btn" style="font-size:.8rem;margin-top:.4rem;color:var(--red)" onclick="window.Social.leaveGroup('${g.id}',this)">Salir del grupo</button>`
+          }
+        </div>`
+      }).join('')
+    }</div>`
+  }
+
+  function _renderMyGroupBar(){
+    const bar = document.getElementById('myGroupBar')
+    if (!bar) return
+    if (_myGroups.length === 0) { bar.style.display = 'none'; return }
+    const g = _myGroups[0]
+    bar.style.display = ''
+    bar.innerHTML = `<div class="active-group-bar">
+      <div>
+        <div class="active-group-bar-name">👥 ${_esc(g.name)}</div>
+        <div class="active-group-bar-meta">Tu grupo activo · Código: <strong>${g.invite_code}</strong></div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn" style="font-size:.78rem" onclick="window.Social.viewMembers('${g.id}')">Ver miembros</button>
+        <button class="btn" style="font-size:.78rem" onclick="window.Social.switchTab('chat',null)">💬 Abrir chat</button>
+      </div>
+    </div>`
+  }
+
+  async function createGroup(){
+    const uid = await _getUserId()
+    if (!uid) { toast('Debes iniciar sesión para crear un grupo'); return }
+
+    const name    = document.getElementById('newGroupName')?.value?.trim()
+    const desc    = document.getElementById('newGroupDesc')?.value?.trim() || null
+    const parcial = document.getElementById('newGroupParcial')?.value || 'all'
+    const result  = document.getElementById('createGroupResult')
+
+    if (!name || name.length < 3) { result.className='feedback bad show'; result.textContent='El nombre debe tener al menos 3 caracteres.'; return }
+
+    const { data: group, error } = await _sb()
+      .from('groups')
+      .insert({ name, description: desc, parcial, created_by: uid })
+      .select()
+      .single()
+
+    if (error) { result.className='feedback bad show'; result.textContent='Error al crear el grupo: ' + error.message; return }
+
+    // El creador se convierte en líder automáticamente
+    await _sb().from('group_members').insert({ group_id: group.id, user_id: uid, role: 'leader' })
+
+    result.className = 'feedback good show'
+    result.textContent = `✅ Grupo "${group.name}" creado. Código: ${group.invite_code}`
+    document.getElementById('newGroupName').value = ''
+    document.getElementById('newGroupDesc').value = ''
+    setTimeout(() => { toggleCreateGroup(); _renderGroups() }, 1500)
+    toast(`✅ Grupo "${group.name}" creado`)
+  }
+
+  async function joinGroup(groupId, btn){
+    const uid = await _getUserId()
+    if (!uid) { toast('Debes iniciar sesión'); return }
+
+    if (btn) btn.disabled = true
+
+    const { error } = await _sb()
+      .from('group_members')
+      .insert({ group_id: groupId, user_id: uid, role: 'member' })
+
+    if (error) {
+      if (error.code === '23505') { toast('Ya eres miembro de este grupo'); }
+      else toast('Error al unirse: ' + error.message)
+      if (btn) btn.disabled = false
+      return
+    }
+
+    toast('✅ Te uniste al grupo')
+    await _loadMyGroups(uid)
+    _renderGroups()
+  }
+
+  async function joinByCode(){
+    const uid = await _getUserId()
+    if (!uid) { toast('Debes iniciar sesión'); return }
+
+    const code   = document.getElementById('inviteCodeInput')?.value?.trim().toUpperCase()
+    const result = document.getElementById('joinGroupResult')
+
+    if (!code || code.length < 4) { result.className='feedback bad show'; result.textContent='Ingresá un código válido.'; return }
+
+    const { data: group, error } = await _sb()
+      .from('groups')
+      .select('id, name, max_members')
+      .eq('invite_code', code)
+      .single()
+
+    if (error || !group) { result.className='feedback bad show'; result.textContent='Código no encontrado.'; return }
+
+    // Verificar capacidad
+    const { count } = await _sb().from('group_members').select('id', { count:'exact', head:true }).eq('group_id', group.id)
+    if (count >= group.max_members) { result.className='feedback bad show'; result.textContent='El grupo está lleno.'; return }
+
+    const { error: joinErr } = await _sb()
+      .from('group_members')
+      .insert({ group_id: group.id, user_id: uid, role: 'member' })
+
+    if (joinErr) {
+      if (joinErr.code === '23505') { result.className='feedback bad show'; result.textContent='Ya sos miembro de este grupo.'; return }
+      result.className='feedback bad show'; result.textContent='Error: ' + joinErr.message; return
+    }
+
+    result.className = 'feedback good show'
+    result.textContent = `✅ Te uniste a "${group.name}"`
+    document.getElementById('inviteCodeInput').value = ''
+    await _loadMyGroups(uid)
+    setTimeout(_renderGroups, 1000)
+    toast(`✅ Te uniste a "${group.name}"`)
+  }
+
+  async function leaveGroup(groupId, btn){
+    const uid = await _getUserId()
+    if (!uid) return
+    if (!confirm('¿Salir del grupo?')) return
+    if (btn) btn.disabled = true
+    await _sb().from('group_members').delete().eq('group_id', groupId).eq('user_id', uid)
+    if (_activeGroup?.id === groupId) { _activeGroup = null; _disconnectChat() }
+    await _loadMyGroups(uid)
+    _renderGroups()
+    toast('Saliste del grupo')
+  }
+
+  async function viewMembers(groupId){
+    const { data, error } = await _sb()
+      .from('group_members')
+      .select('role, profiles(name)')
+      .eq('group_id', groupId)
+    if (error || !data) { toast('Error al cargar miembros'); return }
+    const list = data.map(m => `<span class="member-chip ${m.role === 'leader' ? 'leader' : ''}">${_esc(m.profiles?.name || 'Usuario')}</span>`).join('')
+    toast(`👥 Miembros: ${data.length}`)
+    const bar = document.getElementById('myGroupBar')
+    if (bar) {
+      const existing = bar.querySelector('.member-list')
+      if (existing) existing.remove()
+      const ml = document.createElement('div')
+      ml.className = 'member-list'
+      ml.style.cssText = 'margin-top:.6rem'
+      ml.innerHTML = list
+      bar.firstElementChild && bar.firstElementChild.appendChild(ml)
+    }
+  }
+
+  function toggleCreateGroup(){
+    const form = document.getElementById('createGroupForm')
+    const btn  = document.getElementById('toggleCreateGroupBtn')
+    if (!form) return
+    const visible = form.style.display !== 'none'
+    form.style.display = visible ? 'none' : ''
+    if (btn) btn.textContent = visible ? '➕ Crear nuevo grupo' : '✕ Cancelar'
+    if (!visible) document.getElementById('createGroupResult').className = 'feedback'
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECCIÓN: MISIONES
+  // ═══════════════════════════════════════════════════════════════
+
+  async function _renderMissions(){
+    const uid = await _getUserId()
+    const myCont  = document.getElementById('myMissionsContainer')
+    const avCont  = document.getElementById('availableMissionsContainer')
+
+    if (!uid) {
+      const locked = '<div class="social-empty"><div class="social-empty-icon">🔒</div><div class="social-empty-title">Iniciá sesión</div><div class="social-empty-sub">Debés estar registrado para ver misiones.</div></div>'
+      myCont.innerHTML = locked; avCont.innerHTML = ''; return
+    }
+
+    // Expirar misiones vencidas (silencioso, no bloqueante)
+    _sb().rpc('expire_old_missions').catch(() => {})
+
+    // Cargar grupos del usuario
+    const myGroupIds = _myGroups.map(g => g.id)
+
+    // Mostrar alerta si no tiene grupo
+    const noGroupAlert = myGroupIds.length === 0
+      ? `<div class="mission-no-group-alert">
+           <div class="mission-no-group-icon">⚠️</div>
+           <div class="mission-no-group-text">
+             <strong>Las misiones son grupales</strong>
+             <p>Necesitás pertenecer a un grupo para participar. Ve a la pestaña <strong>Grupos</strong> y unite o creá uno.</p>
+           </div>
+         </div>`
+      : ''
+
+    // Misiones activas del usuario (ya unido)
+    const { data: userMissions } = await _sb()
+      .from('user_missions')
+      .select(`
+        contribution, status, joined_at,
+        missions(id, title, description, type, subtype, target_metric,
+                 target_value, current_value, reward_xp, parcial, topic,
+                 ends_at, status, group_id, min_members)
+      `)
+      .eq('user_id', uid)
+      .eq('status', 'active')
+
+    // Progreso grupal de las misiones en las que el usuario participa
+    let groupProgressMap = {}
+    if (myGroupIds.length && userMissions?.length) {
+      const missionIds = userMissions.map(um => um.missions?.id).filter(Boolean)
+      const { data: gmpData } = await _sb()
+        .from('group_mission_progress')
+        .select('mission_id, group_id, current_value, members_participated')
+        .in('mission_id', missionIds)
+        .in('group_id', myGroupIds)
+      if (gmpData) gmpData.forEach(r => { groupProgressMap[r.mission_id] = r })
+    }
+
+    if (!userMissions?.length) {
+      myCont.innerHTML = noGroupAlert + '<div class="social-empty"><div class="social-empty-icon">🎯</div><div class="social-empty-title">Sin misiones activas</div><div class="social-empty-sub">Únete a misiones de tu grupo para empezar a contribuir.</div></div>'
+    } else {
+      const cards = userMissions
+        .filter(um => um.missions?.status === 'active')
+        .map(um => _missionCard(um.missions, um, true, groupProgressMap[um.missions?.id]))
+        .join('')
+      myCont.innerHTML = noGroupAlert + (cards ? `<div class="missions-grid">${cards}</div>` : '<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">No hay misiones activas ahora mismo.</div></div>')
+    }
+
+    // Misiones disponibles para unirse (propias del grupo + community)
+    const joinedIds = new Set((userMissions || []).map(um => um.missions?.id).filter(Boolean))
+    let query = _sb()
+      .from('missions')
+      .select('id, title, description, type, subtype, target_metric, target_value, current_value, reward_xp, parcial, ends_at, status, group_id, min_members')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+
+    const { data: allMissions } = await query
+
+    const available = (allMissions || []).filter(m => {
+      if (joinedIds.has(m.id)) return false
+      if (m.type === 'community') return true
+      // misiones de grupo: solo si el usuario pertenece al grupo
+      return myGroupIds.includes(m.group_id)
+    })
+
+    if (!available.length) {
+      avCont.innerHTML = '<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-title">¡Estás en todas las misiones disponibles!</div><div class="social-empty-sub">El sistema generará nuevas misiones automáticamente. Pedile al admin que las genere.</div></div>'
+    } else {
+      avCont.innerHTML = `<div class="missions-grid">${available.map(m => _missionCard(m, null, false, null)).join('')}</div>`
+    }
+  }
+
+  // Etiquetas de subtipo de misión
+  const _subtypeLabel = {
+    collaborative_sim:      { icon:'🤝', text:'Colaborativa' },
+    group_competition:      { icon:'⚔️', text:'Competencia' },
+    shared_progress:        { icon:'📈', text:'Progreso Grupal' },
+    consistency:            { icon:'👥', text:'Todos Participan' },
+    collective_performance: { icon:'🏆', text:'Rendimiento Colectivo' },
+    community:              { icon:'🌐', text:'Comunidad' },
+    group:                  { icon:'👥', text:'Grupo' }
+  }
+
+  function _missionCard(m, userMission, joined, groupProgress){
+    if (!m) return ''
+
+    // Progreso: para misiones con progreso grupal usar group_mission_progress; si no, individual
+    const grpCurrent = groupProgress?.current_value ?? 0
+    const grpMembers = groupProgress?.members_participated ?? 0
+    const indivContrib = userMission?.contribution ?? 0
+    const useGroupProgress = groupProgress !== null && groupProgress !== undefined
+
+    const current = useGroupProgress ? grpCurrent : (m.type === 'community' ? (m.current_value || 0) : indivContrib)
+    const pct     = Math.min(100, m.target_value > 0 ? Math.round(current / m.target_value * 100) : 0)
+    const isComplete = pct >= 100
+
+    const metricLabel = {
+      simulacros_completed: 'simulacros',
+      correct_answers:      'respuestas correctas',
+      xp_earned:            'XP ganados',
+      all_participated:     'miembros activos'
+    }[m.target_metric] || m.target_metric
+
+    // Subtipo
+    const sub = m.subtype || m.type
+    const subInfo = _subtypeLabel[sub] || { icon:'🎯', text:'Misión' }
+
+    // Timer
+    const timerHtml = _missionTimerHtml(m.ends_at)
+
+    // Sección de progreso grupal
+    const groupSection = useGroupProgress ? `
+      <div class="mission-group-section">
+        <div class="mission-group-row">
+          <span class="mission-group-label">Progreso del grupo</span>
+          <span class="mission-group-val">${current} / ${m.target_value} ${metricLabel}</span>
+        </div>
+        <div class="mission-members-row">
+          ${grpMembers > 0 ? `<span class="mission-members-dot"></span>` : `<span class="mission-members-dot empty"></span>`}
+          <span>${grpMembers} miembro${grpMembers !== 1 ? 's' : ''} participando</span>
+          ${m.min_members > 1 ? `<span style="color:var(--muted)">· mín. ${m.min_members} requeridos</span>` : ''}
+        </div>
+      </div>` : ''
+
+    return `<div class="mission-card" style="${isComplete ? 'border-color:var(--green)' : ''}">
+      <div class="mission-card-header">
+        <span class="mission-card-title">${_esc(m.title)}</span>
+        <span class="mission-type-pill ${sub}">${subInfo.icon} ${subInfo.text}</span>
+      </div>
+      ${m.description ? `<p class="mission-desc">${_esc(m.description)}</p>` : ''}
+      ${groupSection}
+      <div class="mission-progress-row">
+        <span class="mission-progress-label">${current} / ${m.target_value} ${metricLabel}</span>
+        <span class="mission-progress-pct">${pct}%</span>
+      </div>
+      <div class="mission-bar"><div class="mission-bar-fill ${isComplete ? 'complete' : ''}" style="width:${pct}%"></div></div>
+      <div class="mission-card-footer">
+        <span class="mission-reward">🏅 Recompensa: <strong>+${m.reward_xp} XP</strong></span>
+        ${timerHtml}
+        ${joined
+          ? `<span class="mission-joined-badge">✓ Participando${indivContrib > 0 ? ' · ' + indivContrib + ' aportados' : ''}</span>`
+          : (m.is_group_required !== false
+              ? `<button class="btn primary" style="font-size:.78rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`
+              : `<button class="btn primary" style="font-size:.78rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`)
+        }
+      </div>
+    </div>`
+  }
+
+  function _missionTimerHtml(endsAt){
+    if (!endsAt) return ''
+    const diff = new Date(endsAt) - new Date()
+    if (diff <= 0) return '<span class="mission-timer-row">Terminó</span>'
+    const h = Math.floor(diff / 3600000)
+    const d = Math.floor(h / 24)
+    const urgency = h <= 6 ? 'urgent' : h <= 24 ? 'soon' : 'ok'
+    const label   = d > 1 ? `${d}d ${h % 24}h` : h > 0 ? `${h}h restantes` : `< 1h`
+    return `<span class="mission-timer-row ${urgency}">⏳ ${label}</span>`
+  }
+
+  async function joinMission(missionId, btn){
+    const uid = await _getUserId()
+    if (!uid) { toast('Debes iniciar sesión'); return }
+    if (btn) btn.disabled = true
+
+    const { error } = await _sb()
+      .from('user_missions')
+      .insert({ user_id: uid, mission_id: missionId, contribution: 0, status: 'active' })
+
+    if (error) {
+      if (error.code === '23505') toast('Ya estás en esta misión')
+      else { toast('Error: ' + error.message); if (btn) btn.disabled = false }
+      return
+    }
+    toast('✅ Te uniste a la misión')
+    _renderMissions()
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECCIÓN: CHAT EN TIEMPO REAL
+  // ═══════════════════════════════════════════════════════════════
+
+  async function _renderChatPanel(){
+    const uid  = await _getUserId()
+    const wrap = document.getElementById('chatPanelInner')
+    if (!wrap) return
+
+    if (!uid) {
+      wrap.innerHTML = '<div class="chat-no-group"><strong>🔒</strong><p>Iniciá sesión para acceder al chat.</p></div>'
+      return
+    }
+
+    if (_myGroups.length === 0) {
+      wrap.innerHTML = '<div class="chat-no-group"><strong>💬</strong><p>Únete a un grupo para acceder al chat en tiempo real.</p></div>'
+      return
+    }
+
+    // Selector de grupo + UI de chat
+    wrap.innerHTML = `
+      <div class="chat-container">
+        <div class="chat-select-row">
+          <select id="chatGroupSelect" onchange="window.Social.selectChatGroup(this.value)">
+            ${_myGroups.map(g => `<option value="${g.id}" ${_activeGroup?.id===g.id?'selected':''}>${_esc(g.name)}</option>`).join('')}
+          </select>
+          <span id="chatOnlineLabel" class="muted" style="font-size:.78rem"></span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-empty">Cargando mensajes…</div>
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chatInput" class="chat-input" rows="2" placeholder="Escribe un mensaje… (Enter para enviar)" maxlength="500"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();window.Social.sendMessage()}"></textarea>
+          <button class="btn primary" style="align-self:flex-end" onclick="window.Social.sendMessage()">➤</button>
+        </div>
+        <div id="chatStatus" class="feedback" style="margin-top:.3rem;font-size:.78rem"></div>
+      </div>`
+
+    if (_activeGroup) {
+      await selectChatGroup(_activeGroup.id)
+    } else if (_myGroups.length > 0) {
+      await selectChatGroup(_myGroups[0].id)
+    }
+  }
+
+  async function selectChatGroup(groupId){
+    _disconnectChat()
+    _activeGroup = _myGroups.find(g => g.id === groupId) || null
+    if (!_activeGroup) return
+    await _loadAndRenderMessages(groupId)
+    _subscribeToChat(groupId)
+  }
+
+  async function _loadAndRenderMessages(groupId){
+    const uid = await _getUserId()
+    const { data: msgs } = await _sb()
+      .from('chat_messages')
+      .select('id, content, created_at, user_id, profiles(name)')
+      .eq('group_id', groupId)
+      .order('created_at', { ascending: true })
+      .limit(60)
+
+    // Cachear nombres
+    if (msgs) msgs.forEach(m => { if (m.profiles?.name) _chatNames[m.user_id] = m.profiles.name })
+
+    const box = document.getElementById('chatMessages')
+    if (!box) return
+    if (!msgs?.length) { box.innerHTML = '<div class="chat-empty">Sin mensajes aún. ¡Sé el primero en escribir!</div>'; return }
+
+    box.innerHTML = msgs.map(m => _buildBubble(m, uid)).join('')
+    box.scrollTop = box.scrollHeight
+  }
+
+  function _buildBubble(msg, myUid){
+    const isOwn = msg.user_id === myUid
+    const name  = _chatNames[msg.user_id] || msg.profiles?.name || 'Usuario'
+    return `<div class="chat-msg ${isOwn ? 'own' : 'other'}">
+      <div class="chat-bubble">${_esc(msg.content)}</div>
+      <div class="chat-msg-meta">${isOwn ? '' : _esc(name) + ' · '}${_fmt(msg.created_at)}</div>
+    </div>`
+  }
+
+  function _appendBubble(msg){
+    const box = document.getElementById('chatMessages')
+    if (!box) return
+    const empty = box.querySelector('.chat-empty')
+    if (empty) empty.remove()
+    const uid = window._currentSession?.user?.id || ''
+    const div = document.createElement('div')
+    div.innerHTML = _buildBubble(msg, uid)
+    box.appendChild(div.firstElementChild)
+    box.scrollTop = box.scrollHeight
+  }
+
+  function _subscribeToChat(groupId){
+    if (!_sb()) return
+    _chatChannel = _sb()
+      .channel(`chat-group-${groupId}`)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'chat_messages',
+        filter: `group_id=eq.${groupId}`
+      }, payload => {
+        if (payload.new) _appendBubble(payload.new)
+      })
+      .subscribe(status => {
+        const lbl = document.getElementById('chatOnlineLabel')
+        if (lbl) lbl.textContent = status === 'SUBSCRIBED' ? '🟢 En vivo' : '⚪ Conectando…'
+      })
+  }
+
+  function _disconnectChat(){
+    if (_chatChannel) {
+      _sb()?.removeChannel(_chatChannel)
+      _chatChannel = null
+    }
+  }
+
+  async function sendMessage(){
+    const uid    = await _getUserId()
+    const input  = document.getElementById('chatInput')
+    const status = document.getElementById('chatStatus')
+    if (!uid || !_activeGroup || !input) return
+
+    const content = input.value.trim()
+    if (!content) return
+    if (content.length > 500) { if (status) { status.className='feedback bad show'; status.textContent='Máximo 500 caracteres.' }; return }
+
+    input.disabled = true
+    const { error } = await _sb()
+      .from('chat_messages')
+      .insert({ group_id: _activeGroup.id, user_id: uid, content })
+
+    input.disabled = false
+    if (error) {
+      if (status) { status.className='feedback bad show'; status.textContent='Error al enviar: ' + error.message }
+      return
+    }
+    input.value = ''
+    if (status) status.className = 'feedback'
+    input.focus()
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // HOOK: ACTUALIZACIÓN DE MISIONES TRAS SIMULACRO
+  // Llamado por endSim() — no-blocking (no lanza excepciones)
+  // ═══════════════════════════════════════════════════════════════
+
+  async function onSimCompleted(hits, total, parcial){
+    try {
+      const uid = await _getUserId()
+      if (!uid) return
+      const par = parcial || 'all'
+      const promises = []
+      // v2 actualiza progreso grupal + individual. Fallback a v1 si aún no existe.
+      const callRpc = (metric, value) => {
+        return _sb().rpc('update_mission_progress_v2', {
+          p_user_id: uid, p_metric: metric, p_value: value, p_parcial: par
+        }).then(res => {
+          if (res.error?.code === 'PGRST202' || res.error?.message?.includes('function')) {
+            return _sb().rpc('update_mission_progress', {
+              p_user_id: uid, p_metric: metric, p_value: value, p_parcial: par
+            })
+          }
+        })
+      }
+      if (total > 0) promises.push(callRpc('simulacros_completed', 1))
+      if (hits  > 0) promises.push(callRpc('correct_answers', hits))
+      await Promise.all(promises)
+      // Refresco silencioso de la UI de misiones si el tab está visible
+      const mPanel = document.getElementById('com-panel-misiones')
+      if (mPanel?.classList.contains('active')) setTimeout(() => _renderMissions(), 700)
+    } catch(e) { /* silencioso — no romper el simulacro */ }
+  }
+
+  // ── Utilidades ──────────────────────────────────────────────────
+  function _esc(str){
+    return String(str || '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;')
+  }
+
+  // ── API pública ─────────────────────────────────────────────────
+  window.Social = {
+    init,
+    switchTab,
+    createGroup,
+    joinGroup,
+    joinByCode,
+    leaveGroup,
+    viewMembers,
+    toggleCreateGroup,
+    joinMission,
+    selectChatGroup,
+    sendMessage,
+    onSimCompleted
+  }
+
+  // Inicializar cuando haya sesión activa de Supabase
+  document.addEventListener('DOMContentLoaded', () => {
+    const poll = setInterval(async () => {
+      if (typeof sb === 'undefined') return
+      clearInterval(poll)
+      const { data } = await sb.auth.getSession()
+      if (data?.session?.user) init()
+    }, 500)
+    setTimeout(() => clearInterval(poll), 15000)
+  })
 })()
 
 // ── Sidebar toggle para mobile ───────────────────────────────
