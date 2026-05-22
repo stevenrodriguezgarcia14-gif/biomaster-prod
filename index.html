@@ -12,11 +12,11 @@
      suman si por alguna razón el hosting falla en aplicar el header). -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
-  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://esm.sh https://unpkg.com;
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://esm.sh https://unpkg.com https://us-assets.i.posthog.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https:;
-  connect-src 'self' https://*.supabase.co wss://*.supabase.co https://ipapi.co;
+  connect-src 'self' https://*.supabase.co wss://*.supabase.co https://ipapi.co https://us.i.posthog.com;
   frame-src https://www.paypal.com https://www.sandbox.paypal.com;
   object-src 'none';
   base-uri 'self';
@@ -1589,6 +1589,117 @@ window.PAYPAL_PLANS = {
   semestre: { label:'Semestre Completo',  price:'$24.99', duration:'6 meses',   buttonId:'66KC5UQ6TGAT8' }
 }
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ANALYTICS — PostHog
+     API key pública (equivalente a Supabase anon key).
+     Para deshabilitar tracking: cambiar _PH_ENABLED a false.
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+window._PH_ENABLED = true
+window._PH_KEY = 'phc_znwk3SD4eUqp3XBf8DwzdCxLUwFreMXah8i7j2wVRESi'
+
+if (window._PH_ENABLED && window._PH_KEY !== 'REEMPLAZAR_CON_TU_POSTHOG_KEY') {
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[])
+  posthog.init(window._PH_KEY, {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
+    capture_pageview: true,
+    capture_pageleave: true,
+    autocapture: false,
+    disable_session_recording: true
+  })
+}
+
+// ── Módulo de Analytics ──────────────────────────────────────
+// Capa de abstracción sobre posthog.capture().
+// Siempre llamar a window.Analytics.trackXxx() — nunca posthog directamente.
+window.Analytics = (function(){
+  function _capture(event, props) {
+    if (!window._PH_ENABLED || !window.posthog) return
+    try { window.posthog.capture(event, props || {}) } catch(e) {}
+  }
+
+  function _userId() {
+    try {
+      var s = window.currentSession
+      return (s && s.user && s.user.id) ? s.user.id : null
+    } catch(e) { return null }
+  }
+
+  // Al inicializar sesión: identifica al usuario en PostHog
+  function identifyUser(userId, email, plan) {
+    if (!window._PH_ENABLED || !window.posthog || !userId) return
+    try {
+      window.posthog.identify(userId, { email: email || null, plan: plan || 'free' })
+    } catch(e) {}
+  }
+
+  // Al cerrar sesión: resetea identidad
+  function resetUser() {
+    if (!window._PH_ENABLED || !window.posthog) return
+    try { window.posthog.reset() } catch(e) {}
+  }
+
+  function trackUserSignedUp(email, country) {
+    _capture('user_signed_up', { email: email || null, country: country || null })
+  }
+
+  function trackSimulacroStarted(tema, parcial) {
+    _capture('simulacro_started', { user_id: _userId(), tema: tema || 'all', parcial: parcial || null })
+  }
+
+  function trackSimulacroCompleted(hits, total, pct, tema, parcial) {
+    _capture('simulacro_completed', {
+      user_id: _userId(),
+      hits: hits,
+      total: total,
+      score_pct: pct,
+      tema: tema || 'all',
+      parcial: parcial || null
+    })
+  }
+
+  function trackSummaryOpened(section) {
+    _capture('summary_opened', { user_id: _userId(), section: section || null })
+  }
+
+  function trackRankingViewed() {
+    _capture('ranking_viewed', { user_id: _userId() })
+  }
+
+  function trackPaymentStarted(plan) {
+    _capture('payment_started', { user_id: _userId(), plan: plan || null })
+  }
+
+  function trackPaymentCompleted(plan) {
+    _capture('payment_completed', { user_id: _userId(), plan: plan || null })
+  }
+
+  // Listener de clicks en links de resúmenes (se activa al cargar la app)
+  document.addEventListener('click', function(e) {
+    var a = e.target.closest('a[href]')
+    if (!a) return
+    var href = a.getAttribute('href') || ''
+    if (href === '#resumen' || href === '#resumenP1' || href === '#resumenP3' || href === '#resumen-p3') {
+      var section = href.replace('#', '')
+      trackSummaryOpened(section)
+    }
+  }, { passive: true })
+
+  return {
+    identifyUser: identifyUser,
+    resetUser: resetUser,
+    trackUserSignedUp: trackUserSignedUp,
+    trackSimulacroStarted: trackSimulacroStarted,
+    trackSimulacroCompleted: trackSimulacroCompleted,
+    trackSummaryOpened: trackSummaryOpened,
+    trackRankingViewed: trackRankingViewed,
+    trackPaymentStarted: trackPaymentStarted,
+    trackPaymentCompleted: trackPaymentCompleted
+  }
+})()
+</script>
 </head>
 <body class="lp-open">
 <div class="toast" id="toastEl"></div>
@@ -2388,6 +2499,40 @@ window.PAYPAL_PLANS = {
 
     <div id="authRegister" style="display:none">
       <div class="auth-field"><label>Nombre visible (ranking)</label><input type="text" id="regName" placeholder="Ej: Steven R." maxlength="40"></div>
+      <div class="auth-field"><label>¿Desde qué país estudias?</label><select id="regCountry" required>
+        <option value="">— Seleccioná tu país —</option>
+        <optgroup label="Latinoamérica">
+          <option value="CR">🇨🇷 Costa Rica</option>
+          <option value="MX">🇲🇽 México</option>
+          <option value="CO">🇨🇴 Colombia</option>
+          <option value="GT">🇬🇹 Guatemala</option>
+          <option value="HN">🇭🇳 Honduras</option>
+          <option value="SV">🇸🇻 El Salvador</option>
+          <option value="NI">🇳🇮 Nicaragua</option>
+          <option value="PA">🇵🇦 Panamá</option>
+          <option value="VE">🇻🇪 Venezuela</option>
+          <option value="EC">🇪🇨 Ecuador</option>
+          <option value="PE">🇵🇪 Perú</option>
+          <option value="BO">🇧🇴 Bolivia</option>
+          <option value="PY">🇵🇾 Paraguay</option>
+          <option value="UY">🇺🇾 Uruguay</option>
+          <option value="AR">🇦🇷 Argentina</option>
+          <option value="CL">🇨🇱 Chile</option>
+          <option value="CU">🇨🇺 Cuba</option>
+          <option value="DO">🇩🇴 República Dominicana</option>
+          <option value="PR">🇵🇷 Puerto Rico</option>
+        </optgroup>
+        <optgroup label="Iberoamérica">
+          <option value="ES">🇪🇸 España</option>
+          <option value="PT">🇵🇹 Portugal</option>
+          <option value="BR">🇧🇷 Brasil</option>
+        </optgroup>
+        <optgroup label="Otro">
+          <option value="US">🇺🇸 Estados Unidos</option>
+          <option value="CA">🇨🇦 Canadá</option>
+          <option value="OTHER">🌐 Otro país</option>
+        </optgroup>
+      </select></div>
       <div class="auth-field"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com" autocomplete="email" inputmode="email" spellcheck="false" oninput="this.value=this.value.replace(/\s+/g,'')"></div>
       <div class="auth-field"><label>Contraseña (mínimo 8 caracteres)</label><input type="password" id="regPass" placeholder="••••••••" autocomplete="new-password"></div>
       <div class="auth-field"><label>Confirmar contraseña</label><input type="password" id="regPass2" placeholder="••••••••" autocomplete="new-password"></div>
@@ -6581,8 +6726,10 @@ async function doRegister(){
   const pass  = document.getElementById('regPass').value
   const pass2 = document.getElementById('regPass2').value
   const name  = document.getElementById('regName').value.trim()
+  const country = document.getElementById('regCountry').value
   const consent = document.getElementById('regConsent').checked
   if (!name || name.length < 2) return showMsg('registerMsg','bad','⚠ Escribe tu nombre visible.')
+  if (!country) return showMsg('registerMsg','bad','⚠ Seleccioná tu país.')
   if (!email) return showMsg('registerMsg','bad','⚠ Escribe tu correo.')
   if (!validEmail(email)) return showMsg('registerMsg','bad','⚠ El correo no tiene un formato valido. Ej: nombre@dominio.com (sin espacios, con dominio real).')
   if (pass.length < 8) return showMsg('registerMsg','bad','⚠ La contraseña debe tener al menos 8 caracteres.')
@@ -6596,13 +6743,14 @@ async function doRegister(){
     const { error } = await sb.auth.signUp({
       email,
       password: pass,
-      options: { data: { name, consent_accepted_at: new Date().toISOString() } }
+      options: { data: { name, consent_accepted_at: new Date().toISOString(), country_code: country, country_name: (_CM_NAMES && _CM_NAMES[country]) || country } }
     })
     if (error){
       showMsg('registerMsg','bad','⚠ ' + humanizeAuthError(error))
       return
     }
     showMsg('registerMsg','good','✅ Cuenta creada. Si tu proyecto exige confirmación, revisa tu correo. Luego inicia sesión.')
+    window.Analytics?.trackUserSignedUp(email, country)
     setTimeout(() => authSwitchTab('login'), 2500)
   } finally {
     _authBusy = false
@@ -6699,12 +6847,22 @@ async function handleAuthSession(session){
           .eq('id', session.user.id)
           .maybeSingle()
         if (real) Object.assign(profile, real)
+        // Si el perfil aún no tiene país pero fue elegido en el registro, persistirlo ahora
+        if (!profile.country && session.user.user_metadata?.country_code) {
+          const cc = session.user.user_metadata.country_code
+          const cn = session.user.user_metadata.country_name || cc
+          profile.country = cn
+          profile.country_code = cc
+          sb.from('profiles').update({ country: cn, country_code: cc, country_source: 'registration', country_detected_at: new Date().toISOString() }).eq('id', session.user.id).then(() => {}).catch(() => {})
+        }
       } catch(e){ /* ignorar — seguimos con el perfil mínimo */ }
 
       currentSession = { user: session.user, profile, isGuest: false }
+      window.Analytics?.identifyUser(session.user.id, session.user.email, profile?.plan || 'free')
     } else {
       // signOut o sesión expirada sin refresh válido
       if (!currentSession?.isGuest) currentSession = null
+      window.Analytics?.resetUser()
     }
     await onSessionChanged()
   } catch(err){
@@ -7119,6 +7277,7 @@ function startSim(theme){
   const qs = [...pool].sort(() => Math.random() - 0.5).slice(0, access.limit)
   simState = { qs, idx:0, hits:0, miss:0, ans:false, theme, finished:false, isFree: access.isFree, parcial: activeP }
   renderSim()
+  window.Analytics?.trackSimulacroStarted(theme, activeP)
 }
 
 window._simPending = undefined
@@ -7206,6 +7365,7 @@ async function endSim(silent=false){
   if (S.stats.sessions.length > 30) S.stats.sessions.pop()
   S.stats.xp = (S.stats.xp || 0) + simState.hits * 5
   const pct = total > 0 ? Math.round(simState.hits / total * 100) : 0
+  window.Analytics?.trackSimulacroCompleted(simState.hits, total, pct, simState.theme, simState.parcial)
   await persistState()
   renderHero(); renderHistory(); renderRecommendations(); checkAchievements()
   if (!silent){
@@ -7310,6 +7470,7 @@ window.refreshFlashForParcial = refreshFlashForParcial
 async function loadRanking(){
   const panel = document.getElementById('rankPanel')
   if (!panel) return
+  window.Analytics?.trackRankingViewed()
   panel.innerHTML = '<span class="muted">🔄 Cargando…</span>'
   const { data, error } = await sb.rpc('public_ranking', { top_n: 50 })
   if (error){ panel.innerHTML = '<span class="bad">⚠ ' + escapeHtml(error.message) + '</span>'; return }
@@ -12203,6 +12364,7 @@ window._openPayPalModal = function(plan){
     }, { once: true })
   }
   modal.classList.add('show')
+  window.Analytics?.trackPaymentStarted(plan)
 }
 
 window.confirmPaywall = function(){
@@ -18360,6 +18522,7 @@ window.toggleMobSidebar = function(){
     document.getElementById('payResultConfirmado').style.display = esConfirmado ? '' : 'none';
     document.getElementById('payResultCancelado').style.display = esConfirmado ? 'none' : '';
     ov.classList.add('show');
+    if (esConfirmado) window.Analytics?.trackPaymentCompleted(null)
   }
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', mostrarOverlay);
