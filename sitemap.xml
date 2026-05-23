@@ -2,14 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ── ESPAÑOL (principal) ───────────────────────────────────── -->
   <url>
     <loc>https://biomaster.app/</loc>
-    <lastmod>2026-05-13</lastmod>
+    <lastmod>2026-05-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
     <xhtml:link rel="alternate" hreflang="es-419" href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/en/"/>
     <image:image>
       <image:loc>https://biomaster.app/img/og-image.jpg</image:loc>
       <image:title>BioMaster - Plataforma online para estudiar Biología General</image:title>
@@ -20,4 +23,52 @@
       <image:title>BioMaster Pro - Acceso completo</image:title>
     </image:image>
   </url>
+
+  <!-- ── INGLÉS — Landing global ───────────────────────────────── -->
+  <url>
+    <loc>https://biomaster.app/en/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="en-us" href="https://biomaster.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/en/"/>
+    <image:image>
+      <image:loc>https://biomaster.app/img/og-image.jpg</image:loc>
+      <image:title>BioMaster - Biology Quiz Online for University Students</image:title>
+    </image:image>
+  </url>
+
+  <!-- ── QUIZ — Páginas programáticas en inglés ────────────────── -->
+  <url>
+    <loc>https://biomaster.app/quiz/biology</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/biology"/>
+    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/biology"/>
+  </url>
+
+  <url>
+    <loc>https://biomaster.app/quiz/genetics</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/genetics"/>
+    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/genetics"/>
+  </url>
+
+  <url>
+    <loc>https://biomaster.app/quiz/cell-biology</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/cell-biology"/>
+    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/cell-biology"/>
+  </url>
+
 </urlset>
