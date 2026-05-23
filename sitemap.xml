@@ -3,20 +3,20 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://biomaster.cr/</loc>
+    <loc>https://biomaster.app/</loc>
     <lastmod>2026-05-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://biomaster.cr/"/>
-    <xhtml:link rel="alternate" hreflang="es-419" href="https://biomaster.cr/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.cr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="es-419" href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/"/>
     <image:image>
-      <image:loc>https://biomaster.cr/img/og-image.jpg</image:loc>
+      <image:loc>https://biomaster.app/img/og-image.jpg</image:loc>
       <image:title>BioMaster - Plataforma online para estudiar Biología General</image:title>
       <image:caption>BioMaster: simulacros, resúmenes y BioVisuales animados para Biología General universitaria</image:caption>
     </image:image>
     <image:image>
-      <image:loc>https://biomaster.cr/img/product-image.jpg</image:loc>
+      <image:loc>https://biomaster.app/img/product-image.jpg</image:loc>
       <image:title>BioMaster Pro - Acceso completo</image:title>
     </image:image>
   </url>
