@@ -101,6 +101,6 @@
       "permanent": true
     }
   ],
-  "cleanUrls": false,
+  "cleanUrls": true,
   "trailingSlash": false
 }
