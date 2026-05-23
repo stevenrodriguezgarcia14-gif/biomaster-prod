@@ -1,5 +1,5 @@
 # robots.txt para BioMaster
-# https://biomaster.cr/
+# https://biomaster.app/
 
 User-agent: *
 Allow: /
@@ -15,4 +15,4 @@ User-agent: DuckDuckBot
 Allow: /
 
 # Sitemap
-Sitemap: https://biomaster.cr/sitemap.xml
+Sitemap: https://biomaster.app/sitemap.xml
