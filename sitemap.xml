@@ -6,13 +6,13 @@
   <!-- ── ESPAÑOL (principal) ───────────────────────────────────── -->
   <url>
     <loc>https://biomaster.app/</loc>
-    <lastmod>2026-05-23</lastmod>
+    <lastmod>2026-05-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="es-419" href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/"/>
     <image:image>
       <image:loc>https://biomaster.app/img/og-image.jpg</image:loc>
       <image:title>BioMaster - Plataforma online para estudiar Biología General</image:title>
@@ -24,51 +24,25 @@
     </image:image>
   </url>
 
-  <!-- ── INGLÉS — Landing global ───────────────────────────────── -->
+  <!-- ── INGLÉS ────────────────────────────────────────────────── -->
   <url>
-    <loc>https://biomaster.app/en/</loc>
-    <lastmod>2026-05-23</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://biomaster.app/en</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/en/"/>
-    <xhtml:link rel="alternate" hreflang="en-us" href="https://biomaster.app/en/"/>
-    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/en/"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en"/>
+    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/"/>
     <image:image>
       <image:loc>https://biomaster.app/img/og-image.jpg</image:loc>
-      <image:title>BioMaster - Biology Quiz Online for University Students</image:title>
+      <image:title>BioMaster - Online platform to study General Biology</image:title>
+      <image:caption>BioMaster: practice exams, summaries and animated BioVisuals for university General Biology</image:caption>
     </image:image>
-  </url>
-
-  <!-- ── QUIZ — Páginas programáticas en inglés ────────────────── -->
-  <url>
-    <loc>https://biomaster.app/quiz/biology</loc>
-    <lastmod>2026-05-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/biology"/>
-    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/biology"/>
-  </url>
-
-  <url>
-    <loc>https://biomaster.app/quiz/genetics</loc>
-    <lastmod>2026-05-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/genetics"/>
-    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/genetics"/>
-  </url>
-
-  <url>
-    <loc>https://biomaster.app/quiz/cell-biology</loc>
-    <lastmod>2026-05-23</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en"    href="https://biomaster.app/quiz/cell-biology"/>
-    <xhtml:link rel="alternate" hreflang="es"    href="https://biomaster.app/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/quiz/cell-biology"/>
+    <image:image>
+      <image:loc>https://biomaster.app/img/product-image.jpg</image:loc>
+      <image:title>BioMaster Pro - Full access</image:title>
+    </image:image>
   </url>
 
 </urlset>
