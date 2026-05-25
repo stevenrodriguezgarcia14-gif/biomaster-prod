@@ -306,7 +306,7 @@ textarea,input[type=text],input[type=number],input[type=password],input[type=ema
 textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-offset:1px}
 .flash-card-wrap{min-height:200px;display:grid;place-items:center;cursor:pointer;text-align:center;padding:1.5rem;font-size:1rem;font-weight:600}
 .flash-front{display:block}.flash-back{display:none;color:var(--green)}.flipped .flash-front{display:none}.flipped .flash-back{display:block}
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--green);color:#fff;padding:.85rem 1.3rem;border-radius:18px;font-weight:700;z-index:9999;transform:translateY(120px);opacity:0;transition:all .4s;pointer-events:none;max-width:340px;box-shadow:var(--shadow);font-size:.88rem}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--green);color:#fff;padding:.85rem 1.3rem;border-radius:18px;font-weight:700;z-index:9999;transform:translateY(120px);opacity:0;transition:all .4s;pointer-events:none;max-width:min(340px,calc(100vw - 3rem));box-shadow:var(--shadow);font-size:.88rem}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.danger{background:var(--red)}
 .stat-card{padding:.9rem;border-radius:16px;background:var(--soft);border:1px solid var(--border);text-align:center}
@@ -397,7 +397,7 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--green);outline-o
 .fullbox{padding:1rem;border-radius:18px;background:var(--soft);border:1px solid var(--border)}
 .prog-bar{height:10px;border-radius:999px;background:var(--soft);overflow:hidden;border:1px solid var(--border)}
 .prog-fill{height:100%;border-radius:999px;background:var(--green);transition:width .6s}
-@media(max-width:1180px){.layout,.hero-grid,.hero-stats,.grid2,.grid3,.grid4,.subtopic-grid{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
+@media(max-width:1180px){html,body{overflow-x:hidden}.layout,.hero-grid,.hero-stats,.grid2,.grid3,.grid4,.subtopic-grid{grid-template-columns:1fr}.sidebar{position:static;max-height:none}}
 @media(max-width:640px){.menu{gap:.25rem}}
 /* Juegos didácticos nuevos (BioDetective / Puzzle / Escape) */
 .bgm-clue{display:flex;align-items:flex-start;gap:.5rem;padding:.6rem .8rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);margin-bottom:.4rem;cursor:pointer;transition:all .15s;font-size:.88rem}
@@ -1710,6 +1710,59 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .social-empty-icon{font-size:2.2rem;margin-bottom:.5rem}
 .social-empty-title{font-weight:800;font-size:.95rem;color:var(--text);margin-bottom:.3rem}
 .social-empty-sub{font-size:.83rem;line-height:1.5}
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE FIXES — área autenticada (conservadores)
+   Objetivo: evitar scroll horizontal y zoom-out automático
+   en móvil. Sin cambios de diseño ni lógica de negocio.
+   ═══════════════════════════════════════════════════════════ */
+@media(max-width:768px){
+  /* Contención principal: evita que cualquier elemento
+     desbordado expanda el ancho del documento y fuerce
+     zoom-out automático en el navegador móvil */
+  html,body{overflow-x:hidden}
+
+  /* Hero stats: 2×2 en lugar de 4 apiladas verticalmente */
+  .hero-stats{grid-template-columns:repeat(2,1fr)!important}
+
+  /* DNA strand (BioVisuales replicación): scroll interno
+     en lugar de desbordarse — 7 bases × 48px = 365px en 375px */
+  .dna-strand{overflow-x:auto;justify-content:flex-start;padding-bottom:4px;scrollbar-width:none}
+  .dna-strand::-webkit-scrollbar{display:none}
+
+  /* Subtopic items: selector debajo del texto (evita squeeze) */
+  .subtopic-item{flex-direction:column}
+  .subtopic-item select{width:100%;min-width:0}
+
+  /* Contenido de resúmenes: palabras largas no desbordan el card */
+  .subitem,.fullbox,.sim-question{max-width:100%;word-break:break-word;overflow-wrap:break-word}
+
+  /* Plan de estudio: gap reducido para que el status badge quepa */
+  .plan-day{gap:.4rem}
+  /* details de resúmenes: no expanden el layout al abrirse */
+  details{max-width:100%}
+  /* select dentro de summary-right: tamaño automático en lugar de width:100% */
+  .summary-right select{width:auto;min-width:0}
+  /* summary-left puede encoger cuando el título es largo */
+  .summary-left{min-width:0}
+  /* diag-bar: etiqueta más estrecha en teléfonos estándar (120→100px) */
+  .diag-bar{grid-template-columns:100px 1fr 44px}
+}
+
+/* Pantallas muy angostas (< 480px — Galaxy S8, iPhone SE) */
+@media(max-width:480px){
+  /* Puzzle matching: una columna en pantallas muy angostas */
+  .puz-pair{grid-template-columns:1fr}
+  /* Diag bar: etiqueta de 120px reducida a 80px */
+  .diag-bar{grid-template-columns:80px 1fr 36px;font-size:.78rem}
+}
+
+/* BioMatch: 2 columnas en pantallas muy pequeñas */
+@media(max-width:420px){
+  #matBoard{grid-template-columns:repeat(2,1fr)!important}
+  .mat-front{font-size:.95rem}
+  .mat-back{font-size:.67rem}
+}
 
 </style>
 
