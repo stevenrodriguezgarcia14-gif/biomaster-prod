@@ -6957,12 +6957,21 @@ async function persistState(){
     try { localStorage.setItem(GUEST_KEY, JSON.stringify(S)) } catch(e){}
     return
   }
-  // usuario autenticado → upsert a user_progress
+  // authenticated user → upsert to user_progress
   const userId = currentSession.user.id
   const { error } = await sb
     .from('user_progress')
     .upsert({ user_id: userId, data: S, updated_at: new Date().toISOString() })
   if (error) console.warn('[persistState] error:', error.message)
+  // Auto-refresh ranking when XP changes (debounced 3s to batch rapid gains)
+  const curXp = S.stats?.xp || 0
+  if (curXp !== window._rankLastXp) {
+    window._rankLastXp = curXp
+    clearTimeout(window._rankRefreshTimer)
+    window._rankRefreshTimer = setTimeout(() => {
+      if (typeof loadRanking === 'function') loadRanking()
+    }, 3000)
+  }
 }
 
 async function loadStateForCurrentSession(){
