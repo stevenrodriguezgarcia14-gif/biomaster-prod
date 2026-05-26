@@ -1922,6 +1922,7 @@ window.Analytics = (function(){
         <a onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'})">Funciones</a>
         <a onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Precio</a>
         <a onclick="document.getElementById('lp-faq').scrollIntoView({behavior:'smooth'})">Preguntas</a>
+        <a href="/en" style="display:inline-flex!important;align-items:center;gap:.35rem;padding:.42rem .8rem;border-radius:10px;border:1.5px solid var(--border);color:var(--muted);font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s;white-space:nowrap" onmouseover="this.style.borderColor='var(--green)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'" title="Switch to English">🌐 English</a>
         <button class="lp-btn-secondary" style="padding:.55rem 1.1rem;font-size:.85rem" onclick="window.openAuthFromLanding('login')">Iniciar sesión</button>
         <button class="lp-btn-primary" style="padding:.55rem 1.1rem;font-size:.85rem;box-shadow:none" onclick="window.openAuthFromLanding('register')">Empezar gratis</button>
       </div>
@@ -1932,9 +1933,9 @@ window.Analytics = (function(){
   <section class="lp-hero">
     <canvas id="bioCanvas" aria-hidden="true"></canvas>
     <div class="container lp-hero-inner">
-      <span class="lp-eyebrow">🧬 Plataforma interactiva para Biología General</span>
-      <h1>Aprobá tu parcial de Biología General. <span class="hl">Con diagnóstico, plan diario y práctica real.</span></h1>
-      <p class="lp-sub">En 15 minutos de diagnóstico sabés exactamente en qué tema estás débil, qué estudiar hoy y cuánto te falta para llegar preparado al examen.</p>
+      <span class="lp-eyebrow">🧬 Plataforma gamificada de Biología General universitaria</span>
+      <h1>Aprobá tu parcial de Biología General. <span class="hl">Con diagnóstico, plan diario y práctica gamificada.</span></h1>
+      <p class="lp-sub">En 15 minutos de diagnóstico sabés exactamente en qué tema estás débil, qué estudiar hoy y cuánto te falta para llegar preparado al examen. Ganás XP, subís de nivel y dominás cada tema mientras estudiás.</p>
       <div class="lp-cta-row">
         <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Empezar gratis →</button>
         <button class="lp-btn-secondary" onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver los planes</button>
@@ -1949,6 +1950,7 @@ window.Analytics = (function(){
         <div class="lp-stat"><div class="lp-stat-num">100+</div><div class="lp-stat-lbl">preguntas de práctica con feedback</div></div>
         <div class="lp-stat"><div class="lp-stat-num">∞</div><div class="lp-stat-lbl">simulacros sin límite</div></div>
         <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">parciales universitarios (P1, P2, P3)</div></div>
+        <div class="lp-stat"><div class="lp-stat-num">⚡</div><div class="lp-stat-lbl">XP, ranking y dominación de temas</div></div>
       </div>
     </div>
   </section>
@@ -2003,8 +2005,8 @@ window.Analytics = (function(){
   <!-- Características -->
   <section class="lp-section lp-dark lp-wave-down" id="lp-features">
     <div class="container">
-      <h2>Lo que BioMaster hace diferente</h2>
-      <p class="lp-section-sub">Otras plataformas te dan apuntes. BioMaster te dice <em>qué estudiar hoy</em>, <em>cuánto te falta para aprobar</em> y <em>dónde estás débil</em>. Estas funciones son las que justifican el plan Pro.</p>
+      <h2>Biología General universitaria — gamificada</h2>
+      <p class="lp-section-sub">Otras plataformas te dan apuntes. BioMaster te dice <em>qué estudiar hoy</em>, <em>cuánto te falta para aprobar</em> y <em>dónde estás débil</em>. Ganás XP, dominás temas y ves tu progreso en tiempo real. Estas funciones son las que justifican el plan Pro.</p>
       <div class="lp-features">
         <div class="lp-feat">
           <div class="lp-feat-icon">🎯</div>
@@ -2433,8 +2435,8 @@ window.Analytics = (function(){
   <!-- CTA final -->
   <section class="container">
     <div class="lp-final-cta">
-      <h2>El examen no se va a aplazar.</h2>
-      <p>Empezá gratis hoy. En 15 minutos tenés tu diagnóstico, tu plan y sabés exactamente qué estudiar mañana.</p>
+      <h2>El parcial de Biología General no se va a aplazar.</h2>
+      <p>Empezá gratis hoy. En 15 minutos tenés tu diagnóstico, tu plan personalizado y sabés exactamente qué estudiar mañana. Estudiás con XP y gamificación — sin que se sienta como castigo.</p>
       <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Crear mi cuenta gratis →</button>
     </div>
   </section>
@@ -2446,6 +2448,10 @@ window.Analytics = (function(){
         <div>
           <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:28px;height:28px;object-fit:contain;border-radius:6px"></div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">Biología General</small></div></div>
           <p style="max-width:320px;line-height:1.6">Diagnóstico, plan personalizado y práctica real para aprobar Biología General universitaria. Para estudiantes en toda LATAM. <strong>Producto educativo independiente.</strong></p>
+          <div style="display:flex;gap:.7rem;margin-top:.9rem;flex-wrap:wrap">
+            <a href="https://www.instagram.com/biomasterapp?igsh=NG41d2huNGtqNzFi" target="_blank" rel="noopener noreferrer" title="BioMaster en Instagram" style="display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .7rem;border-radius:9px;border:1px solid rgba(74,222,128,.2);color:rgba(255,255,255,.55);font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='rgba(74,222,128,.6)';this.style.color='#7dd3a3'" onmouseout="this.style.borderColor='rgba(74,222,128,.2)';this.style.color='rgba(255,255,255,.55)'"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
+            <a href="https://tiktok.com/@biomaster.cr" target="_blank" rel="noopener noreferrer" title="BioMaster en TikTok" style="display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .7rem;border-radius:9px;border:1px solid rgba(74,222,128,.2);color:rgba(255,255,255,.55);font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='rgba(74,222,128,.6)';this.style.color='#7dd3a3'" onmouseout="this.style.borderColor='rgba(74,222,128,.2)';this.style.color='rgba(255,255,255,.55)'"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.8 1.54V6.78a4.85 4.85 0 01-1.03-.09z"/></svg>TikTok</a>
+          </div>
         </div>
         <div>
           <h4>Plataforma</h4>
@@ -7465,8 +7471,9 @@ function renderSessionUI(){
 }
 
 function renderFeedbackForm(){
-  const _prevText = document.getElementById('fbText')?.value || ''
-  const _prevExp  = document.getElementById('fbExperience')?.value || ''
+  const _prevText   = document.getElementById('fbText')?.value || ''
+  const _prevExp    = document.getElementById('fbExperience')?.value || ''
+  const _prevRating = document.getElementById('fbRating')?.value || '0'
   document.getElementById('feedbackBox').innerHTML = `
     <div class="auth-field"><label>Tipo</label>
       <select id="fbType">
@@ -7481,9 +7488,18 @@ function renderFeedbackForm(){
       <textarea id="fbText" rows="4" placeholder="Escribe entre 5 y 2000 caracteres…"></textarea>
     </div>
     <div class="auth-field" id="fbExperienceWrap" style="display:none">
-      <label>📝 Tu experiencia con BioMaster <small style="font-weight:400;color:var(--muted)">(opcional, 30-300 caracteres)</small></label>
-      <textarea id="fbExperience" rows="3" maxlength="300" placeholder="Ej: 'Pasé de 60 a 85 en una semana usando los simulacros…' Si lo aprobamos, aparece en la landing junto a los testimonios."></textarea>
-      <small style="display:block;margin-top:.25rem;color:var(--muted);font-size:.78rem">Tu experiencia podría aparecer públicamente en la landing (con tu nombre) si la aprobamos. Podés escribir sin esto si solo es feedback privado.</small>
+      <label>⭐ Calificación <small style="font-weight:400;color:var(--muted)">(opcional — ¿cuántas estrellas le das a BioMaster?)</small></label>
+      <div id="fbStars" style="display:flex;gap:.1rem;margin:.3rem 0 .7rem;user-select:none" aria-label="Calificación de 1 a 5 estrellas">
+        <span data-v="1" tabindex="0" role="radio" aria-label="1 estrella" style="font-size:2rem;color:#ccc;cursor:pointer;transition:color .1s;line-height:1;padding:.1rem .15rem">★</span>
+        <span data-v="2" tabindex="0" role="radio" aria-label="2 estrellas" style="font-size:2rem;color:#ccc;cursor:pointer;transition:color .1s;line-height:1;padding:.1rem .15rem">★</span>
+        <span data-v="3" tabindex="0" role="radio" aria-label="3 estrellas" style="font-size:2rem;color:#ccc;cursor:pointer;transition:color .1s;line-height:1;padding:.1rem .15rem">★</span>
+        <span data-v="4" tabindex="0" role="radio" aria-label="4 estrellas" style="font-size:2rem;color:#ccc;cursor:pointer;transition:color .1s;line-height:1;padding:.1rem .15rem">★</span>
+        <span data-v="5" tabindex="0" role="radio" aria-label="5 estrellas" style="font-size:2rem;color:#ccc;cursor:pointer;transition:color .1s;line-height:1;padding:.1rem .15rem">★</span>
+      </div>
+      <input type="hidden" id="fbRating" value="0">
+      <label style="margin-top:.1rem">📝 Tu experiencia con BioMaster <small style="font-weight:400;color:var(--muted)">(opcional, 30-600 caracteres)</small></label>
+      <textarea id="fbExperience" rows="4" maxlength="600" placeholder="Ej: 'Pasé de 60 a 85 en una semana usando los simulacros…' Si lo aprobamos, aparece en la landing junto a los testimonios."></textarea>
+      <small style="display:block;margin-top:.25rem;color:var(--muted);font-size:.78rem">Tu experiencia y calificación podrían aparecer públicamente en la landing (con tu nombre) si la aprobamos.</small>
     </div>
     <button class="btn primary" onclick="A.submitFeedback()">📤 Enviar</button>
     <div id="fbResult" class="feedback" style="margin-top:.6rem"></div>
@@ -7496,10 +7512,10 @@ function renderFeedbackForm(){
       <p class="muted" style="font-size:.8rem;margin:.3rem 0 .6rem">Borra todo TU progreso (XP, racha, partidas, logros). No borra tu cuenta.</p>
       <button class="btn danger" onclick="A.resetMyProgress()">🧹 Borrar mi progreso</button>
     </div>`
-  // Restaurar texto que el usuario había escrito antes de que se reconstruyera el form
+  // Restaurar valores previos
   if (_prevText){ const el = document.getElementById('fbText'); if (el) el.value = _prevText }
   if (_prevExp){  const el = document.getElementById('fbExperience'); if (el) el.value = _prevExp }
-  // Mostrar/ocultar campo experiencia según tipo
+  // Mostrar/ocultar campo testimonio según tipo
   const fbType = document.getElementById('fbType')
   const wrap = document.getElementById('fbExperienceWrap')
   if (fbType && wrap){
@@ -7507,8 +7523,24 @@ function renderFeedbackForm(){
     fbType.addEventListener('change', sync)
     sync()
   }
-  // Si había experiencia restaurada, mostrar el campo aunque el tipo no sea 'testimonio' todavía
   if (_prevExp && wrap) wrap.style.display = ''
+  // Inicializar widget de estrellas interactivo
+  ;(function _initStars(savedRating){
+    const starsEl = document.getElementById('fbStars')
+    const input   = document.getElementById('fbRating')
+    if (!starsEl || !input) return
+    const stars = [...starsEl.querySelectorAll('span')]
+    const paint = n => stars.forEach(s => s.style.color = +s.dataset.v <= n ? '#f5b417' : '#ccc')
+    paint(+savedRating)
+    stars.forEach(s => {
+      s.addEventListener('mouseover', () => paint(+s.dataset.v))
+      s.addEventListener('mouseout',  () => paint(+input.value))
+      s.addEventListener('click', () => { input.value = s.dataset.v; paint(+s.dataset.v) })
+      s.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { input.value = s.dataset.v; paint(+s.dataset.v) }
+      })
+    })
+  })(_prevRating)
 }
 
 function escapeHtml(s){
@@ -7955,25 +7987,31 @@ async function submitFeedback(){
   }
   const type = document.getElementById('fbType').value
   const text = document.getElementById('fbText').value.trim()
-  const expEl = document.getElementById('fbExperience')
+  const expEl    = document.getElementById('fbExperience')
+  const ratingEl = document.getElementById('fbRating')
   const experience = expEl ? expEl.value.trim() : ''
+  const rating     = ratingEl ? parseInt(ratingEl.value) || 0 : 0
   if (text.length < 5) return showMsg('fbResult','bad','⚠ Escribe al menos 5 caracteres.')
   if (text.length > 2000) return showMsg('fbResult','bad','⚠ Máximo 2000 caracteres.')
   if (experience && experience.length < 30) return showMsg('fbResult','bad','⚠ Si vas a compartir experiencia, escribí al menos 30 caracteres.')
-  if (experience.length > 300) return showMsg('fbResult','bad','⚠ La experiencia no puede pasar de 300 caracteres.')
+  if (experience.length > 600) return showMsg('fbResult','bad','⚠ La experiencia no puede pasar de 600 caracteres.')
   // Mapeo de tipos frontend → valores aceptados por el constraint de Supabase
-  // DB acepta: 'bug', 'sugerencia', 'testimonio'
   const _fbTypeMap = { error:'bug', pregunta:'sugerencia', otro:'sugerencia' }
   const dbType = _fbTypeMap[type] || type
   const payload = { user_id: currentSession.user.id, type: dbType, text }
   if (experience) payload.experience_text = experience
+  if (type === 'testimonio' && rating >= 1 && rating <= 5) payload.rating = rating
   const { error } = await sb.from('feedback').insert(payload)
   if (error) return showMsg('fbResult','bad','⚠ ' + error.message)
   document.getElementById('fbText').value = ''
   if (expEl) expEl.value = ''
-  showMsg('fbResult','good', experience
-    ? '✅ Feedback enviado. Si aprobamos tu experiencia, aparecerá en la landing.'
-    : '✅ Feedback enviado.')
+  if (ratingEl) ratingEl.value = '0'
+  const starsEl = document.getElementById('fbStars')
+  if (starsEl) starsEl.querySelectorAll('span').forEach(s => s.style.color = '#ccc')
+  const successMsg = experience
+    ? (rating >= 1 ? `✅ Testimonio enviado con ${rating} ${'★'.repeat(rating)}. Si lo aprobamos, aparecerá en la landing.` : '✅ Feedback enviado. Si aprobamos tu experiencia, aparecerá en la landing.')
+    : '✅ Feedback enviado.'
+  showMsg('fbResult','good', successMsg)
   toast('💬 Feedback enviado.')
   loadMyFeedback()
 }
@@ -8399,7 +8437,7 @@ window.adminReactivateMission = async function(missionId, btn){
 async function _renderAdminFeedback(){
   const { data: fbs, error: fe } = await sb
     .from('feedback')
-    .select('id,type,text,status,admin_reply,created_at,user_id,experience_text,is_public,profiles(name,email)')
+    .select('id,type,text,status,admin_reply,created_at,user_id,experience_text,is_public,rating,profiles(name,email)')
     .order('created_at', { ascending:false })
     .limit(200)
   const fbList = document.getElementById('adminFbList')
@@ -8448,12 +8486,16 @@ function _renderAdminFbFiltered(){
   const cards = filtered.map(f => {
     const isTestimonio = f.type === 'testimonio'
     const borderColor = f.status === 'pendiente' ? 'var(--yellow)' : f.status === 'resuelto' ? 'var(--green)' : 'var(--border)'
-    const expBlock = f.experience_text
+    const ratingStars = (f.rating >= 1 && f.rating <= 5)
+      ? `<span style="color:#f5b417;font-size:.95rem;letter-spacing:1px">${'★'.repeat(f.rating)}${'☆'.repeat(5-f.rating)}</span> <small style="color:var(--muted)">${f.rating}/5</small> `
+      : '<small style="color:var(--muted)">Sin calificación</small> '
+    const expBlock = (f.experience_text || (f.type === 'testimonio' && f.is_public))
       ? `<div style="margin:.4rem 0;padding:.55rem .75rem;background:var(--greenSoft);border-left:3px solid var(--green);border-radius:6px;font-size:.88rem">
-          <strong>📝 Experiencia:</strong> ${escapeHtml(f.experience_text)}
+          ${ratingStars}
+          <strong>📝 Experiencia:</strong> ${escapeHtml(f.experience_text || '—')}
           ${f.is_public ? '<span class="fb-status fb-resuelto" style="margin-left:.4rem">📢 Pública</span>' : ''}
         </div>`
-      : ''
+      : (f.type === 'testimonio' ? `<div style="margin:.3rem 0;font-size:.82rem;color:var(--muted)">${ratingStars}</div>` : '')
     const publicBtn = (f.experience_text || isTestimonio)
       ? (f.is_public
           ? `<button class="btn" onclick="A.toggleFeedbackPublic(${f.id}, false)">🔒 Quitar público</button>`
@@ -9299,24 +9341,45 @@ async function adminRowAction(kind, email){
 // Versión silenciosa de promote (sin prompts) para botones de fila
 async function _runPromoteSilent(email, newRole){
   const msg = document.getElementById('adminControlMsg')
-  if (msg){ msg.className = 'feedback show good'; msg.textContent = '🔄 Procesando…' }
+  const setMsg = (kind, text) => {
+    if (!msg) return
+    msg.className = 'feedback show ' + (kind === 'bad' ? 'bad' : 'good')
+    msg.textContent = text
+  }
+  setMsg('good', '🔄 Procesando…')
 
-  // Ruta vía RPC SQL
+  // Ruta 1: RPC admin_set_role (función SQL SECURITY DEFINER en Supabase)
+  // Si no existe, ejecutar migración: Supabase/migrations/20260526_admin_role_and_testimonials_rls.sql
   const { data, error } = await sb.rpc('admin_set_role', {
     target_email: email,
     new_role: newRole
   })
 
-  if (error){
-    if (msg){ msg.className = 'feedback show bad'; msg.textContent = '⚠ ' + error.message }
+  if (!error && !data?.error){
+    setMsg('good', `✅ ${email} → ${newRole}`)
+    renderAdminPanel()
     return
   }
-  if (data?.error){
-    if (msg){ msg.className = 'feedback show bad'; msg.textContent = '⚠ ' + data.error }
+
+  // Si el RPC falla porque no existe la función, intentar UPDATE directo
+  const rpcErrMsg = error?.message || data?.error || ''
+  const rpcNotExist = rpcErrMsg.includes('does not exist') || rpcErrMsg.includes('Could not find')
+  if (rpcNotExist) {
+    console.warn('[admin] RPC admin_set_role no encontrado. Ejecutar migración SQL. Intentando UPDATE directo...')
+    const { error: updateErr } = await sb
+      .from('profiles')
+      .update({ role: newRole })
+      .eq('email', email)
+    if (!updateErr) {
+      setMsg('good', `✅ ${email} → ${newRole} (via UPDATE directo)`)
+      renderAdminPanel()
+      return
+    }
+    setMsg('bad', `⚠ Falló UPDATE directo: ${updateErr.message}\n→ Ejecutar migración SQL en Supabase para activar admin_set_role.`)
     return
   }
-  if (msg){ msg.className = 'feedback show good'; msg.textContent = `✅ ${email} → ${newRole}` }
-  renderAdminPanel()
+
+  setMsg('bad', '⚠ ' + rpcErrMsg)
 }
 
 async function setFbStatus(id, status){
@@ -9336,27 +9399,43 @@ async function promoteUser(newRole){
     return
   }
   const msg = document.getElementById('adminControlMsg')
-  msg.className = 'feedback show good'
-  msg.textContent = '🔄 Procesando…'
+  const setMsg = (kind, text) => {
+    msg.className = 'feedback show ' + (kind === 'bad' ? 'bad' : 'good')
+    msg.textContent = text
+  }
+  setMsg('good', '🔄 Procesando…')
 
-  // Ruta vía RPC SQL (admin_set_role en Supabase)
+  // Ruta 1: RPC admin_set_role
   const { data, error } = await sb.rpc('admin_set_role', {
     target_email: email.trim(),
     new_role: newRole
   })
 
-  if (error){
-    msg.className = 'feedback show bad'
-    msg.textContent = '⚠ ' + error.message
+  if (!error && !data?.error){
+    setMsg('good', `✅ ${email} → ${newRole}`)
+    renderAdminPanel()
     return
   }
-  if (data?.error){
-    msg.className = 'feedback show bad'
-    msg.textContent = '⚠ ' + data.error
+
+  // Fallback: UPDATE directo si RPC no existe
+  const rpcErrMsg = error?.message || data?.error || ''
+  const rpcNotExist = rpcErrMsg.includes('does not exist') || rpcErrMsg.includes('Could not find')
+  if (rpcNotExist) {
+    console.warn('[admin] RPC admin_set_role no encontrado. Ejecutar migración SQL. Intentando UPDATE directo...')
+    const { error: updateErr } = await sb
+      .from('profiles')
+      .update({ role: newRole })
+      .eq('email', email.trim())
+    if (!updateErr) {
+      setMsg('good', `✅ ${email} → ${newRole} (via UPDATE directo)`)
+      renderAdminPanel()
+      return
+    }
+    setMsg('bad', `⚠ Falló también el UPDATE directo: ${updateErr.message}\n→ Ejecutar Supabase/migrations/20260526_admin_role_and_testimonials_rls.sql`)
     return
   }
-  msg.className = 'feedback show good'
-  msg.textContent = `✅ ${email} → ${newRole}`
+
+  setMsg('bad', '⚠ ' + rpcErrMsg)
   renderAdminPanel()
 }
 
@@ -18753,31 +18832,54 @@ window.openLegal = function(seccion){
 }
 
 // ═══ TESTIMONIOS PÚBLICOS (cargados desde feedback marcado como público) ═══
-// Lee directamente la tabla feedbacks con is_public=true. Si la query falla
-// (por ejemplo, RLS no permite SELECT anónimo), conserva los placeholders.
-// REQUISITO Supabase: policy que permita SELECT en feedbacks where is_public=true
-// también a usuarios sin sesión (anon). Ver SQL_DELTA_v9.sql.
+// Lee feedbacks con is_public=true desde Supabase y los renderiza en el landing.
+// REQUISITO Supabase: ejecutar migración 20260526_admin_role_and_testimonials_rls.sql
+// que crea la política RLS para SELECT anónimo en feedback WHERE is_public=true.
 async function loadPublicTestimonials(){
   const grid = document.getElementById('lpTestimonialsGrid')
   if (!grid) return
   try {
-    const { data, error } = await sb
+    // Intento 1: query con join de profiles (para mostrar nombre real)
+    let data = null, error = null
+    ;({ data, error } = await sb
       .from('feedback')
-      .select('id, text, experience_text, type, created_at, profiles(name)')
+      .select('id, text, experience_text, type, created_at, rating, profiles(name)')
       .eq('is_public', true)
       .order('created_at', { ascending: false })
-      .limit(6)
-    if (error || !data || !data.length) return // Mantiene los placeholders
+      .limit(6))
+
+    // Si la query con join falla (p.ej. RLS en profiles no permite anon),
+    // intentar sin join — los nombres aparecerán como "Estudiante BioMaster"
+    if (error || !data) {
+      console.warn('[testimonios] Query con JOIN falló, reintentando sin join:', error?.message)
+      ;({ data, error } = await sb
+        .from('feedback')
+        .select('id, text, experience_text, type, created_at, rating')
+        .eq('is_public', true)
+        .order('created_at', { ascending: false })
+        .limit(6))
+    }
+
+    if (error) {
+      console.error('[testimonios] Error al cargar testimonios:', error.message,
+        '\n→ Verificar que la migración 20260526_admin_role_and_testimonials_rls.sql fue ejecutada en Supabase.')
+      return
+    }
+    if (!data || !data.length) return // Sin testimonios aprobados aún
+
+    const safe = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
     const cards = data.map(f => {
       const fullName = (f.profiles?.name || '').trim() || 'Estudiante BioMaster'
       const firstName = fullName.split(/\s+/)[0]
       const initial = (fullName[0] || 'B').toUpperCase()
       const txt = (f.experience_text || f.text || '').trim()
       if (!txt) return ''
-      const display = txt.length > 280 ? txt.slice(0, 277) + '…' : txt
-      const safe = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+      const display = txt.length > 450 ? txt.slice(0, 447) + '…' : txt
+      const r = (f.rating >= 1 && f.rating <= 5) ? f.rating : 5
+      const starsHtml = '<span style="color:#f5b417">'+('★'.repeat(r))+'</span>'
+        + '<span style="color:#ccc">'+('★'.repeat(5 - r))+'</span>'
       return `<div class="lp-test" data-feedback-id="${f.id}">
-        <div class="lp-test-stars">★★★★★</div>
+        <div class="lp-test-stars">${starsHtml}</div>
         <p class="lp-test-text">"${safe(display)}"</p>
         <div class="lp-test-author">
           <div class="lp-test-avatar">${safe(initial)}</div>
@@ -18788,10 +18890,10 @@ async function loadPublicTestimonials(){
         </div>
       </div>`
     }).filter(Boolean)
-    if (cards.length){
-      grid.innerHTML = cards.slice(0, 6).join('')
-    }
-  } catch(e){ /* fallback a placeholders */ }
+    if (cards.length) grid.innerHTML = cards.slice(0, 6).join('')
+  } catch(e){
+    console.error('[testimonios] Excepción inesperada:', e)
+  }
 }
 loadPublicTestimonials()
 
