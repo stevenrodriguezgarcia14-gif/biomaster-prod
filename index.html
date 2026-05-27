@@ -8992,9 +8992,9 @@ async function adminLoadAllProgress(){
     if (data){
       // El parcial activo se lee de localStorage del usuario — no lo tenemos acá.
       // Estimamos por el diagnóstico más reciente que tenga.
-      const diagP1 = data.premium?.diagnostic_p1 || (data.diagnostic_p1)
-      const diagP2 = data.premium?.diagnostic || (data.diagnostic)
-      const diagP3 = data.premium?.diagnostic_p3 || (data.diagnostic_p3)
+      const diagP1 = data.diagnostic_p1
+      const diagP2 = data.diagnostic
+      const diagP3 = data.diagnostic_p3
       const diags = [
         { p:'p1', d: diagP1 },
         { p:'p2', d: diagP2 },
@@ -9329,10 +9329,11 @@ async function adminViewAudit(email){
   const liveData = progRow?.data
   const livePct = (() => {
     try {
-      // Reconstruir un % aproximado del progreso vivo del usuario
-      const dx = liveData?.diagnostic
-      if (!dx?.scores) return 0
-      const vals = Object.values(dx.scores)
+      const diags = [liveData?.diagnostic_p1, liveData?.diagnostic, liveData?.diagnostic_p3]
+        .filter(d => d?.scores && d?.completed_at)
+        .sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))
+      if (!diags.length) return 0
+      const vals = Object.values(diags[0].scores)
       return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*100) : 0
     } catch { return 0 }
   })()
