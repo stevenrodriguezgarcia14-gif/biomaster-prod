@@ -1680,6 +1680,147 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .mission-generate-banner strong{font-size:.9rem}
 .mission-generate-banner p{font-size:.78rem;color:var(--muted);margin:.1rem 0 0}
 
+/* ══ Sistema de Expediciones v2 ════════════════════════════════════════ */
+
+/* ── Panel principal ── */
+.exp-section-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin-bottom:1.2rem}
+.exp-section-title{font-size:1.15rem;font-weight:900;letter-spacing:-.02em;margin:0}
+.exp-section-sub{font-size:.8rem;color:var(--muted);margin:.2rem 0 0}
+
+/* ── Tabs de expedición ── */
+.exp-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1.1rem;border-bottom:2px solid var(--border);padding-bottom:.6rem}
+.exp-tab{padding:.4rem .9rem;border-radius:8px 8px 0 0;font-size:.8rem;font-weight:700;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;margin-bottom:-2px}
+.exp-tab:hover{color:var(--text);background:var(--soft)}
+.exp-tab.active{color:var(--green);border-bottom:2px solid var(--green);background:var(--greenSoft)}
+.exp-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;background:var(--green);color:#fff;border-radius:999px;font-size:.63rem;font-weight:800;margin-left:.3rem;padding:0 .25rem}
+.exp-tab.active .exp-tab-count{background:var(--green)}
+.exp-tab:not(.active) .exp-tab-count{background:var(--border);color:var(--muted)}
+
+/* ── Grid de cards ── */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1rem}
+@media(max-width:600px){.exp-grid{grid-template-columns:1fr}}
+
+/* ── Card base ── */
+.exp-card{border-radius:20px;background:var(--surface);border:1.5px solid var(--border);overflow:hidden;transition:box-shadow .2s,transform .18s,border-color .18s;display:flex;flex-direction:column}
+.exp-card:hover{box-shadow:0 6px 30px rgba(0,0,0,.1);transform:translateY(-2px);border-color:var(--green)}
+.exp-card.mode-expedition{border-top:3px solid #6366f1}
+.exp-card.mode-relay{border-top:3px solid #f59e0b}
+.exp-card.mode-community_challenge{border-top:3px solid #3b82f6}
+.exp-card.mode-group_blitz{border-top:3px solid #ef4444}
+.exp-card.mode-group{border-top:3px solid var(--green)}
+
+/* ── Header de la card ── */
+.exp-card-header{padding:.85rem 1.1rem .7rem;display:flex;flex-direction:column;gap:.35rem}
+.exp-card-header.mode-expedition{background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.07))}
+.exp-card-header.mode-relay{background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(251,191,36,.07))}
+.exp-card-header.mode-community_challenge{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(99,102,241,.07))}
+.exp-card-header.mode-group_blitz{background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(245,158,11,.07))}
+.exp-card-header.mode-group{background:linear-gradient(135deg,rgba(16,185,129,.10),rgba(52,211,153,.05))}
+
+.exp-mode-row{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.exp-mode-pill{display:inline-flex;align-items:center;gap:.25rem;font-size:.67rem;font-weight:800;padding:.15rem .55rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em}
+.exp-mode-pill.expedition{background:rgba(99,102,241,.15);color:#6366f1}
+.exp-mode-pill.relay{background:rgba(245,158,11,.15);color:#d97706}
+.exp-mode-pill.community_challenge{background:rgba(59,130,246,.15);color:#3b82f6}
+.exp-mode-pill.group_blitz{background:rgba(239,68,68,.15);color:#ef4444}
+.exp-mode-pill.group{background:rgba(16,185,129,.13);color:#059669}
+.exp-difficulty-badge{font-size:.63rem;font-weight:800;padding:.12rem .45rem;border-radius:6px;letter-spacing:.04em}
+.exp-difficulty-badge.Iniciada{background:rgba(16,185,129,.13);color:#059669}
+.exp-difficulty-badge.Avanzada{background:rgba(245,158,11,.13);color:#d97706}
+.exp-difficulty-badge.Élite{background:rgba(239,68,68,.13);color:#dc2626}
+.exp-parcial-badge{font-size:.62rem;font-weight:800;padding:.12rem .42rem;border-radius:6px;background:var(--soft);color:var(--muted)}
+.exp-parcial-badge.p1{background:rgba(59,130,246,.13);color:#3b82f6}
+.exp-parcial-badge.p2{background:rgba(16,185,129,.13);color:#059669}
+.exp-parcial-badge.p3{background:rgba(168,85,247,.13);color:#a855f7}
+
+.exp-card-title{font-size:1.02rem;font-weight:900;letter-spacing:-.015em;line-height:1.25}
+.exp-card-flavor{font-size:.78rem;color:var(--muted);line-height:1.5;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ── Cuerpo de la card ── */
+.exp-card-body{padding:.7rem 1.1rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+
+/* ── Fases ── */
+.exp-phases{display:flex;flex-direction:column;gap:.3rem}
+.exp-phases-label{font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.exp-phases-track{display:flex;align-items:center;gap:.3rem}
+.exp-phase-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0;position:relative;transition:transform .2s}
+.exp-phase-dot.done{background:var(--green);color:#fff}
+.exp-phase-dot.current{background:rgba(99,102,241,.15);color:#6366f1;border:2px solid #6366f1;animation:exp-pulse 2s infinite}
+.exp-phase-dot.pending{background:var(--soft);color:var(--muted);border:1.5px solid var(--border)}
+.exp-phase-line{flex:1;height:2px;border-radius:2px}
+.exp-phase-line.done{background:var(--green)}
+.exp-phase-line.pending{background:var(--border)}
+.exp-phase-name{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+@keyframes exp-pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.35)}50%{box-shadow:0 0 0 5px rgba(99,102,241,0)}}
+
+/* ── Roster / Slots de roles ── */
+.exp-roles-label{font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem}
+.exp-roles-list{display:flex;flex-direction:column;gap:.3rem}
+.exp-role-slot{display:flex;align-items:center;gap:.55rem;padding:.42rem .65rem;border-radius:10px;border:1.5px solid var(--border);transition:border-color .15s,background .15s}
+.exp-role-slot.filled{background:var(--greenSoft);border-color:rgba(16,185,129,.35)}
+.exp-role-slot.mine{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.4)}
+.exp-role-slot.empty{background:var(--soft);border-color:var(--border);opacity:.8}
+.exp-role-icon{font-size:1.1rem;flex-shrink:0;width:22px;text-align:center}
+.exp-role-info{flex:1;min-width:0}
+.exp-role-name{font-size:.76rem;font-weight:800;color:var(--text);display:block;line-height:1.2}
+.exp-role-member{font-size:.7rem;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp-role-badge{font-size:.65rem;font-weight:800;padding:.1rem .4rem;border-radius:6px;flex-shrink:0}
+.exp-role-badge.done{background:var(--greenSoft);color:var(--green)}
+.exp-role-badge.mine{background:rgba(99,102,241,.15);color:#6366f1}
+.exp-role-badge.open{background:var(--soft);color:var(--muted)}
+
+/* ── Progreso grupal ── */
+.exp-progress-section{display:flex;flex-direction:column;gap:.35rem}
+.exp-progress-row{display:flex;justify-content:space-between;align-items:center}
+.exp-progress-label{font-size:.76rem;font-weight:700;color:var(--muted)}
+.exp-progress-pct{font-size:.82rem;font-weight:900}
+.exp-progress-bar{height:10px;background:var(--soft);border-radius:999px;overflow:hidden}
+.exp-progress-fill{height:100%;border-radius:999px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.exp-progress-fill.pct-low{background:linear-gradient(90deg,#ef4444,#f87171)}
+.exp-progress-fill.pct-mid{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.exp-progress-fill.pct-high{background:linear-gradient(90deg,var(--green),#4ade80)}
+.exp-progress-fill.complete{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.exp-progress-stats{font-size:.72rem;color:var(--muted);display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* ── Footer de card ── */
+.exp-card-footer{padding:.7rem 1.1rem .85rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem;border-top:1px solid var(--border)}
+.exp-xp-badge{display:inline-flex;align-items:center;gap:.2rem;font-size:.77rem;font-weight:800;padding:.22rem .6rem;border-radius:999px;background:rgba(234,179,8,.13);color:#ca8a04}
+.exp-timer{font-size:.72rem;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:.2rem}
+.exp-timer.urgent{color:#ef4444}
+.exp-timer.soon{color:#d97706}
+.exp-footer-right{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+
+/* ── Botones de acción ── */
+.exp-btn-join{padding:.42rem 1rem;border-radius:10px;background:var(--green);color:#fff;font-size:.8rem;font-weight:800;border:none;cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap}
+.exp-btn-join:hover:not(:disabled){opacity:.88;transform:scale(1.02)}
+.exp-btn-join:disabled{opacity:.5;cursor:not-allowed}
+.exp-btn-action{padding:.42rem 1rem;border-radius:10px;background:rgba(99,102,241,.13);color:#6366f1;font-size:.8rem;font-weight:800;border:1.5px solid rgba(99,102,241,.3);cursor:pointer;transition:background .15s;white-space:nowrap}
+.exp-btn-action:hover{background:rgba(99,102,241,.22)}
+.exp-btn-community{padding:.42rem 1rem;border-radius:10px;background:rgba(59,130,246,.13);color:#3b82f6;font-size:.8rem;font-weight:800;border:1.5px solid rgba(59,130,246,.3);cursor:pointer;transition:background .15s;white-space:nowrap}
+.exp-btn-community:hover{background:rgba(59,130,246,.22)}
+.exp-enrolled-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.72rem;font-weight:800;padding:.2rem .6rem;border-radius:999px;background:var(--greenSoft);color:var(--green)}
+
+/* ── Banner de alerta sin grupo ── */
+.exp-no-group{padding:.9rem 1.1rem;background:rgba(245,158,11,.09);border:1.5px solid rgba(245,158,11,.3);border-radius:14px;display:flex;align-items:flex-start;gap:.65rem;margin-bottom:1rem}
+.exp-no-group-icon{font-size:1.3rem;flex-shrink:0}
+.exp-no-group-text strong{display:block;font-size:.88rem;margin-bottom:.1rem}
+.exp-no-group-text p{font-size:.79rem;color:var(--muted);margin:0}
+
+/* ── Estado vacío ── */
+.exp-empty{text-align:center;padding:2.2rem 1rem;color:var(--muted)}
+.exp-empty-icon{font-size:2.2rem;margin-bottom:.5rem}
+.exp-empty-title{font-weight:800;font-size:.9rem;margin-bottom:.25rem;color:var(--text)}
+.exp-empty-sub{font-size:.8rem}
+
+/* ── Animación de completado ── */
+@keyframes exp-complete-flash{0%{background:rgba(16,185,129,.0)}40%{background:rgba(16,185,129,.18)}100%{background:transparent}}
+.exp-card.just-completed{animation:exp-complete-flash 1.2s ease-out}
+
+/* ── Admin: herramientas de reset ── */
+.exp-admin-danger-zone{padding:1rem 1.1rem;background:rgba(239,68,68,.06);border:1.5px solid rgba(239,68,68,.2);border-radius:14px;margin-top:1rem}
+.exp-admin-danger-title{font-size:.88rem;font-weight:800;color:#dc2626;margin-bottom:.5rem}
+.exp-admin-tools{display:flex;gap:.4rem;flex-wrap:wrap}
+
 /* ── Chat ── */
 .chat-container{display:flex;flex-direction:column;gap:.5rem}
 .chat-select-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
@@ -6340,28 +6481,27 @@ window.Analytics = (function(){
         </div>
       </div>
 
-      <!-- ── Panel: Misiones ── -->
+      <!-- ── Panel: Expediciones ── -->
       <div class="com-panel" id="com-panel-misiones">
-        <!-- Misiones activas del usuario -->
-        <div style="margin-bottom:1.2rem">
-          <strong style="font-size:.9rem;display:block;margin-bottom:.7rem">⚡ Mis misiones activas</strong>
-          <div id="myMissionsContainer">
-            <div class="social-empty">
-              <div class="social-empty-icon">⏳</div>
-              <div class="social-empty-sub">Cargando misiones…</div>
-            </div>
+        <div class="exp-section-header">
+          <div>
+            <h3 class="exp-section-title">🧭 Expediciones y Desafíos</h3>
+            <p class="exp-section-sub">Misiones cooperativas reales: asumí un rol, aportá tu especialidad y completá el objetivo junto a tu grupo.</p>
           </div>
         </div>
-        <!-- Misiones disponibles para unirse -->
-        <div>
-          <strong style="font-size:.9rem;display:block;margin-bottom:.7rem">🎯 Misiones disponibles</strong>
-          <div id="availableMissionsContainer">
-            <div class="social-empty">
-              <div class="social-empty-icon">⏳</div>
-              <div class="social-empty-sub">Cargando…</div>
-            </div>
-          </div>
+        <!-- Tabs -->
+        <div class="exp-tabs" id="expTabs">
+          <button class="exp-tab active" data-exp-tab="available" onclick="window.Exp.switchTab(this,'available')">🧭 Disponibles <span class="exp-tab-count" id="expCountAvailable">-</span></button>
+          <button class="exp-tab" data-exp-tab="active" onclick="window.Exp.switchTab(this,'active')">⚡ En Progreso <span class="exp-tab-count" id="expCountActive">-</span></button>
+          <button class="exp-tab" data-exp-tab="community" onclick="window.Exp.switchTab(this,'community')">🌐 Comunidad <span class="exp-tab-count" id="expCountCommunity">-</span></button>
         </div>
+        <!-- Contenedores por tab -->
+        <div id="expPaneAvailable"><div class="exp-empty"><div class="exp-empty-icon">⏳</div><div class="exp-empty-sub">Cargando expediciones…</div></div></div>
+        <div id="expPaneActive"    style="display:none"><div class="exp-empty"><div class="exp-empty-icon">⏳</div><div class="exp-empty-sub">Cargando…</div></div></div>
+        <div id="expPaneCommunity" style="display:none"><div class="exp-empty"><div class="exp-empty-icon">⏳</div><div class="exp-empty-sub">Cargando…</div></div></div>
+        <!-- Contenedores legados (usados por lógica de notificaciones) -->
+        <div id="myMissionsContainer"      style="display:none"></div>
+        <div id="availableMissionsContainer" style="display:none"></div>
       </div>
 
       <!-- ── Panel: Chat ── -->
@@ -6522,8 +6662,8 @@ window.Analytics = (function(){
         <div class="tab-pane" id="paneMissions">
           <div class="mission-generate-banner">
             <div>
-              <strong>⚡ Generación automática de misiones</strong>
-              <p>Crea misiones grupales para todos los grupos activos basándose en las plantillas académicas.</p>
+              <strong>⚡ Generación automática de expediciones</strong>
+              <p>Crea expediciones y misiones grupales para todos los grupos activos basándose en las plantillas académicas.</p>
             </div>
             <div style="display:flex;gap:.5rem;flex-wrap:wrap">
               <button class="btn primary" onclick="window.adminGenerateMissions(this)" style="font-size:.82rem">🚀 Generar ahora</button>
@@ -6543,6 +6683,18 @@ window.Analytics = (function(){
           </div>
           <div id="adminMissionsList">
             <div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Abrí esta pestaña para cargar las misiones.</div></div>
+          </div>
+          <!-- ── Zona de testing / reset ── -->
+          <div class="exp-admin-danger-zone">
+            <div class="exp-admin-danger-title">🔧 Herramientas de Testing</div>
+            <p style="font-size:.78rem;color:var(--muted);margin:.0 0 .7rem">Solo para testing y debugging. Acciones irreversibles marcadas en rojo.</p>
+            <div class="exp-admin-tools">
+              <button class="btn" onclick="window.adminResetMissionProgress(this)" style="font-size:.78rem">📊 Resetear progreso (mantiene misiones)</button>
+              <button class="btn" onclick="window.adminCleanRecentMissions(this,24)" style="font-size:.78rem">🧹 Limpiar últimas 24h</button>
+              <button class="btn" onclick="window.adminCleanRecentMissions(this,168)" style="font-size:.78rem">🧹 Limpiar última semana</button>
+              <button class="btn" style="font-size:.78rem;color:var(--red);border-color:rgba(239,68,68,.4)" onclick="window.adminResetAllMissions(this)">🗑 Borrar TODAS las misiones</button>
+            </div>
+            <div id="adminMissionResetMsg" style="margin-top:.6rem;font-size:.8rem"></div>
           </div>
         </div>
 
@@ -8482,6 +8634,63 @@ window.adminReactivateMission = async function(missionId, btn){
   if (error) { window.toast('Error: ' + error.message); if (btn) btn.disabled = false; return }
   window.toast('Misión reactivada por 48 horas')
   _renderAdminMissions()
+}
+
+// ── Herramientas de reset (para testing) ─────────────────────────────────
+
+function _adminMissionMsg(msg, isError) {
+  const el = document.getElementById('adminMissionResetMsg')
+  if (!el) return
+  el.style.color = isError ? 'var(--red)' : 'var(--green)'
+  el.textContent = msg
+  setTimeout(() => { if (el) el.textContent = '' }, 6000)
+}
+
+window.adminResetAllMissions = async function(btn){
+  if (!confirm('⚠️ ¿Borrar TODAS las misiones, participaciones y progreso grupal?\n\nEsta acción es irreversible y borrará datos reales.')) return
+  if (!confirm('¿Estás seguro? No hay forma de recuperar estos datos.')) return
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Borrando…' }
+  try {
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('admin_reset_all_missions', { p_admin_id: adminId })
+    if (error) { _adminMissionMsg('Error: ' + error.message, true); return }
+    const r = data || {}
+    window.toast(`✅ Borradas: ${r.missions_deleted || 0} misiones, ${r.user_missions_deleted || 0} participaciones`)
+    _adminMissionMsg(`Borradas: ${r.missions_deleted || 0} misiones, ${r.user_missions_deleted || 0} participaciones, ${r.group_progress_deleted || 0} progresos grupales`, false)
+    _renderAdminMissions()
+  } catch(e){ _adminMissionMsg('Error: ' + (e.message || e), true) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🗑 Borrar TODAS las misiones' } }
+}
+
+window.adminCleanRecentMissions = async function(btn, hours){
+  const label = hours <= 24 ? 'últimas 24 horas' : 'última semana'
+  if (!confirm(`¿Borrar las misiones creadas en las ${label}?`)) return
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Limpiando…' }
+  try {
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('admin_clean_recent_missions', { p_admin_id: adminId, p_hours: hours })
+    if (error) { _adminMissionMsg('Error: ' + error.message, true); return }
+    const r = data || {}
+    window.toast(`✅ Limpiadas: ${r.missions_deleted || 0} misiones de las ${label}`)
+    _adminMissionMsg(`Limpiadas: ${r.missions_deleted || 0} misiones, ${r.user_missions_deleted || 0} participaciones`, false)
+    _renderAdminMissions()
+  } catch(e){ _adminMissionMsg('Error: ' + (e.message || e), true) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = `🧹 Limpiar ${hours <= 24 ? 'últimas 24h' : 'última semana'}` } }
+}
+
+window.adminResetMissionProgress = async function(btn){
+  if (!confirm('¿Resetear el progreso de TODAS las misiones? Las misiones se mantienen, solo se borra el progreso.')) return
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Reseteando…' }
+  try {
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('admin_reset_mission_progress', { p_admin_id: adminId })
+    if (error) { _adminMissionMsg('Error: ' + error.message, true); return }
+    const r = data || {}
+    window.toast(`✅ Progreso reseteado: ${r.user_missions_reset || 0} participaciones`)
+    _adminMissionMsg(`Reseteado: ${r.user_missions_reset || 0} participaciones, ${r.group_progress_cleared || 0} progresos grupales`, false)
+    _renderAdminMissions()
+  } catch(e){ _adminMissionMsg('Error: ' + (e.message || e), true) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '📊 Resetear progreso (mantiene misiones)' } }
 }
 
 async function _renderAdminFeedback(){
@@ -19447,201 +19656,346 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // SECCIÓN: MISIONES
+  // SECCIÓN: SISTEMA DE EXPEDICIONES v2
   // ═══════════════════════════════════════════════════════════════
 
+  // Estado del módulo de expediciones
+  let _expCurrentTab = 'available'
+  let _expAllMissions = []
+  let _expRosters = {}   // { mission_id: [roster entries] }
+  let _expCurrentUid = null
+
+  // Configuración de modos de misión
+  const _expModeConfig = {
+    expedition:          { icon:'🧬', label:'Expedición', pillClass:'expedition' },
+    relay:               { icon:'⚡', label:'Relay de Saberes', pillClass:'relay' },
+    community_challenge: { icon:'🌐', label:'Desafío Comunitario', pillClass:'community_challenge' },
+    group_blitz:         { icon:'💥', label:'Blitz Grupal', pillClass:'group_blitz' },
+    group:               { icon:'👥', label:'Misión Grupal', pillClass:'group' },
+    community:           { icon:'🌐', label:'Comunidad', pillClass:'community_challenge' }
+  }
+
+  const _expMetricLabel = {
+    simulacros_completed: 'simulacros completados',
+    correct_answers:      'respuestas correctas',
+    xp_earned:            'XP ganados',
+    all_participated:     'miembros activos'
+  }
+
+  // Punto de entrada principal (llamado cuando se abre el tab de Misiones)
   async function _renderMissions(){
     const uid = await _getUserId()
-    const myCont  = document.getElementById('myMissionsContainer')
-    const avCont  = document.getElementById('availableMissionsContainer')
+    _expCurrentUid = uid
+
+    const paneAvailable = document.getElementById('expPaneAvailable')
+    const paneActive    = document.getElementById('expPaneActive')
+    const paneCommunity = document.getElementById('expPaneCommunity')
+
+    if (!paneAvailable) return
 
     if (!uid) {
-      const locked = '<div class="social-empty"><div class="social-empty-icon">🔒</div><div class="social-empty-title">Iniciá sesión</div><div class="social-empty-sub">Debés estar registrado para ver misiones.</div></div>'
-      myCont.innerHTML = locked; avCont.innerHTML = ''; return
+      const locked = '<div class="exp-empty"><div class="exp-empty-icon">🔒</div><div class="exp-empty-title">Iniciá sesión</div><div class="exp-empty-sub">Debés estar registrado para ver expediciones.</div></div>'
+      paneAvailable.innerHTML = locked; return
     }
 
-    myCont.innerHTML = '<div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Cargando misiones…</div></div>'
-    avCont.innerHTML = ''
+    // Loading state
+    paneAvailable.innerHTML = '<div class="exp-empty"><div class="exp-empty-icon">⏳</div><div class="exp-empty-sub">Cargando expediciones…</div></div>'
 
+    // Expirar misiones vencidas en segundo plano
     _sb().rpc('expire_old_missions').catch(() => {})
 
     await _loadMyGroups(uid)
     const myGroupIds = _myGroups.map(g => g.id)
+    const hasGroup = myGroupIds.length > 0
 
-    // Una sola consulta SECURITY DEFINER: todas las misiones relevantes + estado de inscripción
+    // Cargar todas las misiones (nueva versión con mode, role_slots, phases)
     const { data: missions, error } = await _sb()
       .rpc('get_my_community_missions', { p_user_id: uid })
 
     if (error) {
-      myCont.innerHTML = `<div class="warn" style="padding:.7rem .9rem;border-radius:10px">
-        ⚠ <strong>No se pudieron cargar las misiones.</strong><br>
-        <span style="font-size:.82rem">${_esc(error.message)}</span><br>
-        <span style="font-size:.78rem;color:var(--muted)">Verificar migración <code>20260526_get_my_community_missions.sql</code> en Supabase.</span>
+      paneAvailable.innerHTML = `<div style="padding:.8rem 1rem;background:rgba(239,68,68,.08);border:1.5px solid rgba(239,68,68,.25);border-radius:14px">
+        ⚠ <strong>Error al cargar expediciones.</strong><br>
+        <span style="font-size:.82rem">${_esc(error.message)}</span>
       </div>`
-      avCont.innerHTML = ''
       return
     }
 
-    const enrolled  = (missions || []).filter(m => m.is_enrolled)
-    const available = (missions || []).filter(m => !m.is_enrolled)
+    _expAllMissions = missions || []
 
-    const noGroupAlert = myGroupIds.length === 0
-      ? `<div class="mission-no-group-alert">
-           <div class="mission-no-group-icon">⚠️</div>
-           <div class="mission-no-group-text">
-             <strong>Las misiones son grupales</strong>
+    // Cargar roster de todas las misiones de una vez
+    const missionIds = _expAllMissions.map(m => m.id)
+    if (missionIds.length > 0) {
+      const { data: rosterData } = await _sb()
+        .rpc('get_missions_rosters', { p_mission_ids: missionIds })
+        .catch(() => ({ data: [] }))
+
+      _expRosters = {}
+      for (const row of (rosterData || [])) {
+        if (!_expRosters[row.mission_id]) _expRosters[row.mission_id] = []
+        _expRosters[row.mission_id].push(row)
+      }
+    }
+
+    // Clasificar misiones por tab
+    const available  = _expAllMissions.filter(m => !m.is_enrolled && m.mode !== 'community_challenge' && m.type !== 'community')
+    const active     = _expAllMissions.filter(m => m.is_enrolled)
+    const community  = _expAllMissions.filter(m => m.mode === 'community_challenge' || m.type === 'community')
+
+    // Actualizar contadores de tabs
+    const setCount = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = n }
+    setCount('expCountAvailable', available.length)
+    setCount('expCountActive', active.length)
+    setCount('expCountCommunity', community.length)
+
+    const noGroupBanner = !hasGroup
+      ? `<div class="exp-no-group">
+           <div class="exp-no-group-icon">⚠️</div>
+           <div class="exp-no-group-text">
+             <strong>Las expediciones son grupales</strong>
              <p>Necesitás pertenecer a un grupo para participar. Ve a la pestaña <strong>Grupos</strong> y unite o creá uno.</p>
            </div>
-         </div>`
-      : ''
+         </div>` : ''
 
-    if (!enrolled.length) {
-      myCont.innerHTML = noGroupAlert + '<div class="social-empty"><div class="social-empty-icon">🎯</div><div class="social-empty-title">Sin misiones activas</div><div class="social-empty-sub">Únete a misiones de tu grupo para empezar a contribuir.</div></div>'
-    } else {
-      const cards = enrolled.map(m => _missionCard(
-        m,
-        { contribution: m.contribution },
-        true,
-        m.group_id ? { current_value: m.grp_current, members_participated: m.grp_members_participated } : null
-      )).join('')
-      myCont.innerHTML = noGroupAlert + `<div class="missions-grid">${cards}</div>`
-    }
-
+    // Renderizar tab disponibles
     if (!available.length) {
-      const msg = myGroupIds.length === 0
-        ? 'Únete a un grupo para ver misiones disponibles.'
-        : '¡Ya estás en todas las misiones activas de tu grupo! Seguí participando.'
-      avCont.innerHTML = `<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">${msg}</div></div>`
+      paneAvailable.innerHTML = noGroupBanner + (hasGroup
+        ? '<div class="exp-empty"><div class="exp-empty-icon">🎯</div><div class="exp-empty-title">Estás en todas las expediciones activas</div><div class="exp-empty-sub">¡Seguí participando para completar los objetivos del equipo!</div></div>'
+        : '<div class="exp-empty"><div class="exp-empty-icon">🧭</div><div class="exp-empty-sub">Únete a un grupo para ver expediciones disponibles.</div></div>')
     } else {
-      avCont.innerHTML = `<div class="missions-grid">${available.map(m => _missionCard(
-        m,
-        null,
-        false,
-        m.group_id ? { current_value: m.grp_current, members_participated: m.grp_members_participated } : null
-      )).join('')}</div>`
+      paneAvailable.innerHTML = noGroupBanner + `<div class="exp-grid">${available.map(m => _expCard(m, _expRosters[m.id] || [], uid)).join('')}</div>`
     }
+
+    // Renderizar tab en progreso
+    if (!active.length) {
+      paneActive.innerHTML = '<div class="exp-empty"><div class="exp-empty-icon">⚡</div><div class="exp-empty-title">Sin expediciones en progreso</div><div class="exp-empty-sub">Únete a una expedición disponible para empezar a contribuir.</div></div>'
+    } else {
+      paneActive.innerHTML = `<div class="exp-grid">${active.map(m => _expCard(m, _expRosters[m.id] || [], uid)).join('')}</div>`
+    }
+
+    // Renderizar tab comunidad
+    if (!community.length) {
+      paneCommunity.innerHTML = '<div class="exp-empty"><div class="exp-empty-icon">🌐</div><div class="exp-empty-title">Sin desafíos comunitarios activos</div><div class="exp-empty-sub">Los desafíos de toda la plataforma aparecerán acá cuando estén activos.</div></div>'
+    } else {
+      paneCommunity.innerHTML = `<div class="exp-grid">${community.map(m => _expCard(m, _expRosters[m.id] || [], uid)).join('')}</div>`
+    }
+
+    // Mostrar el tab actual
+    _expShowTab(_expCurrentTab)
   }
 
-  // Etiquetas de subtipo de misión
-  const _subtypeLabel = {
-    collaborative_sim:      { icon:'🤝', text:'Colaborativa' },
-    group_competition:      { icon:'⚔️', text:'Competencia' },
-    shared_progress:        { icon:'📈', text:'Progreso Grupal' },
-    consistency:            { icon:'👥', text:'Todos Participan' },
-    collective_performance: { icon:'🏆', text:'Rendimiento Colectivo' },
-    community:              { icon:'🌐', text:'Comunidad' },
-    group:                  { icon:'👥', text:'Grupo' }
+  function _expShowTab(tab) {
+    const panes = { available:'expPaneAvailable', active:'expPaneActive', community:'expPaneCommunity' }
+    Object.keys(panes).forEach(k => {
+      const el = document.getElementById(panes[k])
+      if (el) el.style.display = k === tab ? '' : 'none'
+    })
   }
 
-  function _missionCard(m, userMission, joined, groupProgress){
-    if (!m) return ''
+  // ── Componente: Card de expedición ─────────────────────────────────────
 
-    // Progreso: para misiones con progreso grupal usar group_mission_progress; si no, individual
-    const grpCurrent = groupProgress?.current_value ?? 0
-    const grpMembers = groupProgress?.members_participated ?? 0
-    const indivContrib = userMission?.contribution ?? 0
-    const useGroupProgress = groupProgress !== null && groupProgress !== undefined
+  function _expCard(m, roster, uid) {
+    const mode = m.mode || (m.type === 'community' ? 'community_challenge' : 'group')
+    const modeConf = _expModeConfig[mode] || _expModeConfig.group
 
-    const current = useGroupProgress ? grpCurrent : (m.type === 'community' ? (m.current_value || 0) : indivContrib)
-    const pct     = Math.min(100, m.target_value > 0 ? Math.round(current / m.target_value * 100) : 0)
+    const current = m.grp_current > 0 ? m.grp_current : (m.current_value || 0)
+    const pct = Math.min(100, m.target_value > 0 ? Math.round(current / m.target_value * 100) : 0)
     const isComplete = pct >= 100
 
-    const metricLabel = {
-      simulacros_completed: 'simulacros',
-      correct_answers:      'respuestas correctas',
-      xp_earned:            'XP ganados',
-      all_participated:     'miembros activos'
-    }[m.target_metric] || m.target_metric
-
-    // Subtipo
-    const sub = m.subtype || m.type
-    const subInfo = _subtypeLabel[sub] || { icon:'🎯', text:'Misión' }
-
-    // Timer y clase de urgencia para borde izquierdo
-    const timerHtml = _missionTimerHtml(m.ends_at)
-    const h = m.ends_at ? Math.max(0, Math.floor((new Date(m.ends_at) - Date.now()) / 3600000)) : null
-    const urgencyClass = isComplete ? 'urgency-ok' : h === null ? 'urgency-none' : h <= 6 ? 'urgency-urgent' : h <= 24 ? 'urgency-soon' : 'urgency-ok'
-
-    // Barra con color por nivel de progreso
-    const barClass = isComplete ? 'complete' : pct < 30 ? 'pct-low' : pct < 70 ? 'pct-mid' : ''
-    const pctColor = isComplete ? 'var(--green)' : pct < 30 ? '#ef4444' : pct < 70 ? '#d97706' : 'var(--green)'
-
-    // Badge de parcial
     const parcialMap = { p1:'P1', p2:'P2', p3:'P3', all:'Todos' }
     const parcialLabel = parcialMap[m.parcial] || ''
-    const parcialBadge = parcialLabel ? `<span class="mission-parcial-badge ${m.parcial || ''}">${parcialLabel}</span>` : ''
 
-    // Sección de progreso grupal
-    const groupSection = useGroupProgress ? `
-      <div class="mission-group-section">
-        <div class="mission-group-row">
-          <span class="mission-group-label">Progreso del grupo</span>
-          <span class="mission-group-val">${current} / ${m.target_value} ${metricLabel}</span>
-        </div>
-        <div class="mission-members-row">
-          ${grpMembers > 0 ? `<span class="mission-members-dot"></span>` : `<span class="mission-members-dot empty"></span>`}
-          <span>${grpMembers} miembro${grpMembers !== 1 ? 's' : ''} participando</span>
-          ${m.min_members > 1 ? `<span style="color:var(--muted)">· mín. ${m.min_members} requeridos</span>` : ''}
-        </div>
-      </div>` : ''
+    const phases    = Array.isArray(m.phases) ? m.phases : (m.phases ? JSON.parse(m.phases) : [])
+    const roleSlots = Array.isArray(m.role_slots) ? m.role_slots : (m.role_slots ? JSON.parse(m.role_slots) : [])
 
-    return `<div class="mission-card ${urgencyClass}">
-      <div class="mission-card-header">
-        <span class="mission-card-title">${_esc(m.title)}</span>
-        <div style="display:flex;gap:.3rem;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
-          ${parcialBadge}
-          <span class="mission-type-pill ${sub}">${subInfo.icon} ${subInfo.text}</span>
+    const metricLabel = _expMetricLabel[m.target_metric] || m.target_metric
+
+    return `<div class="exp-card mode-${mode}">
+      ${_expCardHeader(m, mode, modeConf, parcialLabel)}
+      <div class="exp-card-body">
+        ${phases.length > 1 ? _expPhaseBar(phases, pct) : ''}
+        ${roleSlots.length > 0 ? _expRoleSlotsHtml(roleSlots, roster, uid, m.id) : ''}
+        ${_expProgressSection(m, current, pct, isComplete, metricLabel, roster)}
+      </div>
+      ${_expCardFooter(m, pct, uid, roster, roleSlots, mode)}
+    </div>`
+  }
+
+  function _expCardHeader(m, mode, modeConf, parcialLabel) {
+    return `<div class="exp-card-header mode-${mode}">
+      <div class="exp-mode-row">
+        <span class="exp-mode-pill ${modeConf.pillClass}">${modeConf.icon} ${modeConf.label}</span>
+        ${m.difficulty_label ? `<span class="exp-difficulty-badge ${_esc(m.difficulty_label)}">${_esc(m.difficulty_label)}</span>` : ''}
+        ${parcialLabel ? `<span class="exp-parcial-badge ${m.parcial || ''}">${parcialLabel}</span>` : ''}
+      </div>
+      <div class="exp-card-title">${_esc(m.title)}</div>
+      ${m.flavor_text
+        ? `<div class="exp-card-flavor">${_esc(m.flavor_text)}</div>`
+        : m.description
+        ? `<div class="exp-card-flavor">${_esc(m.description)}</div>`
+        : ''}
+    </div>`
+  }
+
+  function _expPhaseBar(phases, currentPct) {
+    const items = phases.map((ph, i) => {
+      const thresholdPct = ph.target_pct || (((i + 1) / phases.length) * 100)
+      const done    = currentPct >= thresholdPct
+      const current = !done && (i === 0 || currentPct >= (phases[i-1]?.target_pct || ((i / phases.length) * 100)))
+      const cls = done ? 'done' : current ? 'current' : 'pending'
+      const lineClass = done ? 'done' : 'pending'
+      const line = i < phases.length - 1 ? `<div class="exp-phase-line ${lineClass}"></div>` : ''
+      return `<div class="exp-phase-dot ${cls}" title="${_esc(ph.name || ('Fase ' + ph.id))}">${done ? '✓' : ph.id || (i+1)}</div>${line}`
+    }).join('')
+    const currentPhase = phases.find((ph, i) => {
+      const pct = ph.target_pct || (((i + 1) / phases.length) * 100)
+      return currentPct < pct
+    })
+    const phaseLabel = currentPhase ? `<span class="exp-phase-name">${_esc(currentPhase.name || '')}</span>` : `<span class="exp-phase-name" style="color:var(--green)">Completado ✓</span>`
+    return `<div class="exp-phases">
+      <div class="exp-phases-label">Fases</div>
+      <div class="exp-phases-track">${items}</div>
+      ${phaseLabel}
+    </div>`
+  }
+
+  function _expRoleSlotsHtml(roleSlots, roster, uid, missionId) {
+    const slots = roleSlots.map(slot => {
+      const member = roster.find(r => r.assigned_role === slot.id)
+      const isMe   = member?.user_id === uid
+      const isFilled = !!member
+
+      let slotClass = 'empty', badgeClass = 'open', badgeText = 'Disponible'
+      let memberName = 'Disponible'
+
+      if (isFilled && isMe) { slotClass = 'mine'; badgeClass = 'mine'; badgeText = 'Tú'; memberName = 'Tú' }
+      else if (isFilled) { slotClass = 'filled'; badgeClass = 'done'; badgeText = '✓'; memberName = _esc(member.user_name || 'Usuario') }
+
+      return `<div class="exp-role-slot ${slotClass}">
+        <div class="exp-role-icon">${slot.icon || '🎯'}</div>
+        <div class="exp-role-info">
+          <span class="exp-role-name">${_esc(slot.label || slot.id)}</span>
+          <span class="exp-role-member">${memberName}</span>
         </div>
+        <span class="exp-role-badge ${badgeClass}">${badgeText}</span>
+      </div>`
+    }).join('')
+    return `<div>
+      <div class="exp-roles-label">Roles del equipo</div>
+      <div class="exp-roles-list">${slots}</div>
+    </div>`
+  }
+
+  function _expProgressSection(m, current, pct, isComplete, metricLabel, roster) {
+    const barClass = isComplete ? 'complete' : pct < 30 ? 'pct-low' : pct < 70 ? 'pct-mid' : 'pct-high'
+    const pctColor = isComplete ? '#16a34a' : pct < 30 ? '#ef4444' : pct < 70 ? '#d97706' : 'var(--green)'
+    const membersActive = roster.filter(r => r.contribution > 0).length || m.grp_members_participated || 0
+    return `<div class="exp-progress-section">
+      <div class="exp-progress-row">
+        <span class="exp-progress-label">${isComplete ? '✅ Completada' : 'Progreso colectivo'}</span>
+        <span class="exp-progress-pct" style="color:${pctColor}">${pct}%</span>
       </div>
-      ${m.description ? `<p class="mission-desc">${_esc(m.description)}</p>` : ''}
-      ${groupSection}
-      <div class="mission-progress-row">
-        <span class="mission-progress-label">${current} / ${m.target_value} ${metricLabel}</span>
-        <span class="mission-progress-pct" style="color:${pctColor}">${pct}%</span>
+      <div class="exp-progress-bar">
+        <div class="exp-progress-fill ${barClass}" style="width:${pct}%"></div>
       </div>
-      <div class="mission-bar"><div class="mission-bar-fill ${barClass}" style="width:${pct}%"></div></div>
-      <div class="mission-card-footer">
-        <span class="mission-xp-badge">+${m.reward_xp} XP</span>
-        ${timerHtml}
-        ${joined
-          ? `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
-               <span class="mission-joined-badge">✓${indivContrib > 0 ? ' ' + indivContrib + ' aportados' : ' Inscrito'}</span>
-               ${m.group_id ? `<button class="btn" style="font-size:.72rem;padding:.22rem .6rem" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
-             </div>`
-          : `<button class="btn primary" style="font-size:.78rem;padding:.35rem .9rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`
-        }
+      <div class="exp-progress-stats">
+        <span>${current}/${m.target_value} ${metricLabel}</span>
+        ${membersActive > 0 ? `<span>· ${membersActive} miembro${membersActive !== 1 ? 's' : ''} activo${membersActive !== 1 ? 's' : ''}</span>` : ''}
       </div>
     </div>`
   }
 
-  function _missionTimerHtml(endsAt){
+  function _expCardFooter(m, pct, uid, roster, roleSlots, mode) {
+    const isComplete  = pct >= 100
+    const isEnrolled  = m.is_enrolled
+    const myRoster    = roster.find(r => r.user_id === uid)
+    const myRole      = myRoster?.assigned_role
+    const myRoleLabel = myRole ? (roleSlots.find(s => s.id === myRole)?.label || myRole) : null
+    const contribution = m.contribution || 0
+
+    const timerHtml = _expTimerHtml(m.ends_at)
+
+    let ctaHtml = ''
+    if (isComplete) {
+      ctaHtml = `<span class="exp-enrolled-badge">🏆 Completada</span>`
+    } else if (isEnrolled) {
+      ctaHtml = `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
+        <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Inscrito`}${contribution > 0 ? ` · ${contribution} aportados` : ''}</span>
+        ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
+      </div>`
+    } else if (mode === 'community_challenge' || m.type === 'community') {
+      ctaHtml = `<button class="exp-btn-community" onclick="window.Exp.joinExpedition('${m.id}',this)">Contribuir →</button>`
+    } else {
+      const openSlot = roleSlots.find(s => !roster.some(r => r.assigned_role === s.id))
+      const btnLabel = openSlot ? `Tomar rol: ${_esc(openSlot.label || openSlot.id)}` : 'Unirse →'
+      ctaHtml = `<button class="exp-btn-join" onclick="window.Exp.joinExpedition('${m.id}',this)">${btnLabel}</button>`
+    }
+
+    return `<div class="exp-card-footer">
+      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+        <span class="exp-xp-badge">+${m.reward_xp} XP</span>
+        ${timerHtml}
+      </div>
+      <div class="exp-footer-right">${ctaHtml}</div>
+    </div>`
+  }
+
+  function _expTimerHtml(endsAt) {
     if (!endsAt) return ''
     const diff = new Date(endsAt) - new Date()
-    if (diff <= 0) return '<span class="mission-timer-row">Terminó</span>'
+    if (diff <= 0) return '<span class="exp-timer" style="color:var(--muted)">Terminó</span>'
     const h = Math.floor(diff / 3600000)
     const d = Math.floor(h / 24)
-    const urgency = h <= 6 ? 'urgent' : h <= 24 ? 'soon' : 'ok'
-    const label   = d > 1 ? `${d}d ${h % 24}h` : h > 0 ? `${h}h restantes` : `< 1h`
-    return `<span class="mission-timer-row ${urgency}">⏳ ${label}</span>`
+    const urgency = h <= 6 ? 'urgent' : h <= 24 ? 'soon' : ''
+    const label = d > 1 ? `${d}d ${h % 24}h` : h > 0 ? `${h}h` : '< 1h'
+    return `<span class="exp-timer ${urgency}">⏳ ${label}</span>`
   }
 
-  async function joinMission(missionId, btn){
+  // ── Acciones del usuario ────────────────────────────────────────────────
+
+  async function joinExpedition(missionId, btn) {
     const uid = await _getUserId()
-    if (!uid) { toast('Debes iniciar sesión'); return }
-    if (btn) btn.disabled = true
+    if (!uid) { toast('Iniciá sesión para unirte'); return }
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Uniéndose…' }
 
-    const { error } = await _sb()
-      .from('user_missions')
-      .insert({ user_id: uid, mission_id: missionId, contribution: 0, status: 'active' })
+    try {
+      const { data, error } = await _sb()
+        .rpc('join_expedition_with_role', { p_user_id: uid, p_mission_id: missionId })
 
-    if (error) {
-      if (error.code === '23505') toast('Ya estás en esta misión')
-      else { toast('Error: ' + error.message); if (btn) btn.disabled = false }
-      return
+      if (error) {
+        toast('Error: ' + error.message)
+        if (btn) { btn.disabled = false; btn.textContent = 'Unirse →' }
+        return
+      }
+
+      const result = data || {}
+      if (!result.ok) {
+        toast(result.error || 'No se pudo unir')
+        if (btn) { btn.disabled = false; btn.textContent = 'Unirse →' }
+        return
+      }
+
+      const roleLabel = result.assigned_label || 'Miembro'
+      toast(`✅ Te uniste con el rol: ${roleLabel}`)
+      await _renderMissions()
+    } catch(e) {
+      toast('Error: ' + (e.message || e))
+      if (btn) { btn.disabled = false; btn.textContent = 'Unirse →' }
     }
-    toast('✅ Te uniste a la misión')
-    _renderMissions()
   }
+
+  // Tab switcher expuesto al HTML
+  window.Exp = {
+    switchTab(btn, tab) {
+      _expCurrentTab = tab
+      document.querySelectorAll('.exp-tab').forEach(t => t.classList.remove('active'))
+      if (btn) btn.classList.add('active')
+      _expShowTab(tab)
+    },
+    joinExpedition
+  }
+
+  // Alias de compatibilidad para el sistema antiguo
+  async function joinMission(missionId, btn) { return joinExpedition(missionId, btn) }
 
   // ═══════════════════════════════════════════════════════════════
   // SECCIÓN: CHAT EN TIEMPO REAL
