@@ -7012,6 +7012,8 @@ async function loadStateForCurrentSession(){
       return
     }
     S = data?.data ? { ...defaultState(), ...data.data } : defaultState()
+    // Deep-merge de stats para que campos añadidos después (simsDone, themeHits…) siempre estén inicializados
+    if (data?.data?.stats) S.stats = { ...defaultState().stats, ...data.data.stats }
   } catch(e){
     console.warn('[loadState] excepción:', e?.message || e)
     S = defaultState()
@@ -7321,6 +7323,9 @@ async function onSessionChanged(){
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.add('show')
     document.body.classList.add('lp-open')
+    // Refrescar testimonios cada vez que el landing vuelve a ser visible
+    // (p.ej. después de logout, o si el admin aprobó algo en esta sesión)
+    try { if (typeof loadPublicTestimonials === 'function') loadPublicTestimonials() } catch(e){}
     authSwitchTab('login')
     // limpiar cualquier residuo visual
     document.getElementById('adminBtn').style.display = 'none'
@@ -7854,10 +7859,11 @@ function recordAnswer(ok, theme){
     if (ok) bucket.hits++
     else    bucket.miss++
   }
-  // racha simple
+  // racha diaria — solo sube si la actividad anterior fue ayer exacto
   const today = new Date().toLocaleDateString()
-  if (S.stats.lastDate !== today){
-    S.stats.streak = (S.stats.lastDate ? (S.stats.streak||0) : 0) + 1
+  if (S.stats.lastDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toLocaleDateString()
+    S.stats.streak = (S.stats.lastDate === yesterday) ? (S.stats.streak||0) + 1 : 1
     S.stats.lastDate = today
   }
   // Disparar XP flotante visual al acertar (gamificación útil)
@@ -8402,11 +8408,35 @@ window.adminRefreshMissions = () => _renderAdminMissions()
 window.adminGenerateMissions = async function(btn){
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando…' }
   try {
-    const { data, error } = await sb.rpc('auto_generate_group_missions', { p_max_per_group: 3 })
-    if (error) { window.toast('Error: ' + error.message); return }
-    window.toast(`✅ ${data ?? 0} misiones generadas`)
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('auto_generate_group_missions', {
+      p_max_per_group: 3,
+      p_admin_id: adminId
+    })
+    if (error) {
+      // Constraint violation → migración pendiente
+      if (error.message?.includes('target_metric') || error.message?.includes('check')) {
+        window.toast('⚠ Error de constraint en DB. Ejecutar migración: 20260526_fix_missions_target_metric.sql')
+      } else {
+        window.toast('⚠ Error: ' + error.message)
+      }
+      return
+    }
+    const count = data ?? 0
+    if (count === 0) {
+      // Diagnóstico: verificar si hay grupos elegibles (get_public_groups es SECURITY DEFINER)
+      const { data: groups } = await sb.rpc('get_public_groups', { p_limit: 50 })
+      const eligible = (groups || []).filter(g => (g.member_count || 0) >= 2)
+      if (!eligible.length) {
+        window.toast('⚠ Sin grupos con ≥2 miembros. Las misiones requieren grupos activos con estudiantes.')
+      } else {
+        window.toast(`ℹ️ 0 nuevas misiones — los ${eligible.length} grupo(s) elegible(s) ya tienen sus misiones activas (máx 3 por grupo).`)
+      }
+    } else {
+      window.toast(`✅ ${count} misión${count !== 1 ? 'es' : ''} generada${count !== 1 ? 's' : ''}`)
+    }
     _renderAdminMissions()
-  } catch(e){ window.toast('Error: ' + e.message) }
+  } catch(e){ window.toast('⚠ Error: ' + (e.message || e)) }
   finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generar ahora' } }
 }
 
@@ -8546,6 +8576,9 @@ async function toggleFeedbackPublic(id, makePublic){
     if (error) throw error
     toast(makePublic ? '📢 Marcado como público' : '🔒 Ya no es público')
     await renderAdminPanel()
+    // Actualizar el grid de testimonios del landing (aunque esté oculto)
+    // para que al volver a la landing los datos sean frescos sin necesidad de reload.
+    if (typeof loadPublicTestimonials === 'function') loadPublicTestimonials().catch(() => {})
   } catch(e){
     toast('⚠ Error: ' + (e.message || e), true)
   }
