@@ -7169,6 +7169,8 @@ async function persistState(){
     try { localStorage.setItem(GUEST_KEY, JSON.stringify(S)) } catch(e){}
     return
   }
+  // Actualizar audit antes de guardar — aplica a Free y Pro por igual
+  try { updateProgressAudit() } catch(e){}
   // usuario autenticado → upsert a user_progress
   const userId = currentSession.user.id
   const { error } = await sb
@@ -9241,25 +9243,39 @@ async function adminLoadAllProgress(){
     const data = row?.data || null
     // Progreso vivo: promedio de scores del diagnóstico más reciente del parcial activo
     let livePct = 0
-    let activeParcial = 'p2'
+    // activeParcial: leer de S si el usuario lo sincronizó, si no estimar por diagnóstico más reciente
+    let activeParcial = data?.activeParcial || null
     let lastActivity = row?.updated_at || null
     if (data){
-      // El parcial activo se lee de localStorage del usuario — no lo tenemos acá.
-      // Estimamos por el diagnóstico más reciente que tenga.
-      const diagP1 = data.diagnostic_p1
-      const diagP2 = data.diagnostic
-      const diagP3 = data.diagnostic_p3
-      const diags = [
-        { p:'p1', d: diagP1 },
-        { p:'p2', d: diagP2 },
-        { p:'p3', d: diagP3 }
-      ].filter(x => x.d?.completed_at)
+      // Calcular livePct con la misma fórmula que _computeProgressPct() para que sea
+      // directamente comparable con el max_progress_pct guardado en el audit.
+      const diags = [data.diagnostic_p1, data.diagnostic, data.diagnostic_p3]
+        .filter(d => d?.scores && d?.completed_at)
+      let diagScore = 0
       if (diags.length){
-        diags.sort((a,b) => new Date(b.d.completed_at) - new Date(a.d.completed_at))
-        activeParcial = diags[0].p
-        const vals = Object.values(diags[0].d.scores || {})
-        livePct = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length * 100) : 0
+        diags.sort((a,b) => new Date(b.completed_at) - new Date(a.completed_at))
+        const vals = Object.values(diags[0].scores || {})
+        if (vals.length) diagScore = (vals.reduce((a,b)=>a+b,0) / vals.length) * 40
+        if (!activeParcial){
+          const dParcials = [
+            { p:'p1', d: data.diagnostic_p1 },
+            { p:'p2', d: data.diagnostic },
+            { p:'p3', d: data.diagnostic_p3 }
+          ].filter(x => x.d?.completed_at)
+          if (dParcials.length){
+            dParcials.sort((a,b) => new Date(b.d.completed_at) - new Date(a.d.completed_at))
+            activeParcial = dParcials[0].p
+          }
+        }
       }
+      if (!activeParcial) activeParcial = 'p2'
+      const hits = data.stats?.hits || 0
+      const miss = data.stats?.miss || 0
+      const accScore = (hits + miss >= 5) ? (hits / (hits + miss)) * 40 : 0
+      const xpScore = Math.min(20, ((data.stats?.xp || 0) / 500) * 20)
+      livePct = Math.round(Math.min(100, diagScore + accScore + xpScore))
+    } else {
+      if (!activeParcial) activeParcial = 'p2'
     }
     const audit = data?.progress_audit || null
     const maxPct = audit?.max_progress_pct || 0
@@ -9586,9 +9602,16 @@ async function adminViewAudit(email){
       const diags = [liveData?.diagnostic_p1, liveData?.diagnostic, liveData?.diagnostic_p3]
         .filter(d => d?.scores && d?.completed_at)
         .sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))
-      if (!diags.length) return 0
-      const vals = Object.values(diags[0].scores)
-      return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*100) : 0
+      let diagScore = 0
+      if (diags.length){
+        const vals = Object.values(diags[0].scores)
+        if (vals.length) diagScore = (vals.reduce((a,b)=>a+b,0)/vals.length) * 40
+      }
+      const hits = liveData?.stats?.hits || 0
+      const miss = liveData?.stats?.miss || 0
+      const accScore = (hits + miss >= 5) ? (hits/(hits+miss)) * 40 : 0
+      const xpScore = Math.min(20, ((liveData?.stats?.xp || 0) / 500) * 20)
+      return Math.round(Math.min(100, diagScore + accScore + xpScore))
     } catch { return 0 }
   })()
   const html = `
@@ -9896,11 +9919,33 @@ function getProgressAudit(){
   return S.progress_audit
 }
 
-// ═══ AUDIT LOG: escritura cada vez que se calcula progreso ═══
-// Llamada desde renderHero/renderReadinessGauge para mantener actualizado
-// el max_progress_pct sin que el usuario pueda manipularlo.
-function updateProgressAudit(currentPct){
-  if (typeof currentPct !== 'number' || isNaN(currentPct)) return
+// ═══ AUDIT LOG: fuente de verdad de progreso ═══
+// Lee exclusivamente de S (Supabase-synced). No depende de localStorage
+// ni de isPro(), así que funciona igual para usuarios Free y Pro.
+// Fórmula:
+//   40% — diagnóstico más reciente (promedio de scores)
+//   40% — precisión real (hits / total, mín 5 respuestas para contar)
+//   20% — engagement XP (cap en 500 XP)
+function _computeProgressPct(){
+  let score = 0
+  const diags = [S.diagnostic_p1, S.diagnostic, S.diagnostic_p3]
+    .filter(d => d?.scores && d?.completed_at)
+  if (diags.length){
+    diags.sort((a,b) => new Date(b.completed_at) - new Date(a.completed_at))
+    const vals = Object.values(diags[0].scores)
+    if (vals.length) score += (vals.reduce((a,b) => a+b, 0) / vals.length) * 40
+  }
+  const hits = S.stats?.hits || 0
+  const miss = S.stats?.miss || 0
+  if (hits + miss >= 5) score += (hits / (hits + miss)) * 40
+  score += Math.min(20, ((S.stats?.xp || 0) / 500) * 20)
+  return Math.round(Math.min(100, Math.max(0, score)))
+}
+
+// ═══ AUDIT LOG: escritura ═══
+// Se llama desde persistState() — cubre Free y Pro en cada guardado.
+function updateProgressAudit(){
+  const currentPct = _computeProgressPct()
   const audit = getProgressAudit()
   if (!audit.first_seen_at) audit.first_seen_at = new Date().toISOString()
   audit.last_audited_at = new Date().toISOString()
@@ -9966,24 +10011,33 @@ async function resetUserProgress(targetEmail){
     .from('profiles').select('id').ilike('email', email).maybeSingle()
   if (pe || !prof){ toast('⚠ Usuario no encontrado', true); return }
 
-  // Verificar si ya tiene fila en user_progress
+  // Leer fila actual — necesitamos los datos para preservar el audit inmutable
   const { data: existing } = await sb
     .from('user_progress')
-    .select('user_id')
+    .select('user_id, data')
     .eq('user_id', prof.id)
     .maybeSingle()
+
+  // Preservar progress_audit aunque el admin resetee — es el registro de reembolsos
+  const oldAudit = existing?.data?.progress_audit || null
+  if (oldAudit){
+    oldAudit.reset_events = oldAudit.reset_events || []
+    oldAudit.reset_events.push({ at: new Date().toISOString(), by: 'admin', from_pct: oldAudit.max_progress_pct || 0 })
+  }
+  const freshState = defaultState()
+  if (oldAudit) freshState.progress_audit = oldAudit
 
   let error
   if (existing){
     // Si tiene fila, hacer UPDATE puro (más estable con RLS)
     const r = await sb.from('user_progress')
-      .update({ data: defaultState(), updated_at: new Date().toISOString() })
+      .update({ data: freshState, updated_at: new Date().toISOString() })
       .eq('user_id', prof.id)
     error = r.error
   } else {
     // Si no tiene fila, hacer INSERT
     const r = await sb.from('user_progress')
-      .insert({ user_id: prof.id, data: defaultState(), updated_at: new Date().toISOString() })
+      .insert({ user_id: prof.id, data: freshState, updated_at: new Date().toISOString() })
     error = r.error
   }
 
@@ -12290,6 +12344,9 @@ window.setActiveParcial = function(p){
     return
   }
   try { localStorage.setItem(PARCIAL_KEY, p) } catch(e){}
+  // Sync a S para que el admin vea el parcial activo real en lugar de estimarlo
+  S.activeParcial = p
+  persistState()
   applyParcialActive()
   // Recalcular paneles dependientes del parcial
   try { renderHero() } catch(e){}
@@ -14025,8 +14082,8 @@ function renderReadinessGauge(){
   }
   // 3) Desempeño en simulacros (20% peso)
   try {
-    const hits = state?.hits || 0
-    const miss = state?.miss || 0
+    const hits = S.stats?.hits || 0
+    const miss = S.stats?.miss || 0
     if (hits + miss > 0){
       const acc = hits/(hits+miss)
       score += acc * 20
@@ -14047,11 +14104,8 @@ function renderReadinessGauge(){
 
   score = Math.round(Math.min(100, Math.max(0, score)))
   // ═══ HOOK AUDIT LOG ═══
-  // Actualizar el registro administrativo inmutable de progreso máximo.
-  // Esto se ejecuta cada vez que se calcula readiness, así el admin
-  // siempre tiene el % máximo alcanzado por el usuario, aún si
-  // posteriormente el usuario borra su progreso.
-  try { updateProgressAudit(score) } catch(e){}
+  // updateProgressAudit() se llama desde persistState() en cada guardado.
+  // No hace falta llamarlo aquí — la fórmula es _computeProgressPct(), no score.
   const circumference = 2 * Math.PI * 65  // r=65
   const offset = (score/100) * circumference
   fg.setAttribute('stroke-dasharray', `${offset} ${circumference}`)
@@ -19955,13 +20009,14 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
       const metricHint = { simulacros_completed:'Completá simulacros de este tema', correct_answers:'Respondé preguntas correctas', xp_earned:'Ganás XP estudiando', all_participated:'Completá al menos un simulacro' }
       const hint = metricHint[m.target_metric] || 'Hacé simulacros para contribuir'
-      const mySlotDef = myRole ? roleSlots.find(s => s.id === myRole) : null
-      const roleDesc  = mySlotDef?.description ? `<div class="exp-role-task">📋 ${_esc(mySlotDef.description)}</div>` : ''
+      const mySlotDef  = myRole ? roleSlots.find(s => s.id === myRole) : null
+      const roleDesc   = mySlotDef?.description ? `<div class="exp-role-task">📋 ${_esc(mySlotDef.description)}</div>` : ''
+      const anchorId   = studyAnchor.replace('#', '')
       ctaHtml = `<div>
         <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Inscrito`}${contribution > 0 ? ` · ${contribution} aportados` : ''}</span>
         ${roleDesc}
         <div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;margin-top:.25rem">
-          <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window.location.href='${studyAnchor}'" title="${hint}">📚 Practicar →</button>
+          <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window._smartScrollTo(document.getElementById('${anchorId}'))" title="${hint}">📚 Practicar →</button>
           ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
         </div>
       </div>`
@@ -20268,9 +20323,10 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       rolesHtml = `<div class="chat-exp-roles">${rows}</div>`
     }
 
-    const progColor = pct >= 70 ? 'var(--green)' : pct >= 35 ? '#d97706' : '#ef4444'
-    const ctaHtml  = myEntry
-      ? `<button class="chat-exp-cta" onclick="window.location.href='${studyAnchor}'">📚 Practicar mi parte →</button>`
+    const progColor  = pct >= 70 ? 'var(--green)' : pct >= 35 ? '#d97706' : '#ef4444'
+    const anchorId   = studyAnchor.replace('#', '')
+    const ctaHtml    = myEntry
+      ? `<button class="chat-exp-cta" onclick="window._smartScrollTo(document.getElementById('${anchorId}'))">📚 Practicar mi parte →</button>`
       : ''
 
     const bar = document.createElement('div')
