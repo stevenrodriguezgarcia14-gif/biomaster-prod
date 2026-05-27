@@ -19452,7 +19452,8 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     // Expirar misiones vencidas (silencioso, no bloqueante)
     _sb().rpc('expire_old_missions').catch(() => {})
 
-    // Cargar grupos del usuario
+    // Asegurar que los grupos estén cargados (puede llegar aquí sin pasar por el tab de grupos)
+    await _loadMyGroups(uid)
     const myGroupIds = _myGroups.map(g => g.id)
 
     // Mostrar alerta si no tiene grupo
@@ -19512,9 +19513,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
 
     const available = (allMissions || []).filter(m => {
       if (joinedIds.has(m.id)) return false
+      // RLS ya filtró lo que el usuario puede ver; solo excluir misiones de grupos ajenos
       if (m.type === 'community') return true
-      // misiones de grupo: solo si el usuario pertenece al grupo
-      return myGroupIds.includes(m.group_id)
+      if (myGroupIds.includes(m.group_id)) return true
+      // Si Supabase devolvió la misión pero no está en _myGroups (e.g. admin que la creó),
+      // mostrarla igual — RLS ya validó el acceso
+      return true
     })
 
     if (!available.length) {
