@@ -8391,14 +8391,36 @@ async function _renderAdminMissions(){
 window.adminRefreshMissions = () => _renderAdminMissions()
 
 window.adminGenerateMissions = async function(btn){
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando…' }
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating…' }
   try {
-    const { data, error } = await sb.rpc('auto_generate_group_missions', { p_max_per_group: 3 })
-    if (error) { window.toast('Error: ' + error.message); return }
-    window.toast(`✅ ${data ?? 0} misiones generadas`)
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('auto_generate_group_missions', {
+      p_max_per_group: 3,
+      p_admin_id: adminId
+    })
+    if (error) {
+      if (error.message?.includes('target_metric') || error.message?.includes('check')) {
+        window.toast('⚠ DB constraint error. Run migration: 20260526_fix_missions_target_metric.sql')
+      } else {
+        window.toast('⚠ Error: ' + error.message)
+      }
+      return
+    }
+    const count = data ?? 0
+    if (count === 0) {
+      const { data: groups } = await sb.rpc('get_public_groups', { p_limit: 50 })
+      const eligible = (groups || []).filter(g => (g.member_count || 0) >= 2)
+      if (!eligible.length) {
+        window.toast('⚠ No groups with ≥2 members. Missions require active groups with students.')
+      } else {
+        window.toast(`ℹ️ 0 new missions — the ${eligible.length} eligible group(s) already have their active missions (max 3 per group).`)
+      }
+    } else {
+      window.toast(`✅ ${count} mission${count !== 1 ? 's' : ''} generated`)
+    }
     _renderAdminMissions()
-  } catch(e){ window.toast('Error: ' + e.message) }
-  finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generar ahora' } }
+  } catch(e){ window.toast('⚠ Error: ' + (e.message || e)) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generate now' } }
 }
 
 window.adminExpireMissions = async function(btn){
