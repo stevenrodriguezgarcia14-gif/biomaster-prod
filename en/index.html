@@ -6998,6 +6998,8 @@ async function loadStateForCurrentSession(){
       return
     }
     S = data?.data ? { ...defaultState(), ...data.data } : defaultState()
+    // Deep-merge de stats para que campos añadidos después (simsDone, themeHits…) siempre estén inicializados
+    if (data?.data?.stats) S.stats = { ...defaultState().stats, ...data.data.stats }
   } catch(e){
     console.warn('[loadState] excepción:', e?.message || e)
     S = defaultState()
@@ -7307,6 +7309,8 @@ async function onSessionChanged(){
     const lp = document.getElementById('landingPage')
     if (lp) lp.classList.add('show')
     document.body.classList.add('lp-open')
+    // Refrescar testimonios cada vez que el landing vuelve a ser visible
+    try { if (typeof loadPublicTestimonials === 'function') loadPublicTestimonials() } catch(e){}
     authSwitchTab('login')
     // limpiar cualquier residuo visual
     document.getElementById('adminBtn').style.display = 'none'
@@ -7840,10 +7844,11 @@ function recordAnswer(ok, theme){
     if (ok) bucket.hits++
     else    bucket.miss++
   }
-  // racha simple
+  // racha diaria — solo sube si la actividad anterior fue ayer exacto
   const today = new Date().toLocaleDateString()
-  if (S.stats.lastDate !== today){
-    S.stats.streak = (S.stats.lastDate ? (S.stats.streak||0) : 0) + 1
+  if (S.stats.lastDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toLocaleDateString()
+    S.stats.streak = (S.stats.lastDate === yesterday) ? (S.stats.streak||0) + 1 : 1
     S.stats.lastDate = today
   }
   // Disparar XP flotante visual al acertar (gamificación útil)
@@ -8386,14 +8391,36 @@ async function _renderAdminMissions(){
 window.adminRefreshMissions = () => _renderAdminMissions()
 
 window.adminGenerateMissions = async function(btn){
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generando…' }
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Generating…' }
   try {
-    const { data, error } = await sb.rpc('auto_generate_group_missions', { p_max_per_group: 3 })
-    if (error) { window.toast('Error: ' + error.message); return }
-    window.toast(`✅ ${data ?? 0} misiones generadas`)
+    const adminId = currentSession?.user?.id || null
+    const { data, error } = await sb.rpc('auto_generate_group_missions', {
+      p_max_per_group: 3,
+      p_admin_id: adminId
+    })
+    if (error) {
+      if (error.message?.includes('target_metric') || error.message?.includes('check')) {
+        window.toast('⚠ DB constraint error. Run migration: 20260526_fix_missions_target_metric.sql')
+      } else {
+        window.toast('⚠ Error: ' + error.message)
+      }
+      return
+    }
+    const count = data ?? 0
+    if (count === 0) {
+      const { data: groups } = await sb.rpc('get_public_groups', { p_limit: 50 })
+      const eligible = (groups || []).filter(g => (g.member_count || 0) >= 2)
+      if (!eligible.length) {
+        window.toast('⚠ No groups with ≥2 members. Missions require active groups with students.')
+      } else {
+        window.toast(`ℹ️ 0 new missions — the ${eligible.length} eligible group(s) already have their active missions (max 3 per group).`)
+      }
+    } else {
+      window.toast(`✅ ${count} mission${count !== 1 ? 's' : ''} generated`)
+    }
     _renderAdminMissions()
-  } catch(e){ window.toast('Error: ' + e.message) }
-  finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generar ahora' } }
+  } catch(e){ window.toast('⚠ Error: ' + (e.message || e)) }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '🚀 Generate now' } }
 }
 
 window.adminExpireMissions = async function(btn){
@@ -8532,6 +8559,8 @@ async function toggleFeedbackPublic(id, makePublic){
     if (error) throw error
     toast(makePublic ? '📢 Marked as public' : '🔒 No longer public')
     await renderAdminPanel()
+    // Actualizar el grid de testimonios del landing (aunque esté oculto)
+    if (typeof loadPublicTestimonials === 'function') loadPublicTestimonials().catch(() => {})
   } catch(e){
     toast('⚠ Error: ' + (e.message || e), true)
   }
