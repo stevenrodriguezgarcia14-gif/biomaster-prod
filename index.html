@@ -19934,8 +19934,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     if (isComplete) {
       ctaHtml = `<span class="exp-enrolled-badge">🏆 Completada</span>`
     } else if (isEnrolled) {
+      const parcialAnchors = { p1:'#examenP1Section', p2:'#examenes', p3:'#examenP3Section', all:'#examenes' }
+      const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
+      const metricHint = { simulacros_completed:'Completá simulacros de este tema', correct_answers:'Respondé preguntas correctas', xp_earned:'Ganás XP estudiando', all_participated:'Completá al menos un simulacro' }
+      const hint = metricHint[m.target_metric] || 'Hacé simulacros para contribuir'
       ctaHtml = `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
         <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Inscrito`}${contribution > 0 ? ` · ${contribution} aportados` : ''}</span>
+        <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window.location.href='${studyAnchor}'" title="${hint}">📚 Practicar →</button>
         ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
       </div>`
     } else if (mode === 'community_challenge' || m.type === 'community') {
@@ -20178,11 +20183,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       all_participated: 'miembros activos'
     }
 
+    const parcialAnchors = { p1:'#examenP1Section', p2:'#examenes', p3:'#examenP3Section', all:'#examenes' }
+
     const entries = activeMissions.slice(0, 2).map(m => {
       const current = m.grp_current ?? m.current_value ?? 0
       const pct = m.target_value > 0 ? Math.min(100, Math.round(current / m.target_value * 100)) : 0
       const progClass = pct >= 70 ? '' : pct >= 35 ? 'warn' : 'low'
-      const metricLbl = metricLabels[m.target_metric] || m.target_metric || ''
+      const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
 
       let timerTxt = ''
       if (m.ends_at) {
@@ -20194,7 +20201,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
         <span class="chat-mission-name" title="${_esc(m.title)}">${_esc(m.title)}</span>
         <span class="chat-mission-prog ${progClass}">${pct}%</span>
         <span class="chat-mission-timer">${timerTxt}</span>
-        <button class="chat-mission-cta" onclick="document.querySelectorAll('.com-tab')[1]?.click()">Estudiar →</button>
+        <button class="chat-mission-cta" onclick="window.location.href='${studyAnchor}'">📚 Practicar →</button>
       </div>`
     }).join('')
 
