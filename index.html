@@ -19702,7 +19702,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     paneAvailable.innerHTML = '<div class="exp-empty"><div class="exp-empty-icon">⏳</div><div class="exp-empty-sub">Cargando expediciones…</div></div>'
 
     // Expirar misiones vencidas en segundo plano
-    _sb().rpc('expire_old_missions').catch(() => {})
+    _sb().rpc('expire_old_missions')
 
     await _loadMyGroups(uid)
     const myGroupIds = _myGroups.map(g => g.id)
