@@ -8498,15 +8498,14 @@ async function _renderAdminMissions(){
     const active    = rows.filter(r => r.status === 'active').length
     const expired   = rows.filter(r => r.status === 'expired').length
     const completed = rows.filter(r => r.status === 'completed').length
-    // Contar plantillas via RPC también para evitar grants
-    const { data: tpls } = await sb.rpc('get_admin_missions_view', { p_limit: 1, p_status: null })
-      .then(() => sb.from('mission_templates').select('id', { count:'exact', head:true }))
-      .catch(() => ({ count: 0 }))
+    // Contar plantillas
+    let tplCount = '?'
+    try { const { count } = await sb.from('mission_templates').select('id', { count:'exact', head:true }); tplCount = count ?? '?' } catch {}
     statsEl.innerHTML = [
       { label:'Activas',     val: active,      color:'var(--blue)'   },
       { label:'Expiradas',   val: expired,     color:'var(--muted)'  },
       { label:'Completadas', val: completed,   color:'var(--green)'  },
-      { label:'Plantillas',  val: tpls?.count ?? '?', color:'var(--yellow)' }
+      { label:'Plantillas',  val: tplCount,    color:'var(--yellow)' }
     ].map(s => `
       <div style="padding:.55rem .8rem;border-radius:12px;background:var(--surface);border:1px solid var(--border);min-width:90px;text-align:center">
         <div style="font-size:1.35rem;font-weight:900;color:${s.color}">${s.val}</div>
@@ -19727,7 +19726,6 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     if (missionIds.length > 0) {
       const { data: rosterData } = await _sb()
         .rpc('get_missions_rosters', { p_mission_ids: missionIds })
-        .catch(() => ({ data: [] }))
 
       _expRosters = {}
       for (const row of (rosterData || [])) {
