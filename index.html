@@ -1606,8 +1606,12 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .social-form input:focus,.social-form select:focus,.social-form textarea:focus{outline:none;border-color:var(--green)}
 
 /* ── Barra de progreso de misión ── */
-.mission-card{border-radius:18px;background:var(--surface);border:1.5px solid var(--border);padding:1.1rem 1.2rem;transition:border-color .18s}
-.mission-card:hover{border-color:var(--green)}
+.mission-card{border-radius:18px;background:var(--surface);border:1.5px solid var(--border);border-left:3px solid var(--border);padding:1.1rem 1.2rem;transition:border-color .18s,box-shadow .18s,transform .15s}
+.mission-card:hover{border-color:var(--green);box-shadow:0 4px 22px rgba(0,0,0,.08);transform:translateY(-1px)}
+.mission-card.urgency-ok{border-left-color:var(--green)}
+.mission-card.urgency-soon{border-left-color:#d97706}
+.mission-card.urgency-urgent{border-left-color:#ef4444}
+.mission-card.urgency-none{border-left-color:var(--blue)}
 .mission-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.5rem}
 .mission-card-title{font-weight:800;font-size:.95rem}
 .mission-type-pill{padding:.18rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700}
@@ -1617,9 +1621,11 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .mission-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.35rem}
 .mission-progress-label{font-size:.78rem;font-weight:700;color:var(--muted)}
 .mission-progress-pct{font-size:.78rem;font-weight:800;color:var(--green)}
-.mission-bar{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:.6rem}
+.mission-bar{height:10px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:.6rem}
 .mission-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#4ade80);border-radius:999px;transition:width .5s cubic-bezier(.4,0,.2,1)}
 .mission-bar-fill.complete{background:linear-gradient(90deg,#2f8b4d,#22c55e)}
+.mission-bar-fill.pct-low{background:linear-gradient(90deg,#ef4444,#f87171)}
+.mission-bar-fill.pct-mid{background:linear-gradient(90deg,#d97706,#fbbf24)}
 .mission-card-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.4rem}
 .mission-reward{font-size:.78rem;color:var(--muted);font-weight:600}
 .mission-reward strong{color:var(--yellow)}
@@ -1657,6 +1663,11 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .mission-no-group-icon{font-size:1.4rem;flex-shrink:0}
 .mission-no-group-text strong{display:block;font-size:.9rem;margin-bottom:.15rem}
 .mission-no-group-text p{font-size:.8rem;color:var(--muted);margin:0}
+.mission-parcial-badge{font-size:.63rem;font-weight:800;padding:.12rem .42rem;border-radius:6px;background:var(--soft);color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.mission-parcial-badge.p1{background:rgba(59,130,246,.13);color:#3b82f6}
+.mission-parcial-badge.p2{background:rgba(16,185,129,.13);color:#059669}
+.mission-parcial-badge.p3{background:rgba(168,85,247,.13);color:#a855f7}
+.mission-xp-badge{display:inline-flex;align-items:center;font-size:.75rem;font-weight:800;padding:.2rem .6rem;border-radius:999px;background:rgba(234,179,8,.13);color:#ca8a04}
 /* ── Admin misiones ── */
 .admin-mission-row{display:flex;align-items:flex-start;gap:.7rem;padding:.65rem .8rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);margin-bottom:.5rem;flex-wrap:wrap}
 .admin-mission-info{flex:1;min-width:0}
@@ -19449,10 +19460,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       myCont.innerHTML = locked; avCont.innerHTML = ''; return
     }
 
+    myCont.innerHTML = '<div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Cargando misiones…</div></div>'
+    avCont.innerHTML = ''
+
     // Expirar misiones vencidas (silencioso, no bloqueante)
     _sb().rpc('expire_old_missions').catch(() => {})
 
-    // Asegurar que los grupos estén cargados (puede llegar aquí sin pasar por el tab de grupos)
+    // Cargar grupos del usuario (garantiza _myGroups actualizado)
     await _loadMyGroups(uid)
     const myGroupIds = _myGroups.map(g => g.id)
 
@@ -19467,8 +19481,8 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
          </div>`
       : ''
 
-    // Misiones activas del usuario (ya unido)
-    const { data: userMissions } = await _sb()
+    // Misiones activas del usuario (ya unido) — RLS solo devuelve las propias
+    const { data: userMissions, error: umErr } = await _sb()
       .from('user_missions')
       .select(`
         contribution, status, joined_at,
@@ -19479,9 +19493,9 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       .eq('user_id', uid)
       .eq('status', 'active')
 
-    // Progreso grupal de las misiones en las que el usuario participa
+    // Progreso grupal de las misiones activas del usuario
     let groupProgressMap = {}
-    if (myGroupIds.length && userMissions?.length) {
+    if (!umErr && myGroupIds.length && userMissions?.length) {
       const missionIds = userMissions.map(um => um.missions?.id).filter(Boolean)
       const { data: gmpData } = await _sb()
         .from('group_mission_progress')
@@ -19501,28 +19515,27 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       myCont.innerHTML = noGroupAlert + (cards ? `<div class="missions-grid">${cards}</div>` : '<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">No hay misiones activas ahora mismo.</div></div>')
     }
 
-    // Misiones disponibles para unirse (propias del grupo + community)
+    // Misiones disponibles — usa función SECURITY DEFINER para bypasear complejidad RLS
     const joinedIds = new Set((userMissions || []).map(um => um.missions?.id).filter(Boolean))
-    let query = _sb()
-      .from('missions')
-      .select('id, title, description, type, subtype, target_metric, target_value, current_value, reward_xp, parcial, ends_at, status, group_id, min_members')
-      .eq('status', 'active')
-      .order('created_at', { ascending: false })
+    const { data: allMissions, error: missionsErr } = await _sb()
+      .rpc('get_user_available_missions', { p_user_id: uid })
 
-    const { data: allMissions } = await query
+    if (missionsErr) {
+      avCont.innerHTML = `<div class="warn" style="padding:.7rem .9rem;border-radius:10px;margin-top:.5rem">
+        ⚠ <strong>No se pudieron cargar las misiones disponibles.</strong><br>
+        <span style="font-size:.82rem">${_esc(missionsErr.message)}</span><br>
+        <span style="font-size:.78rem;color:var(--muted)">Verificar que la migración <code>20260526_get_user_available_missions.sql</code> fue ejecutada en Supabase.</span>
+      </div>`
+      return
+    }
 
-    const available = (allMissions || []).filter(m => {
-      if (joinedIds.has(m.id)) return false
-      // RLS ya filtró lo que el usuario puede ver; solo excluir misiones de grupos ajenos
-      if (m.type === 'community') return true
-      if (myGroupIds.includes(m.group_id)) return true
-      // Si Supabase devolvió la misión pero no está en _myGroups (e.g. admin que la creó),
-      // mostrarla igual — RLS ya validó el acceso
-      return true
-    })
+    const available = (allMissions || []).filter(m => !joinedIds.has(m.id))
 
     if (!available.length) {
-      avCont.innerHTML = '<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-title">¡Estás en todas las misiones disponibles!</div><div class="social-empty-sub">El sistema generará nuevas misiones automáticamente. Pedile al admin que las genere.</div></div>'
+      const msg = myGroupIds.length === 0
+        ? 'Únete a un grupo para ver misiones disponibles.'
+        : 'Ya estás en todas las misiones activas de tu grupo. ¡Seguí participando!'
+      avCont.innerHTML = `<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">${msg}</div></div>`
     } else {
       avCont.innerHTML = `<div class="missions-grid">${available.map(m => _missionCard(m, null, false, null)).join('')}</div>`
     }
@@ -19563,8 +19576,19 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     const sub = m.subtype || m.type
     const subInfo = _subtypeLabel[sub] || { icon:'🎯', text:'Misión' }
 
-    // Timer
+    // Timer y clase de urgencia para borde izquierdo
     const timerHtml = _missionTimerHtml(m.ends_at)
+    const h = m.ends_at ? Math.max(0, Math.floor((new Date(m.ends_at) - Date.now()) / 3600000)) : null
+    const urgencyClass = isComplete ? 'urgency-ok' : h === null ? 'urgency-none' : h <= 6 ? 'urgency-urgent' : h <= 24 ? 'urgency-soon' : 'urgency-ok'
+
+    // Barra con color por nivel de progreso
+    const barClass = isComplete ? 'complete' : pct < 30 ? 'pct-low' : pct < 70 ? 'pct-mid' : ''
+    const pctColor = isComplete ? 'var(--green)' : pct < 30 ? '#ef4444' : pct < 70 ? '#d97706' : 'var(--green)'
+
+    // Badge de parcial
+    const parcialMap = { p1:'P1', p2:'P2', p3:'P3', all:'Todos' }
+    const parcialLabel = parcialMap[m.parcial] || ''
+    const parcialBadge = parcialLabel ? `<span class="mission-parcial-badge ${m.parcial || ''}">${parcialLabel}</span>` : ''
 
     // Sección de progreso grupal
     const groupSection = useGroupProgress ? `
@@ -19580,26 +19604,27 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
         </div>
       </div>` : ''
 
-    return `<div class="mission-card" style="${isComplete ? 'border-color:var(--green)' : ''}">
+    return `<div class="mission-card ${urgencyClass}">
       <div class="mission-card-header">
         <span class="mission-card-title">${_esc(m.title)}</span>
-        <span class="mission-type-pill ${sub}">${subInfo.icon} ${subInfo.text}</span>
+        <div style="display:flex;gap:.3rem;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end">
+          ${parcialBadge}
+          <span class="mission-type-pill ${sub}">${subInfo.icon} ${subInfo.text}</span>
+        </div>
       </div>
       ${m.description ? `<p class="mission-desc">${_esc(m.description)}</p>` : ''}
       ${groupSection}
       <div class="mission-progress-row">
         <span class="mission-progress-label">${current} / ${m.target_value} ${metricLabel}</span>
-        <span class="mission-progress-pct">${pct}%</span>
+        <span class="mission-progress-pct" style="color:${pctColor}">${pct}%</span>
       </div>
-      <div class="mission-bar"><div class="mission-bar-fill ${isComplete ? 'complete' : ''}" style="width:${pct}%"></div></div>
+      <div class="mission-bar"><div class="mission-bar-fill ${barClass}" style="width:${pct}%"></div></div>
       <div class="mission-card-footer">
-        <span class="mission-reward">🏅 Recompensa: <strong>+${m.reward_xp} XP</strong></span>
+        <span class="mission-xp-badge">+${m.reward_xp} XP</span>
         ${timerHtml}
         ${joined
           ? `<span class="mission-joined-badge">✓ Participando${indivContrib > 0 ? ' · ' + indivContrib + ' aportados' : ''}</span>`
-          : (m.is_group_required !== false
-              ? `<button class="btn primary" style="font-size:.78rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`
-              : `<button class="btn primary" style="font-size:.78rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`)
+          : `<button class="btn primary" style="font-size:.78rem;padding:.35rem .9rem" onclick="window.Social.joinMission('${m.id}',this)">Unirse →</button>`
         }
       </div>
     </div>`
