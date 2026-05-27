@@ -1840,6 +1840,24 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .chat-empty{text-align:center;color:var(--muted);font-size:.85rem;padding:2rem 1rem}
 .chat-no-group{text-align:center;color:var(--muted);font-size:.88rem;padding:2.5rem 1rem}
 .chat-no-group strong{display:block;font-size:1.3rem;margin-bottom:.4rem}
+/* ── System messages (mission events) ── */
+.chat-msg.system{align-self:center;align-items:center;max-width:92%;margin:.2rem 0}
+.chat-msg.system .chat-bubble{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.76rem;border-radius:10px;padding:.3rem .75rem;text-align:center;font-style:normal;letter-spacing:.01em}
+.chat-msg.system .chat-msg-meta{display:none}
+.system-event-join .chat-bubble{border-color:rgba(47,139,77,.3);background:rgba(47,139,77,.06);color:#166534}
+.system-event-milestone .chat-bubble{border-color:rgba(43,110,163,.3);background:rgba(43,110,163,.06);color:#1e40af}
+.system-event-complete .chat-bubble{border-color:rgba(234,179,8,.4);background:rgba(234,179,8,.08);color:#854d0e;font-weight:700}
+.system-event-contribution .chat-bubble{border-color:var(--border);background:var(--soft2)}
+/* ── Active mission widget above chat ── */
+.chat-mission-bar{padding:.55rem .8rem;background:linear-gradient(135deg,rgba(47,139,77,.07),rgba(47,139,77,.03));border-bottom:1px solid rgba(47,139,77,.2);display:flex;flex-direction:column;gap:.35rem;border-radius:14px 14px 0 0}
+.chat-mission-bar-label{font-size:.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.6px;opacity:.8}
+.chat-mission-entry{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.chat-mission-name{font-weight:700;font-size:.81rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-mission-prog{font-size:.76rem;font-weight:800;color:var(--green);white-space:nowrap}
+.chat-mission-prog.warn{color:var(--yellow)}.chat-mission-prog.low{color:var(--red)}
+.chat-mission-cta{padding:.28rem .6rem;border-radius:7px;background:var(--green);color:#fff;font-size:.73rem;font-weight:800;border:none;cursor:pointer;flex-shrink:0;transition:filter .15s}
+.chat-mission-cta:hover{filter:brightness(1.12)}
+.chat-mission-timer{font-size:.72rem;color:var(--muted);white-space:nowrap}
 
 /* ── Invite code row ── */
 .invite-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
@@ -19972,8 +19990,20 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
         return
       }
 
-      const roleLabel = result.assigned_label || 'Miembro'
-      toast(`✅ Te uniste con el rol: ${roleLabel}`)
+      const roleLabel = result.assigned_label || 'Member'
+      toast(`✅ Joined as: ${roleLabel}`)
+
+      const mission = _expAllMissions.find(m => m.id === missionId)
+      if (mission?.group_id) {
+        const myName = await _getMyName()
+        const roleText = roleLabel !== 'Member' ? ` as ${roleLabel}` : ''
+        await _postMissionSystemMsg(
+          mission.group_id,
+          `🎯 ${myName} joined${roleText} the expedition "${mission.title}"`,
+          'mission_join'
+        )
+      }
+
       await _renderMissions()
     } catch(e) {
       toast('Error: ' + (e.message || e))
@@ -19994,6 +20024,64 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
 
   // Alias de compatibilidad para el sistema antiguo
   async function joinMission(missionId, btn) { return joinExpedition(missionId, btn) }
+
+  // ═══════════════════════════════════════════════════════════════
+  // AUTOMATED SYSTEM MESSAGES IN GROUP CHAT
+  // ═══════════════════════════════════════════════════════════════
+
+  const _missionMilestonesAnnounced = {}
+
+  async function _postMissionSystemMsg(groupId, content, eventType) {
+    const uid = await _getUserId()
+    if (!uid || !groupId) return
+    try {
+      await _sb().from('chat_messages').insert({
+        group_id:   groupId,
+        user_id:    uid,
+        content:    String(content).substring(0, 500),
+        is_system:  true,
+        event_type: eventType || null
+      })
+    } catch {}
+  }
+
+  let _myDisplayName = null
+  async function _getMyName() {
+    if (_myDisplayName) return _myDisplayName
+    const uid = await _getUserId()
+    if (!uid) return 'A member'
+    const { data } = await _sb().from('profiles').select('name').eq('id', uid).single()
+    _myDisplayName = data?.name || 'A member'
+    return _myDisplayName
+  }
+
+  async function _checkAndAnnounceMilestone(mission, newPct) {
+    if (!mission?.group_id) return
+    const milestones = [25, 50, 75, 100]
+    const prev = _missionMilestonesAnnounced[mission.id] ?? 0
+    for (const ms of milestones) {
+      if (newPct >= ms && prev < ms) {
+        _missionMilestonesAnnounced[mission.id] = ms
+        const remaining = Math.max(0, mission.target_value - Math.round(newPct / 100 * mission.target_value))
+        const metricLabel = _expMetricLabel?.[mission.target_metric] || 'contributions'
+        if (ms === 100) {
+          await _postMissionSystemMsg(
+            mission.group_id,
+            `🏆 Mission completed! "${mission.title}" · +${mission.reward_xp} XP for every team member`,
+            'mission_complete'
+          )
+        } else {
+          const extra = remaining > 0 ? ` · ${remaining} ${metricLabel} to go` : ''
+          await _postMissionSystemMsg(
+            mission.group_id,
+            `📈 The team reached ${ms}% of "${mission.title}"${extra}`,
+            'mission_milestone'
+          )
+        }
+        break
+      }
+    }
+  }
 
   // ═══════════════════════════════════════════════════════════════
   // SECCIÓN: CHAT EN TIEMPO REAL
@@ -20045,15 +20133,68 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     _disconnectChat()
     _activeGroup = _myGroups.find(g => g.id === groupId) || null
     if (!_activeGroup) return
+    await _renderChatMissionWidget(groupId)
     await _loadAndRenderMessages(groupId)
     _subscribeToChat(groupId)
+  }
+
+  async function _renderChatMissionWidget(groupId) {
+    const container = document.getElementById('chatPanelInner')
+    if (!container) return
+    const prev = container.querySelector('.chat-mission-bar')
+    if (prev) prev.remove()
+
+    let activeMissions = _expAllMissions.filter(m => m.group_id === groupId && m.is_enrolled)
+    if (!activeMissions.length) {
+      const uid = await _getUserId()
+      if (uid) {
+        const { data } = await _sb()
+          .from('missions')
+          .select('id, title, target_value, current_value, reward_xp, ends_at, target_metric, group_id')
+          .eq('group_id', groupId)
+          .eq('is_active', true)
+          .limit(3)
+        if (data?.length) activeMissions = data
+      }
+    }
+    if (!activeMissions.length) return
+
+    const metricLabels = {
+      simulacros_completed: 'practice tests',
+      correct_answers: 'correct answers',
+      xp_earned: 'XP',
+      all_participated: 'active members'
+    }
+
+    const entries = activeMissions.slice(0, 2).map(m => {
+      const current = m.grp_current ?? m.current_value ?? 0
+      const pct = m.target_value > 0 ? Math.min(100, Math.round(current / m.target_value * 100)) : 0
+      const progClass = pct >= 70 ? '' : pct >= 35 ? 'warn' : 'low'
+      let timerTxt = ''
+      if (m.ends_at) {
+        const diffH = Math.round((new Date(m.ends_at) - Date.now()) / 3600000)
+        if (diffH > 0) timerTxt = `· ⏳ ${diffH < 24 ? diffH + 'h' : Math.floor(diffH/24) + 'd'}`
+      }
+      return `<div class="chat-mission-entry">
+        <span class="chat-mission-name" title="${_esc(m.title)}">${_esc(m.title)}</span>
+        <span class="chat-mission-prog ${progClass}">${pct}%</span>
+        <span class="chat-mission-timer">${timerTxt}</span>
+        <button class="chat-mission-cta" onclick="document.querySelectorAll('.com-tab')[1]?.click()">Study →</button>
+      </div>`
+    }).join('')
+
+    const bar = document.createElement('div')
+    bar.className = 'chat-mission-bar'
+    bar.innerHTML = `<div class="chat-mission-bar-label">⚡ Team expedition in progress</div>${entries}`
+    const msgBox = container.querySelector('.chat-messages')
+    if (msgBox) msgBox.parentNode.insertBefore(bar, msgBox)
   }
 
   async function _loadAndRenderMessages(groupId){
     const uid = await _getUserId()
     const { data: msgs } = await _sb()
       .from('chat_messages')
-      .select('id, content, created_at, user_id, profiles(name)')
+      .select('id, content, created_at, user_id, is_system, event_type, profiles(name)')
       .eq('group_id', groupId)
       .order('created_at', { ascending: true })
       .limit(60)
@@ -20070,8 +20211,14 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
   }
 
   function _buildBubble(msg, myUid){
+    if (msg.is_system) {
+      const evClass = msg.event_type ? `system-event-${msg.event_type.split('_')[1]}` : ''
+      return `<div class="chat-msg system ${evClass}">
+        <div class="chat-bubble">${_esc(msg.content)}</div>
+      </div>`
+    }
     const isOwn = msg.user_id === myUid
-    const name  = _chatNames[msg.user_id] || msg.profiles?.name || 'Usuario'
+    const name  = _chatNames[msg.user_id] || msg.profiles?.name || 'User'
     return `<div class="chat-msg ${isOwn ? 'own' : 'other'}">
       <div class="chat-bubble">${_esc(msg.content)}</div>
       <div class="chat-msg-meta">${isOwn ? '' : _esc(name) + ' · '}${_fmt(msg.created_at)}</div>
@@ -20166,7 +20313,35 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
       if (total > 0) promises.push(callRpc('simulacros_completed', 1))
       if (hits  > 0) promises.push(callRpc('correct_answers', hits))
       await Promise.all(promises)
-      // Refresco silencioso de la UI de misiones si el tab está visible
+
+      const enrolledGroupMissions = _expAllMissions.filter(m => m.is_enrolled && m.group_id)
+      if (enrolledGroupMissions.length > 0 && (hits > 0 || total > 0)) {
+        const myName = await _getMyName()
+        const uid2 = await _getUserId()
+        const { data: freshMissions } = await _sb()
+          .rpc('get_my_community_missions', { p_user_id: uid2 })
+        const freshMap = {}
+        if (freshMissions) freshMissions.forEach(m => { freshMap[m.id] = m })
+
+        for (const m of enrolledGroupMissions) {
+          const fresh = freshMap[m.id] || m
+          const newCurrent = fresh.grp_current || fresh.current_value || 0
+          const newPct = m.target_value > 0 ? Math.min(100, Math.round(newCurrent / m.target_value * 100)) : 0
+          const metricLabel = _expMetricLabel?.[m.target_metric] || 'contributions'
+          const contributed = m.target_metric === 'simulacros_completed' ? total : hits
+          if (contributed > 0) {
+            await _postMissionSystemMsg(
+              m.group_id,
+              `⚡ ${myName} contributed ${contributed} ${metricLabel} → "${m.title}" is at ${newPct}%`,
+              'mission_contribution'
+            )
+          }
+          await _checkAndAnnounceMilestone({ ...m, ...fresh }, newPct)
+        }
+        if (freshMissions) _expAllMissions = freshMissions
+      }
+
+      // Silent refresh of missions UI if the tab is visible
       const mPanel = document.getElementById('com-panel-misiones')
       if (mPanel?.classList.contains('active')) setTimeout(() => _renderMissions(), 700)
     } catch(e) { /* silencioso — no romper el simulacro */ }
