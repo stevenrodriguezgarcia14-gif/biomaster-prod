@@ -1845,19 +1845,36 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .chat-msg.system .chat-bubble{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:.76rem;border-radius:10px;padding:.3rem .75rem;text-align:center;font-style:normal;letter-spacing:.01em}
 .chat-msg.system .chat-msg-meta{display:none}
 .system-event-join .chat-bubble{border-color:rgba(47,139,77,.3);background:rgba(47,139,77,.06);color:#166534}
-.system-event-milestone .chat-bubble{border-color:rgba(43,110,163,.3);background:rgba(43,110,163,.06);color:#1e40af}
-.system-event-complete .chat-bubble{border-color:rgba(234,179,8,.4);background:rgba(234,179,8,.08);color:#854d0e;font-weight:700}
+.system-event-milestone .chat-bubble{border-color:rgba(43,110,163,.45);background:linear-gradient(135deg,rgba(43,110,163,.12),rgba(43,110,163,.04));color:#1e40af;font-weight:700;font-size:.8rem;padding:.42rem .95rem}
+.system-event-complete .chat-bubble{border-color:rgba(234,179,8,.6);background:linear-gradient(135deg,rgba(234,179,8,.18),rgba(234,179,8,.06));color:#854d0e;font-weight:800;font-size:.86rem;padding:.5rem 1.1rem;letter-spacing:.01em}
 .system-event-contribution .chat-bubble{border-color:var(--border);background:var(--soft2)}
-/* ── Active mission widget above chat ── */
-.chat-mission-bar{padding:.55rem .8rem;background:linear-gradient(135deg,rgba(47,139,77,.07),rgba(47,139,77,.03));border-bottom:1px solid rgba(47,139,77,.2);display:flex;flex-direction:column;gap:.35rem;border-radius:14px 14px 0 0}
-.chat-mission-bar-label{font-size:.68rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.6px;opacity:.8}
-.chat-mission-entry{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
-.chat-mission-name{font-weight:700;font-size:.81rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat-mission-prog{font-size:.76rem;font-weight:800;color:var(--green);white-space:nowrap}
-.chat-mission-prog.warn{color:var(--yellow)}.chat-mission-prog.low{color:var(--red)}
-.chat-mission-cta{padding:.28rem .6rem;border-radius:7px;background:var(--green);color:#fff;font-size:.73rem;font-weight:800;border:none;cursor:pointer;flex-shrink:0;transition:filter .15s}
-.chat-mission-cta:hover{filter:brightness(1.12)}
-.chat-mission-timer{font-size:.72rem;color:var(--muted);white-space:nowrap}
+/* ── Active expedition widget above chat ── */
+.chat-mission-bar{padding:.6rem .85rem;background:linear-gradient(135deg,rgba(47,139,77,.08),rgba(47,139,77,.03));border-bottom:1px solid rgba(47,139,77,.22);display:flex;flex-direction:column;gap:.0rem;border-radius:14px 14px 0 0}
+.chat-exp-header{padding-bottom:.3rem}
+.chat-exp-titlerow{display:flex;align-items:center;justify-content:space-between;margin-bottom:.18rem}
+.chat-exp-label{font-size:.62rem;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.7px}
+.chat-exp-timer{font-size:.68rem;color:var(--muted)}
+.chat-exp-title{font-weight:700;font-size:.83rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-exp-roles{display:flex;flex-direction:column;gap:.18rem;margin:.3rem 0;padding:.3rem 0;border-top:1px solid rgba(47,139,77,.15);border-bottom:1px solid rgba(47,139,77,.15)}
+.chat-exp-role-row{display:flex;align-items:center;gap:.42rem;padding:.12rem 0}
+.chat-exp-role-row.mine{background:rgba(47,139,77,.07);border-radius:8px;padding:.18rem .42rem;margin:0 -.42rem}
+.chat-exp-role-row.empty{opacity:.65}
+.chat-exp-role-icon{font-size:.95rem;flex-shrink:0;width:1.3rem;text-align:center}
+.chat-exp-role-meta{flex:1;min-width:0}
+.chat-exp-role-name{font-size:.76rem;font-weight:700;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-exp-role-member{font-size:.68rem;color:var(--muted);display:block}
+.chat-exp-role-join{padding:.16rem .48rem;border-radius:6px;background:transparent;border:1.5px solid var(--green);color:var(--green);font-size:.67rem;font-weight:800;cursor:pointer;flex-shrink:0;transition:background .12s}
+.chat-exp-role-join:hover{background:rgba(47,139,77,.1)}
+.chat-exp-footer{padding:.28rem 0 .05rem}
+.chat-exp-progress-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.28rem}
+.chat-exp-prog-bar{flex:1;height:5px;background:var(--soft2);border-radius:3px;overflow:hidden}
+.chat-exp-prog-fill{height:100%;border-radius:3px;transition:width .5s}
+.chat-exp-prog-pct{font-size:.7rem;font-weight:800;width:2.4rem;text-align:right;flex-shrink:0}
+.chat-exp-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.chat-exp-xp{font-size:.68rem;color:var(--muted)}
+.chat-exp-cta{padding:.28rem .65rem;border-radius:8px;background:var(--green);color:#fff;font-size:.72rem;font-weight:800;border:none;cursor:pointer;transition:filter .15s;white-space:nowrap;flex-shrink:0}
+.chat-exp-cta:hover{filter:brightness(1.12)}
+.exp-role-task{font-size:.74rem;color:var(--muted);margin:.22rem 0 .28rem;font-style:italic;line-height:1.35}
 
 /* ── Invite code row ── */
 .invite-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}
@@ -19932,16 +19949,21 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
 
     let ctaHtml = ''
     if (isComplete) {
-      ctaHtml = `<span class="exp-enrolled-badge">🏆 Completada</span>`
+      ctaHtml = `<span class="exp-enrolled-badge">🏆 Completed</span>`
     } else if (isEnrolled) {
       const parcialAnchors = { p1:'#examenP1Section', p2:'#examenes', p3:'#examenP3Section', all:'#examenes' }
       const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
       const metricHint = { simulacros_completed:'Complete practice tests on this topic', correct_answers:'Answer questions correctly', xp_earned:'Earn XP by studying', all_participated:'Complete at least one practice test' }
       const hint = metricHint[m.target_metric] || 'Do practice tests to contribute'
-      ctaHtml = `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
+      const mySlotDef = myRole ? roleSlots.find(s => s.id === myRole) : null
+      const roleDesc  = mySlotDef?.description ? `<div class="exp-role-task">📋 ${_esc(mySlotDef.description)}</div>` : ''
+      ctaHtml = `<div>
         <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Enrolled`}${contribution > 0 ? ` · ${contribution} contributed` : ''}</span>
-        <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window.location.href='${studyAnchor}'" title="${hint}">📚 Practice →</button>
-        ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
+        ${roleDesc}
+        <div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap;margin-top:.25rem">
+          <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window.location.href='${studyAnchor}'" title="${hint}">📚 Practice →</button>
+          ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
+        </div>
       </div>`
     } else if (mode === 'community_challenge' || m.type === 'community') {
       ctaHtml = `<button class="exp-btn-community" onclick="window.Exp.joinExpedition('${m.id}',this)">Contribuir →</button>`
@@ -20149,48 +20171,115 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     const prev = container.querySelector('.chat-mission-bar')
     if (prev) prev.remove()
 
-    let activeMissions = _expAllMissions.filter(m => m.group_id === groupId && m.is_enrolled)
+    const uid = await _getUserId()
+    if (!uid) return
+
+    let activeMissions = (_expAllMissions || []).filter(m => m.group_id === groupId)
     if (!activeMissions.length) {
-      const uid = await _getUserId()
-      if (uid) {
-        const { data } = await _sb()
-          .from('missions')
-          .select('id, title, target_value, current_value, reward_xp, ends_at, target_metric, group_id')
-          .eq('group_id', groupId)
-          .eq('is_active', true)
-          .limit(3)
-        if (data?.length) activeMissions = data
-      }
+      const { data } = await _sb()
+        .from('missions')
+        .select('id, title, target_value, current_value, reward_xp, ends_at, target_metric, group_id, parcial, role_slots, mode, status, is_active')
+        .eq('group_id', groupId)
+        .eq('is_active', true)
+        .limit(3)
+      if (data?.length) activeMissions = data
     }
     if (!activeMissions.length) return
 
-    const metricLabels = {
-      simulacros_completed: 'practice tests',
-      correct_answers: 'correct answers',
-      xp_earned: 'XP',
-      all_participated: 'active members'
+    const missionIds = activeMissions.map(m => m.id)
+
+    let rosterByMission = {}
+    if (_expRosters && Object.keys(_expRosters).some(k => missionIds.includes(k))) {
+      rosterByMission = _expRosters
+    } else {
+      const { data: rData } = await _sb()
+        .from('user_missions')
+        .select('user_id, mission_id, assigned_role, contribution, profiles(name)')
+        .in('mission_id', missionIds)
+        .eq('status', 'active')
+      if (rData) {
+        rData.forEach(r => {
+          if (!rosterByMission[r.mission_id]) rosterByMission[r.mission_id] = []
+          rosterByMission[r.mission_id].push({ ...r, user_name: r.profiles?.name || 'User' })
+        })
+      }
     }
 
-    const entries = activeMissions.slice(0, 2).map(m => {
-      const current = m.grp_current ?? m.current_value ?? 0
-      const pct = m.target_value > 0 ? Math.min(100, Math.round(current / m.target_value * 100)) : 0
-      const progClass = pct >= 70 ? '' : pct >= 35 ? 'warn' : 'low'
-      let timerTxt = ''
-      if (m.ends_at) {
-        const diffH = Math.round((new Date(m.ends_at) - Date.now()) / 3600000)
-        if (diffH > 0) timerTxt = `· ⏳ ${diffH < 24 ? diffH + 'h' : Math.floor(diffH/24) + 'd'}`
-      }
-      return `<div class="chat-mission-entry">
-        <span class="chat-mission-name" title="${_esc(m.title)}">${_esc(m.title)}</span>
-        <span class="chat-mission-prog ${progClass}">${pct}%</span>
-        <span class="chat-mission-timer">${timerTxt}</span>
-        <button class="chat-mission-cta" onclick="document.querySelectorAll('.com-tab')[1]?.click()">Study →</button>
-      </div>`
-    }).join('')
+    const m = activeMissions[0]
+    const mRoster = rosterByMission[m.id] || []
+    const roleSlots = Array.isArray(m.role_slots) ? m.role_slots : (m.role_slots ? JSON.parse(m.role_slots) : [])
+    const current = m.grp_current ?? m.current_value ?? 0
+    const pct = m.target_value > 0 ? Math.min(100, Math.round(current / m.target_value * 100)) : 0
+    const parcialAnchors = { p1:'#examenP1Section', p2:'#examenes', p3:'#examenP3Section', all:'#examenes' }
+    const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
+
+    const timerHtml = (() => {
+      if (!m.ends_at) return ''
+      const diffH = Math.round((new Date(m.ends_at) - Date.now()) / 3600000)
+      if (diffH <= 0) return ''
+      const s = diffH <= 6 ? ' style="color:#ef4444"' : diffH <= 24 ? ' style="color:#d97706"' : ''
+      return `<span class="chat-exp-timer"${s}>⏱️ ${diffH < 24 ? diffH + 'h' : Math.floor(diffH/24) + 'd'}</span>`
+    })()
+
+    const myEntry = mRoster.find(r => r.user_id === uid)
+    const myRole  = myEntry?.assigned_role
+
+    let rolesHtml = ''
+    if (roleSlots.length > 0) {
+      const rows = roleSlots.map(slot => {
+        const member  = mRoster.find(r => r.assigned_role === slot.id)
+        const isMe    = member?.user_id === uid
+        const contrib = member?.contribution || 0
+        const name    = isMe ? 'You' : (member?.user_name || null)
+
+        if (member) {
+          return `<div class="chat-exp-role-row${isMe ? ' mine' : ''}">
+            <span class="chat-exp-role-icon">${slot.icon || '🎯'}</span>
+            <div class="chat-exp-role-meta">
+              <span class="chat-exp-role-name">${_esc(slot.label || slot.id)}</span>
+              <span class="chat-exp-role-member">${_esc(name)}${contrib > 0 ? ` · ${contrib} contributed` : ''}</span>
+            </div>
+          </div>`
+        }
+        return `<div class="chat-exp-role-row empty">
+          <span class="chat-exp-role-icon">${slot.icon || '🎯'}</span>
+          <div class="chat-exp-role-meta">
+            <span class="chat-exp-role-name">${_esc(slot.label || slot.id)}</span>
+            <span class="chat-exp-role-member" style="font-style:italic">Available</span>
+          </div>
+          ${!myRole ? `<button class="chat-exp-role-join" onclick="window.Exp.joinExpedition('${m.id}',this)">Join</button>` : ''}
+        </div>`
+      }).join('')
+      rolesHtml = `<div class="chat-exp-roles">${rows}</div>`
+    }
+
+    const progColor = pct >= 70 ? 'var(--green)' : pct >= 35 ? '#d97706' : '#ef4444'
+    const ctaHtml  = myEntry
+      ? `<button class="chat-exp-cta" onclick="window.location.href='${studyAnchor}'">📚 Practice my part →</button>`
+      : ''
 
     const bar = document.createElement('div')
     bar.className = 'chat-mission-bar'
-    bar.innerHTML = `<div class="chat-mission-bar-label">⚡ Team expedition in progress</div>${entries}`
+    bar.innerHTML = `
+      <div class="chat-exp-header">
+        <div class="chat-exp-titlerow">
+          <span class="chat-exp-label">⚔️ Active expedition</span>
+          ${timerHtml}
+        </div>
+        <div class="chat-exp-title">${_esc(m.title)}</div>
+      </div>
+      ${rolesHtml}
+      <div class="chat-exp-footer">
+        <div class="chat-exp-progress-row">
+          <div class="chat-exp-prog-bar"><div class="chat-exp-prog-fill" style="width:${pct}%;background:${progColor}"></div></div>
+          <span class="chat-exp-prog-pct" style="color:${progColor}">${pct}%</span>
+        </div>
+        <div class="chat-exp-footer-bottom">
+          <span class="chat-exp-xp">+${m.reward_xp || 0} XP on completion</span>
+          ${ctaHtml}
+        </div>
+      </div>`
+
     const msgBox = container.querySelector('.chat-messages')
     if (msgBox) msgBox.parentNode.insertBefore(bar, msgBox)
   }
