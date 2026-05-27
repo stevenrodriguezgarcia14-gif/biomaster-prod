@@ -19603,7 +19603,10 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
         <span class="mission-xp-badge">+${m.reward_xp} XP</span>
         ${timerHtml}
         ${joined
-          ? `<span class="mission-joined-badge">✓ Participating${indivContrib > 0 ? ' · ' + indivContrib + ' contributed' : ''}</span>`
+          ? `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
+               <span class="mission-joined-badge">✓${indivContrib > 0 ? ' ' + indivContrib + ' contributed' : ' Enrolled'}</span>
+               ${m.group_id ? `<button class="btn" style="font-size:.72rem;padding:.22rem .6rem" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
+             </div>`
           : `<button class="btn primary" style="font-size:.78rem;padding:.35rem .9rem" onclick="window.Social.joinMission('${m.id}',this)">Join →</button>`
         }
       </div>
