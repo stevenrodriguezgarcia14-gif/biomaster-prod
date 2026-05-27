@@ -19443,14 +19443,28 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     myCont.innerHTML = '<div class="social-empty"><div class="social-empty-icon">⏳</div><div class="social-empty-sub">Loading missions…</div></div>'
     avCont.innerHTML = ''
 
-    // Expirar misiones vencidas (silencioso, no bloqueante)
     _sb().rpc('expire_old_missions').catch(() => {})
 
-    // Cargar grupos del usuario (garantiza _myGroups actualizado)
     await _loadMyGroups(uid)
     const myGroupIds = _myGroups.map(g => g.id)
 
-    // Mostrar alerta si no tiene grupo
+    // Single SECURITY DEFINER query: all relevant missions + enrollment status
+    const { data: missions, error } = await _sb()
+      .rpc('get_my_community_missions', { p_user_id: uid })
+
+    if (error) {
+      myCont.innerHTML = `<div class="warn" style="padding:.7rem .9rem;border-radius:10px">
+        ⚠ <strong>Could not load missions.</strong><br>
+        <span style="font-size:.82rem">${_esc(error.message)}</span><br>
+        <span style="font-size:.78rem;color:var(--muted)">Make sure migration <code>20260526_get_my_community_missions.sql</code> was applied in Supabase.</span>
+      </div>`
+      avCont.innerHTML = ''
+      return
+    }
+
+    const enrolled  = (missions || []).filter(m => m.is_enrolled)
+    const available = (missions || []).filter(m => !m.is_enrolled)
+
     const noGroupAlert = myGroupIds.length === 0
       ? `<div class="mission-no-group-alert">
            <div class="mission-no-group-icon">⚠️</div>
@@ -19461,55 +19475,17 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
          </div>`
       : ''
 
-    // Misiones activas del usuario (ya unido) — RLS solo devuelve las propias
-    const { data: userMissions, error: umErr } = await _sb()
-      .from('user_missions')
-      .select(`
-        contribution, status, joined_at,
-        missions(id, title, description, type, subtype, target_metric,
-                 target_value, current_value, reward_xp, parcial, topic,
-                 ends_at, status, group_id, min_members)
-      `)
-      .eq('user_id', uid)
-      .eq('status', 'active')
-
-    // Progreso grupal de las misiones activas del usuario
-    let groupProgressMap = {}
-    if (!umErr && myGroupIds.length && userMissions?.length) {
-      const missionIds = userMissions.map(um => um.missions?.id).filter(Boolean)
-      const { data: gmpData } = await _sb()
-        .from('group_mission_progress')
-        .select('mission_id, group_id, current_value, members_participated')
-        .in('mission_id', missionIds)
-        .in('group_id', myGroupIds)
-      if (gmpData) gmpData.forEach(r => { groupProgressMap[r.mission_id] = r })
-    }
-
-    if (!userMissions?.length) {
+    if (!enrolled.length) {
       myCont.innerHTML = noGroupAlert + '<div class="social-empty"><div class="social-empty-icon">🎯</div><div class="social-empty-title">No active missions</div><div class="social-empty-sub">Join your group\'s missions to start contributing.</div></div>'
     } else {
-      const cards = userMissions
-        .filter(um => um.missions?.status === 'active')
-        .map(um => _missionCard(um.missions, um, true, groupProgressMap[um.missions?.id]))
-        .join('')
-      myCont.innerHTML = noGroupAlert + (cards ? `<div class="missions-grid">${cards}</div>` : '<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">No active missions right now.</div></div>')
+      const cards = enrolled.map(m => _missionCard(
+        m,
+        { contribution: m.contribution },
+        true,
+        m.group_id ? { current_value: m.grp_current, members_participated: m.grp_members_participated } : null
+      )).join('')
+      myCont.innerHTML = noGroupAlert + `<div class="missions-grid">${cards}</div>`
     }
-
-    // Misiones disponibles — usa función SECURITY DEFINER para bypasear complejidad RLS
-    const joinedIds = new Set((userMissions || []).map(um => um.missions?.id).filter(Boolean))
-    const { data: allMissions, error: missionsErr } = await _sb()
-      .rpc('get_user_available_missions', { p_user_id: uid })
-
-    if (missionsErr) {
-      avCont.innerHTML = `<div class="warn" style="padding:.7rem .9rem;border-radius:10px;margin-top:.5rem">
-        ⚠ <strong>Could not load available missions.</strong><br>
-        <span style="font-size:.82rem">${_esc(missionsErr.message)}</span><br>
-        <span style="font-size:.78rem;color:var(--muted)">Make sure migration <code>20260526_get_user_available_missions.sql</code> was applied in Supabase.</span>
-      </div>`
-      return
-    }
-
-    const available = (allMissions || []).filter(m => !joinedIds.has(m.id))
 
     if (!available.length) {
       const msg = myGroupIds.length === 0
@@ -19517,7 +19493,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
         : "You're already in all your group's active missions. Keep contributing!"
       avCont.innerHTML = `<div class="social-empty"><div class="social-empty-icon">✅</div><div class="social-empty-sub">${msg}</div></div>`
     } else {
-      avCont.innerHTML = `<div class="missions-grid">${available.map(m => _missionCard(m, null, false, null)).join('')}</div>`
+      avCont.innerHTML = `<div class="missions-grid">${available.map(m => _missionCard(
+        m,
+        null,
+        false,
+        m.group_id ? { current_value: m.grp_current, members_participated: m.grp_members_participated } : null
+      )).join('')}</div>`
     }
   }
 
