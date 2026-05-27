@@ -6625,12 +6625,14 @@ window.Analytics = (function(){
                 <option value="name">Nombre A-Z</option>
               </select>
               <button class="btn" onclick="A.adminRefreshProgress()" style="font-size:.78rem">↻ Refrescar</button>
+              <button class="btn" onclick="A.adminRecalculateAllProgress()" style="font-size:.78rem;background:var(--soft)" title="Recalcula el progreso máximo histórico de todos los usuarios con la fórmula actual. Útil después de actualizaciones de fórmula.">⚙ Recalcular todo</button>
             </div>
           </div>
           <p class="muted" style="font-size:.78rem;margin-bottom:.6rem">
-            <strong>Progreso vivo</strong>: % que el usuario ve ahora.
-            <strong>Progreso máx</strong>: máximo histórico (no se borra si el usuario resetea su progreso).
+            <strong>Progreso vivo</strong>: % actual (5 pilares: simulacros + BioVisuales + juegos + XP + consistencia).
+            <strong>Progreso máx</strong>: máximo histórico (no se borra si el usuario resetea).
             <strong>Cruzó 20%</strong>: indica si ya no procede reembolso por uso.
+            El desglose de pilares se muestra bajo cada nombre.
           </p>
           <div id="adminProgressTable" style="margin-top:.5rem">Cargando…</div>
         </div>
@@ -7129,11 +7131,13 @@ function defaultState(){
       total:0, hits:0, miss:0, xp:0, streak:0, lastDate:'',
       simsDone:0, pomodoros:0, timerSecs:0, customMethodSecs:0,
       themeHits:{gen:0,evo:0,ori:0}, themeMiss:{gen:0,evo:0,ori:0},
+      flashCards:0,
       sessions:[], examAttempts:[], topErrors:{}, activity:[]
     },
     progress:{ topics:{t4:'No visto',t5:'No visto',t6:'No visto'}, subtopics:{} },
     achievements:{},
     flashProgress:{},
+    bvWatched:{},
     game:{ best:0, history:[] },
     // Récords de los 3 juegos nuevos. Se inicializan vacíos y se llenan
     // cada vez que el usuario juega. Compatibles con el ranking general
@@ -8102,6 +8106,8 @@ function nextFlash(){
   const wasLast = flashOrder.length > 0 && flashIdx === flashOrder.length - 1
   flashIdx = (flashIdx+1) % flashOrder.length
   flashFlip = false
+  // Contar tarjetas individuales vistas (no depende del XP ni del mazo completo)
+  S.stats.flashCards = (S.stats.flashCards || 0) + 1
   // Al completar una vuelta completa al mazo: +10 XP (una sola vez por vuelta)
   if (wasLast && !_flashDeckCompleted && flashOrder.length > 0){
     _flashDeckCompleted = true
@@ -9267,33 +9273,22 @@ async function adminLoadAllProgress(){
     let activeParcial = data?.activeParcial || null
     let lastActivity = row?.updated_at || null
     if (data){
-      // Calcular livePct con la misma fórmula que _computeProgressPct() para que sea
-      // directamente comparable con el max_progress_pct guardado en el audit.
-      const diags = [data.diagnostic_p1, data.diagnostic, data.diagnostic_p3]
-        .filter(d => d?.scores && d?.completed_at)
-      let diagScore = 0
-      if (diags.length){
-        diags.sort((a,b) => new Date(b.completed_at) - new Date(a.completed_at))
-        const vals = Object.values(diags[0].scores || {})
-        if (vals.length) diagScore = (vals.reduce((a,b)=>a+b,0) / vals.length) * 40
-        if (!activeParcial){
-          const dParcials = [
-            { p:'p1', d: data.diagnostic_p1 },
-            { p:'p2', d: data.diagnostic },
-            { p:'p3', d: data.diagnostic_p3 }
-          ].filter(x => x.d?.completed_at)
-          if (dParcials.length){
-            dParcials.sort((a,b) => new Date(b.d.completed_at) - new Date(a.d.completed_at))
-            activeParcial = dParcials[0].p
-          }
+      // MIRROR: _computeProgressPct — usar _computeProgressPctFromData para
+      // mantener una sola implementación. Si cambia la fórmula, solo cambia allá.
+      livePct = _computeProgressPctFromData(data)
+      // Inferir parcial activo desde el más reciente diagnóstico completado
+      if (!activeParcial){
+        const dParcials = [
+          { p:'p1', d: data.diagnostic_p1 },
+          { p:'p2', d: data.diagnostic },
+          { p:'p3', d: data.diagnostic_p3 }
+        ].filter(x => x.d?.completed_at)
+        if (dParcials.length){
+          dParcials.sort((a,b) => new Date(b.d.completed_at) - new Date(a.d.completed_at))
+          activeParcial = dParcials[0].p
         }
       }
-      if (!activeParcial) activeParcial = 'p2'
-      const hits = data.stats?.hits || 0
-      const miss = data.stats?.miss || 0
-      const accScore = (hits + miss >= 5) ? (hits / (hits + miss)) * 40 : 0
-      const xpScore = Math.min(20, ((data.stats?.xp || 0) / 500) * 20)
-      livePct = Math.round(Math.min(100, diagScore + accScore + xpScore))
+      if (!activeParcial) activeParcial = data.parcial || 'p2'
     } else {
       if (!activeParcial) activeParcial = 'p2'
     }
@@ -9308,6 +9303,16 @@ async function adminLoadAllProgress(){
     if (prof.plan_p2) parciales.push('P2')
     if (prof.plan_p3) parciales.push('P3')
     const planLabel = prof.plan_full ? '⭐ Full' : (parciales.length === 3 ? '⭐ P1+P2+P3' : parciales.length ? '📘 ' + parciales.join('+') : 'Free')
+    // Desglose de pilares para diagnóstico admin
+    const breakdown = data ? {
+      simsDone:    data.stats?.simsDone || 0,
+      bvCount:     Object.keys(data.bvWatched || {}).length,
+      uniqueGames: ['detective','puzzle','escape','match','runner'].filter(g => (data.gamesV2?.[g]?.played || 0) > 0).length,
+      xp:          data.stats?.xp || 0,
+      sessions:    (data.stats?.sessions || []).length,
+      streak:      data.stats?.streak || 0,
+      flashCards:  data.stats?.flashCards || 0
+    } : null
     return {
       id: prof.id,
       name: prof.name || '(sin nombre)',
@@ -9322,6 +9327,7 @@ async function adminLoadAllProgress(){
       resetCount,
       lastActivity,
       hasData: !!data,
+      breakdown,
       planExpires: prof.plan_expires_at || null,
       planAny: !!(prof.plan_full || prof.plan_p1 || prof.plan_p2 || prof.plan_p3)
     }
@@ -9356,7 +9362,7 @@ function _renderAdminProgressTable(){
       ${rows.map(r => {
         const parcialEmoji = r.activeParcial === 'p1' ? '📘' : r.activeParcial === 'p3' ? '📕' : '📗'
         const liveColor = r.livePct >= 70 ? 'var(--green)' : r.livePct >= 40 ? 'var(--yellow)' : 'var(--red)'
-        const maxColor = r.maxPct >= 70 ? 'var(--green)' : r.maxPct >= 20 ? 'var(--yellow)' : 'var(--muted)'
+        const maxColor  = r.maxPct >= 70 ? 'var(--green)' : r.maxPct >= 20 ? 'var(--yellow)' : 'var(--muted)'
         const crossed20Badge = r.crossed20
           ? `<span style="background:var(--redSoft);color:var(--red);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">❌ Cruzó 20% · ${new Date(r.crossed20).toLocaleDateString()}</span>`
           : `<span style="background:var(--greenSoft);color:var(--green);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">✅ Reembolso procede</span>`
@@ -9366,6 +9372,17 @@ function _renderAdminProgressTable(){
         const noDataBadge = !r.hasData
           ? `<span style="background:var(--soft);color:var(--muted);padding:.15rem .4rem;border-radius:6px;font-size:.7rem;font-weight:700">Sin actividad</span>`
           : ''
+        // Desglose de pilares — fuente de verdad para soporte y reembolsos
+        const bk = r.breakdown
+        const breakdownHtml = bk ? `
+          <div style="margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.25rem">
+            <span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="Simulacros completados (pilar 1)">⚡ ${bk.simsDone} sims</span>
+            <span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="BioVisuales únicos vistos (pilar 2)">🔬 ${bk.bvCount}/11 BV</span>
+            <span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="Tipos de juego distintos jugados (pilar 3)">🎮 ${bk.uniqueGames}/5 juegos</span>
+            <span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="XP total (pilar 4)">⭐ ${bk.xp} XP</span>
+            <span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="Sesiones de simulacro + racha (pilar 5)">📅 ${bk.sessions} ses · 🔥 ${bk.streak}d</span>
+            ${bk.flashCards > 0 ? `<span style="font-size:.68rem;background:var(--soft);padding:.1rem .3rem;border-radius:4px" title="Flashcards revisadas">🃏 ${bk.flashCards} cards</span>` : ''}
+          </div>` : ''
         return `<div class="reco-item">
           <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:.5rem;align-items:center">
             <div>
@@ -9373,6 +9390,7 @@ function _renderAdminProgressTable(){
               ${r.role === 'admin' ? '<span style="color:var(--blue);font-size:.7rem;font-weight:700">[ADMIN]</span>' : ''}
               <br><small class="muted" style="font-size:.78rem">${escapeHtml(r.email)}</small>
               <br><small class="muted" style="font-size:.75rem">${r.planLabel}</small>
+              ${breakdownHtml}
             </div>
             <div style="text-align:center">
               <div style="font-size:.7rem;color:var(--muted)">Parcial activo</div>
@@ -9410,6 +9428,52 @@ window.adminProgressSort = function(mode){
 }
 window.adminRefreshProgress = async function(){
   await adminLoadAllProgress()
+}
+
+// Recalcula el progreso máximo histórico de TODOS los usuarios usando la fórmula actual.
+// Útil tras actualizar _computeProgressPctFromData() — corrige datos históricos que
+// quedaron mal calculados con la fórmula anterior.
+// Solo actualiza max_progress_pct y crossed_20/50_at si el valor nuevo es MAYOR
+// (nunca reduce el máximo históricamente registrado).
+window.adminRecalculateAllProgress = async function(){
+  if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
+  if (!confirm('⚙ Recalcular progreso máximo de todos los usuarios con la fórmula actual.\n\nEsto NO borra datos. Solo actualiza el máximo histórico si el nuevo cálculo es más alto.\n\n¿Continuar?')) return
+  toast('⚙ Recalculando…')
+  try {
+    const { data: rows, error } = await sb
+      .from('user_progress')
+      .select('user_id, data')
+    if (error){ toast('Error: ' + error.message, true); return }
+    let updated = 0
+    for (const row of (rows || [])){
+      const d = row.data
+      if (!d) continue
+      const newPct = _computeProgressPctFromData(d)
+      const audit = d.progress_audit || { max_progress_pct:0, reset_events:[] }
+      let changed = false
+      if (newPct > (audit.max_progress_pct || 0)){
+        audit.max_progress_pct = newPct
+        changed = true
+      }
+      if (newPct >= 20 && !audit.crossed_20_at){
+        audit.crossed_20_at = new Date().toISOString()
+        changed = true
+      }
+      if (newPct >= 50 && !audit.crossed_50_at){
+        audit.crossed_50_at = new Date().toISOString()
+        changed = true
+      }
+      if (changed){
+        d.progress_audit = audit
+        await sb.from('user_progress').update({ data: d }).eq('user_id', row.user_id)
+        updated++
+      }
+    }
+    toast(`✅ Recálculo completo — ${updated} usuario${updated === 1 ? '' : 's'} actualizado${updated === 1 ? '' : 's'}`)
+    await adminLoadAllProgress()
+  } catch(e){
+    toast('Error en recálculo: ' + (e?.message || e), true)
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -9617,23 +9681,8 @@ async function adminViewAudit(email){
   if (prgE){ alert('Error al leer progreso: ' + prgE.message); return }
   const audit = progRow?.data?.progress_audit || null
   const liveData = progRow?.data
-  const livePct = (() => {
-    try {
-      const diags = [liveData?.diagnostic_p1, liveData?.diagnostic, liveData?.diagnostic_p3]
-        .filter(d => d?.scores && d?.completed_at)
-        .sort((a, b) => new Date(b.completed_at) - new Date(a.completed_at))
-      let diagScore = 0
-      if (diags.length){
-        const vals = Object.values(diags[0].scores)
-        if (vals.length) diagScore = (vals.reduce((a,b)=>a+b,0)/vals.length) * 40
-      }
-      const hits = liveData?.stats?.hits || 0
-      const miss = liveData?.stats?.miss || 0
-      const accScore = (hits + miss >= 5) ? (hits/(hits+miss)) * 40 : 0
-      const xpScore = Math.min(20, ((liveData?.stats?.xp || 0) / 500) * 20)
-      return Math.round(Math.min(100, diagScore + accScore + xpScore))
-    } catch { return 0 }
-  })()
+  // MIRROR: _computeProgressPct — delegar a la función central
+  const livePct = liveData ? _computeProgressPctFromData(liveData) : 0
   const html = `
     Usuario: ${prof.name || ''} <${email}>
 
@@ -9942,23 +9991,62 @@ function getProgressAudit(){
 // ═══ AUDIT LOG: fuente de verdad de progreso ═══
 // Lee exclusivamente de S (Supabase-synced). No depende de localStorage
 // ni de isPro(), así que funciona igual para usuarios Free y Pro.
-// Fórmula:
-//   40% — diagnóstico más reciente (promedio de scores)
-//   40% — precisión real (hits / total, mín 5 respuestas para contar)
-//   20% — engagement XP (cap en 500 XP)
+//
+// Fórmula de 5 pilares (engagement real con la plataforma):
+//   30% — Simulacros completados + precisión
+//   20% — BioVisuales únicos vistos
+//   20% — Juegos distintos jugados
+//   20% — XP acumulado (cap 1500 XP)
+//   10% — Consistencia (sesiones + racha)
+//
+// Esta función tiene copias espejo en adminLoadAllProgress() y adminViewAudit()
+// que deben mantenerse sincronizadas. Buscar: "MIRROR: _computeProgressPct"
 function _computeProgressPct(){
+  return _computeProgressPctFromData(S)
+}
+
+// Núcleo reutilizable: recibe cualquier objeto de datos (S del usuario activo
+// o data leído desde Supabase en el admin). Permite calcular el progreso
+// sin depender del estado global S.
+function _computeProgressPctFromData(d){
   let score = 0
-  const diags = [S.diagnostic_p1, S.diagnostic, S.diagnostic_p3]
-    .filter(d => d?.scores && d?.completed_at)
-  if (diags.length){
-    diags.sort((a,b) => new Date(b.completed_at) - new Date(a.completed_at))
-    const vals = Object.values(diags[0].scores)
-    if (vals.length) score += (vals.reduce((a,b) => a+b, 0) / vals.length) * 40
-  }
-  const hits = S.stats?.hits || 0
-  const miss = S.stats?.miss || 0
-  if (hits + miss >= 5) score += (hits / (hits + miss)) * 40
-  score += Math.min(20, ((S.stats?.xp || 0) / 500) * 20)
+
+  // PILAR 1 — Simulacros completados (hasta 30 pts)
+  // Base: 6 pts por simulacro, máx 4 sims cubre 24 pts.
+  // Bono de precisión: hasta +6 pts cuando hay ≥5 respuestas totales.
+  const simsDone = d.stats?.simsDone || 0
+  const hits     = d.stats?.hits || 0
+  const miss     = d.stats?.miss || 0
+  const total    = hits + miss
+  const simBase  = Math.min(24, simsDone * 6)
+  const accBonus = (total >= 5) ? Math.min(6, (hits / total) * 6) : 0
+  score += simBase + accBonus  // máx 30
+
+  // PILAR 2 — BioVisuales únicos vistos (hasta 20 pts)
+  // Cada BioVisual único = 2 pts. 10 BioVisuales distintos = 20 pts.
+  const bvCount = Object.keys(d.bvWatched || {}).length
+  score += Math.min(20, bvCount * 2)
+
+  // PILAR 3 — Juegos distintos jugados (hasta 20 pts)
+  // 5 tipos de juego × 4 pts c/u = 20 pts máximo.
+  const gv2 = d.gamesV2 || {}
+  const uniqueGames = ['detective','puzzle','escape','match','runner']
+    .filter(g => (gv2[g]?.played || 0) > 0).length
+  score += Math.min(20, uniqueGames * 4)
+
+  // PILAR 4 — XP total acumulado (hasta 20 pts)
+  // Refleja amplitud de uso. Cap en 1500 XP (≈5-7 sesiones activas).
+  const xp = d.stats?.xp || 0
+  score += Math.min(20, (xp / 1500) * 20)
+
+  // PILAR 5 — Consistencia (hasta 10 pts)
+  // Sesiones de simulacro registradas: 1 pt c/u, máx 5.
+  // Racha de días consecutivos: 1 pt c/u, máx 5.
+  const sessionCount = (d.stats?.sessions || []).length
+  const streak       = d.stats?.streak || 0
+  score += Math.min(5, sessionCount)
+  score += Math.min(5, streak)
+
   return Math.round(Math.min(100, Math.max(0, score)))
 }
 
@@ -14822,6 +14910,15 @@ window.bvShow = function(topic){
   document.getElementById('bvDescription').innerHTML = `<strong>${t.title}</strong><br>${t.desc}`
   _bvSetup()
   _bvFrame() // dibujo inmediato (sin tener que dar play)
+  // Registrar BioVisual como visto (primera vez por topic — sin spam de persistState)
+  if (typeof S !== 'undefined' && S && topic){
+    S.bvWatched = S.bvWatched || {}
+    if (!S.bvWatched[topic]){
+      S.bvWatched[topic] = true
+      if (typeof persistState === 'function') persistState().catch(e => console.warn('[bv]', e))
+      try { if (typeof renderHero === 'function') renderHero() } catch(e){}
+    }
+  }
 }
 
 // Calcula y actualiza el texto de la fase actual del topic activo
@@ -17208,6 +17305,7 @@ const A = {
   adminProgressFilter: window.adminProgressFilter,
   adminProgressSort: window.adminProgressSort,
   adminRefreshProgress: window.adminRefreshProgress,
+  adminRecalculateAllProgress: window.adminRecalculateAllProgress,
   adminRefreshVenc: window.adminRefreshVenc,
   adminRefreshAlertas: window.adminRefreshAlertas,
   // cobertura/dominio
