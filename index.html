@@ -8080,6 +8080,7 @@ function _flashcardsForActiveParcial(){
   return FLASHCARDS.filter(c => c.p === p)
 }
 let flashIdx = 0, flashFlip = false, flashOrder = _flashcardsForActiveParcial()
+let _flashDeckCompleted = false  // evita dar XP más de una vez por vuelta al mazo
 
 function renderFlash(){
   const f = flashOrder[flashIdx]
@@ -8097,14 +8098,33 @@ function renderFlash(){
   }
 }
 function flipFlash(){ flashFlip = !flashFlip; renderFlash() }
-function nextFlash(){ flashIdx = (flashIdx+1) % flashOrder.length; flashFlip = false; renderFlash() }
+function nextFlash(){
+  const wasLast = flashOrder.length > 0 && flashIdx === flashOrder.length - 1
+  flashIdx = (flashIdx+1) % flashOrder.length
+  flashFlip = false
+  // Al completar una vuelta completa al mazo: +10 XP (una sola vez por vuelta)
+  if (wasLast && !_flashDeckCompleted && flashOrder.length > 0){
+    _flashDeckCompleted = true
+    const p = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p2'
+    S.flashProgress = S.flashProgress || {}
+    S.flashProgress['deck_' + p] = true
+    S.stats.xp = (S.stats.xp || 0) + 10
+    persistState().catch(e => console.warn('[flash]', e))
+    try { checkAchievements(); renderHero() } catch(e){}
+    toast('🃏 Mazo completo +10 XP')
+  }
+  renderFlash()
+}
 function prevFlash(){ flashIdx = (flashIdx-1+flashOrder.length) % flashOrder.length; flashFlip = false; renderFlash() }
-function shuffleFlash(){ flashOrder = _flashcardsForActiveParcial().sort(() => Math.random()-0.5); flashIdx = 0; flashFlip = false; renderFlash() }
+function shuffleFlash(){
+  flashOrder = _flashcardsForActiveParcial().sort(() => Math.random()-0.5)
+  flashIdx = 0; flashFlip = false; _flashDeckCompleted = false
+  renderFlash()
+}
 // Llamado al cambiar de parcial — refresca el set sin perder el index
 function refreshFlashForParcial(){
   flashOrder = _flashcardsForActiveParcial()
-  flashIdx = 0
-  flashFlip = false
+  flashIdx = 0; flashFlip = false; _flashDeckCompleted = false
   try { renderFlash() } catch(e){}
 }
 window.refreshFlashForParcial = refreshFlashForParcial
@@ -10804,7 +10824,9 @@ function resetP2(){
 }
 
 // ── Manual — preguntas abiertas ────────────────────────────────
-function reviewManual(){
+async function reviewManual(){
+  const s = document.getElementById('pmansummary')
+  const alreadyShown = s?.style.display === 'block'
   E23_MANUAL_EXP.forEach((exp, i) => {
     const fb = document.getElementById('fm'+i)
     if (!fb) return
@@ -10812,9 +10834,9 @@ function reviewManual(){
     fb.className = 'feedback show good'
     fb.innerHTML = '<strong>✅ Respuesta esperada:</strong> ' + escapeHtml(exp)
   })
-  const s = document.getElementById('pmansummary')
   if (s){ s.style.display = 'block'; s.innerHTML = '<strong>Preguntas abiertas:</strong> Compara tus respuestas con las esperadas.' }
   toast('Respuestas esperadas mostradas.')
+  if (!alreadyShown){ S.stats.xp = (S.stats.xp||0) + 10; await persistState(); renderHero() }
 }
 function resetManual(){
   for (let i = 0; i < 5; i++){
@@ -10924,23 +10946,27 @@ function resetDev1(){
   const fb = document.getElementById('fb_hw_b'); if (fb) fb.style.display = 'none'
   const s = document.getElementById('pdev1sum'); if (s){ s.style.display = 'none'; delete s.dataset.r }
 }
-function reviewDev2(){
+async function reviewDev2(){
   const fb = document.getElementById('fb_dev2')
   if (!fb) return
+  const alreadyShown = fb.style.display === 'block'
   fb.style.display = 'block'
   fb.className = 'feedback show good'
   fb.innerHTML = '<strong>✅ Respuesta esperada:</strong><br><b>A</b> = Estabilizadora: favorece el promedio (ej. peso al nacer en humanos).<br><b>B</b> = Direccional: favorece un extremo (ej. resistencia a antibióticos).<br><b>C</b> = Disruptiva: favorece los extremos (ej. tamaño de pico en pinzones de Darwin).'
+  if (!alreadyShown){ S.stats.xp = (S.stats.xp||0) + 3; await persistState(); renderHero() }
 }
 function resetDev2(){
   ;['dev2_a','dev2_b','dev2_c'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' })
   const fb = document.getElementById('fb_dev2'); if (fb){ fb.style.display = 'none'; fb.textContent = '' }
 }
-function reviewDev3(){
+async function reviewDev3(){
   const fb = document.getElementById('fb_dev3')
   if (!fb) return
+  const alreadyShown = fb.style.display === 'block'
   fb.style.display = 'block'
   fb.className = 'feedback show good'
   fb.innerHTML = '<strong>✅ Respuesta esperada:</strong> Hifa → esporangio con esporas. Las esporas asexuales se producen por <b>mitosis</b>; las sexuales por meiosis. El micelio es el conjunto de hifas.'
+  if (!alreadyShown){ S.stats.xp = (S.stats.xp||0) + 3; await persistState(); renderHero() }
 }
 function resetDev3(){
   const ta = document.getElementById('dev3_note'); if (ta) ta.value = ''
@@ -13728,6 +13754,12 @@ function diagFinish(){
       if (a.correct) tally[a.theme].hits++
     }
   })
+  // Registrar cada respuesta en el historial global de práctica
+  _diagState.answers.forEach(a => {
+    try { recordAnswer(a.correct, a.theme) } catch(e){}
+  })
+  // XP por completar el diagnóstico (independiente del resultado)
+  S.stats.xp = (S.stats.xp || 0) + 20
   const scores = {}
   Object.entries(tally).forEach(([k,v]) => {
     scores[k] = v.total ? v.hits/v.total : 0
@@ -14559,6 +14591,15 @@ function _renderExamP3(opts){
   const c = document.getElementById('examP3Container')
   if (!c || !_examP3State) return
   if (opts.done){
+    // Registrar cada pregunta en el historial global de práctica
+    _examP3State.answered.forEach(a => {
+      try { recordAnswer(a.ok, EXAM_P3_BANK[a.q]?.theme || null) } catch(e){}
+    })
+    const xpEarned = _examP3State.correct * 5
+    if (xpEarned > 0) S.stats.xp = (S.stats.xp || 0) + xpEarned
+    persistState().catch(e => console.warn('[examP3]', e))
+    try { renderHero(); checkAchievements() } catch(e){}
+
     const pct = Math.round(100 * _examP3State.correct / EXAM_P3_BANK.length)
     const cls = pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad'
     c.innerHTML = `
@@ -14566,6 +14607,7 @@ function _renderExamP3(opts){
         <h3 style="margin-bottom:.4rem">📊 Resultado evaluación P3</h3>
         <div style="font-size:2.4rem;font-weight:800;margin:.4rem 0">${_examP3State.correct} / ${EXAM_P3_BANK.length}</div>
         <p>Porcentaje: <strong>${pct}%</strong> · ${pct >= 70 ? '✅ Buen dominio' : pct >= 50 ? '⚠ Refuerzo recomendado' : '🚨 Repasar conceptos'}</p>
+        ${xpEarned > 0 ? `<p style="color:var(--green);font-weight:700;margin:.3rem 0">+${xpEarned} XP</p>` : ''}
         <button class="btn primary" style="margin-top:.6rem" onclick="window.startExamP3()">↻ Volver a empezar</button>
       </div>
     `
