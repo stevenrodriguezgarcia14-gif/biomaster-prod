@@ -19934,8 +19934,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
     if (isComplete) {
       ctaHtml = `<span class="exp-enrolled-badge">🏆 Completada</span>`
     } else if (isEnrolled) {
+      const parcialAnchors = { p1:'#examenP1Section', p2:'#examenes', p3:'#examenP3Section', all:'#examenes' }
+      const studyAnchor = parcialAnchors[m.parcial] || '#examenes'
+      const metricHint = { simulacros_completed:'Complete practice tests on this topic', correct_answers:'Answer questions correctly', xp_earned:'Earn XP by studying', all_participated:'Complete at least one practice test' }
+      const hint = metricHint[m.target_metric] || 'Do practice tests to contribute'
       ctaHtml = `<div style="display:flex;gap:.35rem;align-items:center;flex-wrap:wrap">
-        <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Inscrito`}${contribution > 0 ? ` · ${contribution} aportados` : ''}</span>
+        <span class="exp-enrolled-badge">${myRoleLabel ? `🎯 ${_esc(myRoleLabel)}` : `✓ Enrolled`}${contribution > 0 ? ` · ${contribution} contributed` : ''}</span>
+        <button class="exp-btn-join" style="background:var(--green);color:#fff;border-color:transparent" onclick="window.location.href='${studyAnchor}'" title="${hint}">📚 Practice →</button>
         ${m.group_id ? `<button class="exp-btn-action" onclick="window.Social.switchTab('chat',document.querySelectorAll('.com-tab')[2]);window.Social.selectChatGroup('${m.group_id}')">💬 Chat</button>` : ''}
       </div>`
     } else if (mode === 'community_challenge' || m.type === 'community') {
