@@ -2997,6 +2997,7 @@ window.Analytics = (function(){
       <div id="searchDrop" style="position:absolute;top:110%;right:0;width:340px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);z-index:200;display:none;max-height:400px;overflow-y:auto;padding:.5rem"></div>
     </div>
     <button class="btn" id="adminBtn" onclick="A.openAdmin()" style="display:none" title="Panel de administración">⚙️ Admin</button>
+    <a href="/workspace" id="workspaceBtn" style="display:none;text-decoration:none"><button class="btn" title="Workspace interno" style="background:var(--green);color:#fff;gap:.35rem">🗂 Workspace</button></a>
     <button class="btn danger" id="logoutBtn" onclick="A.doLogout()" style="display:none">Cerrar sesión</button>
     <div id="userBarWrap"></div>
   </nav>
@@ -7534,6 +7535,7 @@ async function onSessionChanged(){
     // limpiar cualquier residuo visual
     document.getElementById('adminBtn').style.display = 'none'
     document.getElementById('logoutBtn').style.display = 'none'
+    const _wsBtn = document.getElementById('workspaceBtn'); if (_wsBtn) _wsBtn.style.display = 'none'
     document.getElementById('userBarWrap').innerHTML = ''
     document.getElementById('guestBanner').style.display = 'none'
     closeAdmin()
@@ -7627,6 +7629,7 @@ function renderSessionUI(){
   if (!currentSession){
     adminBtn.style.display = 'none'
     logoutBtn.style.display = 'none'
+    const _wb1 = document.getElementById('workspaceBtn'); if (_wb1) _wb1.style.display = 'none'
     userBar.innerHTML = ''
     guestBan.style.display = 'none'
     return
@@ -7634,6 +7637,7 @@ function renderSessionUI(){
 
   if (currentSession.isGuest){
     adminBtn.style.display = 'none'
+    const _wb2 = document.getElementById('workspaceBtn'); if (_wb2) _wb2.style.display = 'none'
     logoutBtn.style.display = 'inline-flex'
     logoutBtn.textContent = 'Salir del modo invitado'
     userBar.innerHTML = `<div class="user-bar"><div class="user-avatar">?</div><span>Invitado</span></div>`
@@ -7649,6 +7653,8 @@ function renderSessionUI(){
   const initial = (p.name || '?')[0].toUpperCase()
   const isAdmin = p.role === 'admin'
   adminBtn.style.display = isAdmin ? 'inline-flex' : 'none'
+  const wsBtn = document.getElementById('workspaceBtn')
+  if (wsBtn) wsBtn.style.display = isAdmin ? 'inline-flex' : 'none'
   logoutBtn.style.display = 'inline-flex'
   logoutBtn.textContent = 'Cerrar sesión'
   userBar.innerHTML = `<div class="user-bar"><div class="user-avatar">${initial}</div><span>${escapeHtml(p.name)}${isAdmin?' 👑':''}</span></div>`
