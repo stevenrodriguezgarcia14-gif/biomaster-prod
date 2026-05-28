@@ -8858,14 +8858,14 @@ async function toggleFeedbackPublic(id, makePublic){
   if (currentSession?.profile?.role !== 'admin'){ toast('Solo admins.', true); return }
   if (makePublic && !confirm('¿Hacer pública esta experiencia? Aparecerá en la landing con el nombre del usuario.')) return
   try {
-    const { error } = await sb.from('feedback')
+    const { data: updated, error } = await sb.from('feedback')
       .update({ is_public: makePublic })
       .eq('id', id)
+      .select('id')
     if (error) throw error
-    toast(makePublic ? '📢 Marcado como público' : '🔒 Ya no es público')
+    if (!updated || !updated.length) throw new Error('No se actualizó ningún registro (0 filas afectadas). Ejecuta la migración 20260527_fix_testimonials_complete.sql en Supabase para dar permisos de UPDATE al admin.')
+    toast(makePublic ? '📢 Testimonio aprobado y guardado en DB' : '🔒 Ya no es público')
     await renderAdminPanel()
-    // Actualizar el grid de testimonios del landing (aunque esté oculto)
-    // para que al volver a la landing los datos sean frescos sin necesidad de reload.
     if (typeof loadPublicTestimonials === 'function') loadPublicTestimonials().catch(() => {})
   } catch(e){
     toast('⚠ Error: ' + (e.message || e), true)
