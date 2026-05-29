@@ -1951,6 +1951,113 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
   .mat-back{font-size:.67rem}
 }
 
+/* ═══════════════════════════════════════════════════════════
+   ADMIN V2 — Módulos internos nuevos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Métricas ─────────────────────────────────────────────── */
+.adm-metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.7rem;margin-bottom:1.1rem}
+.adm-mc{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:1rem;text-align:center;transition:transform .18s,box-shadow .18s}
+.adm-mc:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.adm-mc .mc-val{font-size:1.85rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.adm-mc .mc-lbl{font-size:.69rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.3rem}
+.adm-mc .mc-sub{font-size:.75rem;margin-top:.18rem;opacity:.7}
+.adm-mc.c-green .mc-val{color:var(--green)}
+.adm-mc.c-blue  .mc-val{color:#60a5fa}
+.adm-mc.c-amber .mc-val{color:#fbbf24}
+.adm-mc.c-purple .mc-val{color:#a78bfa}
+.adm-mc.c-red   .mc-val{color:var(--red)}
+.adm-mc.c-pink  .mc-val{color:#f472b6}
+
+.adm-chart-box{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem}
+.adm-chart-title{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.65rem}
+.adm-barchart{display:flex;align-items:flex-end;gap:2px;height:66px;padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:.35rem}
+.adm-bar-col{display:flex;flex-direction:column;align-items:center;flex:1;min-width:0}
+.adm-bar-seg{width:100%;background:rgba(74,222,128,.3);border-radius:3px 3px 0 0;min-height:2px}
+.adm-bar-seg.today{background:var(--green);opacity:.9}
+.adm-bar-lbl{font-size:.58rem;color:var(--muted);margin-top:3px;overflow:hidden;white-space:nowrap}
+.adm-dist-row{display:flex;align-items:center;gap:.55rem;margin-bottom:.3rem}
+.adm-dist-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.adm-dist-fill{height:100%;border-radius:4px;transition:width .5s ease}
+
+/* ── Logs ────────────────────────────────────────────────── */
+.adm-log-list{display:flex;flex-direction:column;gap:.35rem;max-height:520px;overflow-y:auto;padding-right:2px}
+.adm-log-item{display:flex;gap:.65rem;align-items:flex-start;padding:.55rem .75rem;background:var(--soft);border-radius:10px;border-left:3px solid var(--border)}
+.adm-log-item.lc-plans{border-left-color:#4ade80}
+.adm-log-item.lc-feedback{border-left-color:#60a5fa}
+.adm-log-item.lc-users{border-left-color:#f87171}
+.adm-log-item.lc-config{border-left-color:#a78bfa}
+.adm-log-item.lc-events{border-left-color:#fb923c}
+.adm-log-item.lc-announcements{border-left-color:#f472b6}
+.adm-log-item.lc-debug{border-left-color:#fbbf24}
+.adm-log-item.lc-general{border-left-color:var(--muted)}
+.adm-log-icon{font-size:1rem;flex-shrink:0;margin-top:.1rem}
+.adm-log-body{flex:1;min-width:0}
+.adm-log-desc{font-size:.83rem;line-height:1.4}
+.adm-log-meta{font-size:.71rem;color:var(--muted);margin-top:.1rem}
+.adm-filter-bar{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.75rem}
+
+/* ── Config dinámica ─────────────────────────────────────── */
+.adm-cfg-group{margin-bottom:1.1rem}
+.adm-cfg-gtitle{font-size:.69rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;padding:.15rem .5rem;background:var(--soft);border-radius:6px;display:inline-block;margin-bottom:.45rem}
+.adm-cfg-row{display:flex;align-items:center;gap:.7rem;padding:.6rem .8rem;background:var(--soft);border:1px solid var(--border);border-radius:10px;margin-bottom:.3rem;flex-wrap:wrap}
+.adm-cfg-info{flex:1;min-width:180px}
+.adm-cfg-label{font-size:.87rem;font-weight:600}
+.adm-cfg-desc{font-size:.74rem;color:var(--muted);margin-top:.1rem}
+.adm-cfg-foot{font-size:.69rem;color:var(--muted);width:100%;margin-top:.3rem}
+.adm-cfg-ctrl{display:flex;gap:.4rem;align-items:center;flex-shrink:0}
+.adm-cfg-input{padding:.38rem .6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem;width:130px}
+.adm-cfg-input:focus{outline:none;border-color:var(--green)}
+
+/* ── Eventos ─────────────────────────────────────────────── */
+.adm-ev-card{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:.9rem 1rem;margin-bottom:.55rem;display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:start}
+.adm-ev-title{font-size:.93rem;font-weight:700}
+.adm-ev-meta{font-size:.77rem;color:var(--muted);margin-top:.18rem;line-height:1.5}
+.adm-ev-badge{font-size:.69rem;padding:.22rem .5rem;border-radius:20px;font-weight:600;display:inline-block;margin-top:.3rem;margin-right:.2rem}
+.adm-ev-badge.xp_boost{background:rgba(251,191,36,.14);color:#fbbf24}
+.adm-ev-badge.challenge{background:rgba(251,146,60,.14);color:#fb923c}
+.adm-ev-badge.community{background:rgba(96,165,250,.14);color:#60a5fa}
+.adm-ev-badge.holiday{background:rgba(167,139,250,.14);color:#a78bfa}
+.adm-ev-actions{display:flex;flex-direction:column;gap:.3rem;align-items:flex-end;flex-shrink:0}
+.adm-ev-status{font-size:.69rem;padding:.2rem .48rem;border-radius:20px;font-weight:700;white-space:nowrap}
+.adm-ev-status.st-active{background:rgba(74,222,128,.14);color:#4ade80}
+.adm-ev-status.st-upcoming{background:rgba(96,165,250,.14);color:#60a5fa}
+.adm-ev-status.st-expired{background:rgba(148,163,184,.12);color:var(--muted)}
+
+/* ── Anuncios ────────────────────────────────────────────── */
+.adm-ann-preview{border-radius:12px;padding:.75rem 1rem;margin:.5rem 0;display:flex;align-items:flex-start;gap:.7rem;font-size:.86rem;line-height:1.45}
+.adm-ann-preview.info{background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);color:#93c5fd}
+.adm-ann-preview.warning{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22);color:#fbbf24}
+.adm-ann-preview.update{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:#4ade80}
+.adm-ann-preview.event{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);color:#a78bfa}
+.adm-ann-card{background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:.85rem 1rem;margin-bottom:.5rem}
+
+/* ── Banner de anuncios para estudiantes ─────────────────── */
+#bioAnnBanner{position:fixed;top:54px;left:0;right:0;z-index:850;padding:.5rem 1.1rem;display:none;align-items:center;justify-content:space-between;gap:.8rem;font-size:.84rem;font-weight:500;backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+#bioAnnBanner.bio-ann-show{display:flex}
+#bioAnnBanner.info{background:rgba(30,58,138,.9);color:#bfdbfe}
+#bioAnnBanner.warning{background:rgba(120,53,15,.9);color:#fde68a}
+#bioAnnBanner.update{background:rgba(6,78,59,.9);color:#a7f3d0}
+#bioAnnBanner.event{background:rgba(76,29,149,.9);color:#ddd6fe}
+#bioAnnBanner .ann-close{cursor:pointer;opacity:.55;font-size:1rem;line-height:1;padding:.15rem .3rem;border-radius:4px;flex-shrink:0;transition:opacity .15s}
+#bioAnnBanner .ann-close:hover{opacity:1;background:rgba(255,255,255,.12)}
+
+/* ── Debug / Testing ─────────────────────────────────────── */
+.adm-debug-zone{border:1.5px dashed rgba(251,191,36,.35);border-radius:14px;padding:1rem 1rem .8rem;margin-bottom:.9rem;position:relative}
+.adm-debug-zone::before{content:attr(data-label);position:absolute;top:-.62rem;left:.9rem;background:var(--surface);padding:0 .5rem;font-size:.67rem;color:#fbbf24;font-weight:700;letter-spacing:.05em}
+.adm-debug-out{margin-top:.6rem;font-size:.77rem;font-family:monospace;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.55rem .7rem;min-height:36px;max-height:220px;overflow-y:auto;white-space:pre-wrap;opacity:.85}
+
+/* ── i18n ────────────────────────────────────────────────── */
+.adm-i18n-wrap{overflow-x:auto}
+.adm-i18n-tbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.adm-i18n-tbl th{text-align:left;padding:.45rem .65rem;border-bottom:1px solid var(--border);color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.adm-i18n-tbl td{padding:.42rem .65rem;border-bottom:1px solid rgba(148,163,184,.1);vertical-align:top}
+.adm-i18n-tbl tr:hover td{background:rgba(148,163,184,.04)}
+.adm-i18n-inp{padding:.3rem .5rem;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.81rem;width:100%;min-width:110px;box-sizing:border-box}
+.adm-i18n-inp:focus{outline:none;border-color:var(--green)}
+.adm-i18n-inp.miss{color:#fb923c}
+.adm-i18n-inp.miss::placeholder{color:#fb923c}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -6571,6 +6678,13 @@ window.Analytics = (function(){
           <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Herramientas</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneCountries');A.adminRefreshCountries()">🌍 Países</button>
           <button class="tab-btn" onclick="A.adminTab(this,'paneMissions');window.adminRefreshMissions()">🎯 Misiones</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneMetrics');window._admMetrics()">📈 Métricas</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneLogs');window._admLogs()">📋 Logs</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneConfig');window._admConfig()">⚙️ Config</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneEvents');window._admEvents()">🎉 Eventos</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneAnnounc');window._admAnnounc()">📣 Anuncios</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneDebug');window._admDebug()">🧪 Debug</button>
+          <button class="tab-btn" onclick="A.adminTab(this,'paneI18n');window._admI18n()">🌐 Idiomas</button>
         </div>
         <div class="tab-pane active" id="paneFb">
           <div id="adminFbList">Cargando…</div>
@@ -6734,6 +6848,39 @@ window.Analytics = (function(){
             </div>
             <div id="adminMissionResetMsg" style="margin-top:.6rem;font-size:.8rem"></div>
           </div>
+        </div>
+
+        <!-- ═══ MÉTRICAS ═══ -->
+        <div class="tab-pane" id="paneMetrics">
+          <div id="admMetricsCont"><div class="muted" style="text-align:center;padding:2.5rem;font-size:.87rem">Abrí esta pestaña para cargar las métricas.</div></div>
+        </div>
+
+        <!-- ═══ LOGS ADMIN ═══ -->
+        <div class="tab-pane" id="paneLogs">
+          <div id="admLogsCont"><div class="muted" style="text-align:center;padding:2rem;font-size:.87rem">Abrí esta pestaña para cargar el historial.</div></div>
+        </div>
+
+        <!-- ═══ CONFIG DINÁMICA ═══ -->
+        <div class="tab-pane" id="paneConfig">
+          <div id="admConfigCont"><div class="muted" style="text-align:center;padding:2rem;font-size:.87rem">Abrí esta pestaña para cargar la configuración.</div></div>
+        </div>
+
+        <!-- ═══ EVENTOS TEMPORALES ═══ -->
+        <div class="tab-pane" id="paneEvents">
+          <div id="admEventsCont"><div class="muted" style="text-align:center;padding:2rem;font-size:.87rem">Abrí esta pestaña para cargar los eventos.</div></div>
+        </div>
+
+        <!-- ═══ ANUNCIOS ═══ -->
+        <div class="tab-pane" id="paneAnnounc">
+          <div id="admAnnCont"><div class="muted" style="text-align:center;padding:2rem;font-size:.87rem">Abrí esta pestaña para cargar los anuncios.</div></div>
+        </div>
+
+        <!-- ═══ DEBUG / TESTING ═══ -->
+        <div class="tab-pane" id="paneDebug"></div>
+
+        <!-- ═══ MULTIIDIOMA ═══ -->
+        <div class="tab-pane" id="paneI18n">
+          <div id="admI18nCont"><div class="muted" style="text-align:center;padding:2rem;font-size:.87rem">Abrí esta pestaña para cargar los strings de idioma.</div></div>
         </div>
 
       </div>
@@ -7522,6 +7669,8 @@ async function onSessionChanged(){
     try { window.playBioMasterIntro && window.playBioMasterIntro() } catch(e){}
     // Pedir país si el usuario no tiene uno registrado (2s de delay para no interrumpir el render inicial)
     if (!currentSession.isGuest) setTimeout(() => _checkAndPromptCountry(), 2200)
+    // Cargar banner de anuncios activos
+    if (!currentSession.isGuest) setTimeout(() => _loadActiveAnnouncement(), 1500)
   } else {
     // No hay sesión → volver a la landing (no al overlay directo)
     document.getElementById('authOverlay').style.display = 'none'
@@ -9483,6 +9632,808 @@ window.adminRecalculateAllProgress = async function(){
 }
 
 // ═══════════════════════════════════════════════════════════
+//  ADMIN V2 — Módulos internos nuevos
+// ═══════════════════════════════════════════════════════════
+
+// ─── Helper: registrar acción administrativa ──────────────
+async function _adminLog(action, category, description, targetType, targetId, metadata) {
+  try {
+    await sb.from('admin_logs').insert({
+      admin_id: currentSession?.profile?.id || null,
+      action,
+      category: category || 'general',
+      description,
+      target_type: targetType || null,
+      target_id: targetId ? String(targetId) : null,
+      metadata: metadata || {}
+    })
+  } catch (e) { /* fire and forget — nunca bloquear la acción principal */ }
+}
+window._adminLog = _adminLog
+
+// ─── MÉTRICAS DASHBOARD ────────────────────────────────────
+let _admMetricsLoaded = false
+
+window._admMetrics = async function (force) {
+  if (_admMetricsLoaded && !force) return
+  _admMetricsLoaded = true
+  const cont = document.getElementById('admMetricsCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:2.5rem">Cargando métricas…</div>'
+  try {
+    const [
+      { data: users  },
+      { data: plans  },
+      { data: fbs    },
+      { data: progs  },
+      { data: scores }
+    ] = await Promise.all([
+      sb.from('profiles').select('id,created_at,role').eq('role', 'user'),
+      sb.from('plans').select('user_id,plan,expires_at'),
+      sb.from('feedback').select('type,status,created_at'),
+      sb.from('user_progress').select('user_id,data'),
+      sb.from('game_scores').select('game,score,created_at').order('created_at', { ascending: false }).limit(500)
+    ])
+    const now  = new Date()
+    const d7   = new Date(+now - 7 * 864e5)
+    const d30  = new Date(+now - 30 * 864e5)
+    const total  = users?.length || 0
+    const new7   = users?.filter(u => new Date(u.created_at) > d7).length || 0
+    const new30  = users?.filter(u => new Date(u.created_at) > d30).length || 0
+    const actPlans = plans?.filter(p => p.expires_at && new Date(p.expires_at) > now).length || 0
+    const payers   = new Set(plans?.filter(p => p.expires_at && new Date(p.expires_at) > now).map(p => p.user_id)).size
+    const xpArr    = progs?.map(p => (p.data?.stats?.xp) || 0) || []
+    const avgXP    = xpArr.length ? Math.round(xpArr.reduce((a, b) => a + b, 0) / xpArr.length) : 0
+    const maxXP    = xpArr.length ? Math.max(...xpArr) : 0
+    const fbPend   = fbs?.filter(f => !f.status || f.status === 'pending').length || 0
+    const games7   = scores?.filter(s => new Date(s.created_at) > d7).length || 0
+
+    // Chart: nuevos usuarios últimos 14 días
+    const days = []
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(+now - i * 864e5)
+      days.push({ k: d.toISOString().split('T')[0], n: 0 })
+    }
+    users?.forEach(u => {
+      const k = u.created_at?.split('T')[0]
+      const day = days.find(d => d.k === k)
+      if (day) day.n++
+    })
+    const maxDay = Math.max(...days.map(d => d.n), 1)
+    const barsHtml = days.map(d => {
+      const h = d.n > 0 ? Math.max(Math.round(d.n / maxDay * 58), 4) : 2
+      const isToday = d.k === now.toISOString().split('T')[0]
+      const label   = new Date(d.k + 'T12:00').toLocaleDateString('es', { day: '2-digit' })
+      return `<div class="adm-bar-col" title="${d.k}: ${d.n} nuevos">
+        <div class="adm-bar-seg${isToday ? ' today' : ''}" style="height:${h}px"></div>
+        <div class="adm-bar-lbl">${label}</div>
+      </div>`
+    }).join('')
+
+    // Distribución planes activos
+    const pd = {}
+    plans?.filter(p => p.expires_at && new Date(p.expires_at) > now).forEach(p => { pd[p.plan] = (pd[p.plan] || 0) + 1 })
+    const pdTotal  = Object.values(pd).reduce((a, b) => a + b, 0) || 1
+    const pdColors = { p1: '#4ade80', p2: '#60a5fa', p3: '#a78bfa', full: '#fb923c', mensual: '#f87171' }
+    const pdLabels = { p1: 'Parcial 1', p2: 'Parcial 2', p3: 'Parcial 3', full: 'Full', mensual: 'Mensual' }
+    const pdHtml = Object.entries(pd).sort((a, b) => b[1] - a[1]).map(([plan, cnt]) => `
+      <div class="adm-dist-row">
+        <div style="font-size:.76rem;color:var(--muted);width:68px;flex-shrink:0">${pdLabels[plan] || plan}</div>
+        <div class="adm-dist-bar"><div class="adm-dist-fill" style="width:${Math.round(cnt / pdTotal * 100)}%;background:${pdColors[plan] || 'var(--green)'}"></div></div>
+        <div style="font-size:.78rem;font-weight:600;width:22px;text-align:right">${cnt}</div>
+      </div>`).join('') || '<div class="muted" style="font-size:.82rem">Sin planes activos</div>'
+
+    // Juegos más jugados 7 días
+    const gd = {}
+    scores?.filter(s => new Date(s.created_at) > d7).forEach(s => { gd[s.game] = (gd[s.game] || 0) + 1 })
+    const topG = Object.entries(gd).sort((a, b) => b[1] - a[1]).slice(0, 5)
+    const gHtml = topG.length ? topG.map(([g, c]) => `
+      <div style="display:flex;justify-content:space-between;font-size:.81rem;margin-bottom:.28rem;align-items:center">
+        <span>${_esc(g)}</span><span style="font-weight:700;color:var(--green)">${c}</span>
+      </div>`).join('') : '<div class="muted" style="font-size:.81rem">Sin datos esta semana</div>'
+
+    cont.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem">
+        <strong style="font-size:.95rem">📈 Dashboard de métricas</strong>
+        <button class="btn" style="font-size:.77rem" onclick="window._admMetrics(true)">↻ Actualizar</button>
+      </div>
+      <div class="adm-metrics-grid">
+        <div class="adm-mc c-green"><div class="mc-val">${total}</div><div class="mc-lbl">Usuarios registrados</div><div class="mc-sub">+${new30} este mes</div></div>
+        <div class="adm-mc c-blue"><div class="mc-val">${actPlans}</div><div class="mc-lbl">Planes activos</div><div class="mc-sub">${payers} usuarios Pro</div></div>
+        <div class="adm-mc c-purple"><div class="mc-val">${avgXP}</div><div class="mc-lbl">XP promedio</div><div class="mc-sub">Máx: ${maxXP}</div></div>
+        <div class="adm-mc c-amber"><div class="mc-val">${new7}</div><div class="mc-lbl">Nuevos (7 días)</div><div class="mc-sub">${new30} en 30 días</div></div>
+        <div class="adm-mc ${fbPend > 5 ? 'c-red' : 'c-blue'}"><div class="mc-val">${fbPend}</div><div class="mc-lbl">Feedback pendiente</div><div class="mc-sub">${fbs?.length || 0} total recibidos</div></div>
+        <div class="adm-mc c-pink"><div class="mc-val">${games7}</div><div class="mc-lbl">Partidas (7 días)</div><div class="mc-sub">${scores?.length || 0} históricas</div></div>
+      </div>
+      <div class="adm-chart-box">
+        <div class="adm-chart-title">Nuevos registros — últimos 14 días</div>
+        <div class="adm-barchart">${barsHtml}</div>
+        <div style="text-align:right;font-size:.7rem;color:var(--muted);margin-top:.2rem">${new7} esta semana · ${new30} este mes</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+        <div class="adm-chart-box" style="margin:0">
+          <div class="adm-chart-title">Distribución de planes activos</div>
+          ${pdHtml}
+        </div>
+        <div class="adm-chart-box" style="margin:0">
+          <div class="adm-chart-title">Juegos más jugados (7 días)</div>
+          ${gHtml}
+        </div>
+      </div>`
+  } catch (e) {
+    const c2 = document.getElementById('admMetricsCont')
+    if (c2) c2.innerHTML = `<div class="bad">⚠ Error al cargar métricas: ${_esc(e.message)}</div>`
+  }
+}
+
+// ─── LOGS ADMINISTRATIVOS ──────────────────────────────────
+let _logsFilter = 'all'
+let _logsLoaded = false
+
+window._admLogs = async function (force) {
+  if (_logsLoaded && !force) return
+  _logsLoaded = true
+  const cont = document.getElementById('admLogsCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:1.5rem">Cargando logs…</div>'
+  try {
+    let q = sb.from('admin_logs')
+      .select('id,action,category,description,target_type,target_id,created_at,profiles(name,email)')
+      .order('created_at', { ascending: false }).limit(200)
+    if (_logsFilter !== 'all') q = q.eq('category', _logsFilter)
+    const { data: logs, error } = await q
+    if (error) throw error
+
+    const catIcons  = { plans: '💳', feedback: '💬', users: '👤', config: '⚙️', events: '🎉', announcements: '📣', debug: '🧪', general: '📌' }
+    const catLabels = { all: 'Todos', plans: 'Planes', feedback: 'Feedback', users: 'Usuarios', config: 'Config', events: 'Eventos', announcements: 'Anuncios', debug: 'Debug' }
+    const cats = ['all', 'plans', 'feedback', 'users', 'config', 'events', 'announcements', 'debug']
+
+    const filters = cats.map(c => `<button class="btn${_logsFilter === c ? ' primary' : ''}" style="font-size:.72rem" onclick="window._logsFilter('${c}')">${catLabels[c]}</button>`).join('')
+
+    const items = (logs || []).map(log => {
+      const when = new Date(log.created_at).toLocaleString('es', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })
+      const who  = log.profiles?.name || log.profiles?.email || 'Admin'
+      return `<div class="adm-log-item lc-${log.category || 'general'}">
+        <div class="adm-log-icon">${catIcons[log.category] || '📌'}</div>
+        <div class="adm-log-body">
+          <div class="adm-log-desc">${_esc(log.description)}</div>
+          <div class="adm-log-meta">${_esc(who)} · ${when}${log.target_id ? ` · ${_esc(log.target_id)}` : ''}</div>
+        </div>
+      </div>`
+    }).join('') || '<div class="muted" style="text-align:center;padding:1.5rem;font-size:.85rem">Sin logs registrados aún.<br>Se generan automáticamente con cada acción administrativa.</div>'
+
+    cont.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem">
+        <strong style="font-size:.95rem">📋 Logs administrativos</strong>
+        <button class="btn" style="font-size:.77rem" onclick="window._admLogs(true)">↻ Refrescar</button>
+      </div>
+      <div class="adm-filter-bar">${filters}</div>
+      <div class="adm-log-list">${items}</div>`
+  } catch (e) { cont.innerHTML = `<div class="bad">⚠ Error: ${_esc(e.message)}</div>` }
+}
+window._logsFilter = function (cat) { _logsFilter = cat; _logsLoaded = false; window._admLogs(true) }
+
+// ─── CONFIGURACIÓN DINÁMICA ────────────────────────────────
+let _cfgCache  = {}
+let _cfgLoaded = false
+
+window._admConfig = async function (force) {
+  if (_cfgLoaded && !force) return
+  _cfgLoaded = true
+  const cont = document.getElementById('admConfigCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:2rem">Cargando configuración…</div>'
+  try {
+    const { data: cfgs, error } = await sb.from('app_config')
+      .select('key,value,category,label,description,value_type,updated_at,profiles(name)')
+      .order('category').order('key')
+    if (error) throw error
+    _cfgCache = {}
+    cfgs?.forEach(c => { _cfgCache[c.key] = c })
+    const groups = {}
+    cfgs?.forEach(c => { if (!groups[c.category]) groups[c.category] = []; groups[c.category].push(c) })
+    const gTitles = { xp: '✨ XP & Progreso', gamification: '🎮 Gamificación', ui: '🎨 Interfaz', limits: '🚧 Límites', messages: '💬 Mensajes', general: '⚙️ General' }
+
+    const html = Object.entries(groups).map(([cat, items]) => `
+      <div class="adm-cfg-group">
+        <div class="adm-cfg-gtitle">${gTitles[cat] || cat}</div>
+        ${items.map(cfg => {
+          const rawVal = typeof cfg.value === 'object' ? JSON.stringify(cfg.value) : String(cfg.value ?? '')
+          const displayVal = rawVal.replace(/^"|"$/g, '')
+          const when = cfg.updated_at ? new Date(cfg.updated_at).toLocaleString('es', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'nunca'
+          const who  = cfg.profiles?.name || 'Sistema'
+          const sk   = cfg.key.replace(/[^a-zA-Z0-9._-]/g, '_')
+          let ctrl
+          if (cfg.value_type === 'boolean') {
+            const isTrue = displayVal === 'true'
+            ctrl = `<select class="adm-cfg-input" id="cfg_${sk}" style="width:110px">
+              <option value="true"${isTrue ? ' selected' : ''}>✓ Activo</option>
+              <option value="false"${!isTrue ? ' selected' : ''}>✗ Inactivo</option>
+            </select>`
+          } else if (cfg.value_type === 'number') {
+            ctrl = `<input class="adm-cfg-input" id="cfg_${sk}" type="number" value="${_esc(displayVal)}" step="any">`
+          } else {
+            ctrl = `<input class="adm-cfg-input" id="cfg_${sk}" type="text" value="${_esc(displayVal)}" style="width:180px">`
+          }
+          return `<div class="adm-cfg-row">
+            <div class="adm-cfg-info">
+              <div class="adm-cfg-label">${_esc(cfg.label || cfg.key)}</div>
+              <div class="adm-cfg-desc">${_esc(cfg.description || '')}</div>
+              <div class="adm-cfg-foot">Editado: ${when} por ${_esc(who)} · clave: <code style="font-size:.67rem">${_esc(cfg.key)}</code></div>
+            </div>
+            <div class="adm-cfg-ctrl">
+              ${ctrl}
+              <button class="btn" style="font-size:.77rem;padding:.35rem .65rem" onclick="window._cfgSave('${cfg.key}')">Guardar</button>
+            </div>
+          </div>`
+        }).join('')}
+      </div>`).join('') || '<div class="muted" style="text-align:center;padding:2rem">Sin configuraciones. Ejecutá el SQL del Paso 1 en Supabase.</div>'
+
+    cont.innerHTML = `
+      <div style="margin-bottom:1rem">
+        <strong style="font-size:.95rem">⚙️ Configuración dinámica</strong>
+        <p class="muted" style="font-size:.8rem;margin:.2rem 0 0">Cambiá valores sin tocar código. Los cambios son inmediatos para todos los usuarios.</p>
+      </div>
+      ${html}`
+  } catch (e) { cont.innerHTML = `<div class="bad">⚠ Error: ${_esc(e.message)}</div>` }
+}
+
+window._cfgSave = async function (key) {
+  const cfg = _cfgCache[key]
+  if (!cfg) { toast('Clave no encontrada', true); return }
+  const sk    = key.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const input = document.getElementById('cfg_' + sk)
+  if (!input) { toast('Input no encontrado', true); return }
+  const raw = input.value.trim()
+  let val
+  if (cfg.value_type === 'number')       val = parseFloat(raw) || 0
+  else if (cfg.value_type === 'boolean') val = raw === 'true'
+  else                                   val = raw
+  try {
+    const { error } = await sb.from('app_config').update({
+      value:      val,
+      updated_by: currentSession?.profile?.id,
+      updated_at: new Date().toISOString()
+    }).eq('key', key)
+    if (error) throw error
+    await _adminLog('config.update', 'config', `Config "${key}" → ${raw}`, 'config_key', key)
+    toast(`✅ "${key}" guardado`)
+    _cfgLoaded = false; window._admConfig(true)
+  } catch (e) { toast('⚠ ' + e.message, true) }
+}
+
+// ─── EVENTOS TEMPORALES ────────────────────────────────────
+let _evLoaded = false
+
+window._admEvents = async function (force) {
+  if (_evLoaded && !force) return
+  _evLoaded = true
+  const cont = document.getElementById('admEventsCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:1.5rem">Cargando eventos…</div>'
+  try {
+    const { data: evs, error } = await sb.from('temp_events')
+      .select('id,title,description,type,start_at,end_at,config,is_active,created_at,profiles(name)')
+      .order('created_at', { ascending: false })
+    if (error) throw error
+    const now  = new Date()
+    const tIco = { xp_boost: '⚡', challenge: '🏆', community: '👥', holiday: '🎊' }
+    const tLbl = { xp_boost: 'XP Boost', challenge: 'Desafío', community: 'Comunidad', holiday: 'Evento especial' }
+    const fmt  = d => new Date(d).toLocaleString('es', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
+
+    const cards = (evs || []).map(ev => {
+      const s = new Date(ev.start_at), e = new Date(ev.end_at)
+      let stCls, stLbl
+      if (!ev.is_active)        { stCls = 'st-expired';  stLbl = 'Inactivo'    }
+      else if (now < s)         { stCls = 'st-upcoming'; stLbl = 'Próximo'     }
+      else if (now > e)         { stCls = 'st-expired';  stLbl = 'Expirado'    }
+      else                      { stCls = 'st-active';   stLbl = '🟢 En curso' }
+      const mult = ev.config?.xp_multiplier
+      return `<div class="adm-ev-card">
+        <div>
+          <div class="adm-ev-title">${tIco[ev.type] || '🎉'} ${_esc(ev.title)}</div>
+          ${ev.description ? `<div class="adm-ev-meta">${_esc(ev.description)}</div>` : ''}
+          <div style="margin-top:.3rem">
+            <span class="adm-ev-badge ${ev.type}">${tLbl[ev.type] || ev.type}</span>
+            ${mult ? `<span class="adm-ev-badge xp_boost">×${mult} XP</span>` : ''}
+          </div>
+          <div class="adm-ev-meta" style="margin-top:.4rem">📅 ${fmt(ev.start_at)} → ${fmt(ev.end_at)}</div>
+        </div>
+        <div class="adm-ev-actions">
+          <span class="adm-ev-status ${stCls}">${stLbl}</span>
+          <button class="btn" style="font-size:.72rem" onclick="window._evToggle('${ev.id}',${!ev.is_active})">${ev.is_active ? 'Desactivar' : 'Activar'}</button>
+          <button class="btn" style="font-size:.72rem;color:var(--red);border-color:rgba(239,68,68,.4)" onclick="window._evDelete('${ev.id}')">Borrar</button>
+        </div>
+      </div>`
+    }).join('') || '<div class="muted" style="text-align:center;padding:1.5rem;font-size:.85rem">Sin eventos creados aún.</div>'
+
+    cont.innerHTML = `
+      <div style="margin-bottom:1rem">
+        <strong style="font-size:.95rem">🎉 Eventos temporales</strong>
+        <p class="muted" style="font-size:.8rem;margin:.2rem 0 0">Eventos especiales, XP boost, desafíos, eventos de comunidad.</p>
+      </div>
+      <div class="adm-chart-box" style="margin-bottom:1rem">
+        <div class="adm-chart-title">Crear nuevo evento</div>
+        <div style="display:flex;flex-direction:column;gap:.45rem">
+          <input type="text" id="evTitle" placeholder="Título del evento"
+            style="padding:.48rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.87rem">
+          <input type="text" id="evDesc" placeholder="Descripción breve (opcional)"
+            style="padding:.48rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.87rem">
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center">
+            <select id="evType" style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem">
+              <option value="xp_boost">⚡ XP Boost</option>
+              <option value="challenge">🏆 Desafío semanal</option>
+              <option value="community">👥 Evento de comunidad</option>
+              <option value="holiday">🎊 Evento especial</option>
+            </select>
+            <input type="number" id="evMultiplier" placeholder="Mult. XP (ej: 2)" min="1" max="5" step="0.5"
+              title="Multiplicador de XP durante el evento (opcional)"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem;width:160px">
+            <input type="datetime-local" id="evStart"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.81rem">
+            <input type="datetime-local" id="evEnd"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.81rem">
+            <button class="btn primary" onclick="window._evCreate()">🎉 Crear evento</button>
+          </div>
+        </div>
+      </div>
+      <strong style="font-size:.88rem">Todos los eventos</strong>
+      <div style="margin-top:.5rem">${cards}</div>`
+  } catch (e) { cont.innerHTML = `<div class="bad">⚠ Error: ${_esc(e.message)}</div>` }
+}
+
+window._evCreate = async function () {
+  const title = document.getElementById('evTitle')?.value?.trim()
+  const desc  = document.getElementById('evDesc')?.value?.trim()
+  const type  = document.getElementById('evType')?.value
+  const mult  = parseFloat(document.getElementById('evMultiplier')?.value) || null
+  const start = document.getElementById('evStart')?.value
+  const end   = document.getElementById('evEnd')?.value
+  if (!title || !start || !end) { toast('⚠ Completá título, fecha de inicio y fin.', true); return }
+  if (new Date(start) >= new Date(end)) { toast('⚠ El inicio debe ser antes del fin.', true); return }
+  try {
+    const { error } = await sb.from('temp_events').insert({
+      title, description: desc || null, type,
+      start_at:   new Date(start).toISOString(),
+      end_at:     new Date(end).toISOString(),
+      config:     mult ? { xp_multiplier: mult } : {},
+      created_by: currentSession?.profile?.id,
+      is_active:  true
+    })
+    if (error) throw error
+    await _adminLog('event.create', 'events', `Evento creado: "${title}" (${type})`, 'event', null)
+    toast('✅ Evento creado')
+    ;['evTitle', 'evDesc', 'evMultiplier', 'evStart', 'evEnd'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' })
+    _evLoaded = false; window._admEvents(true)
+  } catch (e) { toast('⚠ ' + e.message, true) }
+}
+
+window._evToggle = async function (id, newState) {
+  const { error } = await sb.from('temp_events').update({ is_active: newState }).eq('id', id)
+  if (error) { toast('⚠ ' + error.message, true); return }
+  await _adminLog('event.toggle', 'events', `Evento ${newState ? 'activado' : 'desactivado'}`, 'event', id)
+  toast(newState ? '✅ Evento activado' : '⚪ Evento desactivado')
+  _evLoaded = false; window._admEvents(true)
+}
+
+window._evDelete = async function (id) {
+  if (!confirm('¿Borrar este evento permanentemente?')) return
+  const { error } = await sb.from('temp_events').delete().eq('id', id)
+  if (error) { toast('⚠ ' + error.message, true); return }
+  await _adminLog('event.delete', 'events', 'Evento borrado', 'event', id)
+  toast('🗑 Evento borrado')
+  _evLoaded = false; window._admEvents(true)
+}
+
+// ─── ANUNCIOS ──────────────────────────────────────────────
+let _annAdmLoaded = false
+
+window._admAnnounc = async function (force) {
+  if (_annAdmLoaded && !force) return
+  _annAdmLoaded = true
+  const cont = document.getElementById('admAnnCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:1.5rem">Cargando anuncios…</div>'
+  try {
+    const { data: anns, error } = await sb.from('announcements')
+      .select('id,title,content,type,target_plan,end_at,is_active,created_at,profiles(name)')
+      .order('created_at', { ascending: false })
+    if (error) throw error
+    const now   = new Date()
+    const tIco  = { info: 'ℹ️', warning: '⚠️', update: '✅', event: '🎉' }
+    const tgt   = { all: 'Todos los usuarios', pro: 'Solo Pro', free: 'Solo Free' }
+    const cards = (anns || []).map(ann => {
+      const expired = ann.end_at && new Date(ann.end_at) < now
+      return `<div class="adm-ann-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:.88rem;font-weight:600">${tIco[ann.type] || '📣'} ${_esc(ann.title)}</div>
+            <div style="font-size:.8rem;color:var(--muted);margin-top:.2rem">${_esc(ann.content)}</div>
+            <div style="font-size:.72rem;color:var(--muted);margin-top:.3rem">
+              Para: ${tgt[ann.target_plan] || ann.target_plan} ·
+              ${ann.end_at ? `Expira: ${new Date(ann.end_at).toLocaleDateString('es')}` : 'Sin expiración'} ·
+              ${_esc(ann.profiles?.name || 'Admin')}
+              ${expired ? ' · <span style="color:var(--muted)">[expirado]</span>' : ''}
+            </div>
+          </div>
+          <div style="display:flex;gap:.3rem;align-items:center;flex-shrink:0">
+            <button class="btn" style="font-size:.72rem;padding:.3rem .55rem" onclick="window._annToggle('${ann.id}',${!ann.is_active})">${ann.is_active ? 'Desactivar' : 'Activar'}</button>
+            <button class="btn" style="font-size:.72rem;padding:.3rem .55rem;color:var(--red);border-color:rgba(239,68,68,.35)" onclick="window._annDelete('${ann.id}')">✕</button>
+          </div>
+        </div>
+        <div class="adm-ann-preview ${ann.type}" style="margin-top:.55rem;font-size:.83rem">
+          ${tIco[ann.type] || '📣'} <strong>${_esc(ann.title)}</strong> — ${_esc(ann.content)}
+        </div>
+      </div>`
+    }).join('') || '<div class="muted" style="text-align:center;padding:1.5rem;font-size:.85rem">Sin anuncios creados.</div>'
+
+    cont.innerHTML = `
+      <div style="margin-bottom:1rem">
+        <strong style="font-size:.95rem">📣 Sistema de anuncios</strong>
+        <p class="muted" style="font-size:.8rem;margin:.2rem 0 0">Los anuncios activos se muestran como banner a usuarios logueados.</p>
+      </div>
+      <div class="adm-chart-box" style="margin-bottom:1rem">
+        <div class="adm-chart-title">Publicar nuevo anuncio</div>
+        <div style="display:flex;flex-direction:column;gap:.45rem">
+          <input type="text" id="annTitle" placeholder="Título del anuncio" oninput="window._annPrev()"
+            style="padding:.48rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.87rem">
+          <textarea id="annContent" rows="2" placeholder="Mensaje para los usuarios…" oninput="window._annPrev()"
+            style="padding:.48rem .75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.87rem;resize:vertical"></textarea>
+          <div style="display:flex;gap:.45rem;flex-wrap:wrap;align-items:center">
+            <select id="annType" onchange="window._annPrev()"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem">
+              <option value="info">ℹ️ Info</option>
+              <option value="update">✅ Actualización</option>
+              <option value="warning">⚠️ Advertencia</option>
+              <option value="event">🎉 Evento</option>
+            </select>
+            <select id="annTarget"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem">
+              <option value="all">Todos los usuarios</option>
+              <option value="pro">Solo Pro</option>
+              <option value="free">Solo Free</option>
+            </select>
+            <input type="datetime-local" id="annEndAt" title="Fecha de expiración (dejar vacío = sin expiración)"
+              style="padding:.42rem .65rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.81rem">
+            <button class="btn primary" onclick="window._annCreate()">📣 Publicar</button>
+          </div>
+          <div id="annPrevZone"></div>
+        </div>
+      </div>
+      <strong style="font-size:.88rem">Anuncios actuales</strong>
+      <div style="margin-top:.5rem">${cards}</div>`
+  } catch (e) { cont.innerHTML = `<div class="bad">⚠ ${_esc(e.message)}</div>` }
+}
+
+window._annPrev = function () {
+  const type    = document.getElementById('annType')?.value || 'info'
+  const title   = document.getElementById('annTitle')?.value || 'Título del anuncio'
+  const content = document.getElementById('annContent')?.value || 'Contenido del anuncio…'
+  const icons   = { info: 'ℹ️', warning: '⚠️', update: '✅', event: '🎉' }
+  const zone    = document.getElementById('annPrevZone')
+  if (zone) zone.innerHTML = `<div class="adm-ann-preview ${type}" style="font-size:.83rem">
+    ${icons[type] || '📣'} <strong>${_esc(title)}</strong> — ${_esc(content)}
+  </div>`
+}
+
+window._annCreate = async function () {
+  const title   = document.getElementById('annTitle')?.value?.trim()
+  const content = document.getElementById('annContent')?.value?.trim()
+  const type    = document.getElementById('annType')?.value
+  const target  = document.getElementById('annTarget')?.value
+  const endAt   = document.getElementById('annEndAt')?.value
+  if (!title || !content) { toast('⚠ Completá título y contenido.', true); return }
+  try {
+    const { error } = await sb.from('announcements').insert({
+      title, content, type, target_plan: target || 'all',
+      end_at:     endAt ? new Date(endAt).toISOString() : null,
+      created_by: currentSession?.profile?.id,
+      is_active:  true
+    })
+    if (error) throw error
+    await _adminLog('ann.create', 'announcements', `Anuncio publicado: "${title}"`, 'announcement', null)
+    toast('✅ Anuncio publicado')
+    _annAdmLoaded = false; window._admAnnounc(true)
+    _loadActiveAnnouncement()
+  } catch (e) { toast('⚠ ' + e.message, true) }
+}
+
+window._annToggle = async function (id, newState) {
+  const { error } = await sb.from('announcements').update({ is_active: newState }).eq('id', id)
+  if (error) { toast('⚠ ' + error.message, true); return }
+  await _adminLog('ann.toggle', 'announcements', `Anuncio ${newState ? 'activado' : 'desactivado'}`, 'announcement', id)
+  toast(newState ? '✅ Anuncio activado' : '⚪ Anuncio desactivado')
+  _annAdmLoaded = false; window._admAnnounc(true)
+  _loadActiveAnnouncement()
+}
+
+window._annDelete = async function (id) {
+  if (!confirm('¿Borrar este anuncio permanentemente?')) return
+  const { error } = await sb.from('announcements').delete().eq('id', id)
+  if (error) { toast('⚠ ' + error.message, true); return }
+  toast('🗑 Anuncio borrado')
+  _annAdmLoaded = false; window._admAnnounc(true)
+  _loadActiveAnnouncement()
+}
+
+// Banner de anuncio para estudiantes
+let _dismissedAnns = new Set(JSON.parse(localStorage.getItem('_bm_diss_anns') || '[]'))
+
+async function _loadActiveAnnouncement () {
+  try {
+    if (!currentSession || currentSession.isGuest) return
+    const nowISO = new Date().toISOString()
+    const { data: anns } = await sb.from('announcements')
+      .select('id,title,content,type,target_plan')
+      .eq('is_active', true)
+      .or(`end_at.is.null,end_at.gt.${nowISO}`)
+      .order('created_at', { ascending: false })
+    const ann = (anns || []).find(a => {
+      if (_dismissedAnns.has(a.id)) return false
+      if (a.target_plan === 'pro'  && !window.isPro?.()) return false
+      if (a.target_plan === 'free' &&  window.isPro?.()) return false
+      return true
+    })
+    const banner = document.getElementById('bioAnnBanner')
+    if (!banner) return
+    if (ann) {
+      const icons = { info: 'ℹ️', warning: '⚠️', update: '✅', event: '🎉' }
+      banner.className = `bio-ann-show ${ann.type}`
+      banner.innerHTML = `<span>${icons[ann.type] || '📣'} <strong>${_esc(ann.title)}</strong> — ${_esc(ann.content)}</span>
+        <span class="ann-close" onclick="window._annDismiss('${ann.id}')" title="Cerrar">✕</span>`
+    } else {
+      banner.className = ''
+      banner.innerHTML = ''
+    }
+  } catch (e) { /* silencioso */ }
+}
+
+window._annDismiss = function (id) {
+  _dismissedAnns.add(id)
+  localStorage.setItem('_bm_diss_anns', JSON.stringify([..._dismissedAnns]))
+  const banner = document.getElementById('bioAnnBanner')
+  if (banner) { banner.className = ''; banner.innerHTML = '' }
+}
+
+// ─── DEBUG & TESTING ───────────────────────────────────────
+window._admDebug = function () {
+  const cont = document.getElementById('paneDebug')
+  if (!cont || cont.dataset.rendered === '1') return
+  cont.dataset.rendered = '1'
+  const lsKeys = Object.keys(localStorage)
+  const lsSize = new Blob([JSON.stringify(localStorage)]).size
+  cont.innerHTML = `
+    <strong style="font-size:.95rem">🧪 Herramientas de Debug y Testing</strong>
+    <p class="muted" style="font-size:.8rem;margin:.2rem 0 .9rem">Solo afecta tu sesión de admin. No modifica datos de otros usuarios.</p>
+
+    <div class="adm-debug-zone" data-label="MI SESIÓN">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgResetMe()">🔄 Resetear mi progreso</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgClearLS()">🧹 Limpiar localStorage</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgShowState()">👁 Ver estado actual</button>
+        <button class="btn" style="font-size:.8rem" onclick="location.reload()">↻ Recargar app</button>
+      </div>
+    </div>
+
+    <div class="adm-debug-zone" data-label="ANUNCIOS">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgTestBanner()">📣 Mostrar banner de prueba</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgClearAnns()">✕ Limpiar dismissed</button>
+        <button class="btn" style="font-size:.8rem" onclick="_loadActiveAnnouncement()">↻ Recargar banner real</button>
+      </div>
+    </div>
+
+    <div class="adm-debug-zone" data-label="INSPECCIÓN">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgShowProfile()">👤 Ver perfil</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgCheckConfig()">⚙️ Ver app_config</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgCheckEvent()">🎉 Ver eventos activos</button>
+        <button class="btn" style="font-size:.8rem" onclick="window._dbgCheckPlan()">💳 Ver mi plan</button>
+      </div>
+      <div class="adm-debug-out" id="dbgOutput">— salida de inspección —</div>
+    </div>
+
+    <div class="adm-debug-zone" data-label="LOCALSTORAGE · ${lsKeys.length} keys · ~${Math.round(lsSize / 1024)}KB">
+      <div class="adm-debug-out" style="max-height:180px">
+        ${lsKeys.map(k => `<div><strong style="color:#a78bfa">${_esc(k)}</strong>: ${_esc(String(localStorage.getItem(k) || '').substring(0, 100))}${(localStorage.getItem(k) || '').length > 100 ? '…' : ''}</div>`).join('') || 'vacío'}
+      </div>
+    </div>`
+}
+
+function _dbgOut (msg) {
+  const el = document.getElementById('dbgOutput')
+  if (el) el.textContent = typeof msg === 'object' ? JSON.stringify(msg, null, 2) : String(msg)
+}
+
+window._dbgResetMe = async function () {
+  if (!confirm('¿Resetear TU progreso? Borra tu XP, racha y dominio de temas.')) return
+  try {
+    const { error } = await sb.from('user_progress').upsert({
+      user_id: currentSession?.profile?.id,
+      data: { stats: { xp: 0, streak: 0, lastActivity: null }, parcial: 'p1', topicDom: {}, simResults: {}, diagnostic: {} }
+    }, { onConflict: 'user_id' })
+    if (error) throw error
+    await _adminLog('debug.reset_self', 'debug', 'Admin reseteó su propio progreso', 'user', currentSession?.profile?.id)
+    toast('✅ Tu progreso fue reseteado')
+    _dbgOut('Progreso reseteado. Recargá la app para ver los cambios.')
+  } catch (e) { toast('⚠ ' + e.message, true) }
+}
+
+window._dbgClearLS = function () {
+  if (!confirm('¿Limpiar localStorage? Se preservan las claves de sesión de Supabase.')) return
+  const preserve = {}
+  Object.keys(localStorage).filter(k => k.startsWith('sb-') || k.startsWith('supabase')).forEach(k => { preserve[k] = localStorage.getItem(k) })
+  localStorage.clear()
+  Object.entries(preserve).forEach(([k, v]) => localStorage.setItem(k, v))
+  toast('🧹 localStorage limpiado (sesión preservada)')
+  _dbgOut('localStorage limpiado. Recargá el panel de Debug para ver el nuevo estado.')
+}
+
+window._dbgShowState = function () {
+  _dbgOut({
+    user_id:  currentSession?.user?.id || 'none',
+    role:     currentSession?.profile?.role || 'none',
+    isGuest:  currentSession?.isGuest || false,
+    parcial:  localStorage.getItem('biomaster_parcial') || 'p1',
+    theme:    document.documentElement.className || 'default'
+  })
+}
+
+window._dbgTestBanner = function () {
+  const banner = document.getElementById('bioAnnBanner')
+  if (!banner) { _dbgOut('No se encontró #bioAnnBanner en el DOM'); return }
+  banner.className = 'bio-ann-show event'
+  banner.innerHTML = '<span>🎉 <strong>Banner de prueba</strong> — Así se ve un anuncio de evento para los usuarios</span><span class="ann-close" onclick="this.closest(\'#bioAnnBanner\').className=\'\';this.closest(\'#bioAnnBanner\').innerHTML=\'\'" title="Cerrar">✕</span>'
+  _dbgOut('Banner de test mostrado ↑ (no es un anuncio real)')
+}
+
+window._dbgClearAnns = function () {
+  _dismissedAnns = new Set()
+  localStorage.removeItem('_bm_diss_anns')
+  toast('✅ Dismissed anuncios limpiados')
+  _loadActiveAnnouncement()
+  _dbgOut('Dismissed limpiados. El banner real se recargó.')
+}
+
+window._dbgShowProfile = function ()  { _dbgOut(currentSession?.profile || 'Sin perfil cargado') }
+window._dbgCheckConfig = async function () {
+  const { data } = await sb.from('app_config').select('key,value,category').order('key')
+  _dbgOut(data || 'Sin configuraciones (ejecutar SQL del Paso 1 en Supabase)')
+}
+window._dbgCheckEvent = async function () {
+  const nowISO = new Date().toISOString()
+  const { data } = await sb.from('temp_events')
+    .select('id,title,type,start_at,end_at,is_active,config')
+    .eq('is_active', true).gte('end_at', nowISO)
+  _dbgOut(data?.length ? data : 'Sin eventos activos ahora mismo')
+}
+window._dbgCheckPlan = function () {
+  _dbgOut({
+    effective_plan: window.getEffectivePlan?.(),
+    is_pro:         window.isPro?.(),
+    plan_p1:        currentSession?.profile?.plan_p1,
+    plan_p2:        currentSession?.profile?.plan_p2,
+    plan_p3:        currentSession?.profile?.plan_p3,
+    plan_full:      currentSession?.profile?.plan_full
+  })
+}
+
+// ─── MULTIIDIOMA (i18n) ─────────────────────────────────────
+let _i18nFilter = ''
+let _i18nLoaded = false
+
+window._admI18n = async function (force) {
+  if (_i18nLoaded && !force) return
+  _i18nLoaded = true
+  const cont = document.getElementById('admI18nCont')
+  if (!cont) return
+  cont.innerHTML = '<div class="muted" style="text-align:center;padding:2rem">Cargando strings…</div>'
+  try {
+    const { data: strs, error } = await sb.from('i18n_strings')
+      .select('key,es,en,category,context,updated_at,profiles(name)')
+      .order('category').order('key')
+    if (error) throw error
+    const missingEN = (strs || []).filter(s => !s.en).length
+    const filtered  = (strs || []).filter(s => !_i18nFilter ||
+      s.key.toLowerCase().includes(_i18nFilter.toLowerCase()) ||
+      (s.es || '').toLowerCase().includes(_i18nFilter.toLowerCase()) ||
+      (s.en || '').toLowerCase().includes(_i18nFilter.toLowerCase()))
+
+    cont.innerHTML = `
+      <div style="margin-bottom:1rem">
+        <strong style="font-size:.95rem">🌐 Gestión de idiomas</strong>
+        <p class="muted" style="font-size:.8rem;margin:.2rem 0 0">Editá textos en español e inglés sin tocar código. Exportá como JSON para integraciones futuras.</p>
+      </div>
+      <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem">
+        <input type="text" placeholder="Filtrar por key o texto…" value="${_esc(_i18nFilter)}"
+          oninput="window._i18nSearch(this.value)"
+          style="padding:.4rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.84rem;flex:1;min-width:160px">
+        ${missingEN > 0 ? `<span style="background:rgba(251,146,60,.14);color:#fb923c;font-size:.77rem;padding:.22rem .55rem;border-radius:20px;font-weight:600">${missingEN} sin traducción EN</span>` : '<span style="background:rgba(74,222,128,.12);color:#4ade80;font-size:.77rem;padding:.22rem .55rem;border-radius:20px;font-weight:600">✓ Todo traducido</span>'}
+        <button class="btn" style="font-size:.77rem" onclick="window._admI18n(true)">↻</button>
+        <button class="btn" style="font-size:.77rem" onclick="window._i18nExport()">📥 Exportar JSON</button>
+        <button class="btn primary" style="font-size:.77rem" onclick="window._i18nAddNew()">＋ Nueva clave</button>
+      </div>
+      <div class="adm-i18n-wrap">
+        <table class="adm-i18n-tbl">
+          <thead><tr>
+            <th style="min-width:160px">KEY</th>
+            <th style="min-width:180px">🇪🇸 Español</th>
+            <th style="min-width:180px">🇺🇸 English</th>
+            <th>Cat.</th>
+            <th></th>
+          </tr></thead>
+          <tbody>
+            ${filtered.map(s => {
+              const sk = s.key.replace(/[^a-zA-Z0-9._-]/g, '_')
+              return `<tr>
+                <td>
+                  <code style="font-size:.74rem;color:var(--muted)">${_esc(s.key)}</code>
+                  ${s.context ? `<br><span style="font-size:.68rem;color:var(--muted);font-style:italic">${_esc(s.context)}</span>` : ''}
+                </td>
+                <td><input class="adm-i18n-inp" id="i18n_es_${sk}" value="${_esc(s.es || '')}" onchange="window._i18nDirty('${s.key}')"></td>
+                <td><input class="adm-i18n-inp${!s.en ? ' miss' : ''}" id="i18n_en_${sk}" value="${_esc(s.en || '')}" placeholder="${!s.en ? '⚠ Falta traducción' : ''}" onchange="window._i18nDirty('${s.key}')"></td>
+                <td style="font-size:.74rem;color:var(--muted);white-space:nowrap">${_esc(s.category)}</td>
+                <td><button class="btn" id="i18n_btn_${sk}" style="font-size:.7rem;padding:.25rem .5rem;white-space:nowrap" onclick="window._i18nSave('${s.key}')">Guardar</button></td>
+              </tr>`
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`
+  } catch (e) { cont.innerHTML = `<div class="bad">⚠ ${_esc(e.message)}</div>` }
+}
+
+window._i18nSearch = function (val) { _i18nFilter = val; _i18nLoaded = false; window._admI18n(true) }
+
+window._i18nDirty = function (key) {
+  const sk  = key.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const btn = document.getElementById('i18n_btn_' + sk)
+  if (btn) { btn.classList.add('primary'); btn.textContent = '💾 Guardar' }
+}
+
+window._i18nSave = async function (key) {
+  const sk = key.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const es = document.getElementById('i18n_es_' + sk)?.value?.trim()
+  const en = document.getElementById('i18n_en_' + sk)?.value?.trim() || null
+  try {
+    const { error } = await sb.from('i18n_strings').upsert({
+      key, es: es || '', en,
+      updated_by: currentSession?.profile?.id,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'key' })
+    if (error) throw error
+    await _adminLog('i18n.update', 'config', `i18n "${key}" actualizado`, 'i18n_key', key)
+    const btn = document.getElementById('i18n_btn_' + sk)
+    if (btn) { btn.classList.remove('primary'); btn.textContent = '✓'; setTimeout(() => { if (btn) btn.textContent = 'Guardar' }, 2000) }
+  } catch (e) { toast('⚠ ' + e.message, true) }
+}
+
+window._i18nAddNew = function () {
+  const key  = prompt('Clave nueva (ej: ui.boton_ver_mas):')?.trim()
+  const esT  = prompt('Texto en español:')?.trim()
+  const enT  = prompt('Texto en inglés (Enter para dejar vacío):')?.trim() || null
+  const cat  = prompt('Categoría (ui / landing / messages / general):', 'ui')?.trim() || 'ui'
+  if (!key || !esT) return
+  sb.from('i18n_strings').insert({ key, es: esT, en: enT, category: cat, updated_by: currentSession?.profile?.id }).then(({ error }) => {
+    if (error) { toast('⚠ ' + error.message, true); return }
+    toast('✅ String agregado')
+    _i18nLoaded = false; window._admI18n(true)
+  })
+}
+
+window._i18nExport = async function () {
+  const { data } = await sb.from('i18n_strings').select('key,es,en,category').order('key')
+  if (!data) { toast('⚠ Sin datos para exportar', true); return }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  const url  = URL.createObjectURL(blob)
+  const a    = document.createElement('a'); a.href = url; a.download = 'biomaster_i18n.json'; a.click()
+  URL.revokeObjectURL(url)
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ADMIN V2 — Fin
+// ═══════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════
 //  ADMIN — Activar/Revocar planes
 //
 //  Estrategia:
@@ -9609,6 +10560,7 @@ async function adminGrantPlan(){
   try {
     const r = await _grantPlanWithFallback(email, plan, note)
     toast(`✅ ${PLAN_LABELS[plan]||plan} activado para ${email}${r.via==='direct'?' (vía SQL)':''}.`, false)
+    _adminLog('plan.activate', 'plans', `Plan "${PLAN_LABELS[plan]||plan}" activado para ${email}`, 'user', email, { plan, via: r.via })
     document.getElementById('adminGrantEmail').value = ''
     document.getElementById('adminGrantNote').value = ''
     await renderAdminPanel()
@@ -9663,6 +10615,7 @@ async function adminRevokePlan(email){
   try {
     const r = await _grantPlanWithFallback(email, 'revoke', `Revocado por admin ${new Date().toISOString().slice(0,10)}`)
     toast(`✅ Planes revocados para ${email}${r.via==='direct'?' (vía SQL)':''}.`, false)
+    _adminLog('plan.revoke', 'plans', `Planes revocados para ${email}`, 'user', email)
     await renderAdminPanel()
   } catch(e){
     toast('⚠ Error: ' + (e.message || e), true)
@@ -20755,6 +21708,9 @@ window.toggleMobSidebar = function(){
   }
 })();
 </script>
+
+  <!-- ═══ BANNER DE ANUNCIOS (se muestra a usuarios logueados) ═══ -->
+  <div id="bioAnnBanner" role="alert" aria-live="polite"></div>
 
 </body>
 </html>
