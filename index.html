@@ -9635,6 +9635,13 @@ window.adminRecalculateAllProgress = async function(){
 //  ADMIN V2 — Módulos internos nuevos
 // ═══════════════════════════════════════════════════════════
 
+// Alias de escape en el scope del módulo. Las funciones Admin V2
+// usan _esc(...) para sanitizar HTML, pero _esc solo estaba definido
+// dentro del IIFE de window.Social (otro scope), por lo que aquí daba
+// ReferenceError y dejaba las pestañas (Logs, Config, Eventos, Anuncios,
+// Debug, Idiomas) atascadas en "Cargando…". Lo apuntamos a escapeHtml.
+const _esc = escapeHtml
+
 // ─── Helper: registrar acción administrativa ──────────────
 async function _adminLog(action, category, description, targetType, targetId, metadata) {
   try {
