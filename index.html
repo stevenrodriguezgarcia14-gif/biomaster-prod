@@ -2058,6 +2058,454 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 .adm-i18n-inp.miss{color:#fb923c}
 .adm-i18n-inp.miss::placeholder{color:#fb923c}
 
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS — Mundo Biológico Vivo (F1: shell + 7 regiones)
+   Prefijo: .bw-*  ·  Doc: docs/WORLD.md
+   No tocar: variables existentes (--green, --surface, etc.)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Capa raíz a pantalla completa, debajo de modales (z-index 900+) */
+.bw-cosmos{
+  position:relative;
+  width:100%;
+  height:100vh;
+  min-height:540px;
+  max-height:980px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(47,139,77,.16), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(43,110,163,.14), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #0a2316 0%, #061509 70%, #03100a 100%);
+  isolation:isolate;
+  border-bottom:1px solid rgba(80,180,100,.16);
+}
+.theme-dark .bw-cosmos{
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(47,139,77,.22), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(43,110,163,.18), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #0a2316 0%, #050f08 70%, #020a05 100%);
+}
+
+/* Canvas principal a pantalla completa */
+.bw-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  z-index:1;
+  cursor:default;
+}
+.bw-canvas.bw-canvas-interactive{cursor:pointer}
+
+/* Overlay UI encima del canvas */
+.bw-overlay{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:1.6rem clamp(1rem, 4vw, 3rem);
+}
+.bw-overlay > *{pointer-events:auto}
+
+/* Cabecera del cosmos: eyebrow + título */
+.bw-cosmos-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+.bw-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.34rem .8rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(208,237,216,.92);
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.bw-eyebrow .bw-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+  animation:bwPulseDot 2.4s ease-in-out infinite;
+}
+@keyframes bwPulseDot{
+  0%,100%{opacity:.55;transform:scale(.9)}
+  50%{opacity:1;transform:scale(1.15)}
+}
+.bw-cosmos-title{
+  margin-top:.55rem;
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;
+  font-size:clamp(1.3rem, .8rem + 1.6vw, 2.1rem);
+  color:#eafff0;
+  letter-spacing:-.01em;
+  line-height:1.18;
+  text-shadow:0 0 30px rgba(47,139,77,.28), 0 2px 10px rgba(0,0,0,.35);
+  max-width:min(640px, 70%);
+}
+.bw-cosmos-subtitle{
+  margin-top:.4rem;
+  font-size:.85rem;
+  color:rgba(208,237,216,.78);
+  max-width:min(560px, 70%);
+}
+
+/* Botones flotantes (vista cosmos / volver) */
+.bw-btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.5rem .95rem;border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  color:#eafff0;
+  font-weight:600;font-size:.82rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:background .25s ease, transform .25s ease, border-color .25s ease;
+}
+.bw-btn:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.22);transform:translateY(-1px)}
+.bw-btn.primary{
+  background:linear-gradient(135deg, var(--green), #3ba85c);
+  border-color:rgba(255,255,255,.25);
+  box-shadow:0 12px 28px rgba(47,139,77,.32);
+}
+.bw-btn.primary:hover{box-shadow:0 14px 34px rgba(47,139,77,.42)}
+
+/* Hint de scroll discreto al pie del cosmos */
+.bw-scroll-hint{
+  align-self:center;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.3rem;
+  color:rgba(208,237,216,.72);
+  font-size:.74rem;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  cursor:pointer;
+  user-select:none;
+  padding:.3rem .6rem;
+  border-radius:14px;
+  transition:color .25s ease, transform .25s ease;
+}
+.bw-scroll-hint:hover{color:#eafff0;transform:translateY(-2px)}
+.bw-scroll-hint .bw-arrow{
+  font-size:1.1rem;
+  animation:bwArrowBob 2.6s ease-in-out infinite;
+}
+@keyframes bwArrowBob{
+  0%,100%{transform:translateY(0);opacity:.7}
+  50%{transform:translateY(6px);opacity:1}
+}
+
+/* Tooltip flotante sobre regiones */
+.bw-region-tip{
+  position:absolute;
+  z-index:3;
+  padding:.55rem .85rem;
+  border-radius:14px;
+  background:rgba(8,22,14,.86);
+  border:1px solid rgba(80,180,100,.28);
+  color:#eafff0;
+  font-size:.82rem;
+  font-weight:600;
+  pointer-events:none;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  opacity:0;
+  transform:translate(-50%, -110%) scale(.95);
+  transition:opacity .18s ease, transform .18s ease;
+  white-space:nowrap;
+}
+.bw-region-tip.show{opacity:1;transform:translate(-50%, -110%) scale(1)}
+.bw-region-tip small{
+  display:block;
+  font-weight:500;
+  font-size:.7rem;
+  color:rgba(208,237,216,.78);
+  margin-top:.1rem;
+}
+
+/* Panel de región (al hacer zoom-in) */
+.bw-region-panel{
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:min(420px, 92vw);
+  z-index:4;
+  background:linear-gradient(180deg, rgba(8,22,14,.92), rgba(6,18,11,.96));
+  border-left:1px solid rgba(80,180,100,.18);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:-20px 0 60px rgba(0,0,0,.5);
+  padding:1.4rem 1.4rem 1.6rem;
+  color:#eafff0;
+  transform:translateX(110%);
+  transition:transform .42s cubic-bezier(.2,.7,.2,1);
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.bw-region-panel.show{transform:translateX(0)}
+.bw-back-btn{
+  align-self:flex-start;
+  background:transparent;
+  border:none;
+  color:rgba(208,237,216,.85);
+  font-weight:600;
+  font-size:.85rem;
+  cursor:pointer;
+  padding:.3rem 0;
+  display:inline-flex;align-items:center;gap:.4rem;
+  transition:color .2s ease;
+}
+.bw-back-btn:hover{color:#eafff0}
+
+.bw-region-header{
+  display:flex;
+  align-items:center;
+  gap:.85rem;
+  padding-bottom:.9rem;
+  border-bottom:1px dashed rgba(80,180,100,.2);
+}
+.bw-region-emoji{
+  font-size:2.2rem;
+  filter:drop-shadow(0 4px 16px rgba(47,139,77,.45));
+  line-height:1;
+}
+.bw-region-title{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;
+  font-size:1.4rem;
+  margin:0;
+  letter-spacing:-.01em;
+}
+.bw-region-sub{
+  font-size:.78rem;
+  color:rgba(208,237,216,.72);
+  margin-top:.15rem;
+}
+
+/* Barra de vida de la región (sin porcentaje, solo intensidad) */
+.bw-life-bar{
+  height:6px;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  overflow:hidden;
+  position:relative;
+}
+.bw-life-fill{
+  position:absolute;
+  inset:0 auto 0 0;
+  width:0%;
+  background:linear-gradient(90deg, var(--green), #6dd99f);
+  box-shadow:0 0 16px rgba(109,217,159,.5);
+  border-radius:999px;
+  transition:width .8s cubic-bezier(.2,.7,.2,1);
+}
+.bw-life-label{
+  font-size:.72rem;
+  color:rgba(208,237,216,.7);
+  margin-top:.35rem;
+  font-weight:600;
+  letter-spacing:.03em;
+}
+
+/* Acciones dentro del panel: NO grid, NO tabla. Pills verticales */
+.bw-region-actions{
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  margin-top:.4rem;
+}
+.bw-action{
+  display:flex;align-items:center;gap:.85rem;
+  padding:.85rem 1rem;
+  border-radius:18px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  color:#eafff0;
+  text-decoration:none;
+  cursor:pointer;
+  font-weight:600;
+  font-size:.9rem;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+  text-align:left;
+}
+.bw-action:hover{
+  background:rgba(47,139,77,.18);
+  border-color:rgba(80,180,100,.35);
+  transform:translateY(-1px);
+}
+.bw-action-icon{
+  width:36px;height:36px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:12px;
+  background:rgba(47,139,77,.22);
+  font-size:1.05rem;
+  flex-shrink:0;
+}
+.bw-action-text{display:flex;flex-direction:column;line-height:1.2}
+.bw-action-text small{
+  font-size:.72rem;font-weight:500;
+  color:rgba(208,237,216,.7);
+  margin-top:.15rem;
+}
+.bw-action.coming{opacity:.55;cursor:not-allowed}
+.bw-action.coming:hover{background:rgba(255,255,255,.05);transform:none;border-color:rgba(255,255,255,.08)}
+
+/* Capa de transición durante zoom-in/out */
+.bw-zoom-veil{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
+  background:radial-gradient(circle at var(--bwZoomX, 50%) var(--bwZoomY, 50%), rgba(47,139,77,.32), transparent 70%);
+  opacity:0;
+  transition:opacity .42s ease;
+}
+.bw-zoom-veil.active{opacity:1}
+
+/* Mensaje "región oscura" cuando explored=0 */
+.bw-region-dim-msg{
+  font-size:.82rem;
+  color:rgba(208,237,216,.78);
+  padding:.7rem .9rem;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px dashed rgba(255,255,255,.1);
+  line-height:1.4;
+}
+
+/* Mini-organismo (placeholder F1, sistema completo en F2) */
+.bw-mini-org{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.3rem .7rem .3rem .35rem;
+  border-radius:999px;
+  background:rgba(47,139,77,.14);
+  border:1px solid rgba(80,180,100,.28);
+  color:#dff5e6;
+  font-weight:700;
+  font-size:.78rem;
+  text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.bw-mini-org-blob{
+  width:22px;height:22px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #6dd99f, var(--green) 70%);
+  box-shadow:0 0 12px rgba(47,139,77,.55), inset 0 -2px 6px rgba(0,0,0,.3);
+  animation:bwBlobBreath 3.2s ease-in-out infinite;
+}
+@keyframes bwBlobBreath{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+.bw-mini-org-stage{
+  font-size:.7rem;
+  font-weight:600;
+  color:rgba(208,237,216,.86);
+  letter-spacing:.03em;
+}
+
+/* Estados del organismo: contador de cápsulas pendientes */
+.bw-capsule-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 .3rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, #ffcb6b, #ff8a00);
+  color:#1a0e00;
+  font-size:.66rem;font-weight:800;
+  margin-left:.2rem;
+  box-shadow:0 0 10px rgba(255,138,0,.5);
+  animation:bwCapsulePulse 1.6s ease-in-out infinite;
+}
+@keyframes bwCapsulePulse{
+  0%,100%{box-shadow:0 0 10px rgba(255,138,0,.4)}
+  50%{box-shadow:0 0 18px rgba(255,138,0,.85)}
+}
+
+/* Estado de carga del cosmos (mientras hidrata desde Supabase) */
+.bw-loading{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:.8rem;
+  z-index:5;
+  background:rgba(3,16,9,.6);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  color:rgba(208,237,216,.86);
+  font-size:.82rem;
+  font-weight:600;
+  pointer-events:none;
+}
+.bw-loading-spinner{
+  width:38px;height:38px;
+  border-radius:50%;
+  border:2.5px solid rgba(80,180,100,.18);
+  border-top-color:var(--green);
+  animation:bwSpin 1s linear infinite;
+}
+@keyframes bwSpin{to{transform:rotate(360deg)}}
+.bw-loading.bw-hide{opacity:0;transition:opacity .4s ease}
+
+/* Mobile (≤768px) — el panel de región pasa a pantalla completa */
+@media (max-width: 768px){
+  .bw-cosmos{height:100vh;min-height:480px;max-height:none}
+  .bw-overlay{padding:1.2rem 1rem}
+  .bw-cosmos-title{font-size:clamp(1.1rem, 1rem + 1.2vw, 1.6rem);max-width:90%}
+  .bw-cosmos-subtitle{display:none}
+  .bw-region-panel{
+    width:100%;
+    border-left:none;
+    border-top:1px solid rgba(80,180,100,.18);
+    box-shadow:0 -20px 60px rgba(0,0,0,.5);
+    top:auto;
+    height:80%;
+    transform:translateY(110%);
+  }
+  .bw-region-panel.show{transform:translateY(0)}
+  .bw-scroll-hint{font-size:.66rem}
+  .bw-region-emoji{font-size:1.8rem}
+  .bw-region-title{font-size:1.2rem}
+}
+
+/* Mobile muy estrecho (≤375px) */
+@media (max-width: 375px){
+  .bw-overlay{padding:1rem .8rem}
+  .bw-cosmos-title{font-size:1.1rem}
+  .bw-btn{font-size:.76rem;padding:.42rem .8rem}
+}
+
+/* Reduced motion: sin animaciones intensas */
+@media (prefers-reduced-motion: reduce){
+  .bw-canvas,
+  .bw-mini-org-blob,
+  .bw-eyebrow .bw-dot,
+  .bw-scroll-hint .bw-arrow,
+  .bw-capsule-badge,
+  .bw-loading-spinner{animation:none!important}
+  .bw-region-panel{transition:none}
+  .bw-zoom-veil{transition:none}
+}
+
+/* ═══ Fin Biocosmos F1 ═══ */
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -3110,6 +3558,72 @@ window.Analytics = (function(){
   </nav>
 </div>
 </header>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BIOCOSMOS — Mundo Biológico Vivo (F1: shell + 7 regiones)
+     Doc: docs/WORLD.md  ·  Namespace JS: window.BW
+     ═══════════════════════════════════════════════════════════ -->
+<section id="sec-cosmos" class="bw-cosmos" aria-label="Tu Biocosmos" style="display:none">
+  <canvas id="bwCanvas" class="bw-canvas" aria-hidden="true"></canvas>
+
+  <div class="bw-overlay">
+    <div class="bw-cosmos-head">
+      <div>
+        <span class="bw-eyebrow"><span class="bw-dot"></span> Biocosmos</span>
+        <h1 class="bw-cosmos-title" id="bwTitle">Tu mundo está despertando…</h1>
+        <p class="bw-cosmos-subtitle" id="bwSubtitle">Cada región vive a medida que dominás los temas. Tocá una para entrar.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+        <div id="bwMiniOrgWrap" class="bw-mini-org" title="Tu organismo">
+          <span class="bw-mini-org-blob" aria-hidden="true"></span>
+          <span class="bw-mini-org-stage" id="bwOrgStage">Microbio</span>
+          <span id="bwCapsuleBadge" class="bw-capsule-badge" style="display:none">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div></div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+      <div></div>
+      <div class="bw-scroll-hint" id="bwScrollHint" onclick="window.BW?.scrollToContent?.()" role="button" tabindex="0" aria-label="Continuar al estudio">
+        <span>Continuar al estudio</span>
+        <div class="bw-arrow" aria-hidden="true">↓</div>
+      </div>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- Tooltip flotante (mostrado al hover sobre una región) -->
+  <div id="bwRegionTip" class="bw-region-tip" aria-hidden="true"></div>
+
+  <!-- Panel deslizante de región (al hacer zoom-in) -->
+  <aside id="bwRegionPanel" class="bw-region-panel" aria-hidden="true">
+    <button class="bw-back-btn" onclick="window.BW?.scene?.zoomOut()" aria-label="Volver al cosmos">← Volver al cosmos</button>
+    <div class="bw-region-header">
+      <div class="bw-region-emoji" id="bwRegionEmoji">🧫</div>
+      <div>
+        <h2 class="bw-region-title" id="bwRegionTitle">Región</h2>
+        <div class="bw-region-sub" id="bwRegionSub">…</div>
+      </div>
+    </div>
+    <div>
+      <div class="bw-life-bar"><div class="bw-life-fill" id="bwRegionLife"></div></div>
+      <div class="bw-life-label" id="bwRegionLifeLbl">Vida de la región</div>
+    </div>
+    <div id="bwRegionDimMsg" class="bw-region-dim-msg" style="display:none"></div>
+    <div class="bw-region-actions" id="bwRegionActions"></div>
+  </aside>
+
+  <!-- Veil de transición zoom -->
+  <div id="bwZoomVeil" class="bw-zoom-veil" aria-hidden="true"></div>
+
+  <!-- Loading inicial mientras hidrata desde Supabase -->
+  <div id="bwLoading" class="bw-loading" aria-hidden="true">
+    <div class="bw-loading-spinner"></div>
+    <div>Despertando el Biocosmos…</div>
+  </div>
+</section>
 
 <main class="container hero">
 
@@ -8169,6 +8683,7 @@ async function endSim(silent=false){
   const pct = total > 0 ? Math.round(simState.hits / total * 100) : 0
   window.Analytics?.trackSimulacroCompleted(simState.hits, total, pct, simState.theme, simState.parcial)
   window.Social?.onSimCompleted(simState.hits, total, simState.parcial)
+  try { window.BW?.hook?.onSimComplete({ score: total > 0 ? simState.hits/total : 0, parcial: simState.parcial, topic: simState.theme }) } catch(_){}
   await persistState()
   renderHero(); renderHistory(); renderRecommendations(); checkAchievements()
   if (!silent){
@@ -21693,6 +22208,742 @@ window.toggleMobSidebar = function(){
     })
   })
 })()
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS — Mundo Biológico Vivo (F1: shell + 7 regiones)
+   Namespace: window.BW   ·   Doc: docs/WORLD.md
+   Aislado del objeto A. Lee/escribe en user_progress.data.world.
+   No bloquea flujos existentes — todos los hooks van en try/catch.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+
+// Preferencias del SO: reduced-motion
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// ──── Configuración: las 7 regiones del Biocosmos ────
+const REGIONS = [
+  { id:'celular',        name:'Celular',        emoji:'🧫', color:'#4ade80', tint:[74,222,128],
+    desc:'La fábrica de la vida — orgánulos, membranas, ciclo celular.',
+    topics:['cel','int','bio','met','ene'] },
+  { id:'genetica',       name:'Genética',       emoji:'🧬', color:'#a78bfa', tint:[167,139,250],
+    desc:'El código que se replica — ADN, transcripción, herencia.',
+    topics:['gen','biot'] },
+  { id:'botanica',       name:'Botánica',       emoji:'🌿', color:'#34d399', tint:[52,211,153],
+    desc:'Hojas que respiran luz — fotosíntesis, plantas, autótrofos.',
+    topics:['pla'] },
+  { id:'microbiologica', name:'Microbiológica', emoji:'🦠', color:'#fbbf24', tint:[251,191,36],
+    desc:'Lo invisible que sostiene todo — bacterias, archaea, virus.',
+    topics:['virpro'] },
+  { id:'zoologica',      name:'Zoológica',      emoji:'🐾', color:'#fb923c', tint:[251,146,60],
+    desc:'Animalia en movimiento — vertebrados, invertebrados, conducta.',
+    topics:['ani'] },
+  { id:'ecologica',      name:'Ecológica',      emoji:'🌎', color:'#60a5fa', tint:[96,165,250],
+    desc:'Redes vivas — ecosistemas, cadenas tróficas, ciclos.',
+    topics:['eco'] },
+  { id:'cientifica',     name:'Científica',     emoji:'🔬', color:'#22d3ee', tint:[34,211,238],
+    desc:'Origen, evolución y clasificación — el método biológico.',
+    topics:['evo','ori','dom','euk'] }
+]
+
+// ──── Etapas evolutivas del organismo ────
+const STAGES = [
+  { id:'microbio',     min:0,     name:'Microbio',     emoji:'🦠' },
+  { id:'protocelula',  min:500,   name:'Protocélula',  emoji:'🧫' },
+  { id:'pluricelular', min:1500,  name:'Pluricelular', emoji:'🧬' },
+  { id:'vertebrado',   min:3500,  name:'Vertebrado',   emoji:'🦎' },
+  { id:'investigador', min:7000,  name:'Investigador', emoji:'🧠' },
+  { id:'maestro',      min:12000, name:'Maestro',      emoji:'🏆' }
+]
+
+// Paletas de color del organismo
+const ORG_COLORS = {
+  green:  { core:'#6dd99f', mid:'#2f8b4d', halo:'rgba(109,217,159,.55)' },
+  blue:   { core:'#7cc6ff', mid:'#2b6ea3', halo:'rgba(124,198,255,.55)' },
+  golden: { core:'#ffd86b', mid:'#c89a12', halo:'rgba(255,216,107,.55)' }
+}
+
+// ──── Estado por defecto ────
+function defaultBWState(){
+  const regions = {}
+  REGIONS.forEach(r => { regions[r.id] = { explored:0, lastVisit:null } })
+  return {
+    organism: { stage:'microbio', evolutionXp:0, color:'green', traits:[] },
+    regions,
+    discoveries: [],
+    capsulesPending: [],
+    expeditions: { active:null, currentNode:0, nodeProgress:{}, completed:[] }
+  }
+}
+
+// Estado vivo en memoria
+let _state = defaultBWState()
+
+// ──── Hidratación y persistencia ────
+function loadFromProgress(){
+  try {
+    const w = (typeof S !== 'undefined' && S && S.world) ? S.world : null
+    if (!w) {
+      _state = defaultBWState()
+      // Adjuntar a S si existe para futuras persistencias
+      if (typeof S !== 'undefined' && S) S.world = _state
+      return
+    }
+    // Merge defensivo: mantener forma incluso si faltan campos
+    const def = defaultBWState()
+    _state = {
+      organism:        Object.assign({}, def.organism, w.organism || {}),
+      regions:         Object.assign({}, def.regions,  w.regions  || {}),
+      discoveries:     Array.isArray(w.discoveries)     ? w.discoveries     : [],
+      capsulesPending: Array.isArray(w.capsulesPending) ? w.capsulesPending : [],
+      expeditions:     Object.assign({}, def.expeditions, w.expeditions || {})
+    }
+    // Re-asegurar que cada región exista
+    REGIONS.forEach(r => {
+      if (!_state.regions[r.id]) _state.regions[r.id] = { explored:0, lastVisit:null }
+    })
+    if (typeof S !== 'undefined' && S) S.world = _state
+  } catch(e){ console.warn('[BW] loadFromProgress error:', e) }
+}
+
+async function saveToProgress(){
+  try {
+    if (typeof S !== 'undefined' && S) S.world = _state
+    if (typeof persistState === 'function') await persistState()
+  } catch(e){ console.warn('[BW] saveToProgress error:', e) }
+}
+
+// Sincroniza XP del organismo con stats.xp del usuario y verifica evolución
+function syncXpAndCheckEvolution(){
+  try {
+    const xp = (typeof S !== 'undefined' && S && S.stats && S.stats.xp) ? S.stats.xp : 0
+    const prev = _state.organism.stage
+    _state.organism.evolutionXp = xp
+    const newStage = currentStage(xp).id
+    if (newStage !== prev) {
+      _state.organism.stage = newStage
+      // F2 activará animación de evolución; en F1 solo persistimos y refrescamos UI
+      refreshTopOrganism()
+    }
+  } catch(_){}
+}
+
+function currentStage(xp){
+  let s = STAGES[0]
+  for (let i = 0; i < STAGES.length; i++){
+    if (xp >= STAGES[i].min) s = STAGES[i]
+  }
+  return s
+}
+
+// Calcula 'explored' por región a partir de topicDom existente
+function recomputeExploredAll(){
+  try {
+    const dom = (typeof S !== 'undefined' && S && S.topicDom) ? S.topicDom : {}
+    REGIONS.forEach(r => {
+      let sum = 0, count = 0
+      r.topics.forEach(t => {
+        const v = Number(dom[t] || 0)
+        sum += Math.max(0, Math.min(3, v)) / 3
+        count++
+      })
+      const domAvg = count > 0 ? (sum / count) : 0
+      // Descubrimientos contribuyen hasta 30% adicional
+      const discCount = _state.discoveries.filter(d => d.region === r.id).length
+      const discBoost = Math.min(.3, discCount * .05)
+      const next = Math.max(0, Math.min(1, domAvg * .7 + discBoost))
+      _state.regions[r.id].explored = next
+    })
+  } catch(e){ console.warn('[BW] recomputeExploredAll error:', e) }
+}
+
+// ──── Refresco de UI no-canvas (mini-organismo + cápsulas + título) ────
+function refreshTopOrganism(){
+  try {
+    const stage = currentStage(_state.organism.evolutionXp || 0)
+    const elStage = document.getElementById('bwOrgStage')
+    if (elStage) elStage.textContent = stage.name
+    const elTitle = document.getElementById('bwTitle')
+    if (elTitle){
+      const exploredCount = REGIONS.filter(r => _state.regions[r.id].explored > 0.05).length
+      elTitle.textContent = `${stage.name} · ${exploredCount === 0 ? 'explorando un mundo dormido' : 'explorando ' + exploredCount + (exploredCount === 1 ? ' región' : ' regiones')}`
+    }
+    const elBadge = document.getElementById('bwCapsuleBadge')
+    if (elBadge){
+      const n = _state.capsulesPending.length
+      if (n > 0){ elBadge.style.display = 'inline-flex'; elBadge.textContent = String(n) }
+      else elBadge.style.display = 'none'
+    }
+  } catch(_){}
+}
+
+// ──── Escena canvas ────
+const scene = {
+  canvas:null, ctx:null, raf:0, t0:0,
+  dpr:1, w:0, h:0,
+  regionsLayout:[],   // [{id, x, y, r}]
+  hoverId:null,
+  zoomedId:null,
+  zoomProgress:0,     // 0 = cosmos completo, 1 = región
+  pointer:{ x:0, y:0, active:false },
+  paused:false,
+  particles:[],       // partículas ambientales
+
+  mount(){
+    this.canvas = document.getElementById('bwCanvas')
+    if (!this.canvas) return false
+    this.ctx = this.canvas.getContext('2d', { alpha:true })
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2)
+    this.resize()
+    this.bindEvents()
+    this.initParticles()
+    this.t0 = performance.now()
+    this.loop = this.loop.bind(this)
+    if (!REDUCED) this.raf = requestAnimationFrame(this.loop)
+    else this.renderOnce()
+    return true
+  },
+
+  unmount(){
+    if (this.raf) cancelAnimationFrame(this.raf)
+    this.raf = 0
+  },
+
+  resize(){
+    const sec = document.getElementById('sec-cosmos')
+    if (!sec || !this.canvas) return
+    const rect = sec.getBoundingClientRect()
+    this.w = Math.max(320, rect.width)
+    this.h = Math.max(420, rect.height)
+    this.canvas.style.width  = this.w + 'px'
+    this.canvas.style.height = this.h + 'px'
+    this.canvas.width  = Math.floor(this.w * this.dpr)
+    this.canvas.height = Math.floor(this.h * this.dpr)
+    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0)
+    this.layoutRegions()
+  },
+
+  layoutRegions(){
+    const cx = this.w / 2
+    const cy = this.h / 2 + Math.min(0, (this.h - 720) * 0.05)
+    const baseR = Math.min(this.w, this.h) * 0.34
+    // Cada región alrededor del centro, ángulos distribuidos en círculo
+    this.regionsLayout = REGIONS.map((r, i) => {
+      const angle = (-Math.PI/2) + (i * (Math.PI * 2 / REGIONS.length))
+      // jitter ligero para no quedar perfectamente simétrico (más orgánico)
+      const radius = baseR * (1 + 0.08 * Math.sin(i * 1.7))
+      const x = cx + Math.cos(angle) * radius
+      const y = cy + Math.sin(angle) * radius
+      const radiusVisual = Math.max(46, Math.min(86, Math.min(this.w, this.h) * 0.075))
+      return { id:r.id, x, y, r:radiusVisual, angle }
+    })
+    this._center = { x:cx, y:cy }
+  },
+
+  initParticles(){
+    const n = REDUCED ? 0 : Math.min(60, Math.floor(this.w / 22))
+    this.particles = []
+    for (let i = 0; i < n; i++){
+      this.particles.push({
+        x: Math.random() * this.w,
+        y: Math.random() * this.h,
+        r: 0.8 + Math.random() * 1.6,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.12,
+        a: 0.18 + Math.random() * 0.42,
+        hue: Math.random() < 0.5 ? 'g' : 'b'
+      })
+    }
+  },
+
+  bindEvents(){
+    if (!this.canvas) return
+    const self = this
+    this.canvas.addEventListener('mousemove', (e) => self.onPointer(e))
+    this.canvas.addEventListener('mouseleave', () => { self.hoverId = null; self.updateCursor(); self.hideTip() })
+    this.canvas.addEventListener('click', (e) => self.onClick(e))
+    // Touch (mobile)
+    this.canvas.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches[0]) self.onPointer(e.touches[0])
+    }, { passive:true })
+    this.canvas.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches[0]) self.onClick(e.changedTouches[0])
+    })
+    window.addEventListener('resize', () => self.resize())
+    // Pausa cuando el documento no es visible (ahorro batería)
+    document.addEventListener('visibilitychange', () => {
+      self.paused = document.hidden
+      if (!self.paused && !REDUCED && !self.raf) self.raf = requestAnimationFrame(self.loop)
+    })
+  },
+
+  onPointer(e){
+    const rect = this.canvas.getBoundingClientRect()
+    const x = (e.clientX - rect.left)
+    const y = (e.clientY - rect.top)
+    this.pointer.x = x; this.pointer.y = y; this.pointer.active = true
+    const hit = this.hitTest(x, y)
+    if (hit !== this.hoverId){
+      this.hoverId = hit
+      this.updateCursor()
+      if (hit) this.showTip(hit, x, y)
+      else this.hideTip()
+    } else if (hit) {
+      this.showTip(hit, x, y)
+    }
+  },
+
+  onClick(e){
+    if (this.zoomedId) return
+    const rect = this.canvas.getBoundingClientRect()
+    const x = (e.clientX - rect.left)
+    const y = (e.clientY - rect.top)
+    const hit = this.hitTest(x, y)
+    if (hit){
+      this.zoomIn(hit, x, y)
+    }
+  },
+
+  hitTest(x, y){
+    for (let i = 0; i < this.regionsLayout.length; i++){
+      const rl = this.regionsLayout[i]
+      const dx = x - rl.x, dy = y - rl.y
+      if (dx*dx + dy*dy <= (rl.r * 1.2) * (rl.r * 1.2)) return rl.id
+    }
+    return null
+  },
+
+  updateCursor(){
+    if (!this.canvas) return
+    if (this.hoverId) this.canvas.classList.add('bw-canvas-interactive')
+    else this.canvas.classList.remove('bw-canvas-interactive')
+  },
+
+  showTip(regionId, x, y){
+    const tip = document.getElementById('bwRegionTip')
+    if (!tip) return
+    const cfg = REGIONS.find(r => r.id === regionId)
+    if (!cfg) return
+    const rs = _state.regions[regionId] || { explored:0 }
+    const lifePct = Math.round(rs.explored * 100)
+    const status = rs.explored < 0.05
+      ? 'Dormida — sin explorar'
+      : (rs.explored < 0.33 ? 'Despertando' : rs.explored < 0.66 ? 'Activa' : 'Plenamente viva')
+    tip.innerHTML = `${cfg.emoji} ${cfg.name}<small>${status}${lifePct > 0 ? ' · ' + lifePct + '% vida' : ''}</small>`
+    tip.style.left = x + 'px'
+    tip.style.top  = y + 'px'
+    tip.classList.add('show')
+  },
+
+  hideTip(){
+    const tip = document.getElementById('bwRegionTip')
+    if (tip) tip.classList.remove('show')
+  },
+
+  zoomIn(regionId, x, y){
+    if (this.zoomedId) return
+    this.zoomedId = regionId
+    this.hideTip()
+    const veil = document.getElementById('bwZoomVeil')
+    if (veil){
+      veil.style.setProperty('--bwZoomX', x + 'px')
+      veil.style.setProperty('--bwZoomY', y + 'px')
+      veil.classList.add('active')
+    }
+    openRegionPanel(regionId)
+    // Animación de zoom (en F1: el canvas opaca y el panel entra; F4 hará zoom literal)
+    if (REDUCED) this.renderOnce()
+  },
+
+  zoomOut(){
+    if (!this.zoomedId) return
+    this.zoomedId = null
+    const veil = document.getElementById('bwZoomVeil')
+    if (veil) veil.classList.remove('active')
+    closeRegionPanel()
+    if (REDUCED) this.renderOnce()
+  },
+
+  loop(now){
+    if (this.paused){ this.raf = 0; return }
+    const t = (now - this.t0) / 1000
+    this.render(t)
+    this.raf = requestAnimationFrame(this.loop)
+  },
+
+  renderOnce(){ this.render(0.01) },
+
+  render(t){
+    const ctx = this.ctx
+    if (!ctx) return
+    // Limpiar y dibujar fondo radial sutil (CSS ya tiene gradiente base; superponemos brillos animados)
+    ctx.clearRect(0, 0, this.w, this.h)
+    this.drawBackdrop(t)
+    this.drawParticles(t)
+    // Si está en zoom, atenuamos las otras regiones
+    const dim = this.zoomedId ? 0.18 : 1
+    for (const rl of this.regionsLayout){
+      const isActive = (rl.id === this.zoomedId)
+      const isHover  = (rl.id === this.hoverId && !this.zoomedId)
+      this.drawRegion(t, rl, isActive ? 1 : dim, isHover)
+    }
+    this.drawOrganism(t, this._center.x, this._center.y, this.zoomedId ? 0.25 : 1)
+  },
+
+  drawBackdrop(t){
+    const ctx = this.ctx
+    // Halos animados de fondo (muy suaves, baja opacidad)
+    const cx = this.w * 0.18
+    const cy = this.h * 0.22
+    const r1 = Math.max(200, this.w * 0.45)
+    let g = ctx.createRadialGradient(cx + Math.sin(t*0.3)*40, cy, 0, cx, cy, r1)
+    g.addColorStop(0, 'rgba(47,139,77,0.18)')
+    g.addColorStop(1, 'rgba(47,139,77,0)')
+    ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h)
+
+    const cx2 = this.w * 0.82
+    const cy2 = this.h * 0.78
+    const r2 = Math.max(200, this.w * 0.42)
+    g = ctx.createRadialGradient(cx2 + Math.cos(t*0.25)*30, cy2, 0, cx2, cy2, r2)
+    g.addColorStop(0, 'rgba(43,110,163,0.16)')
+    g.addColorStop(1, 'rgba(43,110,163,0)')
+    ctx.fillStyle = g; ctx.fillRect(0, 0, this.w, this.h)
+  },
+
+  drawParticles(t){
+    const ctx = this.ctx
+    if (!this.particles.length) return
+    for (let i = 0; i < this.particles.length; i++){
+      const p = this.particles[i]
+      p.x += p.vx; p.y += p.vy
+      if (p.x < -10) p.x = this.w + 10
+      if (p.x > this.w + 10) p.x = -10
+      if (p.y < -10) p.y = this.h + 10
+      if (p.y > this.h + 10) p.y = -10
+      ctx.beginPath()
+      ctx.fillStyle = p.hue === 'g' ? `rgba(120,220,150,${p.a})` : `rgba(124,198,255,${p.a})`
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  },
+
+  drawRegion(t, layout, alpha, hover){
+    const ctx = this.ctx
+    const cfg = REGIONS.find(r => r.id === layout.id)
+    if (!cfg) return
+    const st = _state.regions[layout.id] || { explored:0 }
+    const explored = st.explored
+    // Intensidad visual: depende de explored. Mínimo 0.18 para no quedar invisible
+    const intensity = 0.18 + explored * 0.82
+    const breath = REDUCED ? 1 : (1 + Math.sin(t * 1.4 + layout.angle) * 0.05 * (0.4 + explored))
+    const r = layout.r * breath * (hover ? 1.12 : 1)
+    const [tr, tg, tb] = cfg.tint
+    // Halo grande
+    let g = ctx.createRadialGradient(layout.x, layout.y, 0, layout.x, layout.y, r * 2.4)
+    g.addColorStop(0,    `rgba(${tr},${tg},${tb},${0.34 * intensity * alpha})`)
+    g.addColorStop(0.45, `rgba(${tr},${tg},${tb},${0.10 * intensity * alpha})`)
+    g.addColorStop(1,    `rgba(${tr},${tg},${tb},0)`)
+    ctx.fillStyle = g
+    ctx.beginPath(); ctx.arc(layout.x, layout.y, r * 2.4, 0, Math.PI * 2); ctx.fill()
+    // Núcleo brillante
+    g = ctx.createRadialGradient(layout.x, layout.y, 0, layout.x, layout.y, r)
+    g.addColorStop(0,    `rgba(${tr},${tg},${tb},${0.85 * intensity * alpha})`)
+    g.addColorStop(0.55, `rgba(${tr},${tg},${tb},${0.30 * intensity * alpha})`)
+    g.addColorStop(1,    `rgba(${tr},${tg},${tb},0)`)
+    ctx.fillStyle = g
+    ctx.beginPath(); ctx.arc(layout.x, layout.y, r, 0, Math.PI * 2); ctx.fill()
+    // Anillo sutil
+    ctx.strokeStyle = `rgba(${tr},${tg},${tb},${0.4 * intensity * alpha})`
+    ctx.lineWidth = 1
+    ctx.beginPath(); ctx.arc(layout.x, layout.y, r * 0.65, 0, Math.PI * 2); ctx.stroke()
+    // Emoji
+    const emojiSize = Math.max(22, Math.min(36, r * 0.55))
+    ctx.font = `${emojiSize}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.globalAlpha = (0.55 + intensity * 0.45) * alpha
+    ctx.fillText(cfg.emoji, layout.x, layout.y - 2)
+    ctx.globalAlpha = 1
+    // Nombre debajo
+    ctx.font = `600 ${Math.max(10, Math.min(13, r * 0.18))}px Inter, system-ui, sans-serif`
+    ctx.fillStyle = `rgba(234,255,240,${(0.55 + intensity * 0.45) * alpha})`
+    ctx.fillText(cfg.name, layout.x, layout.y + r * 0.78)
+  },
+
+  drawOrganism(t, x, y, alpha){
+    const ctx = this.ctx
+    const colors = ORG_COLORS[_state.organism.color] || ORG_COLORS.green
+    const stage = currentStage(_state.organism.evolutionXp || 0)
+    const stageIdx = STAGES.findIndex(s => s.id === stage.id)
+    const baseSize = 28 + stageIdx * 8
+    const breath = REDUCED ? 1 : (1 + Math.sin(t * 1.2) * 0.08)
+    const size = baseSize * breath
+    // Halo difuso
+    let g = ctx.createRadialGradient(x, y, 0, x, y, size * 3)
+    g.addColorStop(0, colors.halo.replace('.55', `${0.45 * alpha}`))
+    g.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = g
+    ctx.beginPath(); ctx.arc(x, y, size * 3, 0, Math.PI * 2); ctx.fill()
+    // Cuerpo (blob orgánico ondulado)
+    ctx.save()
+    ctx.translate(x, y)
+    if (!REDUCED) ctx.rotate(Math.sin(t * 0.3) * 0.08)
+    const path = new Path2D()
+    const segments = 24
+    for (let i = 0; i <= segments; i++){
+      const a = (i / segments) * Math.PI * 2
+      const wobble = REDUCED ? 0 : Math.sin(a * 3 + t * 1.7) * size * 0.08
+      const rr = size + wobble
+      const px = Math.cos(a) * rr
+      const py = Math.sin(a) * rr
+      if (i === 0) path.moveTo(px, py); else path.lineTo(px, py)
+    }
+    path.closePath()
+    const bg = ctx.createRadialGradient(-size*0.25, -size*0.3, 0, 0, 0, size * 1.2)
+    bg.addColorStop(0, colors.core)
+    bg.addColorStop(1, colors.mid)
+    ctx.fillStyle = bg
+    ctx.globalAlpha = alpha
+    ctx.fill(path)
+    ctx.globalAlpha = 1
+    // Detalles del organismo (núcleo + detalles según etapa)
+    if (stageIdx >= 1){
+      ctx.fillStyle = `rgba(255,255,255,${0.18 * alpha})`
+      ctx.beginPath(); ctx.arc(-size*0.18, -size*0.22, size*0.32, 0, Math.PI*2); ctx.fill()
+    }
+    if (stageIdx >= 2){
+      ctx.fillStyle = `rgba(0,0,0,${0.28 * alpha})`
+      ctx.beginPath(); ctx.arc(size*0.15, size*0.05, size*0.18, 0, Math.PI*2); ctx.fill()
+    }
+    if (stageIdx >= 4){
+      // Aura de partículas en etapas avanzadas
+      ctx.strokeStyle = colors.halo.replace('.55', `${0.4 * alpha}`)
+      ctx.lineWidth = 1.5
+      ctx.beginPath(); ctx.arc(0, 0, size * 1.5, 0, Math.PI * 2); ctx.stroke()
+    }
+    ctx.restore()
+  }
+}
+
+// ──── Panel de región (interior al hacer zoom-in) ────
+function openRegionPanel(regionId){
+  const cfg = REGIONS.find(r => r.id === regionId)
+  if (!cfg) return
+  const panel = document.getElementById('bwRegionPanel')
+  if (!panel) return
+  const st = _state.regions[regionId] || { explored:0 }
+  document.getElementById('bwRegionEmoji').textContent = cfg.emoji
+  document.getElementById('bwRegionTitle').textContent = 'Región ' + cfg.name
+  document.getElementById('bwRegionSub').textContent = cfg.desc
+  // Barra de vida
+  const fill = document.getElementById('bwRegionLife')
+  const lbl  = document.getElementById('bwRegionLifeLbl')
+  setTimeout(() => { if (fill) fill.style.width = (st.explored * 100).toFixed(0) + '%' }, 60)
+  if (lbl){
+    if (st.explored < 0.05) lbl.textContent = 'Esta región todavía está dormida'
+    else if (st.explored < 0.33) lbl.textContent = 'Despertando — seguí practicando temas relacionados'
+    else if (st.explored < 0.66) lbl.textContent = 'Activa — buen dominio'
+    else lbl.textContent = 'Plenamente viva — dominio avanzado'
+  }
+  // Mensaje cuando está muy dormida
+  const dimMsg = document.getElementById('bwRegionDimMsg')
+  if (dimMsg){
+    if (st.explored < 0.05){
+      dimMsg.style.display = ''
+      dimMsg.textContent = 'Practicá temas de esta región (' + cfg.topics.join(', ') + ') para hacer brillar el biotopo.'
+    } else dimMsg.style.display = 'none'
+  }
+  // Acciones (siempre 3: Resumen, Simulacro, Colección)
+  const actions = document.getElementById('bwRegionActions')
+  if (actions){
+    const firstTopic = cfg.topics[0]
+    actions.innerHTML = ''
+    const items = [
+      { icon:'📚', title:'Resumen del área',     sub:'Repasá los temas de esta región',     href:'#resumen' },
+      { icon:'⚡', title:'Práctica activa',       sub:'Simulacro filtrado por estos temas',  href:'#simulacros' },
+      { icon:'🧪', title:'Colección biológica',   sub:'Próximamente en una nueva fase',     coming:true }
+    ]
+    items.forEach(it => {
+      const el = document.createElement(it.coming ? 'div' : 'a')
+      el.className = 'bw-action' + (it.coming ? ' coming' : '')
+      if (!it.coming) el.href = it.href
+      el.innerHTML = `<div class="bw-action-icon">${it.icon}</div><div class="bw-action-text"><span>${it.title}</span><small>${it.sub}</small></div>`
+      if (!it.coming){
+        el.addEventListener('click', () => {
+          // Pequeño retraso para permitir que el href haga el scroll-to natural
+          setTimeout(() => { scene.zoomOut() }, 80)
+        })
+      }
+      actions.appendChild(el)
+    })
+  }
+  panel.setAttribute('aria-hidden', 'false')
+  // Pequeño delay para que la transición CSS dispare
+  requestAnimationFrame(() => panel.classList.add('show'))
+  // Marca lastVisit
+  st.lastVisit = new Date().toISOString()
+  _state.regions[regionId] = st
+}
+
+function closeRegionPanel(){
+  const panel = document.getElementById('bwRegionPanel')
+  if (!panel) return
+  panel.classList.remove('show')
+  panel.setAttribute('aria-hidden', 'true')
+}
+
+// ──── Hooks de integración con sistemas existentes ────
+const hook = {
+  onSimComplete(payload){
+    try {
+      const score = (payload && typeof payload.score === 'number') ? payload.score : 0
+      const topic = payload && payload.topic
+      // Recalcular explored desde topicDom (que ya fue actualizado por el simulacro)
+      recomputeExploredAll()
+      // F3 agregará rolling de descubrimiento aquí
+      // F2 agregará trigger de evolución del organismo
+      syncXpAndCheckEvolution()
+      refreshTopOrganism()
+      // Mostrar pulso visual sutil en la región tocada (sin abrirla)
+      if (topic){
+        const region = REGIONS.find(r => r.topics.includes(topic))
+        if (region) _pulseRegion(region.id)
+      }
+    } catch(e){ console.warn('[BW] hook.onSimComplete error:', e) }
+  },
+  onMissionComplete(mission){
+    try {
+      syncXpAndCheckEvolution()
+      refreshTopOrganism()
+    } catch(_){}
+  },
+  onGameComplete(payload){
+    try {
+      syncXpAndCheckEvolution()
+      refreshTopOrganism()
+    } catch(_){}
+  },
+  onTopicDomChange(topicId, oldLevel, newLevel){
+    try {
+      recomputeExploredAll()
+    } catch(_){}
+  }
+}
+
+// Pulso visual sutil sobre una región específica
+function _pulseRegion(regionId){
+  // En F1 esto solo refresca un render extra; F2 agregará un anillo expandido
+  if (REDUCED) scene.renderOnce()
+}
+
+// ──── Visibilidad del Biocosmos según estado de auth ────
+function isLandingVisible(){
+  const lp = document.getElementById('landingPage')
+  return !!(lp && lp.classList.contains('show'))
+}
+function isUserAuthenticated(){
+  // Heurística defensiva: si el botón logout está visible, hay sesión
+  const lo = document.getElementById('logoutBtn')
+  return !!(lo && lo.style.display !== 'none')
+}
+
+let _cosmosShown = false
+function showCosmos(){
+  const sec = document.getElementById('sec-cosmos')
+  if (!sec || _cosmosShown) return
+  sec.style.display = ''
+  _cosmosShown = true
+  // Hidratar estado, calcular regiones, refrescar UI
+  loadFromProgress()
+  recomputeExploredAll()
+  syncXpAndCheckEvolution()
+  refreshTopOrganism()
+  // Montar canvas (idempotente)
+  if (!scene.canvas) scene.mount()
+  else { scene.resize(); if (!scene.raf && !REDUCED) scene.raf = requestAnimationFrame(scene.loop); else scene.renderOnce() }
+  // Ocultar overlay de loading tras hidratación
+  const loading = document.getElementById('bwLoading')
+  if (loading){
+    loading.classList.add('bw-hide')
+    setTimeout(() => { loading.style.display = 'none' }, 420)
+  }
+}
+function hideCosmos(){
+  const sec = document.getElementById('sec-cosmos')
+  if (!sec) return
+  sec.style.display = 'none'
+  _cosmosShown = false
+  scene.unmount()
+}
+
+// Observa cambios en visibilidad de landingPage y del logoutBtn
+function setupVisibilityWatch(){
+  // 1) Decisión inicial
+  decideVisibility()
+  // 2) MutationObserver sobre #landingPage
+  const lp = document.getElementById('landingPage')
+  if (lp){
+    new MutationObserver(decideVisibility).observe(lp, { attributes:true, attributeFilter:['class'] })
+  }
+  // 3) MutationObserver sobre #logoutBtn (cambia display al iniciar/cerrar sesión)
+  const lo = document.getElementById('logoutBtn')
+  if (lo){
+    new MutationObserver(decideVisibility).observe(lo, { attributes:true, attributeFilter:['style'] })
+  }
+  // 4) Re-evaluar periódicamente como red de seguridad (cada 2s primeros 10s tras carga)
+  let ticks = 0
+  const safety = setInterval(() => {
+    decideVisibility(); ticks++; if (ticks > 5) clearInterval(safety)
+  }, 2000)
+}
+function decideVisibility(){
+  try {
+    if (isLandingVisible()) { hideCosmos(); return }
+    if (isUserAuthenticated()) showCosmos()
+    else hideCosmos()
+  } catch(_){}
+}
+
+// Scroll suave al contenido educativo debajo del cosmos
+function scrollToContent(){
+  const m = document.querySelector('main.container.hero')
+  if (m) m.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block:'start' })
+}
+
+// ──── API pública ────
+window.BW = {
+  state: _state, // sólo para inspección — preferir mutar via métodos
+  REGIONS, STAGES, ORG_COLORS,
+  scene,
+  hook,
+  scrollToContent,
+  // Recargar estado desde S.world (útil tras loadProfile)
+  syncFromProgress(){
+    loadFromProgress()
+    recomputeExploredAll()
+    syncXpAndCheckEvolution()
+    refreshTopOrganism()
+    if (_cosmosShown && scene.canvas) scene.renderOnce()
+  },
+  // Forzar mostrar/ocultar (debug)
+  _show: showCosmos,
+  _hide: hideCosmos
+}
+
+// ──── Boot ────
+function bwInit(){
+  try {
+    setupVisibilityWatch()
+    // Si el usuario ya está autenticado al cargar el script, hidratamos directamente
+    if (isUserAuthenticated() && !isLandingVisible()) showCosmos()
+  } catch(e){ console.warn('[BW] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwInit)
+else bwInit()
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F1
+   ════════════════════════════════════════════════════════════════════ */
 </script>
 <!-- Botón flotante: modo enfoque -->
 <button class="focus-toggle-btn" onclick="window.toggleFocusMode()" title="Modo enfoque (oculta sidebars)">🎯</button>
