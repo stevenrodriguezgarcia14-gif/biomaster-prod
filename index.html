@@ -2506,6 +2506,611 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 }
 
 /* ═══ Fin Biocosmos F1 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F2 — Organismo evolutivo en topbar + animación
+   ═══════════════════════════════════════════════════════════ */
+
+/* Mini-organismo en el topbar (siempre visible cuando hay sesión) */
+.bw-top-org{
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.32rem .65rem .32rem .38rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(47,139,77,.10), rgba(43,110,163,.07));
+  border:1px solid var(--border);
+  color:var(--text);
+  font-weight:700;
+  font-size:.78rem;
+  cursor:pointer;
+  position:relative;
+  transition:background .25s ease, transform .2s ease, border-color .25s ease, box-shadow .25s ease;
+  flex-shrink:0;
+}
+.bw-top-org.show{display:inline-flex}
+.bw-top-org:hover{
+  background:linear-gradient(135deg, rgba(47,139,77,.18), rgba(43,110,163,.12));
+  border-color:rgba(47,139,77,.4);
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(47,139,77,.18);
+}
+.theme-dark .bw-top-org{
+  background:linear-gradient(135deg, rgba(47,139,77,.18), rgba(43,110,163,.14));
+  border-color:rgba(80,180,100,.22);
+  color:#dff5e6;
+}
+.bw-top-org-canvas{
+  width:30px;height:30px;
+  border-radius:50%;
+  display:block;
+  flex-shrink:0;
+}
+.bw-top-org-info{
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  line-height:1.05;
+  gap:.05rem;
+}
+.bw-top-org-info strong{
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.01em;
+}
+.bw-top-org-info small{
+  font-size:.66rem;
+  font-weight:600;
+  color:var(--muted);
+  letter-spacing:.03em;
+}
+.bw-top-org .bw-capsule-badge{margin-left:.1rem}
+
+/* Mobile (≤768px): mostrar solo el blob, sin texto */
+@media (max-width: 768px){
+  .bw-top-org{padding:.28rem .42rem .28rem .3rem}
+  .bw-top-org-info{display:none}
+}
+
+/* ─── Overlay full-screen de evolución ─── */
+.bw-evolve-overlay{
+  position:fixed;
+  inset:0;
+  z-index:850;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:1.2rem;
+  padding:2rem 1.5rem;
+  background:radial-gradient(circle at center, rgba(8,22,14,.96), rgba(3,12,7,.99));
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  color:#eafff0;
+  text-align:center;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.bw-evolve-overlay.show{display:flex;opacity:1}
+.bw-evolve-canvas{
+  width:min(320px, 70vw);
+  height:min(320px, 70vw);
+  display:block;
+  filter:drop-shadow(0 0 60px rgba(47,139,77,.5));
+  animation:bwEvolveBreath 1.6s ease-in-out infinite;
+}
+@keyframes bwEvolveBreath{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.04)}
+}
+.bw-evolve-title{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;
+  font-size:clamp(1.5rem, 1rem + 2.5vw, 2.6rem);
+  margin:0;
+  background:linear-gradient(135deg, #6dd99f, #fff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  letter-spacing:-.01em;
+  animation:bwEvolveTitleIn .8s ease forwards;
+}
+@keyframes bwEvolveTitleIn{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.bw-evolve-subtitle{
+  font-size:1rem;
+  color:rgba(208,237,216,.86);
+  margin:0;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+.bw-evolve-stages{
+  display:inline-flex;
+  align-items:center;
+  gap:.8rem;
+  padding:.55rem 1rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  font-weight:600;
+  font-size:.85rem;
+  letter-spacing:.02em;
+  backdrop-filter:blur(8px);
+}
+.bw-evolve-stages .bw-from{opacity:.7}
+.bw-evolve-stages .bw-arrow-evo{
+  color:var(--green);
+  font-size:1rem;
+  animation:bwEvolveArrow 1.4s ease-in-out infinite;
+}
+@keyframes bwEvolveArrow{
+  0%,100%{transform:translateX(0);opacity:.7}
+  50%{transform:translateX(4px);opacity:1}
+}
+.bw-evolve-close{
+  margin-top:.4rem;
+  padding:.6rem 1.4rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--green), #3ba85c);
+  color:#fff;
+  border:none;
+  font-weight:700;
+  font-size:.9rem;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(47,139,77,.4);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-evolve-close:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(47,139,77,.5)}
+
+/* Confeti/burst de partículas (canvas dedicado) */
+.bw-evolve-burst{
+  position:absolute;inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* ─── Settings del organismo (esquina inferior del cosmos) ─── */
+.bw-org-settings{
+  position:absolute;
+  z-index:3;
+  bottom:1.1rem;
+  right:1.4rem;
+  padding:.5rem .9rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  color:#eafff0;
+  font-weight:600;
+  font-size:.78rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:background .25s ease, transform .2s ease;
+}
+.bw-org-settings:hover{background:rgba(255,255,255,.13);transform:translateY(-1px)}
+.bw-org-settings-pop{
+  position:absolute;
+  z-index:3;
+  bottom:4rem;
+  right:1.4rem;
+  padding:.9rem 1rem 1rem;
+  border-radius:18px;
+  background:rgba(8,22,14,.92);
+  border:1px solid rgba(80,180,100,.22);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 16px 40px rgba(0,0,0,.5);
+  color:#eafff0;
+  min-width:220px;
+  transform-origin:bottom right;
+  transform:scale(.96);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease, transform .22s ease;
+}
+.bw-org-settings-pop.show{transform:scale(1);opacity:1;pointer-events:auto}
+.bw-org-settings-pop strong{
+  display:block;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:rgba(208,237,216,.78);
+  margin-bottom:.6rem;
+}
+.bw-color-row{
+  display:flex;
+  gap:.55rem;
+  margin-bottom:.6rem;
+}
+.bw-color{
+  width:36px;height:36px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.2);
+  cursor:pointer;
+  transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  padding:0;
+}
+.bw-color:hover{transform:scale(1.1)}
+.bw-color.active{
+  border-color:#fff;
+  box-shadow:0 0 0 3px rgba(255,255,255,.2), 0 6px 16px rgba(0,0,0,.4);
+}
+.bw-color-green{background:radial-gradient(circle at 35% 30%, #6dd99f, #2f8b4d 70%)}
+.bw-color-blue{background:radial-gradient(circle at 35% 30%, #7cc6ff, #2b6ea3 70%)}
+.bw-color-golden{background:radial-gradient(circle at 35% 30%, #ffd86b, #c89a12 70%)}
+.bw-org-settings-pop small{
+  display:block;
+  font-size:.72rem;
+  color:rgba(208,237,216,.62);
+  line-height:1.35;
+}
+
+/* Mobile: settings se mueve para no chocar con scroll hint */
+@media (max-width: 768px){
+  .bw-org-settings{bottom:.7rem;right:.8rem;font-size:.72rem;padding:.4rem .75rem}
+  .bw-org-settings-pop{bottom:3.4rem;right:.8rem;min-width:180px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-evolve-canvas,
+  .bw-evolve-stages .bw-arrow-evo,
+  .bw-evolve-title{animation:none!important}
+  .bw-evolve-overlay{transition:none}
+}
+
+/* ═══ Fin Biocosmos F2 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F3 — Descubrimientos + Cápsulas (respeta P1/P2/P3)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Badge de parcial en regiones del cosmos */
+.bw-parcial-badge{
+  display:inline-block;
+  padding:.08rem .4rem;
+  border-radius:999px;
+  font-size:.62rem;
+  font-weight:800;
+  letter-spacing:.06em;
+  border:1px solid currentColor;
+  margin-left:.3rem;
+  vertical-align:middle;
+}
+.bw-parcial-badge.p1{ color:#7cc6ff }
+.bw-parcial-badge.p2{ color:#fbbf24 }
+.bw-parcial-badge.p3{ color:#fb923c }
+
+/* Botón flotante "cápsulas pendientes" sobre el cosmos */
+.bw-caps-btn{
+  position:absolute;
+  z-index:3;
+  top:1.1rem;
+  right:1.4rem;
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.5rem .85rem .5rem .7rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(255,138,0,.18), rgba(255,138,0,.05));
+  border:1px solid rgba(255,203,107,.45);
+  color:#ffe4b5;
+  font-weight:700;
+  font-size:.82rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 24px rgba(255,138,0,.25);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-caps-btn.show{display:inline-flex}
+.bw-caps-btn:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(255,138,0,.45)}
+.bw-caps-btn .bw-caps-icon{font-size:1.05rem}
+.bw-caps-btn .bw-caps-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 .3rem;
+  border-radius:999px;
+  background:linear-gradient(135deg,#ffcb6b,#ff8a00);
+  color:#1a0e00;font-size:.66rem;font-weight:800;
+  animation:bwCapsulePulse 1.6s ease-in-out infinite;
+}
+
+/* Modal de cápsulas pendientes (lista compacta) */
+.bw-caps-modal{
+  position:fixed;
+  inset:0;
+  z-index:870;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:2rem 1rem;
+  background:rgba(3,12,7,.84);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.bw-caps-modal.show{display:flex;opacity:1}
+.bw-caps-panel{
+  width:min(560px, 96vw);
+  max-height:80vh;
+  overflow-y:auto;
+  padding:1.6rem 1.6rem 1.4rem;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(13,31,19,.95), rgba(8,22,14,.98));
+  border:1px solid rgba(80,180,100,.22);
+  color:#eafff0;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+  transform:translateY(20px) scale(.98);
+  opacity:0;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), opacity .3s ease;
+}
+.bw-caps-modal.show .bw-caps-panel{transform:translateY(0) scale(1);opacity:1}
+.bw-caps-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.9rem;
+}
+.bw-caps-head h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;font-size:1.3rem;margin:0;
+  background:linear-gradient(135deg, #ffd86b, #ff8a00);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.bw-caps-close{
+  background:transparent;border:none;color:rgba(208,237,216,.75);
+  font-size:1.5rem;cursor:pointer;padding:.2rem .5rem;
+  border-radius:8px;transition:background .2s ease, color .2s ease;
+}
+.bw-caps-close:hover{background:rgba(255,255,255,.08);color:#eafff0}
+.bw-caps-subtitle{
+  font-size:.84rem;color:rgba(208,237,216,.78);
+  margin:0 0 1rem;
+}
+.bw-caps-grid{
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+}
+.bw-caps-item{
+  display:flex;align-items:center;gap:.85rem;
+  padding:.85rem 1rem;
+  border-radius:18px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  transition:background .2s ease, transform .2s ease, border-color .2s ease;
+  text-align:left;
+}
+.bw-caps-item:hover{
+  background:rgba(255,138,0,.12);
+  border-color:rgba(255,203,107,.4);
+  transform:translateY(-1px);
+}
+.bw-caps-orb-mini{
+  width:46px;height:46px;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #ffe4b5, #ff8a00 65%);
+  box-shadow:0 0 18px rgba(255,138,0,.55), inset 0 -3px 8px rgba(0,0,0,.3);
+  flex-shrink:0;
+  animation:bwOrbRot 8s linear infinite;
+}
+.bw-caps-orb-mini.r-raro{   background:radial-gradient(circle at 32% 28%, #c9b6ff, #6d4cd9 65%);box-shadow:0 0 18px rgba(109,76,217,.55), inset 0 -3px 8px rgba(0,0,0,.3)}
+.bw-caps-orb-mini.r-epico{  background:radial-gradient(circle at 32% 28%, #ff9bff, #b026d6 65%);box-shadow:0 0 22px rgba(176,38,214,.65), inset 0 -3px 8px rgba(0,0,0,.3)}
+.bw-caps-orb-mini.r-legend{ background:radial-gradient(circle at 32% 28%, #fff79b, #ffba12 65%);box-shadow:0 0 26px rgba(255,186,18,.75), inset 0 -3px 8px rgba(0,0,0,.3)}
+@keyframes bwOrbRot{ to { transform:rotate(360deg) } }
+.bw-caps-item-info{flex:1;min-width:0}
+.bw-caps-item-info strong{font-size:.92rem;font-weight:700}
+.bw-caps-item-info small{
+  display:block;
+  font-size:.74rem;font-weight:600;
+  color:rgba(208,237,216,.72);
+  margin-top:.15rem;
+  letter-spacing:.03em;
+}
+.bw-caps-item .bw-rarity-pill{
+  font-size:.66rem;font-weight:800;
+  padding:.18rem .55rem;border-radius:999px;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.bw-rarity-comun{ background:rgba(180,200,180,.18);color:#cce0d0;border:1px solid rgba(180,200,180,.25) }
+.bw-rarity-raro{ background:rgba(109,76,217,.22);color:#c9b6ff;border:1px solid rgba(109,76,217,.4) }
+.bw-rarity-epico{ background:rgba(176,38,214,.22);color:#ff9bff;border:1px solid rgba(176,38,214,.45) }
+.bw-rarity-legend{ background:rgba(255,186,18,.22);color:#fff79b;border:1px solid rgba(255,186,18,.5) }
+.bw-caps-empty{
+  text-align:center;
+  padding:2.5rem 1rem;
+  color:rgba(208,237,216,.62);
+  font-size:.88rem;
+}
+.bw-caps-empty .bw-caps-empty-icon{
+  font-size:2.4rem;
+  margin-bottom:.5rem;
+  opacity:.5;
+}
+
+/* ─── Modal de APERTURA de cápsula ─── */
+.bw-open-modal{
+  position:fixed;
+  inset:0;
+  z-index:880;
+  display:none;
+  align-items:center;justify-content:center;
+  flex-direction:column;gap:1.2rem;
+  padding:2rem 1.5rem;
+  background:radial-gradient(circle at center, rgba(8,22,14,.96), rgba(3,12,7,.99));
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  color:#eafff0;
+  text-align:center;
+  opacity:0;
+  transition:opacity .35s ease;
+}
+.bw-open-modal.show{display:flex;opacity:1}
+
+/* Estado 1: cápsula cerrada girando */
+.bw-open-stage-closed,
+.bw-open-stage-opened{
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .45s ease;
+  position:absolute;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:2rem 1rem;
+}
+.bw-open-stage-closed.active,
+.bw-open-stage-opened.active{
+  display:flex;
+  opacity:1;
+  pointer-events:auto;
+}
+
+.bw-orb-big{
+  width:min(220px, 50vw);
+  height:min(220px, 50vw);
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #ffe4b5, #ff8a00 60%);
+  box-shadow:
+    0 0 60px rgba(255,138,0,.5),
+    0 0 120px rgba(255,138,0,.25),
+    inset 0 -10px 28px rgba(0,0,0,.35);
+  animation:bwOrbBigRot 9s linear infinite, bwOrbBigBreath 2.4s ease-in-out infinite;
+  position:relative;
+}
+.bw-orb-big.r-raro{
+  background:radial-gradient(circle at 32% 28%, #c9b6ff, #6d4cd9 60%);
+  box-shadow:0 0 60px rgba(109,76,217,.55), 0 0 120px rgba(109,76,217,.3), inset 0 -10px 28px rgba(0,0,0,.35);
+}
+.bw-orb-big.r-epico{
+  background:radial-gradient(circle at 32% 28%, #ff9bff, #b026d6 60%);
+  box-shadow:0 0 70px rgba(176,38,214,.65), 0 0 140px rgba(176,38,214,.35), inset 0 -10px 28px rgba(0,0,0,.35);
+}
+.bw-orb-big.r-legend{
+  background:radial-gradient(circle at 32% 28%, #fff79b, #ffba12 60%);
+  box-shadow:0 0 80px rgba(255,186,18,.75), 0 0 160px rgba(255,186,18,.4), inset 0 -10px 28px rgba(0,0,0,.35);
+}
+@keyframes bwOrbBigRot{ to { transform:rotate(360deg) } }
+@keyframes bwOrbBigBreath{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.04)}
+}
+.bw-orb-big.breaking{
+  animation:bwOrbBigBreak 1.1s ease forwards;
+}
+@keyframes bwOrbBigBreak{
+  0%{transform:scale(1) rotate(0);filter:brightness(1)}
+  35%{transform:scale(1.2) rotate(60deg);filter:brightness(1.6)}
+  70%{transform:scale(1.6) rotate(180deg);filter:brightness(2.5);opacity:.5}
+  100%{transform:scale(2.6) rotate(360deg);filter:brightness(3);opacity:0}
+}
+
+.bw-open-rarity{
+  font-size:.85rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.4rem 1rem;border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+}
+.bw-open-source{
+  font-size:.78rem;
+  color:rgba(208,237,216,.7);
+  font-weight:500;
+}
+.bw-open-cta{
+  margin-top:.6rem;
+  padding:.75rem 1.6rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--green), #3ba85c);
+  color:#fff;border:none;
+  font-weight:700;font-size:.95rem;
+  cursor:pointer;
+  box-shadow:0 14px 32px rgba(47,139,77,.4);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-open-cta:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(47,139,77,.55)}
+
+/* Estado 2: descubrimiento revelado */
+.bw-discovery-art{
+  width:min(180px, 42vw);
+  height:min(180px, 42vw);
+  display:block;
+  filter:drop-shadow(0 0 40px rgba(47,139,77,.5));
+  animation:bwDiscFloat 4s ease-in-out infinite;
+}
+@keyframes bwDiscFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.bw-discovery-name{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;
+  font-size:clamp(1.3rem, 1rem + 2vw, 2.2rem);
+  margin:0;
+  background:linear-gradient(135deg, #6dd99f, #fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:bwDiscNameIn .8s ease forwards;
+  opacity:0;
+}
+@keyframes bwDiscNameIn{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.bw-discovery-meta{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.82rem;
+  color:rgba(208,237,216,.86);
+  font-weight:600;
+}
+.bw-discovery-meta .bw-disc-type{
+  text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;
+  padding:.18rem .55rem;border-radius:999px;
+  background:rgba(47,139,77,.18);border:1px solid rgba(80,180,100,.3);
+}
+.bw-discovery-context{
+  max-width:min(520px, 92vw);
+  font-size:.92rem;line-height:1.55;
+  color:rgba(208,237,216,.88);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:.95rem 1.1rem;
+  animation:bwDiscNameIn .9s .2s ease forwards;
+  opacity:0;
+}
+.bw-discovery-actions{
+  display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;
+}
+
+/* Burst de la apertura (canvas dedicado) */
+.bw-open-burst{
+  position:absolute;inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .bw-caps-btn{top:.7rem;right:.8rem;font-size:.76rem;padding:.42rem .75rem}
+  .bw-caps-panel{padding:1.2rem 1.1rem}
+  .bw-caps-head h2{font-size:1.15rem}
+  .bw-caps-orb-mini{width:38px;height:38px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-caps-orb-mini,
+  .bw-orb-big,
+  .bw-discovery-art,
+  .bw-discovery-name,
+  .bw-discovery-context{animation:none!important}
+  .bw-open-modal,
+  .bw-caps-modal{transition:none}
+}
+
+/* ═══ Fin Biocosmos F3 ═══ */
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -3551,6 +4156,15 @@ window.Analytics = (function(){
       <input type="text" id="searchInput" placeholder="🔍 Buscar…" style="width:clamp(80px,20vw,140px);padding:.45rem .8rem;font-size:.8rem" oninput="A.search(this.value)" autocomplete="off">
       <div id="searchDrop" style="position:absolute;top:110%;right:0;width:340px;background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);z-index:200;display:none;max-height:400px;overflow-y:auto;padding:.5rem"></div>
     </div>
+    <!-- ═══ BIOCOSMOS F2: mini-organismo en topbar (siempre visible al estar logueado) ═══ -->
+    <button id="bwTopOrgBtn" class="bw-top-org" type="button" title="Volver a tu Biocosmos">
+      <canvas id="bwTopOrgCanvas" class="bw-top-org-canvas" aria-hidden="true"></canvas>
+      <span class="bw-top-org-info">
+        <strong id="bwTopOrgStage">Microbio</strong>
+        <small id="bwTopOrgXp">0 XP</small>
+      </span>
+      <span id="bwTopCapBadge" class="bw-capsule-badge" style="display:none">0</span>
+    </button>
     <button class="btn" id="adminBtn" onclick="A.openAdmin()" style="display:none" title="Panel de administración">⚙️ Admin</button>
     <a href="/workspace" id="workspaceBtn" style="display:none;text-decoration:none"><button class="btn" title="Workspace interno" style="background:var(--green);color:#fff;gap:.35rem">🗂 Workspace</button></a>
     <button class="btn danger" id="logoutBtn" onclick="A.doLogout()" style="display:none">Cerrar sesión</button>
@@ -3623,7 +4237,82 @@ window.Analytics = (function(){
     <div class="bw-loading-spinner"></div>
     <div>Despertando el Biocosmos…</div>
   </div>
+
+  <!-- ═══ F3: Botón flotante "cápsulas pendientes" (esquina superior derecha) ═══ -->
+  <button class="bw-caps-btn" id="bwCapsBtn" type="button" title="Cápsulas pendientes">
+    <span class="bw-caps-icon">🔬</span>
+    <span>Cápsulas pendientes</span>
+    <span class="bw-caps-count" id="bwCapsBtnCount">0</span>
+  </button>
+
+  <!-- ═══ F2: Personalización del organismo (esquina inferior derecha) ═══ -->
+  <button class="bw-org-settings" id="bwOrgSettingsBtn" type="button" aria-haspopup="true" aria-expanded="false">
+    ⚙ Tu organismo
+  </button>
+  <div class="bw-org-settings-pop" id="bwOrgSettingsPop" role="dialog" aria-label="Personalizar organismo">
+    <strong>Color del organismo</strong>
+    <div class="bw-color-row" id="bwColorRow">
+      <button class="bw-color bw-color-green active" data-color="green" type="button" title="Verde — clásico" aria-label="Color verde"></button>
+      <button class="bw-color bw-color-blue" data-color="blue" type="button" title="Azul — investigador" aria-label="Color azul"></button>
+      <button class="bw-color bw-color-golden" data-color="golden" type="button" title="Dorado — raro" aria-label="Color dorado"></button>
+    </div>
+    <small>Los tres colores están disponibles desde el inicio. Más rasgos cosméticos se desbloquean con hitos académicos.</small>
+  </div>
 </section>
+
+<!-- ═══ BIOCOSMOS F3: Modal de cápsulas pendientes ═══ -->
+<div id="bwCapsModal" class="bw-caps-modal" role="dialog" aria-modal="true" aria-labelledby="bwCapsModalTitle" aria-hidden="true">
+  <div class="bw-caps-panel">
+    <div class="bw-caps-head">
+      <h2 id="bwCapsModalTitle">🔬 Cápsulas pendientes</h2>
+      <button class="bw-caps-close" id="bwCapsModalClose" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="bw-caps-subtitle" id="bwCapsModalSubtitle">Tocá una cápsula para abrirla y revelar tu descubrimiento.</p>
+    <div class="bw-caps-grid" id="bwCapsModalGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ BIOCOSMOS F3: Modal de APERTURA de cápsula + reveal ═══ -->
+<div id="bwOpenModal" class="bw-open-modal" role="dialog" aria-modal="true" aria-labelledby="bwOpenName" aria-hidden="true">
+  <canvas id="bwOpenBurst" class="bw-open-burst" aria-hidden="true"></canvas>
+
+  <!-- Estado 1: cápsula cerrada -->
+  <div id="bwOpenStageClosed" class="bw-open-stage-closed">
+    <div class="bw-orb-big" id="bwOpenOrb"></div>
+    <div class="bw-open-rarity" id="bwOpenRarity">Común</div>
+    <div class="bw-open-source" id="bwOpenSource">Obtenida tras un simulacro</div>
+    <button class="bw-open-cta" id="bwOpenBreakBtn" type="button">Abrir muestra</button>
+  </div>
+
+  <!-- Estado 2: descubrimiento revelado -->
+  <div id="bwOpenStageOpened" class="bw-open-stage-opened">
+    <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+    <h2 id="bwDiscName" class="bw-discovery-name">…</h2>
+    <div class="bw-discovery-meta">
+      <span class="bw-disc-type" id="bwDiscType">organismo</span>
+      <span id="bwDiscRegion">Región</span>
+      <span class="bw-rarity-pill" id="bwDiscRarity">común</span>
+    </div>
+    <p class="bw-discovery-context" id="bwDiscContext">…</p>
+    <div class="bw-discovery-actions">
+      <button class="bw-open-cta" id="bwOpenCollectBtn" type="button">Llevar a mi colección</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BIOCOSMOS F2: Overlay full-screen de evolución del organismo ═══ -->
+<div id="bwEvolveOverlay" class="bw-evolve-overlay" role="dialog" aria-modal="true" aria-labelledby="bwEvolveTitle" aria-hidden="true">
+  <canvas id="bwEvolveBurst" class="bw-evolve-burst" aria-hidden="true"></canvas>
+  <canvas id="bwEvolveCanvas" class="bw-evolve-canvas" aria-hidden="true"></canvas>
+  <h2 id="bwEvolveTitle" class="bw-evolve-title">¡Has evolucionado!</h2>
+  <p id="bwEvolveSubtitle" class="bw-evolve-subtitle">Tu organismo alcanzó una nueva etapa.</p>
+  <div class="bw-evolve-stages">
+    <span class="bw-from" id="bwEvolveFrom">Microbio</span>
+    <span class="bw-arrow-evo">→</span>
+    <span id="bwEvolveTo">Protocélula</span>
+  </div>
+  <button class="bw-evolve-close" id="bwEvolveClose" type="button">Continuar explorando</button>
+</div>
 
 <main class="container hero">
 
@@ -6576,6 +7265,7 @@ window.Analytics = (function(){
           <button class="btn primary" onclick="A.startSim('all')">⚡ Mezclado P2</button>
           <button class="btn" onclick="A.startSim('gen')">🧬 Genética</button>
           <button class="btn" onclick="A.startSim('evo')">🌿 Evolución</button>
+          <button class="btn" onclick="A.startSim('biot')">🧫 Biotecnología</button>
           <button class="btn" onclick="A.startSim('ori')">🌍 Origen y Diversidad</button>
         </div>
       </div>
@@ -7547,7 +8237,27 @@ const E23Q = [
   {q:'¿Cuál organismo es un ejemplo clásico de protista parásito causante de enfermedad en humanos?',ops:['A) Aspergillus niger (hongo)','B) Plasmodium falciparum (causante de malaria)','C) Staphylococcus aureus (bacteria)','D) Taenia solium (platelminto)'],a:1,exp:'Plasmodium falciparum (apicomplejo protista) es transmitido por el mosquito Anopheles y causa la malaria, una de las enfermedades infecciosas más mortales.',theme:'ori'},
   {q:'La diferencia principal entre angiospermas y gimnospermas es:',ops:['A) Las angiospermas no tienen semillas','B) Las angiospermas tienen flores y semillas encerradas en frutos; las gimnospermas tienen semillas desnudas','C) Las gimnospermas tienen flores grandes y vistosas','D) Las angiospermas son más antiguas evolutivamente'],a:1,exp:'Angiospermas: flores, polinización frecuente por animales, semillas en frutos (protegen y dispersan). Gimnospermas: conos, semillas expuestas (desnudas).',theme:'ori'},
   {q:'Los hongos Ascomycota (ascomicetos) incluyen:',ops:['A) Solo champiñones venenosos','B) Levaduras (Saccharomyces), mohos (Penicillium, Aspergillus) y trufas','C) Solo hongos de la roya de cereales','D) Todos los líquenes exclusivamente'],a:1,exp:'Ascomycota es el filo fúngico más diverso: levaduras (fermentación), Penicillium (antibiótico), Aspergillus (fermentación, micotoxinas), trufas y morillas.',theme:'ori'},
-  {q:'¿Cuál campo de la biología reconstruye las relaciones evolutivas usando datos moleculares, morfológicos y paleontológicos?',ops:['A) Taxonomía clásica','B) Ecología de comunidades','C) Sistemática filogenética','D) Fisiología comparada'],a:2,exp:'La sistemática filogenética integra caracteres morfológicos, secuencias de ADN/ARN y datos fósiles para inferir árboles evolutivos (cladogramas/filogramas) con métodos estadísticos.',theme:'ori'}
+  {q:'¿Cuál campo de la biología reconstruye las relaciones evolutivas usando datos moleculares, morfológicos y paleontológicos?',ops:['A) Taxonomía clásica','B) Ecología de comunidades','C) Sistemática filogenética','D) Fisiología comparada'],a:2,exp:'La sistemática filogenética integra caracteres morfológicos, secuencias de ADN/ARN y datos fósiles para inferir árboles evolutivos (cladogramas/filogramas) con métodos estadísticos.',theme:'ori'},
+
+  // ═══ P2 — Tema 4.8 Biotecnología (banco propio creado a partir del resumen real) ═══
+  {q:'¿Cuál es la definición correcta de biotecnología?',ops:['A) Estudio de los seres vivos solo en laboratorio','B) Uso de organismos, células o moléculas biológicas para producir alimentos, medicamentos y otros bienes','C) Disciplina exclusivamente médica que cura enfermedades genéticas','D) Producción de organismos sintéticos completamente artificiales'],a:1,exp:'Biotecnología = aplicación de organismos vivos, sus partes o productos para generar bienes útiles. Abarca desde la antigua (pan, cerveza, fermentación) hasta la moderna (ingeniería genética).',theme:'biot'},
+  {q:'¿Cuál es un ejemplo de biotecnología antigua?',ops:['A) Edición genética con CRISPR-Cas9','B) Uso de levaduras para hacer pan, cerveza y vino','C) Clonación molecular en plásmidos','D) Producción de insulina humana en bacterias'],a:1,exp:'La biotecnología antigua incluye fermentación con levaduras (pan, cerveza, vino) y reproducción selectiva de plantas y animales — todo SIN ingeniería genética directa.',theme:'biot'},
+  {q:'¿Qué es el ADN recombinante?',ops:['A) ADN copiado por PCR','B) ADN que contiene genes o partes de genes de dos o más organismos','C) Cualquier ADN mutado','D) ADN sintetizado químicamente en laboratorio'],a:1,exp:'ADN recombinante es ADN combinado a partir de dos o más fuentes (organismos). Es la base de la biotecnología moderna. Ojo: mutaciones espontáneas NO son ADN recombinante.',theme:'biot'},
+  {q:'¿Cuál es la función de las enzimas de restricción?',ops:['A) Sintetizar nuevas hebras de ADN','B) Unir fragmentos de ADN','C) Cortar el ADN en secuencias específicas','D) Amplificar segmentos de ADN'],a:2,exp:'Las enzimas de restricción cortan el ADN en sitios de reconocimiento específicos. Algunas dejan "extremos pegajosos" (cohesivos) que facilitan luego la unión con otros fragmentos.',theme:'biot'},
+  {q:'En ingeniería genética, ¿qué hace la ADN ligasa?',ops:['A) Corta el ADN en sitios específicos','B) Une (sella) fragmentos de ADN','C) Replica el ADN durante la división celular','D) Separa las dos hebras del ADN'],a:1,exp:'La ADN ligasa une covalentemente fragmentos de ADN. Es complementaria a las enzimas de restricción: una corta, la otra sella. Esencial para construir ADN recombinante.',theme:'biot'},
+  {q:'¿Para qué se utiliza la PCR (Reacción en Cadena de la Polimerasa)?',ops:['A) Para destruir secuencias de ADN no deseadas','B) Para amplificar (producir muchas copias) de un segmento específico de ADN','C) Para traducir ARN en proteínas','D) Para silenciar la expresión de un gen'],a:1,exp:'La PCR amplifica un segmento de ADN, produciendo hasta miles de millones de copias. NO modifica el ADN — solo lo copia. Aplicaciones: forense, diagnóstico, clonación, transgénicos.',theme:'biot'},
+  {q:'¿Cuál es un ERROR común sobre la PCR?',ops:['A) Que amplifica ADN','B) Que produce muchas copias','C) Que MODIFICA el ADN','D) Que se usa en análisis forenses'],a:2,exp:'Error frecuente: confundir amplificar con modificar. La PCR copia el ADN tal cual; no edita ni cambia su secuencia. Para editar, se usan otras herramientas como CRISPR-Cas9.',theme:'biot'},
+  {q:'¿Qué técnica separa fragmentos de ADN según su tamaño aplicando un campo eléctrico?',ops:['A) PCR','B) Cromatografía','C) Electroforesis en gel','D) Microscopía electrónica'],a:2,exp:'La electroforesis en gel separa fragmentos de ADN por tamaño: los pequeños migran más rápido a través del gel hacia el polo positivo. Permite analizar el resultado de cortes y amplificaciones.',theme:'biot'},
+  {q:'¿Qué son los STR (Short Tandem Repeats) y dónde se usan principalmente?',ops:['A) Genes que codifican enzimas digestivas; uso médico','B) Secuencias cortas repetidas dispersas por el genoma; identificación forense','C) Tipos de proteínas reguladoras; uso agrícola','D) Plásmidos bacterianos; clonación molecular'],a:1,exp:'Los STR son secuencias repetidas en tándem cuyo número varía entre individuos. Combinando varios STR se obtiene una "huella genética" única, usada en pruebas forenses y de paternidad.',theme:'biot'},
+  {q:'¿Cuál es la función de una sonda de ADN?',ops:['A) Cortar el ADN en sitios específicos','B) Detectar la presencia de una secuencia diana por hibridación','C) Sintetizar nuevos fragmentos de ADN','D) Unir fragmentos de ADN cortados'],a:1,exp:'Una sonda de ADN es un fragmento marcado complementario a una secuencia diana. Por hibridación (apareamiento de bases) la sonda se une a la secuencia buscada y la señala. Útil para detectar genes específicos.',theme:'biot'},
+  {q:'¿Qué permite hacer CRISPR-Cas9?',ops:['A) Amplificar ADN sin modificarlo','B) Separar fragmentos de ADN por tamaño','C) Edición precisa del ADN: cortar y modificar genes en sitios específicos','D) Identificar personas por su huella genética'],a:2,exp:'CRISPR-Cas9 es una herramienta de edición genética que corta el ADN en un sitio guiado por ARN (sgRNA). Permite eliminar, agregar o reemplazar genes con alta precisión.',theme:'biot'},
+  {q:'¿Qué es un OGM (organismo genéticamente modificado)?',ops:['A) Un organismo cuyas características fueron alteradas por reproducción selectiva clásica','B) Un organismo cuyo ADN ha sido modificado mediante ingeniería genética','C) Un organismo que sufrió una mutación espontánea natural','D) Un organismo híbrido obtenido por cruzamiento entre dos especies cercanas'],a:1,exp:'OGM = planta, animal o microorganismo cuyo ADN fue alterado en laboratorio mediante ingeniería genética. La reproducción selectiva NO produce OGMs; la ingeniería genética sí.',theme:'biot'},
+  {q:'¿Cuáles son los tres pasos generales para crear un OGM?',ops:['A) 1) Obtener el gen, 2) Clonar el gen, 3) Insertar el gen en el huésped','B) 1) Cortar el ADN, 2) Eliminar mutaciones, 3) Esterilizar el organismo','C) 1) Identificar la enfermedad, 2) Sintetizar la cura, 3) Vacunar','D) 1) Cruzar dos organismos, 2) Esperar la F2, 3) Seleccionar el fenotipo'],a:0,exp:'Para crear un OGM: 1) Obtener el gen deseado (aislarlo o sintetizarlo), 2) Clonarlo en un vector (ej. plásmido), 3) Insertarlo en las células del organismo huésped.',theme:'biot'},
+  {q:'¿Qué papel cumple un plásmido en la ingeniería genética?',ops:['A) Es una enzima que corta el ADN','B) Es un vector que transporta el gen de interés a una célula huésped','C) Es un tipo de ARN regulador','D) Es una proteína estructural del cromosoma'],a:1,exp:'Los plásmidos son moléculas pequeñas de ADN circular bacteriano. Se usan como vectores: se les inserta el gen deseado y se introducen en bacterias, que los replicarán produciendo muchas copias.',theme:'biot'},
+  {q:'¿Cuál es la diferencia entre clonación molecular y clonación de un organismo?',ops:['A) Son sinónimos exactos','B) La clonación molecular copia un gen en un plásmido; la clonación de organismo produce un individuo genéticamente idéntico','C) La clonación molecular requiere óvulos; la clonación de organismo no','D) La clonación molecular solo funciona en humanos'],a:1,exp:'Error común: confundirlas. Clonación molecular = copiar un gen (en un plásmido bacteriano). Clonación de organismo (como la oveja Dolly) = producir un individuo entero genéticamente idéntico a otro.',theme:'biot'},
+  {q:'Aproximadamente, ¿cuántos genes contiene el genoma humano según el Proyecto Genoma Humano?',ops:['A) Alrededor de 2.000 genes','B) Alrededor de 20.000 genes que comprenden ~2% del ADN','C) Alrededor de 200.000 genes que cubren todo el ADN','D) Más de 1.000.000 de genes'],a:1,exp:'El Proyecto Genoma Humano determinó que tenemos ~20.000 genes que codifican proteínas. Sorprendentemente, esos genes son solo ~2% del ADN total — el resto es ADN no codificante.',theme:'biot'},
+  {q:'¿Qué es la terapia génica?',ops:['A) Tratar enfermedades con fármacos diseñados por computadora','B) Insertar, eliminar o alterar genes en células del paciente para curar enfermedades','C) Cualquier terapia hormonal aplicada después de la pubertad','D) Vacunar con virus inactivados'],a:1,exp:'Terapia génica = intento de tratar enfermedades modificando los genes del paciente. Por ejemplo: reemplazar un alelo defectuoso por uno funcional para tratar trastornos genéticos hereditarios.',theme:'biot'},
+  {q:'Las plantas de algodón Bt son un ejemplo de OGM porque:',ops:['A) Fueron seleccionadas durante muchas generaciones por agricultores','B) Producen una toxina insecticida tras introducir un gen de la bacteria Bacillus thuringiensis','C) Crecen más rápido por exposición a luz artificial','D) Tienen un genoma idéntico al de las plantas silvestres'],a:1,exp:'El algodón Bt contiene un gen tomado de la bacteria Bacillus thuringiensis (Bt) que produce una proteína tóxica para insectos. Al ser ADN proveniente de otro organismo, es un OGM clásico.',theme:'biot'}
 ]
 
 const FLASHCARDS = [
@@ -22943,6 +23653,2300 @@ else bwInit()
 })()
 /* ════════════════════════════════════════════════════════════════════
    Fin Biocosmos F1
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F2 — Organismo evolutivo (visual por etapa, animación, topbar)
+   Extiende window.BW (creado en F1). No mutar variables internas de F1.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const ORG_COLORS = BW.ORG_COLORS || {
+  green:  { core:'#6dd99f', mid:'#2f8b4d', halo:'rgba(109,217,159,.55)' },
+  blue:   { core:'#7cc6ff', mid:'#2b6ea3', halo:'rgba(124,198,255,.55)' },
+  golden: { core:'#ffd86b', mid:'#c89a12', halo:'rgba(255,216,107,.55)' }
+}
+const STAGES = BW.STAGES
+
+function currentStageF2(xp){
+  let s = STAGES[0]
+  for (let i = 0; i < STAGES.length; i++){ if (xp >= STAGES[i].min) s = STAGES[i] }
+  return s
+}
+function stageIndex(id){ for (let i = 0; i < STAGES.length; i++) if (STAGES[i].id === id) return i; return 0 }
+function userXp(){ try { return (S && S.stats && S.stats.xp) || 0 } catch(_){ return 0 } }
+function userColor(){ try { return BW.state.organism.color || 'green' } catch(_){ return 'green' } }
+
+/* ────────────────────────────────────────────────
+   1) Render del organismo único por etapa
+   Override de BW.scene.drawOrganism. Cada etapa tiene
+   un visual reconocible — no solo tamaño.
+   ──────────────────────────────────────────────── */
+BW.scene.drawOrganism = function(t, x, y, alpha){
+  const ctx = this.ctx
+  if (!ctx) return
+  const colors = ORG_COLORS[userColor()] || ORG_COLORS.green
+  const xp = BW.state.organism.evolutionXp || userXp()
+  const stage = currentStageF2(xp)
+  const idx = stageIndex(stage.id)
+  const baseSize = 28 + idx * 9
+  const breath = REDUCED ? 1 : (1 + Math.sin(t * 1.2) * 0.07)
+  const size = baseSize * breath
+
+  // Halo difuso siempre presente, intensidad crece con la etapa
+  let g = ctx.createRadialGradient(x, y, 0, x, y, size * (2.6 + idx * 0.3))
+  const haloAlpha = (0.32 + idx * 0.05) * alpha
+  g.addColorStop(0, colors.halo.replace(/[\d.]+\)$/, haloAlpha.toFixed(2) + ')'))
+  g.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = g
+  ctx.beginPath(); ctx.arc(x, y, size * (2.6 + idx * 0.3), 0, Math.PI * 2); ctx.fill()
+
+  ctx.save()
+  ctx.translate(x, y)
+  if (!REDUCED) ctx.rotate(Math.sin(t * 0.25) * 0.06)
+
+  // Dispatch por etapa
+  if      (stage.id === 'microbio')     drawMicrobio(ctx, size, t, colors, alpha)
+  else if (stage.id === 'protocelula')  drawProtocelula(ctx, size, t, colors, alpha)
+  else if (stage.id === 'pluricelular') drawPluricelular(ctx, size, t, colors, alpha)
+  else if (stage.id === 'vertebrado')   drawVertebrado(ctx, size, t, colors, alpha)
+  else if (stage.id === 'investigador') drawInvestigador(ctx, size, t, colors, alpha)
+  else                                  drawMaestro(ctx, size, t, colors, alpha)
+
+  ctx.restore()
+}
+
+// ── Cuerpo base reutilizable: blob orgánico ondulado ──
+function pathBlob(size, t, segments, wobbleAmt){
+  segments = segments || 24
+  wobbleAmt = wobbleAmt == null ? 0.08 : wobbleAmt
+  const path = new Path2D()
+  for (let i = 0; i <= segments; i++){
+    const a = (i / segments) * Math.PI * 2
+    const wobble = REDUCED ? 0 : Math.sin(a * 3 + t * 1.7) * size * wobbleAmt
+    const rr = size + wobble
+    const px = Math.cos(a) * rr
+    const py = Math.sin(a) * rr
+    if (i === 0) path.moveTo(px, py); else path.lineTo(px, py)
+  }
+  path.closePath()
+  return path
+}
+
+// 1.1 Microbio — blob simple con flagelo
+function drawMicrobio(ctx, size, t, colors, alpha){
+  // Flagelo (cola ondulada detrás)
+  if (!REDUCED){
+    ctx.strokeStyle = colors.mid
+    ctx.globalAlpha = 0.55 * alpha
+    ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(-size * 0.9, 0)
+    for (let i = 0; i < 12; i++){
+      const tt = i / 11
+      const px = -size * 0.9 - tt * size * 0.9
+      const py = Math.sin(t * 6 + tt * 8) * size * 0.18
+      ctx.lineTo(px, py)
+    }
+    ctx.stroke()
+    ctx.globalAlpha = 1
+  }
+  const path = pathBlob(size, t, 22, 0.09)
+  const bg = ctx.createRadialGradient(-size*0.2, -size*0.25, 0, 0, 0, size * 1.2)
+  bg.addColorStop(0, colors.core); bg.addColorStop(1, colors.mid)
+  ctx.fillStyle = bg
+  ctx.globalAlpha = alpha; ctx.fill(path); ctx.globalAlpha = 1
+  // Brillo
+  ctx.fillStyle = `rgba(255,255,255,${0.22 * alpha})`
+  ctx.beginPath(); ctx.arc(-size*0.22, -size*0.28, size*0.22, 0, Math.PI*2); ctx.fill()
+}
+
+// 1.2 Protocélula — blob con núcleo visible y orgánulos
+function drawProtocelula(ctx, size, t, colors, alpha){
+  const path = pathBlob(size, t, 26, 0.06)
+  const bg = ctx.createRadialGradient(-size*0.2, -size*0.25, 0, 0, 0, size * 1.3)
+  bg.addColorStop(0, colors.core); bg.addColorStop(1, colors.mid)
+  ctx.fillStyle = bg; ctx.globalAlpha = alpha; ctx.fill(path); ctx.globalAlpha = 1
+  // Membrana
+  ctx.strokeStyle = `rgba(255,255,255,${0.18 * alpha})`
+  ctx.lineWidth = 1.5
+  ctx.stroke(path)
+  // Núcleo
+  ctx.fillStyle = `rgba(0,0,0,${0.32 * alpha})`
+  ctx.beginPath(); ctx.arc(0, 0, size * 0.32, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = `rgba(255,255,255,${0.4 * alpha})`
+  ctx.beginPath(); ctx.arc(-size*0.05, -size*0.05, size * 0.1, 0, Math.PI*2); ctx.fill()
+  // Orgánulos
+  for (let i = 0; i < 3; i++){
+    const a = (i / 3) * Math.PI * 2 + t * 0.4
+    const ox = Math.cos(a) * size * 0.55
+    const oy = Math.sin(a) * size * 0.55
+    ctx.fillStyle = `rgba(255,255,255,${0.32 * alpha})`
+    ctx.beginPath(); ctx.arc(ox, oy, size * 0.08, 0, Math.PI*2); ctx.fill()
+  }
+}
+
+// 1.3 Pluricelular — cluster de varias células unidas
+function drawPluricelular(ctx, size, t, colors, alpha){
+  const cells = 5
+  for (let i = 0; i < cells; i++){
+    const a = (i / cells) * Math.PI * 2 + (REDUCED ? 0 : t * 0.18)
+    const cx = Math.cos(a) * size * 0.42
+    const cy = Math.sin(a) * size * 0.42
+    const r = size * 0.55
+    ctx.save()
+    ctx.translate(cx, cy)
+    const path = pathBlob(r, t + i, 18, 0.05)
+    const bg = ctx.createRadialGradient(-r*0.2, -r*0.25, 0, 0, 0, r * 1.2)
+    bg.addColorStop(0, colors.core); bg.addColorStop(1, colors.mid)
+    ctx.fillStyle = bg; ctx.globalAlpha = 0.92 * alpha; ctx.fill(path); ctx.globalAlpha = 1
+    ctx.fillStyle = `rgba(0,0,0,${0.22 * alpha})`
+    ctx.beginPath(); ctx.arc(0, 0, r * 0.22, 0, Math.PI*2); ctx.fill()
+    ctx.restore()
+  }
+  // Núcleo central uniendo
+  ctx.fillStyle = colors.core
+  ctx.globalAlpha = 0.4 * alpha
+  ctx.beginPath(); ctx.arc(0, 0, size * 0.42, 0, Math.PI*2); ctx.fill()
+  ctx.globalAlpha = 1
+}
+
+// 1.4 Vertebrado — forma con simetría bilateral, cabeza+cola
+function drawVertebrado(ctx, size, t, colors, alpha){
+  // Cuerpo elongado
+  const len = size * 1.6
+  const wob = REDUCED ? 0 : Math.sin(t * 2) * size * 0.08
+  ctx.beginPath()
+  ctx.moveTo(-len, wob * 0.5)
+  ctx.bezierCurveTo(-len*0.5, -size*0.8 + wob, len*0.5, -size*0.9 + wob*0.7, len, wob * 0.3)
+  ctx.bezierCurveTo(len*0.5, size*0.9 + wob*0.7, -len*0.5, size*0.8 + wob, -len, wob * 0.5)
+  ctx.closePath()
+  const bg = ctx.createLinearGradient(-len, 0, len, 0)
+  bg.addColorStop(0, colors.mid); bg.addColorStop(0.5, colors.core); bg.addColorStop(1, colors.mid)
+  ctx.fillStyle = bg
+  ctx.globalAlpha = alpha; ctx.fill(); ctx.globalAlpha = 1
+  // Cabeza (más grande, lado derecho)
+  ctx.fillStyle = colors.core
+  ctx.globalAlpha = alpha
+  ctx.beginPath(); ctx.arc(len * 0.65, 0, size * 0.45, 0, Math.PI*2); ctx.fill()
+  ctx.globalAlpha = 1
+  // Ojo
+  ctx.fillStyle = '#0d1f13'
+  ctx.beginPath(); ctx.arc(len * 0.8, -size*0.1, size * 0.08, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = `rgba(255,255,255,${0.85 * alpha})`
+  ctx.beginPath(); ctx.arc(len * 0.82, -size*0.12, size * 0.025, 0, Math.PI*2); ctx.fill()
+  // Aleta dorsal
+  ctx.fillStyle = colors.mid
+  ctx.globalAlpha = 0.75 * alpha
+  ctx.beginPath()
+  ctx.moveTo(0, -size * 0.7)
+  ctx.lineTo(size * 0.2, -size * 1.1)
+  ctx.lineTo(size * 0.4, -size * 0.7)
+  ctx.closePath(); ctx.fill()
+  ctx.globalAlpha = 1
+}
+
+// 1.5 Investigador — vertebrado con halo de conocimiento y partículas orbitando
+function drawInvestigador(ctx, size, t, colors, alpha){
+  // Partículas orbitando primero (detrás)
+  if (!REDUCED){
+    for (let i = 0; i < 6; i++){
+      const a = (i / 6) * Math.PI * 2 + t * 0.5
+      const r = size * 1.7
+      const px = Math.cos(a) * r
+      const py = Math.sin(a) * r * 0.55
+      ctx.fillStyle = colors.core
+      ctx.globalAlpha = 0.7 * alpha
+      ctx.beginPath(); ctx.arc(px, py, 2.5, 0, Math.PI*2); ctx.fill()
+      ctx.globalAlpha = 1
+    }
+  }
+  drawVertebrado(ctx, size, t, colors, alpha)
+  // Anillo de halo
+  ctx.strokeStyle = colors.halo.replace(/[\d.]+\)$/, (0.42 * alpha).toFixed(2) + ')')
+  ctx.lineWidth = 1.5
+  ctx.beginPath(); ctx.ellipse(0, 0, size * 1.9, size * 1.1, 0, 0, Math.PI*2); ctx.stroke()
+}
+
+// 1.6 Maestro — aura completa, doble anillo, brillo intenso
+function drawMaestro(ctx, size, t, colors, alpha){
+  // Halo doble
+  let r = size * 2.2
+  for (let k = 0; k < 2; k++){
+    ctx.strokeStyle = colors.halo.replace(/[\d.]+\)$/, ((0.4 - k * 0.12) * alpha).toFixed(2) + ')')
+    ctx.lineWidth = 2 - k * 0.5
+    const phase = REDUCED ? 0 : Math.sin(t * 0.8 + k * 2) * size * 0.06
+    ctx.beginPath(); ctx.ellipse(0, 0, r + phase, (r + phase) * 0.62, 0, 0, Math.PI*2); ctx.stroke()
+    r *= 1.18
+  }
+  // Partículas en aura
+  if (!REDUCED){
+    for (let i = 0; i < 12; i++){
+      const a = (i / 12) * Math.PI * 2 + t * 0.35
+      const dist = size * (1.8 + Math.sin(t + i) * 0.15)
+      const px = Math.cos(a) * dist
+      const py = Math.sin(a) * dist * 0.62
+      ctx.fillStyle = colors.core
+      ctx.globalAlpha = (0.6 + Math.sin(t * 2 + i) * 0.3) * alpha
+      ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI*2); ctx.fill()
+    }
+    ctx.globalAlpha = 1
+  }
+  drawVertebrado(ctx, size, t, colors, alpha)
+  // Corona dorada sutil
+  ctx.strokeStyle = `rgba(255,216,107,${0.6 * alpha})`
+  ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(-size * 0.6, -size * 0.95)
+  ctx.lineTo(-size * 0.3, -size * 1.25)
+  ctx.lineTo(0, -size * 1.0)
+  ctx.lineTo(size * 0.3, -size * 1.25)
+  ctx.lineTo(size * 0.6, -size * 0.95)
+  ctx.stroke()
+}
+
+/* ────────────────────────────────────────────────
+   2) Sistema de evolución — modal full-screen
+   ──────────────────────────────────────────────── */
+
+let _prevStageId = null
+let _evolveTimer = 0
+let _evolveCanvasRaf = 0
+let _burstParticles = []
+
+function triggerEvolutionModal(prevId, newId){
+  const overlay = document.getElementById('bwEvolveOverlay')
+  if (!overlay) return
+  const prevStage = STAGES.find(s => s.id === prevId) || STAGES[0]
+  const newStage  = STAGES.find(s => s.id === newId)  || STAGES[STAGES.length - 1]
+  document.getElementById('bwEvolveFrom').textContent = prevStage.name
+  document.getElementById('bwEvolveTo').textContent   = newStage.name
+  document.getElementById('bwEvolveTitle').textContent = '¡Has evolucionado!'
+  document.getElementById('bwEvolveSubtitle').textContent =
+    'Tu organismo alcanzó la etapa de ' + newStage.name + '.'
+  overlay.setAttribute('aria-hidden', 'false')
+  overlay.classList.add('show')
+  startEvolveCanvas(newId)
+  startBurst()
+  // Cierre automático tras 7s si el usuario no interactúa
+  clearTimeout(_evolveTimer)
+  _evolveTimer = setTimeout(closeEvolutionModal, 7000)
+}
+
+function closeEvolutionModal(){
+  const overlay = document.getElementById('bwEvolveOverlay')
+  if (!overlay) return
+  overlay.classList.remove('show')
+  overlay.setAttribute('aria-hidden', 'true')
+  stopEvolveCanvas()
+  stopBurst()
+  clearTimeout(_evolveTimer); _evolveTimer = 0
+}
+
+function startEvolveCanvas(stageId){
+  const canvas = document.getElementById('bwEvolveCanvas')
+  if (!canvas) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const rect = canvas.getBoundingClientRect()
+  const W = Math.max(200, rect.width), H = Math.max(200, rect.height)
+  canvas.width = W * dpr; canvas.height = H * dpr
+  const ctx = canvas.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const colors = ORG_COLORS[userColor()] || ORG_COLORS.green
+  const t0 = performance.now()
+  function frame(now){
+    if (!document.getElementById('bwEvolveOverlay').classList.contains('show')) return
+    const t = (now - t0) / 1000
+    ctx.clearRect(0, 0, W, H)
+    const cx = W / 2, cy = H / 2
+    const size = Math.min(W, H) * 0.28
+    ctx.save(); ctx.translate(cx, cy); ctx.translate(-cx, -cy); ctx.restore()
+    // dibuja con el render F2
+    ctx.save()
+    ctx.translate(cx, cy)
+    // hack: reusar funciones drawXxx directamente
+    if      (stageId === 'microbio')     drawMicrobio(ctx, size, t, colors, 1)
+    else if (stageId === 'protocelula')  drawProtocelula(ctx, size, t, colors, 1)
+    else if (stageId === 'pluricelular') drawPluricelular(ctx, size, t, colors, 1)
+    else if (stageId === 'vertebrado')   drawVertebrado(ctx, size, t, colors, 1)
+    else if (stageId === 'investigador') drawInvestigador(ctx, size, t, colors, 1)
+    else                                 drawMaestro(ctx, size, t, colors, 1)
+    ctx.restore()
+    if (!REDUCED) _evolveCanvasRaf = requestAnimationFrame(frame)
+  }
+  if (REDUCED) frame(performance.now())
+  else _evolveCanvasRaf = requestAnimationFrame(frame)
+}
+function stopEvolveCanvas(){
+  if (_evolveCanvasRaf) cancelAnimationFrame(_evolveCanvasRaf)
+  _evolveCanvasRaf = 0
+}
+
+// Burst de partículas en bwEvolveBurst canvas
+let _burstRaf = 0
+function startBurst(){
+  if (REDUCED) return
+  const c = document.getElementById('bwEvolveBurst')
+  if (!c) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const W = window.innerWidth, H = window.innerHeight
+  c.width = W * dpr; c.height = H * dpr
+  c.style.width = W + 'px'; c.style.height = H + 'px'
+  const ctx = c.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const colors = ORG_COLORS[userColor()] || ORG_COLORS.green
+  const cx = W / 2, cy = H / 2
+  _burstParticles = []
+  for (let i = 0; i < 100; i++){
+    const a = Math.random() * Math.PI * 2
+    const sp = 1.5 + Math.random() * 4.5
+    _burstParticles.push({
+      x: cx, y: cy,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+      life: 1, r: 1.6 + Math.random() * 2.4,
+      color: Math.random() < 0.7 ? colors.core : colors.mid
+    })
+  }
+  const t0 = performance.now()
+  function frame(now){
+    const overlay = document.getElementById('bwEvolveOverlay')
+    if (!overlay || !overlay.classList.contains('show')) return
+    const dt = Math.min(0.05, (now - t0) / 1000 * 0.5 + 0.016)
+    ctx.clearRect(0, 0, W, H)
+    let alive = 0
+    for (let i = 0; i < _burstParticles.length; i++){
+      const p = _burstParticles[i]
+      if (p.life <= 0) continue
+      p.x += p.vx; p.y += p.vy
+      p.vx *= 0.985; p.vy *= 0.985
+      p.vy += 0.06  // gravedad suave
+      p.life -= 0.012
+      if (p.life > 0){
+        ctx.globalAlpha = Math.max(0, p.life)
+        ctx.fillStyle = p.color
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill()
+        alive++
+      }
+    }
+    ctx.globalAlpha = 1
+    if (alive > 0) _burstRaf = requestAnimationFrame(frame)
+  }
+  _burstRaf = requestAnimationFrame(frame)
+}
+function stopBurst(){
+  if (_burstRaf) cancelAnimationFrame(_burstRaf)
+  _burstRaf = 0
+  _burstParticles = []
+  const c = document.getElementById('bwEvolveBurst')
+  if (c) c.getContext('2d').clearRect(0, 0, c.width, c.height)
+}
+
+/* ────────────────────────────────────────────────
+   3) Wrappear hooks de F1 para detectar evolución
+   ──────────────────────────────────────────────── */
+function checkEvolutionAndRefresh(){
+  try {
+    const xp = userXp()
+    BW.state.organism.evolutionXp = xp
+    const newStageId = currentStageF2(xp).id
+    if (_prevStageId && _prevStageId !== newStageId){
+      // Solo disparar al SUBIR de etapa
+      if (stageIndex(newStageId) > stageIndex(_prevStageId)){
+        BW.state.organism.stage = newStageId
+        triggerEvolutionModal(_prevStageId, newStageId)
+      }
+    }
+    _prevStageId = newStageId
+    renderTopbarOrganism()
+  } catch(e){ console.warn('[BW F2] checkEvolution error:', e) }
+}
+
+const _origHook = {
+  onSimComplete:     BW.hook.onSimComplete.bind(BW.hook),
+  onMissionComplete: BW.hook.onMissionComplete.bind(BW.hook),
+  onGameComplete:    BW.hook.onGameComplete.bind(BW.hook)
+}
+BW.hook.onSimComplete     = function(p){ _origHook.onSimComplete(p);     checkEvolutionAndRefresh() }
+BW.hook.onMissionComplete = function(m){ _origHook.onMissionComplete(m); checkEvolutionAndRefresh() }
+BW.hook.onGameComplete    = function(p){ _origHook.onGameComplete(p);    checkEvolutionAndRefresh() }
+
+/* ────────────────────────────────────────────────
+   4) Mini-organismo del topbar (canvas 30x30, animado)
+   ──────────────────────────────────────────────── */
+let _topOrgRaf = 0
+function renderTopbarOrganism(){
+  try {
+    const xp = userXp()
+    const stage = currentStageF2(xp)
+    const elStage = document.getElementById('bwTopOrgStage')
+    if (elStage) elStage.textContent = stage.name
+    const elXp = document.getElementById('bwTopOrgXp')
+    if (elXp){
+      // Mostrar XP compacto y progreso a próxima etapa
+      const idx = stageIndex(stage.id)
+      const next = STAGES[idx + 1]
+      if (next){
+        const span = next.min - stage.min
+        const cur  = Math.max(0, xp - stage.min)
+        const pct  = Math.round((cur / span) * 100)
+        elXp.textContent = xp + ' XP · ' + pct + '% → ' + next.name
+      } else {
+        elXp.textContent = xp + ' XP · etapa máxima'
+      }
+    }
+    const elBadge = document.getElementById('bwTopCapBadge')
+    if (elBadge){
+      const n = (BW.state.capsulesPending || []).length
+      if (n > 0){ elBadge.style.display = 'inline-flex'; elBadge.textContent = String(n) }
+      else elBadge.style.display = 'none'
+    }
+  } catch(_){}
+}
+
+function topOrgLoop(){
+  const canvas = document.getElementById('bwTopOrgCanvas')
+  if (!canvas) { _topOrgRaf = 0; return }
+  const btn = document.getElementById('bwTopOrgBtn')
+  if (!btn || !btn.classList.contains('show')) { _topOrgRaf = 0; return }
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const W = 30, H = 30
+  if (canvas.width !== W * dpr){
+    canvas.width = W * dpr; canvas.height = H * dpr
+  }
+  const ctx = canvas.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  ctx.clearRect(0, 0, W, H)
+  const t = performance.now() / 1000
+  const colors = ORG_COLORS[userColor()] || ORG_COLORS.green
+  const xp = userXp()
+  const stage = currentStageF2(xp)
+  const idx = stageIndex(stage.id)
+  ctx.save()
+  ctx.translate(W / 2, H / 2)
+  const size = 10 + idx * 0.6
+  const breath = REDUCED ? 1 : (1 + Math.sin(t * 1.4) * 0.06)
+  const path = pathBlob(size * breath, t, 16, 0.06)
+  const bg = ctx.createRadialGradient(-size*0.3, -size*0.3, 0, 0, 0, size * 1.2)
+  bg.addColorStop(0, colors.core); bg.addColorStop(1, colors.mid)
+  ctx.fillStyle = bg
+  ctx.fill(path)
+  // Pequeño núcleo en etapas medias+
+  if (idx >= 1){
+    ctx.fillStyle = `rgba(0,0,0,0.3)`
+    ctx.beginPath(); ctx.arc(0, 0, size * 0.3, 0, Math.PI*2); ctx.fill()
+  }
+  // Halo en etapas avanzadas
+  if (idx >= 4){
+    ctx.strokeStyle = colors.halo.replace(/[\d.]+\)$/, '0.5)')
+    ctx.lineWidth = 1
+    ctx.beginPath(); ctx.arc(0, 0, size * 1.35, 0, Math.PI*2); ctx.stroke()
+  }
+  ctx.restore()
+  if (!REDUCED) _topOrgRaf = requestAnimationFrame(topOrgLoop)
+  else _topOrgRaf = 0
+}
+function startTopOrgLoop(){
+  if (_topOrgRaf) return
+  if (REDUCED) topOrgLoop()
+  else _topOrgRaf = requestAnimationFrame(topOrgLoop)
+}
+function stopTopOrgLoop(){
+  if (_topOrgRaf) cancelAnimationFrame(_topOrgRaf)
+  _topOrgRaf = 0
+}
+
+/* ────────────────────────────────────────────────
+   5) Personalización: selector de color
+   ──────────────────────────────────────────────── */
+async function setColor(color){
+  if (!ORG_COLORS[color]) return
+  try {
+    BW.state.organism.color = color
+    syncColorUI()
+    renderTopbarOrganism()
+    if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce()
+    if (typeof persistState === 'function') await persistState()
+  } catch(e){ console.warn('[BW F2] setColor error:', e) }
+}
+function syncColorUI(){
+  const row = document.getElementById('bwColorRow')
+  if (!row) return
+  const cur = userColor()
+  row.querySelectorAll('.bw-color').forEach(b => {
+    if (b.dataset.color === cur) b.classList.add('active')
+    else b.classList.remove('active')
+  })
+}
+function toggleOrgSettings(){
+  const pop = document.getElementById('bwOrgSettingsPop')
+  const btn = document.getElementById('bwOrgSettingsBtn')
+  if (!pop) return
+  const show = !pop.classList.contains('show')
+  pop.classList.toggle('show', show)
+  if (btn) btn.setAttribute('aria-expanded', show ? 'true' : 'false')
+  if (show) syncColorUI()
+}
+
+/* ────────────────────────────────────────────────
+   6) Scroll de regreso al cosmos (desde topbar)
+   ──────────────────────────────────────────────── */
+BW.scrollToCosmos = function(){
+  const sec = document.getElementById('sec-cosmos')
+  if (!sec) return
+  sec.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' })
+}
+
+/* ────────────────────────────────────────────────
+   7) Visibilidad del topbar org según auth
+   ──────────────────────────────────────────────── */
+function updateTopbarOrgVisibility(){
+  const lo = document.getElementById('logoutBtn')
+  const btn = document.getElementById('bwTopOrgBtn')
+  if (!btn) return
+  const authed = !!(lo && lo.style.display !== 'none')
+  if (authed){
+    btn.classList.add('show')
+    renderTopbarOrganism()
+    startTopOrgLoop()
+  } else {
+    btn.classList.remove('show')
+    stopTopOrgLoop()
+  }
+}
+
+/* ────────────────────────────────────────────────
+   8) Init F2
+   ──────────────────────────────────────────────── */
+function bwF2Init(){
+  try {
+    // Snapshot inicial del stage para no disparar evolución falsa en primer load
+    _prevStageId = currentStageF2(userXp()).id
+    BW.state.organism.evolutionXp = userXp()
+    if (currentStageF2(userXp()).id !== BW.state.organism.stage){
+      BW.state.organism.stage = currentStageF2(userXp()).id
+    }
+    // Topbar
+    const topBtn = document.getElementById('bwTopOrgBtn')
+    if (topBtn) topBtn.addEventListener('click', BW.scrollToCosmos)
+    // Settings cosmos
+    const settingsBtn = document.getElementById('bwOrgSettingsBtn')
+    if (settingsBtn) settingsBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleOrgSettings() })
+    const colorRow = document.getElementById('bwColorRow')
+    if (colorRow){
+      colorRow.querySelectorAll('.bw-color').forEach(b => {
+        b.addEventListener('click', () => setColor(b.dataset.color))
+      })
+    }
+    // Cierre del modal de evolución
+    const closeBtn = document.getElementById('bwEvolveClose')
+    if (closeBtn) closeBtn.addEventListener('click', closeEvolutionModal)
+    // Esc para cerrar modal de evolución
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        const ov = document.getElementById('bwEvolveOverlay')
+        if (ov && ov.classList.contains('show')) closeEvolutionModal()
+        const pop = document.getElementById('bwOrgSettingsPop')
+        if (pop && pop.classList.contains('show')) toggleOrgSettings()
+      }
+    })
+    // Cerrar popover de settings al click afuera
+    document.addEventListener('click', (e) => {
+      const pop = document.getElementById('bwOrgSettingsPop')
+      const sb = document.getElementById('bwOrgSettingsBtn')
+      if (!pop || !pop.classList.contains('show')) return
+      if (pop.contains(e.target) || (sb && sb.contains(e.target))) return
+      pop.classList.remove('show')
+      if (sb) sb.setAttribute('aria-expanded', 'false')
+    })
+    // Visibilidad inicial + watchers
+    updateTopbarOrgVisibility()
+    const lo = document.getElementById('logoutBtn')
+    if (lo) new MutationObserver(updateTopbarOrgVisibility).observe(lo, { attributes:true, attributeFilter:['style'] })
+    // Safety net
+    let ticks = 0
+    const safety = setInterval(() => {
+      updateTopbarOrgVisibility(); ticks++
+      if (ticks > 8) clearInterval(safety)
+    }, 2000)
+    // Sync color UI inicial
+    syncColorUI()
+  } catch(e){ console.warn('[BW F2] init error:', e) }
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF2Init)
+else bwF2Init()
+
+// Exponer puntos de test
+BW._triggerEvolution = triggerEvolutionModal
+BW._closeEvolution   = closeEvolutionModal
+BW._setColor         = setColor
+BW._renderTopOrg     = renderTopbarOrganism
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F2
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F3 — Descubrimientos + Cápsulas (estricto por Parcial)
+   Catálogo 100% basado en los temas reales de BioMaster:
+     P1: Biomoléculas, Célula, Metabolismo
+     P2: Genética, División celular, ADN, Evolución
+     P3: Origen vida, Clasificación, Ecología
+   Sin temas ajenos. Cada descubrimiento tiene tag de parcial y región.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ────────────────────────────────────────────────
+   Mapping región → parcial(es)
+   ──────────────────────────────────────────────── */
+const REGION_PARCIAL = {
+  celular:        ['p1'],
+  genetica:       ['p2'],
+  cientifica:     ['p2','p3'],
+  botanica:       ['p3'],
+  microbiologica: ['p3'],
+  zoologica:      ['p3'],
+  ecologica:      ['p3']
+}
+BW.REGION_PARCIAL = REGION_PARCIAL
+
+function activeParcial(){
+  try { return (typeof getActiveParcial === 'function') ? getActiveParcial() : (S && S.parcial) || 'p1' } catch(_){ return 'p1' }
+}
+
+/* ────────────────────────────────────────────────
+   CATÁLOGO — 102 descubrimientos curados
+   Basados estrictamente en el syllabus de BioMaster.
+   Estructura: { name, type, region, parcial, rarity, context, art }
+   ──────────────────────────────────────────────── */
+const CATALOG = {
+
+  /* ════════ PARCIAL 1 — Biomoléculas, Célula, Metabolismo (Temas 1-3) ════════ */
+
+  // Tema 1 — Biomoléculas (carbohidratos, lípidos, proteínas, ácidos nucleicos)
+  'glucosa':       { name:'Glucosa',         type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Monosacárido de 6 carbonos. Es el combustible principal de la respiración celular y producto inicial de la fotosíntesis.', art:'molHex' },
+  'almidon':       { name:'Almidón',         type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Polisacárido de reserva en plantas. Cadenas de glucosa unidas por enlaces α-1,4 y α-1,6.', art:'molChain' },
+  'glucogeno':     { name:'Glucógeno',       type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Polisacárido de reserva en animales, muy ramificado. Almacenado en hígado y músculo.', art:'molChain' },
+  'celulosa':      { name:'Celulosa',        type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Polisacárido estructural de la pared celular vegetal. Enlaces β-1,4 indigeribles por humanos.', art:'molChain' },
+  'quitina':       { name:'Quitina',         type:'molécula',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Polisacárido estructural del exoesqueleto de artrópodos y la pared celular de hongos.', art:'molChain' },
+  'sacarosa':      { name:'Sacarosa',        type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Disacárido formado por glucosa + fructosa. Es el azúcar de mesa.', art:'molHex' },
+  'fosfolipido':   { name:'Fosfolípido',     type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Lípido anfipático: cabeza polar (fosfato) + dos colas no polares. Forma la bicapa de las membranas.', art:'molChain' },
+  'colesterol':    { name:'Colesterol',      type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Lípido esteroide con cuatro anillos. Da fluidez a la membrana plasmática y es precursor de hormonas.', art:'molRing' },
+  'trigliceridos': { name:'Triglicérido',    type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Tres ácidos grasos unidos a una glicerina. Forma principal de almacén energético en tejido adiposo.', art:'molChain' },
+  'aminoacido':    { name:'Aminoácido',      type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Unidad monomérica de las proteínas. Grupo amino + grupo carboxilo + cadena lateral (R) variable.', art:'molRing' },
+  'hemoglobina':   { name:'Hemoglobina',     type:'molécula',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Proteína globular con cuatro subunidades y un grupo hemo cada una. Transporta O₂ en los eritrocitos.', art:'molProtein' },
+  'colageno':      { name:'Colágeno',        type:'molécula',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Proteína fibrosa con estructura de triple hélice. Es la más abundante del cuerpo humano y soporta tendones, piel y hueso.', art:'molProtein' },
+  'queratina':     { name:'Queratina',       type:'molécula',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Proteína fibrosa rica en cisteína. Forma uñas, pelo, plumas y la capa externa de la piel.', art:'molProtein' },
+  'atp':           { name:'ATP',             type:'molécula',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'Adenosín trifosfato — la moneda energética celular. Liberar el último fosfato (ATP → ADP) entrega energía utilizable.', art:'molHelix' },
+  'nadh':          { name:'NADH',            type:'molécula',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Coenzima reductora clave. Lleva electrones de alta energía a la cadena respiratoria para producir ATP.', art:'molHelix' },
+
+  // Tema 2 — Célula (estructura, organelos, membrana)
+  'membrana':      { name:'Membrana plasmática', type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Bicapa de fosfolípidos con proteínas integrales y periféricas. Selectivamente permeable: regula qué entra y sale.', art:'organMembrane' },
+  'nucleo':        { name:'Núcleo',          type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Orgánulo más grande de la célula eucariota. Contiene el ADN y dirige la síntesis de proteínas vía ARNm.', art:'organSphere' },
+  'nucleolo':      { name:'Nucléolo',        type:'estructura', region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Subregión densa dentro del núcleo donde se ensamblan las subunidades ribosómicas.', art:'organSphere' },
+  'ribosoma':      { name:'Ribosoma',        type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Complejo de ARNr + proteínas. Sintetiza proteínas leyendo el ARNm. Libres en citoplasma o fijos al RER.', art:'organSphere' },
+  'mitocondria':   { name:'Mitocondria',     type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'La "central energética": realiza la respiración celular y produce ATP. Tiene ADN propio (teoría endosimbiótica).', art:'organMito' },
+  'cloroplasto':   { name:'Cloroplasto',     type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Orgánulo exclusivo de células fotosintéticas. Contiene clorofila en los tilacoides y realiza fotosíntesis.', art:'organChloro' },
+  'rer':           { name:'Retículo Endoplasmático Rugoso', type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Red de membranas con ribosomas adheridos. Sintetiza y pliega proteínas destinadas a secreción o membranas.', art:'organMembrane' },
+  'rel':           { name:'Retículo Endoplasmático Liso', type:'estructura', region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Sin ribosomas. Sintetiza lípidos, detoxifica y almacena calcio (esencial en músculo).', art:'organMembrane' },
+  'golgi':         { name:'Aparato de Golgi', type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Pila de cisternas que modifica, empaqueta y distribuye proteínas y lípidos hacia su destino final.', art:'organMembrane' },
+  'lisosoma':      { name:'Lisosoma',        type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Vesícula con enzimas hidrolíticas que digiere restos celulares y partículas fagocitadas.', art:'organSphere' },
+  'peroxisoma':    { name:'Peroxisoma',      type:'estructura', region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Orgánulo que oxida ácidos grasos y descompone peróxido de hidrógeno con catalasa.', art:'organSphere' },
+  'vacuolaC':      { name:'Vacuola central', type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'En células vegetales ocupa hasta el 90 % del volumen. Almacena agua, iones y mantiene la turgencia.', art:'organSphere' },
+  'paredCelular':  { name:'Pared celular',   type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Capa rígida externa a la membrana. Celulosa en plantas, quitina en hongos, peptidoglicano en bacterias.', art:'organMembrane' },
+  'citoesqueleto': { name:'Citoesqueleto',   type:'estructura', region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Red de microtúbulos, microfilamentos y filamentos intermedios. Da forma, mueve orgánulos y posibilita la división.', art:'organSphere' },
+  'flagelo':       { name:'Flagelo',         type:'estructura', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Apéndice móvil con estructura 9+2 (eucariotas). Permite locomoción a espermatozoides y protistas.', art:'organMembrane' },
+
+  // Tema 3 — Metabolismo
+  'fotosintesis':  { name:'Fase luminosa',   type:'fenómeno',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'En los tilacoides: los fotosistemas II y I capturan luz, dividen H₂O y producen ATP + NADPH para el ciclo de Calvin.', art:'cycleSun' },
+  'cicloCalvin':   { name:'Ciclo de Calvin', type:'fenómeno',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Fase oscura de la fotosíntesis en el estroma del cloroplasto. Fija CO₂ usando ATP y NADPH para producir glucosa.', art:'cycleRing' },
+  'glucolisis':    { name:'Glucólisis',      type:'fenómeno',  region:'celular', parcial:'p1', rarity:'común',
+                     context:'En el citoplasma: glucosa → 2 piruvato. Ganancia neta: 2 ATP + 2 NADH. No requiere oxígeno.', art:'cycleArrow' },
+  'krebs':         { name:'Ciclo de Krebs',  type:'fenómeno',  region:'celular', parcial:'p1', rarity:'raro',
+                     context:'En la matriz mitocondrial: oxida el acetil-CoA produciendo NADH, FADH₂, ATP y CO₂. También llamado ciclo del ácido cítrico.', art:'cycleRing' },
+  'cadenaResp':    { name:'Cadena respiratoria', type:'fenómeno', region:'celular', parcial:'p1', rarity:'raro',
+                     context:'Serie de complejos en la membrana mitocondrial interna. Usa O₂ como aceptor final y produce la mayoría del ATP celular.', art:'cycleArrow' },
+  'fermLactica':   { name:'Fermentación láctica', type:'fenómeno', region:'celular', parcial:'p1', rarity:'común',
+                     context:'En ausencia de O₂, el piruvato se reduce a lactato regenerando NAD⁺. Ocurre en músculos en esfuerzo intenso.', art:'cycleArrow' },
+  'fermAlcoholica':{ name:'Fermentación alcohólica', type:'fenómeno', region:'celular', parcial:'p1', rarity:'común',
+                     context:'En levaduras: piruvato → etanol + CO₂. Base de la panificación y la industria cervecera.', art:'cycleArrow' },
+  'enzimaSus':     { name:'Complejo enzima-sustrato', type:'fenómeno', region:'celular', parcial:'p1', rarity:'común',
+                     context:'Modelo del ajuste inducido: el sustrato encaja en el sitio activo, deformándolo y catalizando la reacción.', art:'molProtein' },
+
+  /* ════════ PARCIAL 2 — Genética, División celular, ADN, Evolución (Temas 4-6.1) ════════ */
+
+  // Tema 4 — Genética
+  'aleloDom':      { name:'Alelo dominante',  type:'ley', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Variante de un gen que se expresa fenotípicamente incluso en estado heterocigoto. Se simboliza con mayúscula.', art:'lawShield' },
+  'aleloRec':      { name:'Alelo recesivo',   type:'ley', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Variante que solo se expresa en homocigosis (aa). Puede saltarse generaciones siendo portador heterocigoto.', art:'lawShield' },
+  'leySeg':        { name:'Ley de segregación', type:'ley', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Primera ley de Mendel: los dos alelos de un gen se separan al formarse los gametos. Cada gameto recibe solo uno.', art:'lawScroll' },
+  'leyDist':       { name:'Distribución independiente', type:'ley', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Segunda ley de Mendel: genes en cromosomas distintos se heredan independientemente. Cruce dihíbrido 9:3:3:1.', art:'lawScroll' },
+  'codominancia':  { name:'Codominancia',     type:'ley', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Ambos alelos se expresan simultáneamente en el heterocigoto. Ejemplo: grupo sanguíneo AB.', art:'lawShield' },
+  'domIncompleta': { name:'Dominancia incompleta', type:'ley', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'El heterocigoto muestra un fenotipo intermedio entre los dos homocigotos. Ejemplo: flor rosa de Mirabilis.', art:'lawShield' },
+  'gruposABO':     { name:'Grupos sanguíneos ABO', type:'ley', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Sistema con tres alelos (Iᴬ, Iᴮ, i). Iᴬ e Iᴮ son codominantes entre sí y dominantes sobre i.', art:'lawScroll' },
+  'pleiotropia':   { name:'Pleiotropía',      type:'ley', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Un solo gen afecta a múltiples caracteres aparentemente no relacionados. Ejemplo: anemia falciforme.', art:'lawScroll' },
+  'epistasis':     { name:'Epistasis',        type:'ley', region:'genetica', parcial:'p2', rarity:'épico',
+                     context:'Un gen enmascara o modifica la expresión de otro gen no alélico. Modifica las proporciones mendelianas clásicas.', art:'lawScroll' },
+  'mendel':        { name:'Gregor Mendel',    type:'científico', region:'genetica', parcial:'p2', rarity:'épico',
+                     context:'Monje austríaco (1822-1884). Sus experimentos con guisantes establecieron las bases de la genética moderna.', art:'scientist' },
+  'cuadroPunnett': { name:'Cuadro de Punnett', type:'hallazgo', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Tabla que predice las proporciones genotípicas y fenotípicas de la descendencia a partir de los gametos parentales.', art:'lawScroll' },
+  'daltonismo':    { name:'Daltonismo',       type:'mutación', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Herencia recesiva ligada al X. Los varones, al tener un solo X, manifiestan el rasgo con un único alelo.', art:'mutGenome' },
+  'hemofilia':     { name:'Hemofilia',        type:'mutación', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Trastorno recesivo ligado al X que afecta la coagulación. Famoso en familias reales europeas.', art:'mutGenome' },
+
+  // Tema 5 — División celular
+  'profase':       { name:'Profase',          type:'fenómeno', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Primera fase de la mitosis: la cromatina se condensa en cromosomas, la envoltura nuclear se desintegra.', art:'cycleArrow' },
+  'metafase':      { name:'Metafase',         type:'fenómeno', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Los cromosomas alineados en la placa ecuatorial. El huso mitótico los une por el cinetocoro.', art:'cycleArrow' },
+  'anafase':       { name:'Anafase',          type:'fenómeno', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Las cromátidas hermanas se separan y migran a polos opuestos por acortamiento de los microtúbulos.', art:'cycleArrow' },
+  'telofase':      { name:'Telofase',         type:'fenómeno', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Se reconstruyen las envolturas nucleares, los cromosomas se descondensan y comienza la citocinesis.', art:'cycleArrow' },
+  'meiosis':       { name:'Meiosis',          type:'fenómeno', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Dos divisiones consecutivas (I y II) que generan 4 células haploides genéticamente distintas. Origen de gametos.', art:'cycleRing' },
+  'crossingOver':  { name:'Crossing over',    type:'fenómeno', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Intercambio de fragmentos entre cromátidas no hermanas en profase I. Genera variabilidad genética.', art:'molHelix' },
+  'cariotipo':     { name:'Cariotipo',        type:'estructura', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Set completo de cromosomas de un individuo ordenados por tamaño. Humanos: 46 (23 pares).', art:'mutGenome' },
+  'trisomia21':    { name:'Trisomía 21',      type:'mutación', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Tres copias del cromosoma 21 (síndrome de Down). Aneuploidía por no disyunción meiótica.', art:'mutGenome' },
+  'klinefelter':   { name:'Síndrome de Klinefelter', type:'mutación', region:'genetica', parcial:'p2', rarity:'épico',
+                     context:'Cariotipo XXY. Varones con un cromosoma X extra. Aneuploidía de cromosomas sexuales.', art:'mutGenome' },
+  'turner':        { name:'Síndrome de Turner', type:'mutación', region:'genetica', parcial:'p2', rarity:'épico',
+                     context:'Cariotipo X0. Mujeres con un solo cromosoma X. Monosomía sexual.', art:'mutGenome' },
+
+  // Tema 5.1 — ADN
+  'dobleHelice':   { name:'Doble hélice',     type:'estructura', region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Modelo del ADN propuesto por Watson y Crick (1953) con datos clave de Rosalind Franklin (Foto 51).', art:'molHelix' },
+  'nucleotido':    { name:'Nucleótido',       type:'molécula',  region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Unidad del ADN/ARN: base nitrogenada + azúcar (desoxirribosa/ribosa) + grupo fosfato.', art:'molHex' },
+  'parAT':         { name:'Par A–T',          type:'molécula',  region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Adenina con Timina: dos puentes de hidrógeno. Más débil que el par G–C.', art:'molRing' },
+  'parGC':         { name:'Par G–C',          type:'molécula',  region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Guanina con Citosina: tres puentes de hidrógeno. Más estable; ADN rico en GC tiene mayor temperatura de fusión.', art:'molRing' },
+  'adnPol':        { name:'ADN polimerasa',   type:'molécula',  region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Enzima que sintetiza la cadena complementaria leyendo de 3\' a 5\' la hebra molde y agregando nucleótidos 5\'→3\'.', art:'molProtein' },
+  'helicasa':      { name:'Helicasa',         type:'molécula',  region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Enzima que separa las dos cadenas del ADN rompiendo los puentes de hidrógeno. Inicia la replicación.', art:'molProtein' },
+  'arnm':          { name:'ARN mensajero',    type:'molécula',  region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Copia complementaria de un gen producida por la ARN polimerasa. Viaja al ribosoma para ser traducida.', art:'molHelix' },
+  'codon':         { name:'Codón',            type:'molécula',  region:'genetica', parcial:'p2', rarity:'común',
+                     context:'Triplete de nucleótidos en el ARNm que codifica un aminoácido. Hay 64 codones para 20 aminoácidos + 3 de stop.', art:'molHex' },
+  'mutPuntual':    { name:'Mutación puntual', type:'mutación', region:'genetica', parcial:'p2', rarity:'raro',
+                     context:'Cambio en una sola base del ADN. Puede ser silenciosa, missense, nonsense o causar corrimiento de marco.', art:'mutGenome' },
+  'operonLac':     { name:'Operón lac',       type:'ley', region:'genetica', parcial:'p2', rarity:'épico',
+                     context:'Modelo clásico de regulación génica en E. coli. Lactosa induce la transcripción de genes para metabolizarla.', art:'lawScroll' },
+
+  // Tema 6 — Evolución (P2)
+  'darwin':        { name:'Charles Darwin',   type:'científico', region:'cientifica', parcial:'p2', rarity:'épico',
+                     context:'Naturalista inglés (1809-1882). Su obra "El origen de las especies" estableció la selección natural como motor evolutivo.', art:'scientist' },
+  'lamarck':       { name:'Jean-Baptiste Lamarck', type:'científico', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'Naturalista francés. Propuso (incorrectamente) la herencia de caracteres adquiridos. Pionero del transformismo.', art:'scientist' },
+  'selNatural':    { name:'Selección natural', type:'ley', region:'cientifica', parcial:'p2', rarity:'común',
+                     context:'Los individuos con variaciones favorables sobreviven y se reproducen más. La frecuencia de esas variaciones aumenta con el tiempo.', art:'lawScroll' },
+  'hardyWeinberg': { name:'Equilibrio Hardy-Weinberg', type:'ley', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'Las frecuencias alélicas se mantienen constantes generación tras generación si no hay evolución. p² + 2pq + q² = 1.', art:'lawScroll' },
+  'derivaGen':     { name:'Deriva génica',    type:'fenómeno', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'Cambios aleatorios de las frecuencias alélicas, especialmente intensos en poblaciones pequeñas.', art:'cycleArrow' },
+  'especAlo':      { name:'Especiación alopátrica', type:'fenómeno', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'Formación de nuevas especies por aislamiento geográfico de poblaciones. Modelo más frecuente.', art:'cycleArrow' },
+  'pinzonesDarwin':{ name:'Pinzones de Darwin', type:'organismo', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'15 especies de pinzones de Galápagos con picos especializados por dieta. Icono clásico de radiación adaptativa.', art:'orgFish' },
+  'mariposaMot':   { name:'Mariposa moteada', type:'organismo', region:'cientifica', parcial:'p2', rarity:'raro',
+                     context:'Biston betularia. Durante la Revolución Industrial, las formas oscuras aumentaron por selección natural en troncos hollinados.', art:'orgBug' },
+
+  /* ════════ PARCIAL 3 — Origen vida, Clasificación, Ecología (Temas 6.2-8) ════════ */
+
+  // Tema 6.2 — Origen de la vida
+  'luca':          { name:'LUCA',             type:'hallazgo', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Last Universal Common Ancestor: el último ancestro común universal de todos los organismos vivos. Existió hace ~3.500 Ma.', art:'fossil' },
+  'estromatolito': { name:'Estromatolito',    type:'fósil', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Estructura sedimentaria laminada formada por cianobacterias. Evidencia fósil más antigua de vida (~3.500 Ma).', art:'fossil' },
+  'millerUrey':    { name:'Experimento Miller-Urey', type:'hallazgo', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'1953: en un matraz con CH₄, NH₃, H₂ y H₂O sometido a descargas eléctricas, se formaron aminoácidos espontáneamente.', art:'lawScroll' },
+  'mundoARN':      { name:'Mundo de ARN',     type:'hallazgo', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Hipótesis de que el ARN precedió al ADN como material genético y catalizador (ribozimas). Pone al ARN como la primera molécula vital.', art:'molHelix' },
+  'oparin':        { name:'Alexander Oparin', type:'científico', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Bioquímico soviético. Propuso (1924) la sopa primordial: una atmósfera reductora generó las primeras biomoléculas.', art:'scientist' },
+  'margulis':      { name:'Lynn Margulis',    type:'científico', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Bióloga estadounidense. Formalizó la teoría endosimbiótica: mitocondrias y cloroplastos provienen de bacterias procariotas.', art:'scientist' },
+  'granOxidacion': { name:'Gran Oxidación',   type:'fenómeno', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Hace ~2.400 Ma, las cianobacterias liberaron tanto O₂ que alteraron la atmósfera para siempre. Extinción masiva de anaerobios.', art:'cycleSun' },
+  'coacervado':    { name:'Coacervado',       type:'estructura', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Gota microscópica de moléculas orgánicas concentradas. Modelo de Oparin de protocélula prebiótica.', art:'organSphere' },
+
+  // Tema 7 — Clasificación general
+  'linneo':        { name:'Carl Linneo',      type:'científico', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Botánico sueco (1707-1778). Creó la nomenclatura binomial (género + especie) y las jerarquías taxonómicas.', art:'scientist' },
+  'binomial':      { name:'Sistema binomial', type:'hallazgo', region:'cientifica', parcial:'p3', rarity:'común',
+                     context:'Cada especie se nombra con dos palabras en latín: género (mayúscula) + especie (minúscula), ambas en cursiva.', art:'lawScroll' },
+  'dominiosWoese': { name:'Dominios de Woese', type:'hallazgo', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'En 1977, Carl Woese propuso tres dominios basándose en el ARNr 16S: Bacteria, Archaea y Eukarya.', art:'lawScroll' },
+
+  // Tema 7 — Bacteria / Archaea / Virus (Microbiológica)
+  'bacilo':        { name:'Bacilo',           type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Bacteria de forma alargada (bastón). Pueden ser Gram positivos o negativos según la composición de su pared.', art:'orgMicrobe' },
+  'coco':          { name:'Coco',             type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Bacteria de forma esférica. Pueden agruparse en diplococos, estreptococos (cadenas) o estafilococos (racimos).', art:'orgMicrobe' },
+  'espirilo':      { name:'Espirilo',         type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Bacteria con forma helicoidal rígida. Se mueve por flagelos polares. Ejemplo clásico: Spirillum.', art:'orgMicrobe' },
+  'eColi':         { name:'Escherichia coli', type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Bacteria habitual del intestino humano. Algunas cepas son patógenas. Es el organismo modelo de la biología molecular.', art:'orgMicrobe' },
+  'lactobacilo':   { name:'Lactobacillus',    type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Bacteria Gram positiva que produce ácido láctico fermentando azúcares. Esencial en yogures y quesos.', art:'orgMicrobe' },
+  'cianobacteria': { name:'Cianobacteria',    type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Procariota fotosintética. Sus ancestros oxigenaron la atmósfera terrestre. Forman colonias filamentosas.', art:'orgMicrobe' },
+  'halofilo':      { name:'Arquea halófila',  type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Extremófilo que vive en altas concentraciones de sal. Da el color rosa a salinas y al Mar Muerto.', art:'orgMicrobe' },
+  'termofilo':     { name:'Arquea termófila', type:'organismo', region:'microbiologica', parcial:'p3', rarity:'épico',
+                     context:'Vive en fuentes hidrotermales a >80 °C. Thermus aquaticus dio la Taq polimerasa usada en PCR.', art:'orgMicrobe' },
+  'metanogeno':    { name:'Arquea metanógena', type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Anaerobio estricto que produce metano. Vive en pantanos, rumiantes y vertederos.', art:'orgMicrobe' },
+  'bacteriofago':  { name:'Bacteriófago',     type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Virus que infecta bacterias. Su estructura icosaédrica con "patas" es icónica. Útil en biotecnología y fagoterapia.', art:'orgVirus' },
+  'vih':           { name:'VIH',              type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Retrovirus envuelto que usa transcriptasa inversa. Ataca linfocitos T CD4⁺ y causa el SIDA.', art:'orgVirus' },
+  'influenza':     { name:'Virus influenza',  type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Virus ARN segmentado con envoltura. Sus proteínas H y N mutan rápido, exigiendo vacunación anual.', art:'orgVirus' },
+  'amoeba':        { name:'Amoeba',           type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Protista unicelular sin forma fija. Se mueve y captura presas extendiendo pseudópodos.', art:'orgMicrobe' },
+  'paramecio':     { name:'Paramecio',        type:'organismo', region:'microbiologica', parcial:'p3', rarity:'común',
+                     context:'Ciliado con forma de zapato. Posee dos núcleos (macro y micro) y vacuolas contráctiles para osmorregulación.', art:'orgMicrobe' },
+  'euglena':       { name:'Euglena',          type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Protista mixótrofo: tiene cloroplastos pero también puede heterotrofarse. Se desplaza con un flagelo.', art:'orgMicrobe' },
+  'plasmodium':    { name:'Plasmodium',       type:'organismo', region:'microbiologica', parcial:'p3', rarity:'raro',
+                     context:'Apicomplejo causante de la malaria. Su ciclo alterna entre el mosquito Anopheles y el ser humano.', art:'orgMicrobe' },
+
+  // Tema 7 — Fungi (en `botanica` por proximidad visual)
+  'levadura':      { name:'Levadura',         type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Hongo unicelular (Saccharomyces cerevisiae). Fermenta azúcares produciendo etanol y CO₂. Base de la panificación.', art:'orgMushroom' },
+  'moho':          { name:'Moho',             type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Hongo filamentoso con hifas visibles. Descompone materia orgánica; algunos producen toxinas (aflatoxinas).', art:'orgMushroom' },
+  'champinon':     { name:'Champiñón',        type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Hongo basidiomiceto (Agaricus). El sombrero contiene las laminillas donde se forman las basidiosporas.', art:'orgMushroom' },
+  'penicillium':   { name:'Penicillium',      type:'organismo', region:'botanica', parcial:'p3', rarity:'raro',
+                     context:'Ascomiceto descubierto por Fleming en 1928. Produce penicilina, primer antibiótico de la historia médica.', art:'orgMushroom' },
+  'amanita':       { name:'Amanita muscaria', type:'organismo', region:'botanica', parcial:'p3', rarity:'raro',
+                     context:'Hongo basidiomiceto con sombrero rojo y puntos blancos. Tóxico — contiene muscimol y ácido iboténico.', art:'orgMushroom' },
+  'liquen':        { name:'Liquen',           type:'organismo', region:'botanica', parcial:'p3', rarity:'raro',
+                     context:'Simbiosis mutualista entre un hongo y un alga (o cianobacteria). Bioindicador de calidad del aire.', art:'orgMushroom' },
+
+  // Tema 7 — Plantae (`botanica`)
+  'musgo':         { name:'Musgo',            type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Briófita: planta sin tejidos vasculares verdaderos. Depende del agua para la reproducción.', art:'orgPlant' },
+  'helecho':       { name:'Helecho',          type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Pteridófita: primer grupo vegetal con vasos conductores. Se reproduce por esporas en el envés de las frondas.', art:'orgPlant' },
+  'pino':          { name:'Pino',             type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Gimnosperma. Semillas desnudas dentro de conos (piñas). Hojas en forma de aguja resistentes al frío.', art:'orgTree' },
+  'secuoya':       { name:'Secuoya',          type:'organismo', region:'botanica', parcial:'p3', rarity:'épico',
+                     context:'Gimnosperma gigante. Sequoia sempervirens puede superar los 100 m de altura, los seres vivos más altos del planeta.', art:'orgTree' },
+  'rosa':          { name:'Rosa',             type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Angiosperma dicotiledónea. Flor con simetría radial y aroma producido por compuestos volátiles.', art:'orgFlower' },
+  'maiz':          { name:'Maíz',             type:'organismo', region:'botanica', parcial:'p3', rarity:'común',
+                     context:'Angiosperma monocotiledónea. Domesticada en Mesoamérica hace ~9.000 años a partir del teosinte.', art:'orgPlant' },
+  'cactus':        { name:'Saguaro',          type:'organismo', region:'botanica', parcial:'p3', rarity:'raro',
+                     context:'Cactácea de hasta 12 m del desierto de Sonora. Acumula agua en su tallo y abre estomas de noche (metabolismo CAM).', art:'orgPlant' },
+  'orquidea':      { name:'Orquídea',         type:'organismo', region:'botanica', parcial:'p3', rarity:'raro',
+                     context:'Angiosperma altamente especializada. Sus flores coevolucionaron con polinizadores específicos.', art:'orgFlower' },
+  'rafflesia':     { name:'Rafflesia',        type:'organismo', region:'botanica', parcial:'p3', rarity:'épico',
+                     context:'Produce la flor más grande del mundo (hasta 1 m). Parásita obligada de lianas, emite olor a carne podrida.', art:'orgFlower' },
+  'welwitschia':   { name:'Welwitschia mirabilis', type:'organismo', region:'botanica', parcial:'p3', rarity:'legendario',
+                     context:'Gimnosperma única del desierto de Namibia. Solo tiene dos hojas durante toda su vida — y vive más de 1.000 años.', art:'orgPlant' },
+
+  // Tema 7 — Animalia (`zoologica`)
+  'esponja':       { name:'Esponja',          type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Porífero. El animal más simple: sin tejidos verdaderos, filtra agua por poros (ostiolos) y la expulsa por el ósculo.', art:'orgFish' },
+  'medusa':        { name:'Medusa',           type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Cnidario en fase libre. Posee células urticantes (cnidocitos) con nematocistos para capturar presas.', art:'orgFish' },
+  'planaria':      { name:'Planaria',         type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Platelminto de vida libre. Capaz de regenerar todo su cuerpo a partir de un pequeño fragmento.', art:'orgFish' },
+  'lombriz':       { name:'Lombriz de tierra', type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Anélido oligoqueto. Hermafrodita. Mejora la estructura y aireación del suelo agrícola.', art:'orgFish' },
+  'caracol':       { name:'Caracol',          type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Molusco gasterópodo con concha calcárea espiral. Se mueve por contracciones del pie muscular.', art:'orgBug' },
+  'pulpo':         { name:'Pulpo',            type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Molusco cefalópodo. Posee tres corazones, sangre azul (hemocianina) y el cerebro más complejo entre invertebrados.', art:'orgBug' },
+  'mariposa':      { name:'Mariposa',         type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Insecto lepidóptero. Sufre metamorfosis completa: huevo → larva → pupa → adulto.', art:'orgBug' },
+  'escorpion':     { name:'Escorpión',        type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Arácnido. Quelas para captura y aguijón venenoso. Fluoresce bajo luz ultravioleta.', art:'orgBug' },
+  'tardigrado':    { name:'Tardígrado',       type:'organismo', region:'zoologica', parcial:'p3', rarity:'épico',
+                     context:'El "oso de agua". Sobrevive en vacío, radiación, deshidratación extrema y temperaturas de -270 a +150 °C.', art:'orgBug' },
+  'estrellaMar':   { name:'Estrella de mar',  type:'organismo', region:'zoologica', parcial:'p3', rarity:'común',
+                     context:'Equinodermo con simetría pentarradial. Sistema vascular acuífero impulsa sus pies ambulacrales.', art:'orgFish' },
+  'pezPayaso':     { name:'Pez payaso',       type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Vertebrado actinopterigio. Vive en mutualismo con anémonas — inmune a sus tentáculos urticantes.', art:'orgFish' },
+  'tortugaMar':    { name:'Tortuga marina',   type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Reptil quelonio. Navega cientos de kilómetros usando el campo magnético terrestre para volver a su playa natal.', art:'orgFish' },
+  'aguila':        { name:'Águila',           type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Ave rapaz con visión aguda. Su retina tiene mayor densidad de conos que la humana.', art:'orgBird' },
+  'ornitorrinco':  { name:'Ornitorrinco',     type:'organismo', region:'zoologica', parcial:'p3', rarity:'épico',
+                     context:'Mamífero monotrema: pone huevos pero amamanta. Tiene electrorrecepción en el pico. Endémico de Australia.', art:'orgFish' },
+  'ballenaAzul':   { name:'Ballena azul',     type:'organismo', region:'zoologica', parcial:'p3', rarity:'raro',
+                     context:'Mamífero cetáceo: el animal más grande que ha existido (hasta 30 m, 180 toneladas). Filtra krill con barbas.', art:'orgFish' },
+  'celacanto':     { name:'Celacanto',        type:'organismo', region:'zoologica', parcial:'p3', rarity:'legendario',
+                     context:'"Fósil viviente" sarcopterigio. Se creía extinto desde el Cretácico hasta su redescubrimiento en 1938.', art:'orgFish' },
+
+  // Tema 7 — Fósiles famosos (`cientifica` para que se asocien al estudio evolutivo)
+  'trilobite':     { name:'Trilobite',        type:'fósil', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Artrópodo marino extinto del Paleozoico. Fósil guía para datar estratos de hace 521-252 Ma.', art:'fossil' },
+  'ammonites':     { name:'Ammonites',        type:'fósil', region:'cientifica', parcial:'p3', rarity:'raro',
+                     context:'Molusco cefalópodo con concha espiral. Se extinguió junto a los dinosaurios en el límite K-Pg (66 Ma).', art:'fossil' },
+  'archaeopteryx': { name:'Archaeopteryx',    type:'fósil', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Forma transicional del Jurásico tardío: tenía plumas como un ave y dientes y cola larga como un dinosaurio.', art:'fossil' },
+  'tiktaalik':     { name:'Tiktaalik',        type:'fósil', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Transición pez-tetrápodo (~375 Ma). Tenía aletas con huesos articulados y cuello móvil, paso hacia la vida terrestre.', art:'fossil' },
+  'lucy':          { name:'Lucy',             type:'fósil', region:'cientifica', parcial:'p3', rarity:'épico',
+                     context:'Australopithecus afarensis hembra (3,2 Ma). Caminaba bípeda y muestra la transición hacia el género Homo.', art:'fossil' },
+
+  // Tema 8 — Ecología
+  'selvaTrop':     { name:'Selva tropical',   type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Bioma con mayor biodiversidad. Clima cálido y húmedo todo el año, dosel denso y nutrientes rápidamente reciclados.', art:'biome' },
+  'desierto':      { name:'Desierto',         type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Bioma de baja precipitación (<250 mm/año). Organismos adaptados a temperaturas extremas y escasez de agua.', art:'biome' },
+  'tundra':        { name:'Tundra ártica',    type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'Bioma con permafrost. Vegetación rasante: líquenes, musgos y arbustos enanos. Verano breve e intenso.', art:'biome' },
+  'arrecife':      { name:'Arrecife de coral', type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'Ecosistema marino formado por corales en simbiosis con zooxantelas. Alta biodiversidad, amenazado por blanqueamiento.', art:'biome' },
+  'bosqueTemp':    { name:'Bosque templado',  type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Bioma con cuatro estaciones marcadas. Árboles caducifolios (roble, haya) dominan; nutrientes acumulados en el suelo.', art:'biome' },
+  'sabana':        { name:'Sabana',           type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Bioma de pastizales con árboles dispersos y estaciones lluviosa-seca. Gran biodiversidad de herbívoros y depredadores.', art:'biome' },
+  'taiga':         { name:'Taiga',            type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Bosque boreal de coníferas, el bioma terrestre más extenso. Inviernos largos y fríos.', art:'biome' },
+  'manglar':       { name:'Manglar',          type:'ecosistema', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'Ecosistema costero con árboles tolerantes a la sal. Raíces aéreas y vivíparos. Vivero de peces y captador de CO₂.', art:'biome' },
+  'cicloN':        { name:'Ciclo del nitrógeno', type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'Fijación (Rhizobium), nitrificación, asimilación y desnitrificación. El N atmosférico debe transformarse para ser usado.', art:'cycleRing' },
+  'cicloC':        { name:'Ciclo del carbono', type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'CO₂ atmosférico ↔ fotosíntesis ↔ respiración ↔ combustibles fósiles. El cambio climático lo está acelerando.', art:'cycleRing' },
+  'cicloAgua':     { name:'Ciclo del agua',   type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Evaporación, condensación, precipitación, infiltración y escorrentía. Movido por la energía solar y la gravedad.', art:'cycleRing' },
+  'piramideTrof': { name:'Pirámide trófica',  type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'común',
+                     context:'Solo ~10% de la energía pasa de un nivel al siguiente (productores → consumidores). Limita la longitud de las cadenas.', art:'lawScroll' },
+  'mutualismoCZ': { name:'Simbiosis coral-zooxantelas', type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'El coral aloja algas dinoflageladas que le dan energía por fotosíntesis y color. Ambos se benefician.', art:'cycleSun' },
+  'sucesionPrim': { name:'Sucesión primaria', type:'fenómeno', region:'ecologica', parcial:'p3', rarity:'raro',
+                     context:'Colonización de un sustrato sin suelo (lava enfriada, glaciar retraído). Líquenes pioneros → suelo → comunidad clímax.', art:'cycleArrow' }
+}
+
+BW.CATALOG = CATALOG
+const CATALOG_IDS = Object.keys(CATALOG)
+
+function catalogIdsForParcial(parcial){
+  return CATALOG_IDS.filter(id => CATALOG[id].parcial === parcial)
+}
+function catalogIdsForParcialRarity(parcial, rarity){
+  return CATALOG_IDS.filter(id => CATALOG[id].parcial === parcial && CATALOG[id].rarity === rarity)
+}
+
+/* ────────────────────────────────────────────────
+   Roll de descubrimientos al completar un simulacro
+   Probabilidad según puntaje (0..1).
+   ──────────────────────────────────────────────── */
+function rarityRoll(score){
+  if (score < 0.6) return null
+  const r = Math.random()
+  if (score >= 1.0){
+    if (r < 0.02) return 'legendario'
+    if (r < 0.17) return 'épico'
+    return 'raro'
+  }
+  if (score >= 0.9){
+    if (r < 0.05) return 'épico'
+    if (r < 0.30) return 'raro'
+    if (r < 1.0)  return 'común'
+  }
+  if (score >= 0.8){
+    if (r < 0.10) return 'raro'
+    if (r < 0.60) return 'común'
+    return null
+  }
+  if (score >= 0.6){
+    if (r < 0.25) return 'común'
+    return null
+  }
+  return null
+}
+
+function pickCatalogIdForParcialAndRarity(parcial, rarity){
+  // Excluir descubrimientos ya obtenidos del catálogo aplicable
+  const owned = new Set((BW.state.discoveries || []).map(d => d.id))
+  let candidates = catalogIdsForParcialRarity(parcial, rarity).filter(id => !owned.has(id))
+  if (candidates.length === 0){
+    // Fallback: bajar de rareza si no hay opciones del parcial actual sin obtener
+    const order = ['legendario','épico','raro','común']
+    const startIdx = order.indexOf(rarity)
+    for (let i = startIdx; i < order.length; i++){
+      candidates = catalogIdsForParcialRarity(parcial, order[i]).filter(id => !owned.has(id))
+      if (candidates.length > 0) break
+    }
+  }
+  if (candidates.length === 0) return null
+  return candidates[Math.floor(Math.random() * candidates.length)]
+}
+
+async function awardDiscoveryFromSim(payload){
+  try {
+    const score = (payload && typeof payload.score === 'number') ? payload.score : 0
+    if (score < 0.6) return
+    const parcial = (payload && payload.parcial) || activeParcial()
+    const rarity = rarityRoll(score)
+    if (!rarity) return
+    const id = pickCatalogIdForParcialAndRarity(parcial, rarity)
+    if (!id) return
+    const capsuleId = 'cap-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6)
+    const capsule = {
+      id: capsuleId,
+      catalogId: id,
+      rarity,
+      source: 'simulacro:' + parcial,
+      createdAt: new Date().toISOString()
+    }
+    BW.state.capsulesPending = BW.state.capsulesPending || []
+    BW.state.capsulesPending.push(capsule)
+    if (typeof persistState === 'function') await persistState()
+    // Notificación discreta + refresco UI
+    showCapsulesButton()
+    refreshCapsulesCount()
+    showCapsuleToast(rarity)
+  } catch(e){ console.warn('[BW F3] award error:', e) }
+}
+
+function showCapsuleToast(rarity){
+  try {
+    if (typeof toast === 'function'){
+      const emo = rarity === 'legendario' ? '✨' : rarity === 'épico' ? '🌟' : rarity === 'raro' ? '💎' : '🔬'
+      toast(emo + ' Nueva cápsula ' + rarity + ' — abrila en el Biocosmos')
+    }
+  } catch(_){}
+}
+
+/* ────────────────────────────────────────────────
+   Botón flotante "Cápsulas pendientes" + modal lista
+   ──────────────────────────────────────────────── */
+function showCapsulesButton(){
+  const btn = document.getElementById('bwCapsBtn')
+  if (!btn) return
+  const n = (BW.state.capsulesPending || []).length
+  if (n > 0) btn.classList.add('show')
+  else btn.classList.remove('show')
+}
+function refreshCapsulesCount(){
+  const n = (BW.state.capsulesPending || []).length
+  const el = document.getElementById('bwCapsBtnCount')
+  if (el) el.textContent = String(n)
+  const elBadgeTop = document.getElementById('bwTopCapBadge')
+  if (elBadgeTop){
+    if (n > 0){ elBadgeTop.style.display = 'inline-flex'; elBadgeTop.textContent = String(n) }
+    else elBadgeTop.style.display = 'none'
+  }
+  const elBadgeCosmos = document.getElementById('bwCapsuleBadge')
+  if (elBadgeCosmos){
+    if (n > 0){ elBadgeCosmos.style.display = 'inline-flex'; elBadgeCosmos.textContent = String(n) }
+    else elBadgeCosmos.style.display = 'none'
+  }
+}
+
+function openCapsulesList(){
+  const modal = document.getElementById('bwCapsModal')
+  const grid  = document.getElementById('bwCapsModalGrid')
+  const subtitle = document.getElementById('bwCapsModalSubtitle')
+  if (!modal || !grid) return
+  grid.innerHTML = ''
+  const list = (BW.state.capsulesPending || [])
+  if (list.length === 0){
+    grid.innerHTML = '<div class="bw-caps-empty"><div class="bw-caps-empty-icon">🔬</div>Sin cápsulas pendientes.<br><small>Completá un simulacro para encontrar descubrimientos.</small></div>'
+    if (subtitle) subtitle.textContent = 'Tu colección espera nuevos descubrimientos.'
+  } else {
+    if (subtitle) subtitle.textContent = 'Tocá una cápsula para abrirla y revelar tu descubrimiento.'
+    list.forEach(cap => {
+      const item = document.createElement('button')
+      item.className = 'bw-caps-item'
+      item.type = 'button'
+      const rcls = rarityClass(cap.rarity)
+      item.innerHTML = `
+        <div class="bw-caps-orb-mini ${rcls}"></div>
+        <div class="bw-caps-item-info">
+          <strong>Cápsula sin abrir</strong>
+          <small>${capsuleSourceLabel(cap.source)}</small>
+        </div>
+        <span class="bw-rarity-pill ${rarityPillClass(cap.rarity)}">${cap.rarity}</span>
+      `
+      item.addEventListener('click', () => {
+        closeCapsulesList()
+        openCapsuleAnimation(cap.id)
+      })
+      grid.appendChild(item)
+    })
+  }
+  modal.classList.add('show')
+  modal.setAttribute('aria-hidden', 'false')
+}
+function closeCapsulesList(){
+  const modal = document.getElementById('bwCapsModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  modal.setAttribute('aria-hidden', 'true')
+}
+
+function capsuleSourceLabel(s){
+  if (!s) return 'Origen desconocido'
+  if (s.startsWith('simulacro:')) return 'Obtenida tras un simulacro de ' + s.split(':')[1].toUpperCase()
+  if (s.startsWith('mision:'))    return 'Obtenida tras una misión'
+  if (s.startsWith('juego:'))     return 'Obtenida en un juego didáctico'
+  return s
+}
+function rarityClass(r){
+  if (r === 'raro') return 'r-raro'
+  if (r === 'épico') return 'r-epico'
+  if (r === 'legendario') return 'r-legend'
+  return ''
+}
+function rarityPillClass(r){
+  if (r === 'raro') return 'bw-rarity-raro'
+  if (r === 'épico') return 'bw-rarity-epico'
+  if (r === 'legendario') return 'bw-rarity-legend'
+  return 'bw-rarity-comun'
+}
+
+/* ────────────────────────────────────────────────
+   Modal de APERTURA de cápsula
+   ──────────────────────────────────────────────── */
+let _currentCapsule = null
+let _openBurstRaf = 0
+
+function openCapsuleAnimation(capsuleId){
+  const cap = (BW.state.capsulesPending || []).find(c => c.id === capsuleId)
+  if (!cap) return
+  _currentCapsule = cap
+  const modal = document.getElementById('bwOpenModal')
+  const stClosed = document.getElementById('bwOpenStageClosed')
+  const stOpened = document.getElementById('bwOpenStageOpened')
+  const orb = document.getElementById('bwOpenOrb')
+  if (!modal || !stClosed || !stOpened || !orb) return
+  // Reset
+  stClosed.classList.add('active'); stOpened.classList.remove('active')
+  orb.classList.remove('breaking')
+  // Estilos por rareza
+  orb.classList.remove('r-raro','r-epico','r-legend')
+  const rcls = rarityClass(cap.rarity); if (rcls) orb.classList.add(rcls)
+  document.getElementById('bwOpenRarity').textContent = cap.rarity
+  document.getElementById('bwOpenSource').textContent = capsuleSourceLabel(cap.source)
+  modal.classList.add('show')
+  modal.setAttribute('aria-hidden', 'false')
+  startOpenBurst(cap.rarity)
+}
+
+function closeCapsuleAnimation(){
+  const modal = document.getElementById('bwOpenModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  modal.setAttribute('aria-hidden', 'true')
+  stopOpenBurst()
+  _currentCapsule = null
+}
+
+function breakCapsule(){
+  if (!_currentCapsule) return
+  const orb = document.getElementById('bwOpenOrb')
+  if (orb) orb.classList.add('breaking')
+  // Después de la animación de rotura, mostrar el reveal
+  const cap = _currentCapsule
+  setTimeout(() => { revealDiscovery(cap) }, REDUCED ? 0 : 1050)
+}
+
+function revealDiscovery(cap){
+  const item = CATALOG[cap.catalogId]
+  if (!item) return
+  const stClosed = document.getElementById('bwOpenStageClosed')
+  const stOpened = document.getElementById('bwOpenStageOpened')
+  stClosed.classList.remove('active')
+  stOpened.classList.add('active')
+  document.getElementById('bwDiscName').textContent = item.name
+  document.getElementById('bwDiscType').textContent = item.type
+  const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
+  document.getElementById('bwDiscRegion').textContent = regionCfg ? (regionCfg.emoji + ' ' + regionCfg.name) : item.region
+  const rpill = document.getElementById('bwDiscRarity')
+  rpill.textContent = item.rarity
+  rpill.className = 'bw-rarity-pill ' + rarityPillClass(item.rarity)
+  document.getElementById('bwDiscContext').textContent = item.context
+  // Dibujar arte
+  drawDiscoveryArt(item)
+}
+
+async function collectDiscovery(){
+  if (!_currentCapsule) { closeCapsuleAnimation(); return }
+  const cap = _currentCapsule
+  const item = CATALOG[cap.catalogId]
+  if (!item) { closeCapsuleAnimation(); return }
+  try {
+    // Quitar de pendientes
+    BW.state.capsulesPending = (BW.state.capsulesPending || []).filter(c => c.id !== cap.id)
+    // Agregar a discoveries (sin duplicados)
+    BW.state.discoveries = BW.state.discoveries || []
+    if (!BW.state.discoveries.find(d => d.id === cap.catalogId)){
+      BW.state.discoveries.push({
+        id: cap.catalogId,
+        region: item.region,
+        type: item.type,
+        rarity: item.rarity,
+        discoveredAt: new Date().toISOString(),
+        source: cap.source
+      })
+    }
+    if (typeof persistState === 'function') await persistState()
+    if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce()
+  } catch(e){ console.warn('[BW F3] collect error:', e) }
+  closeCapsuleAnimation()
+  refreshCapsulesCount()
+  showCapsulesButton()
+}
+
+/* ────────────────────────────────────────────────
+   Renders del arte de descubrimiento (canvas)
+   Geometrías simples por categoría — sin sprites externos
+   ──────────────────────────────────────────────── */
+function drawDiscoveryArt(item){
+  const canvas = document.getElementById('bwDiscoveryArt')
+  if (!canvas) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const sz = canvas.getBoundingClientRect().width || 180
+  canvas.width = sz * dpr; canvas.height = sz * dpr
+  canvas.style.width = sz + 'px'; canvas.style.height = sz + 'px'
+  const ctx = canvas.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  ctx.clearRect(0, 0, sz, sz)
+  // Fondo radial sutil basado en región
+  const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
+  const tint = regionCfg ? regionCfg.tint : [120,200,150]
+  let bg = ctx.createRadialGradient(sz/2, sz/2, 0, sz/2, sz/2, sz/1.5)
+  bg.addColorStop(0, `rgba(${tint[0]},${tint[1]},${tint[2]},0.25)`)
+  bg.addColorStop(1, `rgba(${tint[0]},${tint[1]},${tint[2]},0)`)
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, sz, sz)
+  ctx.save()
+  ctx.translate(sz/2, sz/2)
+  const art = item.art || 'orgMicrobe'
+  const t = performance.now() / 1000
+  if      (art === 'molHex')        artMolHex(ctx, sz, tint, t)
+  else if (art === 'molChain')      artMolChain(ctx, sz, tint, t)
+  else if (art === 'molRing')       artMolRing(ctx, sz, tint, t)
+  else if (art === 'molHelix')      artMolHelix(ctx, sz, tint, t)
+  else if (art === 'molProtein')    artMolProtein(ctx, sz, tint, t)
+  else if (art === 'organSphere')   artOrganSphere(ctx, sz, tint, t)
+  else if (art === 'organMito')     artOrganMito(ctx, sz, tint, t)
+  else if (art === 'organChloro')   artOrganChloro(ctx, sz, tint, t)
+  else if (art === 'organMembrane') artOrganMembrane(ctx, sz, tint, t)
+  else if (art === 'cycleSun')      artCycleSun(ctx, sz, tint, t)
+  else if (art === 'cycleRing')     artCycleRing(ctx, sz, tint, t)
+  else if (art === 'cycleArrow')    artCycleArrow(ctx, sz, tint, t)
+  else if (art === 'lawShield')     artLawShield(ctx, sz, tint, t)
+  else if (art === 'lawScroll')     artLawScroll(ctx, sz, tint, t)
+  else if (art === 'scientist')     artScientist(ctx, sz, tint, t)
+  else if (art === 'mutGenome')     artMutGenome(ctx, sz, tint, t)
+  else if (art === 'fossil')        artFossil(ctx, sz, tint, t)
+  else if (art === 'biome')         artBiome(ctx, sz, tint, t)
+  else if (art === 'orgMicrobe')    artOrgMicrobe(ctx, sz, tint, t)
+  else if (art === 'orgVirus')      artOrgVirus(ctx, sz, tint, t)
+  else if (art === 'orgPlant')      artOrgPlant(ctx, sz, tint, t)
+  else if (art === 'orgTree')       artOrgTree(ctx, sz, tint, t)
+  else if (art === 'orgFlower')     artOrgFlower(ctx, sz, tint, t)
+  else if (art === 'orgMushroom')   artOrgMushroom(ctx, sz, tint, t)
+  else if (art === 'orgFish')       artOrgFish(ctx, sz, tint, t)
+  else if (art === 'orgBug')        artOrgBug(ctx, sz, tint, t)
+  else if (art === 'orgBird')       artOrgBird(ctx, sz, tint, t)
+  else                              artOrgMicrobe(ctx, sz, tint, t)
+  ctx.restore()
+}
+
+function tintCol(tint, a){ return `rgba(${tint[0]},${tint[1]},${tint[2]},${a})` }
+
+// ── 12 funciones de render ──
+function artMolHex(ctx, sz, tint, t){
+  const r = sz * 0.22
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  ctx.beginPath()
+  for (let i = 0; i < 6; i++){
+    const a = i * Math.PI/3
+    const x = Math.cos(a) * r, y = Math.sin(a) * r
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+  }
+  ctx.closePath(); ctx.fill(); ctx.stroke()
+  ctx.fillStyle = '#fff'
+  ctx.font = `bold ${sz*0.08}px Inter,sans-serif`
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+  ctx.fillText('C₆', 0, 0)
+}
+function artMolChain(ctx, sz, tint, t){
+  const r = sz * 0.06
+  for (let i = 0; i < 5; i++){
+    const x = (i - 2) * r * 2.2
+    const y = Math.sin(i * 0.9) * sz * 0.08
+    ctx.fillStyle = tintCol(tint, 0.85 - i * 0.06)
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill()
+    if (i > 0){
+      const px = (i - 3) * r * 2.2, py = Math.sin((i-1) * 0.9) * sz * 0.08
+      ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke()
+    }
+  }
+}
+function artMolRing(ctx, sz, tint, t){
+  const r = sz * 0.22
+  ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 4
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.stroke()
+  for (let i = 0; i < 4; i++){
+    const a = i * Math.PI/2
+    ctx.fillStyle = tintCol(tint, 0.95)
+    ctx.beginPath(); ctx.arc(Math.cos(a)*r, Math.sin(a)*r, sz*0.04, 0, Math.PI*2); ctx.fill()
+  }
+}
+function artMolHelix(ctx, sz, tint, t){
+  ctx.lineWidth = 3
+  for (let i = 0; i < 24; i++){
+    const y = (i - 12) * sz * 0.03
+    const phase = i * 0.5 + t
+    const x1 = Math.cos(phase) * sz * 0.18
+    const x2 = -x1
+    ctx.fillStyle = tintCol(tint, 0.85)
+    ctx.beginPath(); ctx.arc(x1, y, 3, 0, Math.PI*2); ctx.fill()
+    ctx.fillStyle = tintCol(tint, 0.7)
+    ctx.beginPath(); ctx.arc(x2, y, 3, 0, Math.PI*2); ctx.fill()
+    if (i % 3 === 0){
+      ctx.strokeStyle = tintCol(tint, 0.4); ctx.lineWidth = 1.5
+      ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke()
+    }
+  }
+}
+function artMolProtein(ctx, sz, tint, t){
+  // Ovillo de proteína plegada
+  ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 4
+  ctx.beginPath()
+  for (let i = 0; i <= 100; i++){
+    const tt = i / 100 * Math.PI * 8
+    const r = sz * 0.18 + Math.sin(tt * 1.4) * sz * 0.04
+    const x = Math.cos(tt) * r * (1 + Math.sin(tt * 0.5) * 0.3)
+    const y = Math.sin(tt) * r * 0.6
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+  }
+  ctx.stroke()
+}
+function artOrganSphere(ctx, sz, tint, t){
+  const r = sz * 0.26
+  const g = ctx.createRadialGradient(-r*0.3, -r*0.3, 0, 0, 0, r)
+  g.addColorStop(0, tintCol(tint, 0.9))
+  g.addColorStop(1, tintCol(tint, 0.4))
+  ctx.fillStyle = g
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = 'rgba(0,0,0,0.4)'
+  ctx.beginPath(); ctx.arc(0, 0, r*0.45, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = 'rgba(255,255,255,0.5)'
+  ctx.beginPath(); ctx.arc(-r*0.15, -r*0.15, r*0.18, 0, Math.PI*2); ctx.fill()
+}
+function artOrganMito(ctx, sz, tint, t){
+  // Forma de píldora con crestas
+  const w = sz * 0.32, h = sz * 0.18
+  ctx.fillStyle = tintCol(tint, 0.8)
+  ctx.beginPath(); ctx.ellipse(0, 0, w, h, 0, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = tintCol(tint, 0.4); ctx.lineWidth = 2
+  for (let i = 0; i < 5; i++){
+    const x = (i - 2) * w * 0.35
+    ctx.beginPath()
+    ctx.moveTo(x, -h * 0.7)
+    ctx.bezierCurveTo(x + w*0.05, 0, x - w*0.05, 0, x, h * 0.7)
+    ctx.stroke()
+  }
+}
+function artOrganChloro(ctx, sz, tint, t){
+  // Forma de lente con tilacoides
+  const w = sz * 0.3, h = sz * 0.2
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath(); ctx.ellipse(0, 0, w, h, 0, 0, Math.PI*2); ctx.fill()
+  // Tilacoides como discos apilados
+  for (let s = 0; s < 3; s++){
+    const sx = (s - 1) * w * 0.45
+    ctx.fillStyle = tintCol(tint, 0.5)
+    for (let i = 0; i < 5; i++){
+      const y = (i - 2) * h * 0.18
+      ctx.beginPath(); ctx.ellipse(sx, y, w * 0.12, h * 0.08, 0, 0, Math.PI*2); ctx.fill()
+    }
+  }
+}
+function artOrganMembrane(ctx, sz, tint, t){
+  // Dos líneas de cabezas+colas
+  const w = sz * 0.4
+  for (let row = 0; row < 2; row++){
+    const y = (row - 0.5) * sz * 0.08
+    for (let i = 0; i < 8; i++){
+      const x = (i - 3.5) * w / 8
+      ctx.fillStyle = tintCol(tint, 0.85)
+      ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI*2); ctx.fill()
+      ctx.strokeStyle = tintCol(tint, 0.55); ctx.lineWidth = 2
+      ctx.beginPath()
+      ctx.moveTo(x, y)
+      ctx.lineTo(x - 2, y + (row === 0 ? sz*0.06 : -sz*0.06))
+      ctx.moveTo(x, y)
+      ctx.lineTo(x + 2, y + (row === 0 ? sz*0.06 : -sz*0.06))
+      ctx.stroke()
+    }
+  }
+}
+function artCycleSun(ctx, sz, tint, t){
+  const r = sz * 0.18
+  ctx.fillStyle = tintCol(tint, 0.95)
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill()
+  ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 3
+  for (let i = 0; i < 12; i++){
+    const a = i * Math.PI/6 + (REDUCED ? 0 : t * 0.4)
+    ctx.beginPath()
+    ctx.moveTo(Math.cos(a)*r*1.15, Math.sin(a)*r*1.15)
+    ctx.lineTo(Math.cos(a)*r*1.6,  Math.sin(a)*r*1.6)
+    ctx.stroke()
+  }
+}
+function artCycleRing(ctx, sz, tint, t){
+  const r = sz * 0.22
+  ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 4
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.stroke()
+  for (let i = 0; i < 8; i++){
+    const a = i * Math.PI/4 + (REDUCED ? 0 : t * 0.3)
+    ctx.fillStyle = tintCol(tint, 0.95)
+    ctx.beginPath(); ctx.arc(Math.cos(a)*r, Math.sin(a)*r, 4, 0, Math.PI*2); ctx.fill()
+  }
+}
+function artCycleArrow(ctx, sz, tint, t){
+  ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 5
+  ctx.lineCap = 'round'
+  const r = sz * 0.22
+  ctx.beginPath(); ctx.arc(0, 0, r, -Math.PI*0.4, Math.PI*1.4); ctx.stroke()
+  // punta de flecha
+  const ax = Math.cos(Math.PI*1.4) * r, ay = Math.sin(Math.PI*1.4) * r
+  ctx.fillStyle = tintCol(tint, 0.95)
+  ctx.beginPath()
+  ctx.moveTo(ax, ay)
+  ctx.lineTo(ax - 14, ay - 6)
+  ctx.lineTo(ax - 6, ay + 12)
+  ctx.closePath(); ctx.fill()
+}
+function artLawShield(ctx, sz, tint, t){
+  const w = sz * 0.18, h = sz * 0.25
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  ctx.beginPath()
+  ctx.moveTo(0, -h)
+  ctx.bezierCurveTo(w, -h*0.8, w, h*0.4, 0, h)
+  ctx.bezierCurveTo(-w, h*0.4, -w, -h*0.8, 0, -h)
+  ctx.closePath(); ctx.fill(); ctx.stroke()
+  ctx.fillStyle = 'rgba(255,255,255,0.5)'
+  ctx.font = `bold ${sz*0.12}px Inter,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+  ctx.fillText('§', 0, 0)
+}
+function artLawScroll(ctx, sz, tint, t){
+  const w = sz * 0.34, h = sz * 0.24
+  ctx.fillStyle = '#f0e8d4'
+  ctx.fillRect(-w/2, -h/2, w, h)
+  ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2
+  ctx.strokeRect(-w/2, -h/2, w, h)
+  ctx.strokeStyle = tintCol(tint, 0.55); ctx.lineWidth = 1.5
+  for (let i = 0; i < 4; i++){
+    const y = -h/2 + (i + 1) * h/5
+    ctx.beginPath(); ctx.moveTo(-w/2 + 6, y); ctx.lineTo(w/2 - 6, y); ctx.stroke()
+  }
+}
+function artScientist(ctx, sz, tint, t){
+  // Silueta de cabeza con lupa
+  const r = sz * 0.13
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath(); ctx.arc(-sz*0.06, -sz*0.04, r, 0, Math.PI*2); ctx.fill()
+  // hombros
+  ctx.fillStyle = tintCol(tint, 0.7)
+  ctx.beginPath()
+  ctx.moveTo(-sz*0.2, sz*0.22)
+  ctx.bezierCurveTo(-sz*0.2, sz*0.06, sz*0.08, sz*0.06, sz*0.08, sz*0.22)
+  ctx.closePath(); ctx.fill()
+  // lupa
+  ctx.strokeStyle = tintCol(tint, 0.95); ctx.lineWidth = 3
+  ctx.beginPath(); ctx.arc(sz*0.2, sz*0.06, sz*0.08, 0, Math.PI*2); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(sz*0.26, sz*0.12); ctx.lineTo(sz*0.32, sz*0.18); ctx.stroke()
+}
+function artMutGenome(ctx, sz, tint, t){
+  // Cromosomas con un X
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  function chrom(x, y, h){
+    ctx.beginPath(); ctx.ellipse(x, y - h*0.15, 6, h*0.4, 0, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.ellipse(x, y + h*0.15, 6, h*0.4, 0, 0, Math.PI*2); ctx.fill()
+  }
+  chrom(-sz*0.1, 0, sz*0.3)
+  chrom(sz*0.1, 0, sz*0.3)
+  // Marcador X en el del medio
+  ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 3
+  ctx.beginPath()
+  ctx.moveTo(sz*0.06, -sz*0.06); ctx.lineTo(sz*0.14, sz*0.06)
+  ctx.moveTo(sz*0.14, -sz*0.06); ctx.lineTo(sz*0.06, sz*0.06)
+  ctx.stroke()
+}
+function artFossil(ctx, sz, tint, t){
+  // Forma fosilizada (espiral o concha)
+  ctx.fillStyle = '#c8a978'
+  ctx.strokeStyle = '#5a4422'; ctx.lineWidth = 2
+  ctx.beginPath()
+  const r = sz * 0.2
+  ctx.arc(0, 0, r, 0, Math.PI*2)
+  ctx.fill(); ctx.stroke()
+  ctx.strokeStyle = '#5a4422'; ctx.lineWidth = 1.5
+  for (let i = 0; i < 6; i++){
+    const rr = r * (i / 6)
+    ctx.beginPath(); ctx.arc(0, 0, rr, 0, Math.PI*1.8); ctx.stroke()
+  }
+}
+function artBiome(ctx, sz, tint, t){
+  // Paisaje estilizado
+  const w = sz * 0.4, h = sz * 0.05
+  // suelo
+  ctx.fillStyle = tintCol(tint, 0.7)
+  ctx.beginPath()
+  ctx.moveTo(-w, h*4); ctx.lineTo(w, h*4); ctx.lineTo(w, h*8); ctx.lineTo(-w, h*8); ctx.closePath()
+  ctx.fill()
+  // montañas
+  ctx.fillStyle = tintCol(tint, 0.5)
+  ctx.beginPath()
+  ctx.moveTo(-w, h*4); ctx.lineTo(-w*0.4, -h*3); ctx.lineTo(0, h*4); ctx.closePath()
+  ctx.fill()
+  ctx.beginPath()
+  ctx.moveTo(0, h*4); ctx.lineTo(w*0.5, -h*4); ctx.lineTo(w, h*4); ctx.closePath()
+  ctx.fill()
+  // sol
+  ctx.fillStyle = tintCol(tint, 0.95)
+  ctx.beginPath(); ctx.arc(w*0.65, -h*5, sz*0.07, 0, Math.PI*2); ctx.fill()
+}
+function artOrgMicrobe(ctx, sz, tint, t){
+  // Blob con flagelos
+  const r = sz * 0.18
+  const path = new Path2D()
+  for (let i = 0; i <= 24; i++){
+    const a = i / 24 * Math.PI * 2
+    const wob = REDUCED ? 0 : Math.sin(a * 4 + t * 1.6) * r * 0.1
+    const rr = r + wob
+    const x = Math.cos(a) * rr, y = Math.sin(a) * rr
+    if (i === 0) path.moveTo(x, y); else path.lineTo(x, y)
+  }
+  path.closePath()
+  const g = ctx.createRadialGradient(-r*0.3, -r*0.3, 0, 0, 0, r*1.2)
+  g.addColorStop(0, tintCol(tint, 0.95)); g.addColorStop(1, tintCol(tint, 0.5))
+  ctx.fillStyle = g; ctx.fill(path)
+  // Flagelo
+  ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2.5
+  ctx.beginPath(); ctx.moveTo(r, 0)
+  for (let i = 0; i < 10; i++){
+    const tt = i / 9
+    ctx.lineTo(r + tt * sz * 0.18, Math.sin(t*6 + tt*8) * sz * 0.04)
+  }
+  ctx.stroke()
+}
+function artOrgVirus(ctx, sz, tint, t){
+  // Icosaédrico con patas (bacteriófago)
+  const r = sz * 0.13
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  ctx.beginPath()
+  for (let i = 0; i < 6; i++){
+    const a = i * Math.PI/3 - Math.PI/2
+    if (i === 0) ctx.moveTo(Math.cos(a)*r, Math.sin(a)*r - sz*0.08)
+    else ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r - sz*0.08)
+  }
+  ctx.closePath(); ctx.fill(); ctx.stroke()
+  // Cuerpo
+  ctx.fillRect(-sz*0.025, -sz*0.04, sz*0.05, sz*0.12)
+  // Patas
+  for (let i = -2; i <= 2; i++){
+    ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 2
+    ctx.beginPath()
+    ctx.moveTo(i * sz*0.025, sz*0.08)
+    ctx.lineTo(i * sz*0.05, sz*0.22)
+    ctx.stroke()
+  }
+}
+function artOrgPlant(ctx, sz, tint, t){
+  // Hojas brotando
+  ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 4
+  ctx.beginPath(); ctx.moveTo(0, sz*0.2); ctx.lineTo(0, -sz*0.05); ctx.stroke()
+  ctx.fillStyle = tintCol(tint, 0.85)
+  for (let i = 0; i < 4; i++){
+    const a = (i % 2 === 0 ? 1 : -1) * (Math.PI/4 + i * 0.1)
+    const y = sz*0.1 - i * sz*0.07
+    ctx.save()
+    ctx.translate(0, y); ctx.rotate(a)
+    ctx.beginPath(); ctx.ellipse(sz*0.07, 0, sz*0.08, sz*0.03, 0, 0, Math.PI*2); ctx.fill()
+    ctx.restore()
+  }
+}
+function artOrgTree(ctx, sz, tint, t){
+  // Árbol
+  ctx.fillStyle = '#6b4226'
+  ctx.fillRect(-sz*0.03, 0, sz*0.06, sz*0.22)
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath(); ctx.arc(0, -sz*0.05, sz*0.18, 0, Math.PI*2); ctx.fill()
+  ctx.fillStyle = tintCol(tint, 0.95)
+  ctx.beginPath(); ctx.arc(-sz*0.08, -sz*0.1, sz*0.1, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.arc(sz*0.09, -sz*0.08, sz*0.09, 0, Math.PI*2); ctx.fill()
+}
+function artOrgFlower(ctx, sz, tint, t){
+  ctx.strokeStyle = tintCol(tint, 0.5); ctx.lineWidth = 3
+  ctx.beginPath(); ctx.moveTo(0, sz*0.22); ctx.lineTo(0, 0); ctx.stroke()
+  // Pétalos
+  for (let i = 0; i < 6; i++){
+    const a = i * Math.PI/3
+    ctx.fillStyle = tintCol(tint, 0.85)
+    ctx.beginPath()
+    ctx.ellipse(Math.cos(a)*sz*0.07, Math.sin(a)*sz*0.07, sz*0.08, sz*0.04, a, 0, Math.PI*2)
+    ctx.fill()
+  }
+  // Centro
+  ctx.fillStyle = '#ffd86b'
+  ctx.beginPath(); ctx.arc(0, 0, sz*0.05, 0, Math.PI*2); ctx.fill()
+}
+function artOrgMushroom(ctx, sz, tint, t){
+  // Tallo
+  ctx.fillStyle = '#e8d5b0'
+  ctx.fillRect(-sz*0.04, 0, sz*0.08, sz*0.22)
+  // Sombrero
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath()
+  ctx.ellipse(0, 0, sz*0.18, sz*0.1, 0, Math.PI, 0)
+  ctx.closePath(); ctx.fill()
+  // Puntos
+  ctx.fillStyle = '#fff'
+  for (let i = -2; i <= 2; i++){
+    ctx.beginPath(); ctx.arc(i*sz*0.06, -sz*0.04, sz*0.018, 0, Math.PI*2); ctx.fill()
+  }
+}
+function artOrgFish(ctx, sz, tint, t){
+  // Pez estilizado
+  const len = sz * 0.3
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath()
+  ctx.moveTo(-len, 0)
+  ctx.bezierCurveTo(-len*0.5, -sz*0.12, len*0.5, -sz*0.12, len*0.7, 0)
+  ctx.bezierCurveTo(len*0.5, sz*0.12, -len*0.5, sz*0.12, -len, 0)
+  ctx.closePath(); ctx.fill()
+  // Cola
+  ctx.beginPath()
+  ctx.moveTo(-len, 0); ctx.lineTo(-len*1.4, -sz*0.1); ctx.lineTo(-len*1.4, sz*0.1)
+  ctx.closePath(); ctx.fill()
+  // Ojo
+  ctx.fillStyle = '#0a1f12'
+  ctx.beginPath(); ctx.arc(len*0.4, -sz*0.02, sz*0.018, 0, Math.PI*2); ctx.fill()
+}
+function artOrgBug(ctx, sz, tint, t){
+  // Cuerpo segmentado
+  const r = sz * 0.06
+  for (let i = 0; i < 3; i++){
+    const x = (i - 1) * r * 2.2
+    ctx.fillStyle = tintCol(tint, 0.85)
+    ctx.beginPath(); ctx.arc(x, 0, r, 0, Math.PI*2); ctx.fill()
+  }
+  // Patas
+  ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2
+  for (let s = -1; s <= 1; s += 2){
+    for (let i = -1; i <= 1; i++){
+      ctx.beginPath()
+      ctx.moveTo(i * r * 2.2, s * r * 0.5)
+      ctx.lineTo(i * r * 2.2 + s * sz * 0.04, s * sz * 0.15)
+      ctx.stroke()
+    }
+  }
+  // Antenas
+  ctx.beginPath()
+  ctx.moveTo(r*2.2 + r, 0); ctx.lineTo(r*2.2 + sz*0.1, -sz*0.06); ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(r*2.2 + r, 0); ctx.lineTo(r*2.2 + sz*0.1, sz*0.06); ctx.stroke()
+}
+function artOrgBird(ctx, sz, tint, t){
+  // Silueta de ave volando
+  ctx.fillStyle = tintCol(tint, 0.85)
+  ctx.beginPath()
+  ctx.moveTo(-sz*0.25, 0)
+  ctx.bezierCurveTo(-sz*0.15, -sz*0.15, -sz*0.05, -sz*0.05, 0, 0)
+  ctx.bezierCurveTo(sz*0.05, -sz*0.05, sz*0.15, -sz*0.15, sz*0.25, 0)
+  ctx.bezierCurveTo(sz*0.15, sz*0.02, -sz*0.15, sz*0.02, -sz*0.25, 0)
+  ctx.closePath(); ctx.fill()
+}
+
+/* ────────────────────────────────────────────────
+   Burst de partículas en apertura
+   ──────────────────────────────────────────────── */
+function startOpenBurst(rarity){
+  if (REDUCED) return
+  const c = document.getElementById('bwOpenBurst')
+  if (!c) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const W = window.innerWidth, H = window.innerHeight
+  c.width = W * dpr; c.height = H * dpr
+  c.style.width = W + 'px'; c.style.height = H + 'px'
+  const ctx = c.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  // Sin partículas iniciales — se generan cuando se rompe
+  const burstCount = rarity === 'legendario' ? 180 : rarity === 'épico' ? 130 : rarity === 'raro' ? 90 : 60
+  const colorBase = rarity === 'legendario' ? [255, 217, 100] : rarity === 'épico' ? [220, 130, 240] : rarity === 'raro' ? [180, 150, 240] : [255, 200, 130]
+  const cx = W / 2, cy = H / 2
+  let particles = []
+  // función para spawnear al romper
+  function spawn(){
+    particles = []
+    for (let i = 0; i < burstCount; i++){
+      const a = Math.random() * Math.PI * 2
+      const sp = 2 + Math.random() * 5
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+        life: 1, r: 1.5 + Math.random() * 2.5
+      })
+    }
+  }
+  let spawned = false
+  function frame(){
+    const overlay = document.getElementById('bwOpenModal')
+    if (!overlay || !overlay.classList.contains('show')) return
+    const orb = document.getElementById('bwOpenOrb')
+    if (orb && orb.classList.contains('breaking') && !spawned){
+      setTimeout(() => { spawn() }, 500)
+      spawned = true
+    }
+    ctx.clearRect(0, 0, W, H)
+    let alive = 0
+    for (let i = 0; i < particles.length; i++){
+      const p = particles[i]
+      if (p.life <= 0) continue
+      p.x += p.vx; p.y += p.vy
+      p.vx *= 0.985; p.vy *= 0.985; p.vy += 0.04
+      p.life -= 0.012
+      if (p.life > 0){
+        ctx.globalAlpha = Math.max(0, p.life)
+        ctx.fillStyle = `rgb(${colorBase[0]},${colorBase[1]},${colorBase[2]})`
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill()
+        alive++
+      }
+    }
+    ctx.globalAlpha = 1
+    _openBurstRaf = requestAnimationFrame(frame)
+  }
+  _openBurstRaf = requestAnimationFrame(frame)
+}
+function stopOpenBurst(){
+  if (_openBurstRaf) cancelAnimationFrame(_openBurstRaf)
+  _openBurstRaf = 0
+  const c = document.getElementById('bwOpenBurst')
+  if (c) c.getContext('2d').clearRect(0, 0, c.width, c.height)
+}
+
+/* ────────────────────────────────────────────────
+   Override del draw de región: badge de parcial
+   ──────────────────────────────────────────────── */
+const _origDrawRegion = BW.scene.drawRegion.bind(BW.scene)
+BW.scene.drawRegion = function(t, layout, alpha, hover){
+  _origDrawRegion(t, layout, alpha, hover)
+  // Después del render base, agregamos el badge "P1/P2/P3"
+  const cfg = (BW.REGIONS || []).find(r => r.id === layout.id)
+  if (!cfg) return
+  const parciales = REGION_PARCIAL[layout.id] || []
+  if (parciales.length === 0) return
+  const active = activeParcial()
+  const isActive = parciales.includes(active)
+  const ctx = this.ctx
+  const r = layout.r
+  // Texto de parcial debajo del nombre
+  ctx.font = `800 ${Math.max(8, r * 0.16)}px Inter, system-ui, sans-serif`
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top'
+  const txt = parciales.map(p => p.toUpperCase()).join(' · ')
+  const colorMap = { p1:'rgba(124,198,255,', p2:'rgba(251,191,36,', p3:'rgba(251,146,60,' }
+  const main = parciales[0]
+  const baseAlpha = isActive ? 0.95 : 0.55
+  ctx.fillStyle = (colorMap[main] || 'rgba(208,237,216,') + (baseAlpha * alpha) + ')'
+  ctx.fillText(txt, layout.x, layout.y + r * 0.98)
+  // Si la región corresponde al parcial activo, un pequeño anillo verde alrededor
+  if (isActive && alpha > 0.4){
+    ctx.strokeStyle = `rgba(109,217,159,${0.45 * alpha})`
+    ctx.lineWidth = 1.5
+    ctx.setLineDash([4, 4])
+    ctx.beginPath(); ctx.arc(layout.x, layout.y, r * 1.35, 0, Math.PI*2); ctx.stroke()
+    ctx.setLineDash([])
+  }
+}
+
+/* ────────────────────────────────────────────────
+   Wrappear hook onSimComplete para otorgar cápsula
+   ──────────────────────────────────────────────── */
+const _f2OnSim = BW.hook.onSimComplete.bind(BW.hook)
+BW.hook.onSimComplete = function(payload){
+  _f2OnSim(payload)
+  awardDiscoveryFromSim(payload)
+}
+
+/* ────────────────────────────────────────────────
+   Init F3
+   ──────────────────────────────────────────────── */
+function bwF3Init(){
+  try {
+    // Listeners
+    const capsBtn = document.getElementById('bwCapsBtn')
+    if (capsBtn) capsBtn.addEventListener('click', openCapsulesList)
+    const closeBtn = document.getElementById('bwCapsModalClose')
+    if (closeBtn) closeBtn.addEventListener('click', closeCapsulesList)
+    const modal = document.getElementById('bwCapsModal')
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeCapsulesList() })
+    // Botón cápsulas dentro de cosmos (mini-organismo del cosmos)
+    const miniWrap = document.getElementById('bwMiniOrgWrap')
+    if (miniWrap) miniWrap.addEventListener('click', openCapsulesList)
+    // Botón badge superior derecho del topbar
+    const topBadge = document.getElementById('bwTopCapBadge')
+    if (topBadge) topBadge.addEventListener('click', (e) => { e.stopPropagation(); openCapsulesList() })
+
+    // Apertura de cápsula
+    const breakBtn = document.getElementById('bwOpenBreakBtn')
+    if (breakBtn) breakBtn.addEventListener('click', breakCapsule)
+    const collectBtn = document.getElementById('bwOpenCollectBtn')
+    if (collectBtn) collectBtn.addEventListener('click', collectDiscovery)
+    const openModal = document.getElementById('bwOpenModal')
+    if (openModal) openModal.addEventListener('click', (e) => { if (e.target === openModal) closeCapsuleAnimation() })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        const ov = document.getElementById('bwOpenModal')
+        if (ov && ov.classList.contains('show')) closeCapsuleAnimation()
+        const cm = document.getElementById('bwCapsModal')
+        if (cm && cm.classList.contains('show')) closeCapsulesList()
+      }
+    })
+
+    // Estado inicial
+    showCapsulesButton()
+    refreshCapsulesCount()
+
+    // Re-render del cosmos para que aparezcan los badges de parcial inmediato si está visible
+    if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce()
+  } catch(e){ console.warn('[BW F3] init error:', e) }
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF3Init)
+else bwF3Init()
+
+// Re-render del cosmos cuando cambia el parcial activo (badges se actualizan)
+try {
+  if (typeof window !== 'undefined'){
+    const origSetParcial = window.setActiveParcial
+    if (typeof origSetParcial === 'function'){
+      window.setActiveParcial = function(){
+        const r = origSetParcial.apply(this, arguments)
+        try { if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce() } catch(_){}
+        return r
+      }
+    }
+  }
+} catch(_){}
+
+// Test helpers
+BW._catalogIds = CATALOG_IDS
+BW._catalogSize = CATALOG_IDS.length
+BW._awardTest = function(parcial, rarity){
+  const id = pickCatalogIdForParcialAndRarity(parcial || 'p1', rarity || 'común')
+  if (!id) { console.warn('Sin candidatos'); return }
+  const capId = 'cap-test-' + Date.now()
+  BW.state.capsulesPending = BW.state.capsulesPending || []
+  BW.state.capsulesPending.push({ id:capId, catalogId:id, rarity:rarity||'común', source:'simulacro:'+(parcial||'p1'), createdAt:new Date().toISOString() })
+  showCapsulesButton(); refreshCapsulesCount()
+  console.log('Cápsula de prueba agregada:', id)
+}
+BW._openListTest = openCapsulesList
+BW._openCapsuleTest = openCapsuleAnimation
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F3
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS — AUDITORÍA & CORRECCIÓN DE CONSISTENCIA (post F1-F3)
+   Corrige bugs detectados en la revisión de navegación:
+   1) topics 'pla' (no existe) en botánica → 'euk'
+   2) Routing de regiones a sección equivocada por parcial
+   3) Simulacros que apuntan a sección genérica sin filtrar tema
+   4) Sin sugerencia de cambio de parcial al entrar a región de otro parcial
+   5) Panel de región con acciones genéricas no contextuales
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ────── Mapping autoritativo de tema → parcial (basado en código real de BioMaster) ────── */
+const TOPIC_TO_PARCIAL = {
+  // P1
+  int:'p1', bio:'p1', cel:'p1', met:'p1', ene:'p1',
+  // P2
+  gen:'p2', evo:'p2', biot:'p2',
+  // P3
+  ori:'p3', dom:'p3', virpro:'p3', euk:'p3', ani:'p3', eco:'p3'
+}
+
+/* ────── Nombres legibles de temas (alineados con themesByParcial real) ────── */
+const TOPIC_LABELS = {
+  int:    '📖 Introducción',
+  bio:    '🧪 Biomoléculas',
+  cel:    '🔬 Célula',
+  met:    '⚗️ Metabolismo',
+  ene:    '⚡ Fotosíntesis / Respiración',
+  gen:    '🧬 Genética',
+  evo:    '🌿 Evolución',
+  biot:   '🧫 Biotecnología',
+  ori:    '🌍 Origen de la vida',
+  dom:    '🌳 Tres dominios',
+  virpro: '🦠 Virus / Procariotas',
+  euk:    '🌱 Protistas / Plantas / Hongos',
+  ani:    '🦋 Animales',
+  eco:    '🌎 Ecología'
+}
+
+BW.TOPIC_TO_PARCIAL = TOPIC_TO_PARCIAL
+BW.TOPIC_LABELS = TOPIC_LABELS
+
+/* ────── FIX 1: corregir topics de la región Botánica ────── */
+(function fixBotanicaTopics(){
+  if (!BW.REGIONS) return
+  const bot = BW.REGIONS.find(r => r.id === 'botanica')
+  if (bot && JSON.stringify(bot.topics) === JSON.stringify(['pla'])){
+    bot.topics = ['euk']
+    // 'euk' agrupa Protistas + Plantas + Hongos en el syllabus real de BioMaster.
+    // Esta región visualiza la cara vegetal/fúngica de ese tema.
+  }
+})()
+
+/* ────── FIX 2 (RESUELTO): tema 'biot' (Biotecnología 4.8) ahora tiene
+   banco propio de 18 preguntas en E23Q, basadas en el contenido real del
+   subitem 4.8 del Resumen P2. La región Genética mantiene 'biot' en sus
+   topics y el motor de simulacros lo reconoce normalmente. ────── */
+
+/* ────── Resolver parcial efectivo para una región ────── */
+function regionParcial(regionId){
+  const parciales = (BW.REGION_PARCIAL && BW.REGION_PARCIAL[regionId]) || []
+  if (parciales.length === 0) return 'p1'
+  let active = 'p1'
+  try { active = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p1' } catch(_){}
+  if (parciales.includes(active)) return active
+  return parciales[0]
+}
+
+/* ────── Lista de temas de una región filtrados por parcial ────── */
+function regionThemesForParcial(regionId, forParcial){
+  const region = (BW.REGIONS || []).find(r => r.id === regionId)
+  if (!region) return []
+  return (region.topics || []).filter(t => TOPIC_TO_PARCIAL[t] === forParcial)
+}
+
+/* ────── Cambiar parcial activo si hace falta. Devuelve true si quedó en el parcial deseado ────── */
+function ensureParcial(targetParcial){
+  let current = 'p1'
+  try { current = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p1' } catch(_){}
+  if (current === targetParcial) return Promise.resolve(true)
+  try {
+    if (typeof window.setActiveParcial === 'function') window.setActiveParcial(targetParcial)
+  } catch(e){ return Promise.resolve(false) }
+  // setActiveParcial puede abrir paywall y NO cambiar; verificamos después
+  return new Promise(resolve => {
+    setTimeout(() => {
+      let after = current
+      try { after = (typeof getActiveParcial === 'function') ? getActiveParcial() : current } catch(_){}
+      resolve(after === targetParcial)
+    }, 120)
+  })
+}
+
+/* ────── ID de sección de resumen según parcial ────── */
+function resumenSectionId(parcial){
+  return parcial === 'p1' ? 'resumenP1' : (parcial === 'p3' ? 'resumenP3' : 'resumen')
+}
+
+/* ────── Navegación: Resumen ────── */
+async function goToRegionResumen(regionId){
+  const target = regionParcial(regionId)
+  const ok = await ensureParcial(target)
+  if (!ok) return  // paywall intervino, no continuar
+  const sec = document.getElementById(resumenSectionId(target))
+  if (sec){
+    if (BW.scene && BW.scene.zoomOut) BW.scene.zoomOut()
+    setTimeout(() => sec.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block:'start' }), 50)
+  }
+}
+
+/* ────── Navegación: Simulacro (con tema específico) ────── */
+async function goToRegionSimulacro(regionId, themeOverride){
+  const target = regionParcial(regionId)
+  const ok = await ensureParcial(target)
+  if (!ok) return
+  const themes = regionThemesForParcial(regionId, target)
+  const theme = themeOverride || themes[0] || 'all'
+  // Cerrar panel del cosmos y scroll a simulacros
+  if (BW.scene && BW.scene.zoomOut) BW.scene.zoomOut()
+  const sec = document.getElementById('simulacros')
+  if (sec) setTimeout(() => sec.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block:'start' }), 50)
+  // Iniciar simulacro tras el scroll
+  setTimeout(() => {
+    try {
+      if (window.A && typeof window.A.startSim === 'function') window.A.startSim(theme)
+    } catch(e){ console.warn('[BW audit] startSim error:', e) }
+  }, 700)
+}
+
+/* ────── Acción: cambiar de parcial sin navegar ────── */
+async function activateRegionParcial(regionId){
+  const target = regionParcial(regionId)
+  await ensureParcial(target)
+}
+
+/* ────── Exponer API de navegación ────── */
+BW.nav = {
+  goToRegionResumen,
+  goToRegionSimulacro,
+  activateRegionParcial,
+  regionParcial,
+  regionThemesForParcial,
+  resumenSectionId,
+  ensureParcial
+}
+
+/* ────── Re-render del panel de región con acciones inteligentes ────── */
+function repopulateRegionActions(regionId){
+  const actions = document.getElementById('bwRegionActions')
+  if (!actions) return
+  const region = (BW.REGIONS || []).find(r => r.id === regionId)
+  if (!region) return
+
+  const target = regionParcial(regionId)
+  let current = 'p1'
+  try { current = (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p1' } catch(_){}
+  const needsSwitch = (target !== current)
+  const themes = regionThemesForParcial(regionId, target)
+  const pLabel = target === 'p1' ? 'Primer parcial' : target === 'p2' ? 'Segundo parcial' : 'Tercer parcial'
+
+  // Limpiar lo que F1 haya puesto
+  actions.innerHTML = ''
+
+  // 1) Si necesita cambio de parcial, mostrarlo como acción primaria
+  if (needsSwitch){
+    const sw = document.createElement('button')
+    sw.className = 'bw-action'
+    sw.type = 'button'
+    sw.innerHTML = `<div class="bw-action-icon">🔄</div>
+      <div class="bw-action-text"><span>Activar ${pLabel} (${target.toUpperCase()})</span><small>Esta región pertenece a ${target.toUpperCase()}. Activala para entrar a fondo.</small></div>`
+    sw.addEventListener('click', async () => {
+      await activateRegionParcial(regionId)
+      // Re-render después de cambiar
+      setTimeout(() => repopulateRegionActions(regionId), 200)
+    })
+    actions.appendChild(sw)
+  }
+
+  // 2) Resumen del área (siempre disponible)
+  const resBtn = document.createElement('button')
+  resBtn.className = 'bw-action'
+  resBtn.type = 'button'
+  const themesPreview = themes.length > 0
+    ? themes.map(t => (TOPIC_LABELS[t] || t).replace(/^[\u{1F300}-\u{1FAFF}]\s*/u, '')).join(', ')
+    : 'todos los temas del parcial'
+  resBtn.innerHTML = `<div class="bw-action-icon">📚</div>
+    <div class="bw-action-text"><span>Resumen del área</span><small>Lleva a: ${themesPreview}</small></div>`
+  resBtn.addEventListener('click', () => goToRegionResumen(regionId))
+  actions.appendChild(resBtn)
+
+  // 3) Simulacro: si la región tiene un tema único, botón directo. Si tiene varios, mini-lista.
+  if (themes.length === 0 || themes.length === 1){
+    const sim = document.createElement('button')
+    sim.className = 'bw-action'
+    sim.type = 'button'
+    const themeLbl = themes.length === 1 ? (TOPIC_LABELS[themes[0]] || themes[0]) : 'Mezclado del parcial'
+    sim.innerHTML = `<div class="bw-action-icon">⚡</div>
+      <div class="bw-action-text"><span>Practicar con simulacro</span><small>${themeLbl}</small></div>`
+    sim.addEventListener('click', () => goToRegionSimulacro(regionId, themes[0]))
+    actions.appendChild(sim)
+  } else {
+    // Header indicativo
+    const hdr = document.createElement('div')
+    hdr.className = 'bw-life-label'
+    hdr.style.marginTop = '.4rem'
+    hdr.textContent = 'Elegí un tema para practicar:'
+    actions.appendChild(hdr)
+    themes.forEach(theme => {
+      const tBtn = document.createElement('button')
+      tBtn.className = 'bw-action'
+      tBtn.type = 'button'
+      tBtn.innerHTML = `<div class="bw-action-icon">⚡</div>
+        <div class="bw-action-text"><span>${TOPIC_LABELS[theme] || theme}</span><small>Simulacro filtrado por este tema</small></div>`
+      tBtn.addEventListener('click', () => goToRegionSimulacro(regionId, theme))
+      actions.appendChild(tBtn)
+    })
+  }
+
+  // 4) Colección biológica (próximamente — F4)
+  const col = document.createElement('div')
+  col.className = 'bw-action coming'
+  col.innerHTML = `<div class="bw-action-icon">🧪</div>
+    <div class="bw-action-text"><span>Colección biológica</span><small>Próximamente — Fase 4 del Biocosmos</small></div>`
+  actions.appendChild(col)
+}
+
+/* ────── Observar cuando el panel de región se abre y re-renderizar acciones ────── */
+function bindRegionPanelObserver(){
+  const panel = document.getElementById('bwRegionPanel')
+  if (!panel) return
+  // Cache: para identificar la región abierta, usamos el emoji + nombre que F1 escribió
+  const obs = new MutationObserver(() => {
+    if (panel.classList.contains('show')){
+      // Damos 1 microtick para que F1 termine de poblar y luego sobreescribimos
+      requestAnimationFrame(() => {
+        try {
+          const nameEl = document.getElementById('bwRegionTitle')
+          if (!nameEl) return
+          const txt = nameEl.textContent.replace(/^Región\s+/, '').trim()
+          const region = (BW.REGIONS || []).find(r => r.name === txt)
+          if (region) repopulateRegionActions(region.id)
+        } catch(e){ console.warn('[BW audit] repopulate err:', e) }
+      })
+    }
+  })
+  obs.observe(panel, { attributes:true, attributeFilter:['class'] })
+}
+
+/* ────── Re-render cuando cambia el parcial activo (badges + acciones si panel abierto) ────── */
+function bindParcialChangeObserver(){
+  // El cambio dispara applyParcialActive() que modifica clases en muchas secciones.
+  // Más simple: observamos los botones de parcial del topbar
+  ['btnP1','btnP2','btnP3'].forEach(id => {
+    const b = document.getElementById(id)
+    if (!b) return
+    b.addEventListener('click', () => {
+      // Tras un instante, re-render del cosmos y del panel si está abierto
+      setTimeout(() => {
+        try {
+          if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce()
+          const panel = document.getElementById('bwRegionPanel')
+          if (panel && panel.classList.contains('show')){
+            const nameEl = document.getElementById('bwRegionTitle')
+            if (nameEl){
+              const txt = nameEl.textContent.replace(/^Región\s+/, '').trim()
+              const region = (BW.REGIONS || []).find(r => r.name === txt)
+              if (region) repopulateRegionActions(region.id)
+            }
+          }
+        } catch(_){}
+      }, 220)
+    })
+  })
+}
+
+/* ────── Validación de existencia de destinos críticos al cargar ────── */
+function auditCriticalTargets(){
+  const targets = ['resumenP1','resumen','resumenP3','simulacros','sec-cosmos']
+  const missing = targets.filter(id => !document.getElementById(id))
+  if (missing.length > 0){
+    console.warn('[BW audit] Destinos faltantes en index.html:', missing)
+  }
+  // Validar que A.startSim existe
+  if (!window.A || typeof window.A.startSim !== 'function'){
+    console.warn('[BW audit] window.A.startSim no está disponible — las acciones de simulacro fallarán')
+  }
+  // Validar mapping de topics
+  const allTopics = new Set()
+  ;(BW.REGIONS || []).forEach(r => (r.topics || []).forEach(t => allTopics.add(t)))
+  const unknown = [...allTopics].filter(t => !TOPIC_TO_PARCIAL[t])
+  if (unknown.length > 0){
+    console.warn('[BW audit] Topics de región sin mapeo a parcial:', unknown)
+  }
+}
+
+/* ────── Init de la auditoría ────── */
+function auditInit(){
+  try {
+    bindRegionPanelObserver()
+    bindParcialChangeObserver()
+    auditCriticalTargets()
+    // Re-render del cosmos por si las regiones con topic corregido cambian su explored
+    if (typeof BW.syncFromProgress === 'function') BW.syncFromProgress()
+  } catch(e){ console.warn('[BW audit] init error:', e) }
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', auditInit)
+else auditInit()
+
+/* ────── Test helpers ────── */
+BW._auditRegion = function(regionId){
+  return {
+    region: (BW.REGIONS || []).find(r => r.id === regionId),
+    parcialPrimario: regionParcial(regionId),
+    parcialesPosibles: BW.REGION_PARCIAL[regionId],
+    temasFiltradosParaParcialPrimario: regionThemesForParcial(regionId, regionParcial(regionId)),
+    resumenSection: resumenSectionId(regionParcial(regionId)),
+    todosLosTemas: ((BW.REGIONS || []).find(r => r.id === regionId) || {}).topics
+  }
+}
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Auditoría F1-F3
    ════════════════════════════════════════════════════════════════════ */
 </script>
 <!-- Botón flotante: modo enfoque -->
