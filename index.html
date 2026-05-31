@@ -28702,6 +28702,149 @@ BW.help = { open: openHelp, close: closeHelp, reset: () => { try { localStorage.
 /* ════════════════════════════════════════════════════════════════════
    Fin Biocosmos F7 — Biocosmos completo F1-F7
    ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS FX — Rescate del botón Director (independiente de F6)
+   Garantiza visibilidad del botón "Director del Mundo" para admins
+   incluso si F6 falló por cualquier razón. Provee helpers debug/force
+   en window.BWDirector como fallback global.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+
+function detectAdmin(){
+  // Múltiples fuentes
+  try {
+    const ab = document.getElementById('adminBtn')
+    if (ab){
+      if (ab.style && ab.style.display && ab.style.display !== 'none') return true
+      const cs = window.getComputedStyle(ab).display
+      if (cs && cs !== 'none' && ab.offsetParent !== null) return true
+    }
+    if (document.querySelector('.badge-admin')) return true
+    if (typeof S !== 'undefined' && S){
+      if (S.user && S.user.role === 'admin') return true
+      if (S.role === 'admin') return true
+      if (S.profile && S.profile.role === 'admin') return true
+    }
+    if (window._currentSession && window._currentSession.user){
+      const m = window._currentSession.user.user_metadata || {}
+      const a = window._currentSession.user.app_metadata  || {}
+      if (m.role === 'admin' || a.role === 'admin') return true
+    }
+  } catch(_){}
+  return false
+}
+
+function refresh(){
+  try {
+    const btn = document.getElementById('bwDirBtn')
+    if (!btn) return
+    if (detectAdmin()) btn.classList.add('show')
+    else btn.classList.remove('show')
+  } catch(_){}
+}
+
+function force(){
+  try {
+    const btn = document.getElementById('bwDirBtn')
+    if (btn){
+      btn.classList.add('show')
+      console.log('[BWDirector] Botón forzado a visible.')
+      return true
+    } else {
+      console.warn('[BWDirector] No se encontró #bwDirBtn en el DOM.')
+      return false
+    }
+  } catch(e){ console.warn('[BWDirector] force error:', e); return false }
+}
+
+function debug(){
+  const ab = document.getElementById('adminBtn')
+  const btn = document.getElementById('bwDirBtn')
+  const sec = document.getElementById('sec-cosmos')
+  const info = {
+    'BW global': typeof window.BW,
+    'BW.scene': (window.BW && typeof window.BW.scene) || 'undefined',
+    'BW.organism': (window.BW && typeof window.BW.organism) || 'undefined',
+    'BW.CATALOG': (window.BW && typeof window.BW.CATALOG) || 'undefined',
+    'BW.nav': (window.BW && typeof window.BW.nav) || 'undefined',
+    'BW.EXPEDITIONS': (window.BW && typeof window.BW.EXPEDITIONS) || 'undefined',
+    'BW.events': (window.BW && typeof window.BW.events) || 'undefined',
+    'BW.director': (window.BW && typeof window.BW.director) || 'undefined',
+    'BW.toast': (window.BW && typeof window.BW.toast) || 'undefined',
+    'adminBtn exists': !!ab,
+    'adminBtn inline display': ab ? (ab.style.display || '(empty)') : 'N/A',
+    'adminBtn computed display': ab ? window.getComputedStyle(ab).display : 'N/A',
+    'adminBtn visible (offsetParent)': ab ? ab.offsetParent !== null : false,
+    'badge-admin in DOM': !!document.querySelector('.badge-admin'),
+    'detectAdmin() result': detectAdmin(),
+    'bwDirBtn exists': !!btn,
+    'bwDirBtn has .show': btn ? btn.classList.contains('show') : false,
+    'bwDirBtn computed display': btn ? window.getComputedStyle(btn).display : 'N/A',
+    'sec-cosmos visible': sec ? sec.style.display !== 'none' : false
+  }
+  console.table(info)
+  console.log('TIP: si detectAdmin() es true pero el botón no se ve, llamá BWDirector.force()')
+  return info
+}
+
+// API global INDEPENDIENTE de window.BW
+window.BWDirector = { refresh, force, debug, detectAdmin }
+
+// También enriquecer BW.director si existe; si no, crearlo como objeto
+try {
+  if (!window.BW) window.BW = {}
+  if (!window.BW.director) window.BW.director = {}
+  if (!window.BW.director.forceShow) window.BW.director.forceShow = force
+  if (!window.BW.director.debug)     window.BW.director.debug = debug
+} catch(_){}
+
+// Init: refresh + polling robusto + observers
+function init(){
+  try {
+    refresh()
+    // Polling cada 1.5s durante 45s (más amplio que F6)
+    let ticks = 0
+    const t = setInterval(() => {
+      refresh()
+      ticks++
+      if (ticks > 30) clearInterval(t)
+    }, 1500)
+    // Observer adminBtn
+    const ab = document.getElementById('adminBtn')
+    if (ab){
+      new MutationObserver(refresh).observe(ab, { attributes:true, attributeFilter:['style','class'] })
+    }
+    // Observer topbar
+    const tb = document.querySelector('.topbar')
+    if (tb){
+      new MutationObserver(refresh).observe(tb, { childList:true, subtree:true, attributes:true, attributeFilter:['style','class'] })
+    }
+    // Click handler del botón si BW.director.show no existe
+    const btn = document.getElementById('bwDirBtn')
+    if (btn && !btn._bwxBound){
+      btn._bwxBound = true
+      btn.addEventListener('click', () => {
+        try {
+          if (window.BW && window.BW.director && typeof window.BW.director.show === 'function'){
+            window.BW.director.show()
+          } else {
+            const m = document.getElementById('bwDirModal')
+            if (m){ m.classList.add('show'); m.setAttribute('aria-hidden', 'false') }
+          }
+        } catch(e){ console.warn('[BWDirector] click error:', e) }
+      })
+    }
+  } catch(e){ console.warn('[BWDirector] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init)
+else init()
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos FX
+   ════════════════════════════════════════════════════════════════════ */
 </script>
 <!-- Botón flotante: modo enfoque -->
 <button class="focus-toggle-btn" onclick="window.toggleFocusMode()" title="Modo enfoque (oculta sidebars)">🎯</button>
