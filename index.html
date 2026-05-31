@@ -3111,6 +3111,882 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 }
 
 /* ═══ Fin Biocosmos F3 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F4 — Colección viva (biotopo con descubrimientos)
+   Sin tabla, sin grid. Items flotando libres en una "pecera".
+   ═══════════════════════════════════════════════════════════ */
+
+.bw-coll-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  margin-top:.4rem;
+}
+.bw-coll-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:.74rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:rgba(208,237,216,.78);
+}
+.bw-coll-header .bw-coll-count{
+  font-size:.7rem;
+  color:rgba(208,237,216,.6);
+  font-weight:600;
+  text-transform:none;
+  letter-spacing:.02em;
+}
+.bw-coll-pond{
+  position:relative;
+  width:100%;
+  height:230px;
+  border-radius:18px;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(47,139,77,.10), transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(43,110,163,.08), transparent 60%),
+    linear-gradient(180deg, rgba(8,22,14,.55), rgba(6,18,11,.7));
+  border:1px solid rgba(80,180,100,.16);
+  overflow:hidden;
+  isolation:isolate;
+}
+.bw-coll-pond::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(109,217,159,.06), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(124,198,255,.05), transparent 40%);
+  pointer-events:none;
+}
+.bw-coll-item{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  border-radius:50%;
+  transition:transform .25s ease, filter .25s ease;
+  z-index:2;
+}
+.bw-coll-item canvas{
+  display:block;
+  width:100%;
+  height:100%;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));
+}
+.bw-coll-item.owned canvas{
+  filter:drop-shadow(0 4px 14px rgba(47,139,77,.45));
+}
+.bw-coll-item.silhouette canvas{
+  opacity:.18;
+  filter:grayscale(1) drop-shadow(0 2px 6px rgba(0,0,0,.5));
+}
+.bw-coll-item:hover{transform:translate(-50%, -50%) scale(1.15);z-index:3}
+.bw-coll-item.float-anim{
+  animation:bwCollFloat 6s ease-in-out infinite;
+}
+@keyframes bwCollFloat{
+  0%,100%{transform:translate(-50%, -50%) translateY(0)}
+  50%{transform:translate(-50%, -50%) translateY(-6px)}
+}
+.bw-coll-item.r-raro canvas{filter:drop-shadow(0 4px 14px rgba(109,76,217,.55))}
+.bw-coll-item.r-epico canvas{filter:drop-shadow(0 4px 18px rgba(176,38,214,.65))}
+.bw-coll-item.r-legend canvas{filter:drop-shadow(0 4px 22px rgba(255,186,18,.75))}
+
+.bw-coll-tip{
+  position:absolute;
+  z-index:5;
+  padding:.55rem .85rem;
+  border-radius:12px;
+  background:rgba(8,22,14,.96);
+  border:1px solid rgba(80,180,100,.32);
+  color:#eafff0;
+  font-size:.78rem;
+  font-weight:600;
+  max-width:240px;
+  pointer-events:none;
+  opacity:0;
+  transform:translate(-50%, -110%) scale(.95);
+  transition:opacity .2s ease, transform .2s ease;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);
+}
+.bw-coll-tip.show{opacity:1;transform:translate(-50%, -110%) scale(1)}
+.bw-coll-tip strong{display:block;font-size:.82rem;margin-bottom:.15rem}
+.bw-coll-tip small{
+  display:block;
+  font-size:.7rem;
+  font-weight:500;
+  color:rgba(208,237,216,.72);
+  margin-top:.25rem;
+  line-height:1.4;
+  white-space:normal;
+}
+.bw-coll-tip .bw-rarity-pill{
+  display:inline-block;
+  font-size:.6rem;
+  padding:.1rem .42rem;
+  margin-top:.3rem;
+  border-radius:999px;
+  font-weight:800;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+
+.bw-coll-empty{
+  text-align:center;
+  padding:1.6rem 1rem;
+  color:rgba(208,237,216,.62);
+  font-size:.85rem;
+  font-style:italic;
+}
+.bw-coll-empty .bw-coll-empty-icon{
+  font-size:1.8rem;
+  display:block;
+  margin-bottom:.4rem;
+  opacity:.5;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-coll-item,
+  .bw-coll-item.float-anim{animation:none!important;transition:none}
+  .bw-coll-tip{transition:none}
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .bw-coll-pond{height:200px}
+  .bw-coll-tip{max-width:200px;font-size:.74rem}
+}
+
+/* ═══ Fin Biocosmos F4 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F5 — Expediciones (mapa orgánico + nodos)
+   No listas. No tablas. Un viaje visual.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Botón flotante "Expediciones" en el cosmos (esquina inferior izquierda) */
+.bw-exp-btn{
+  position:absolute;
+  z-index:3;
+  bottom:1.1rem;
+  left:1.4rem;
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.5rem .95rem .5rem .75rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(43,110,163,.22), rgba(124,198,255,.10));
+  border:1px solid rgba(124,198,255,.42);
+  color:#dbeafe;
+  font-weight:700;
+  font-size:.82rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 24px rgba(43,110,163,.32);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-exp-btn.show{display:inline-flex}
+.bw-exp-btn:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(124,198,255,.55)}
+
+@media (max-width: 768px){
+  .bw-exp-btn{bottom:.7rem;left:.8rem;font-size:.74rem;padding:.42rem .8rem}
+}
+
+/* Modal de lista de expediciones */
+.bw-exp-list-modal{
+  position:fixed;
+  inset:0;
+  z-index:870;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+  background:rgba(3,12,7,.84);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.bw-exp-list-modal.show{display:flex;opacity:1}
+.bw-exp-list-panel{
+  width:min(640px, 96vw);
+  max-height:84vh;
+  overflow-y:auto;
+  padding:1.6rem;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(13,31,19,.95), rgba(8,22,14,.98));
+  border:1px solid rgba(124,198,255,.18);
+  color:#eafff0;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+}
+.bw-exp-list-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.4rem;
+}
+.bw-exp-list-head h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;
+  font-size:1.3rem;margin:0;
+  background:linear-gradient(135deg, #7cc6ff, #fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.bw-exp-list-sub{
+  font-size:.84rem;color:rgba(208,237,216,.78);
+  margin:0 0 1rem;
+}
+.bw-exp-card{
+  display:flex;
+  align-items:flex-start;
+  gap:1rem;
+  padding:1rem 1.1rem;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(124,198,255,.18);
+  margin-bottom:.7rem;
+  cursor:pointer;
+  transition:background .25s ease, transform .25s ease, border-color .25s ease;
+  text-align:left;
+  width:100%;
+}
+.bw-exp-card:hover{
+  background:rgba(43,110,163,.18);
+  border-color:rgba(124,198,255,.4);
+  transform:translateY(-2px);
+}
+.bw-exp-card-emoji{
+  font-size:2rem;flex-shrink:0;
+  width:54px;height:54px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:16px;
+  background:rgba(43,110,163,.18);
+  filter:drop-shadow(0 4px 12px rgba(43,110,163,.4));
+}
+.bw-exp-card-info{flex:1;min-width:0}
+.bw-exp-card-info h3{
+  margin:0;font-size:1rem;font-weight:700;
+  font-family:'Merriweather',Georgia,serif;
+}
+.bw-exp-card-info p{
+  font-size:.82rem;
+  color:rgba(208,237,216,.78);
+  margin:.25rem 0 .4rem;
+  line-height:1.4;
+}
+.bw-exp-card-meta{
+  display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;
+  font-size:.7rem;font-weight:600;
+  color:rgba(208,237,216,.65);
+}
+.bw-exp-card-meta .bw-exp-tag{
+  padding:.16rem .5rem;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  letter-spacing:.04em;
+}
+.bw-exp-card-meta .bw-exp-tag.completed{
+  background:rgba(47,139,77,.18);border-color:rgba(80,180,100,.4);
+  color:#dff5e6;
+}
+.bw-exp-card-meta .bw-exp-tag.locked{
+  background:rgba(196,82,82,.14);border-color:rgba(196,82,82,.3);
+  color:#ffb5b5;
+}
+
+/* Modal del MAPA de expedición */
+.bw-exp-modal{
+  position:fixed;
+  inset:0;
+  z-index:880;
+  display:none;
+  align-items:stretch;justify-content:stretch;
+  background:radial-gradient(circle at center, rgba(8,22,14,.96), rgba(3,12,7,.99));
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  opacity:0;
+  transition:opacity .35s ease;
+}
+.bw-exp-modal.show{display:flex;opacity:1}
+.bw-exp-stage{
+  position:relative;
+  flex:1;display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.bw-exp-stage-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 1.4rem;
+  gap:1rem;
+}
+.bw-exp-stage-head h2{
+  margin:0;font-family:'Merriweather',Georgia,serif;
+  font-size:clamp(1.1rem, .9rem + 1.2vw, 1.6rem);
+  color:#eafff0;
+}
+.bw-exp-stage-head .bw-back-btn{color:rgba(208,237,216,.85)}
+.bw-exp-progress{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.74rem;color:rgba(208,237,216,.7);
+  font-weight:600;letter-spacing:.04em;
+}
+.bw-exp-progress-bar{
+  width:120px;height:5px;border-radius:999px;
+  background:rgba(255,255,255,.08);overflow:hidden;
+  position:relative;
+}
+.bw-exp-progress-fill{
+  position:absolute;inset:0 auto 0 0;
+  background:linear-gradient(90deg, #7cc6ff, #6dd99f);
+  border-radius:999px;
+  transition:width .5s cubic-bezier(.2,.7,.2,1);
+}
+.bw-exp-map-canvas{
+  flex:1;
+  display:block;
+  cursor:default;
+}
+
+/* Panel de nodo activo (overlay derecho/inferior) */
+.bw-exp-node-panel{
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:min(440px, 94vw);
+  z-index:5;
+  background:linear-gradient(180deg, rgba(8,22,14,.95), rgba(6,18,11,.98));
+  border-left:1px solid rgba(124,198,255,.18);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:-20px 0 60px rgba(0,0,0,.5);
+  padding:1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  overflow-y:auto;
+  transform:translateX(110%);
+  transition:transform .42s cubic-bezier(.2,.7,.2,1);
+  color:#eafff0;
+}
+.bw-exp-node-panel.show{transform:translateX(0)}
+@media (max-width: 768px){
+  .bw-exp-node-panel{
+    width:100%;
+    border-left:none;
+    border-top:1px solid rgba(124,198,255,.18);
+    box-shadow:0 -20px 60px rgba(0,0,0,.5);
+    top:auto;
+    height:80%;
+    transform:translateY(110%);
+  }
+  .bw-exp-node-panel.show{transform:translateY(0)}
+}
+.bw-exp-node-eyebrow{
+  font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(124,198,255,.85);
+}
+.bw-exp-node-title{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;font-size:1.4rem;margin:0;
+}
+.bw-exp-node-body{
+  font-size:.92rem;line-height:1.55;
+  color:rgba(208,237,216,.88);
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  padding:.95rem 1.05rem;
+  border-radius:14px;
+}
+.bw-exp-node-actions{
+  display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.6rem;
+}
+.bw-exp-node-actions .bw-btn{
+  background:linear-gradient(135deg, var(--green), #3ba85c);
+  border:none;color:#fff;
+  font-weight:700;font-size:.88rem;
+  padding:.65rem 1.2rem;
+  flex:1;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(47,139,77,.32);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-exp-node-actions .bw-btn:hover{transform:translateY(-1px);box-shadow:0 14px 32px rgba(47,139,77,.42)}
+.bw-exp-node-actions .bw-btn.secondary{
+  background:rgba(255,255,255,.06);
+  box-shadow:none;
+  color:rgba(208,237,216,.85);
+  flex:0;
+}
+
+/* Mini-simulacro dentro de expedición */
+.bw-mini-sim-q{
+  font-size:.92rem;
+  line-height:1.5;
+  padding:.3rem 0;
+  font-weight:600;
+}
+.bw-mini-sim-opts{
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+  margin-top:.6rem;
+}
+.bw-mini-sim-opt{
+  text-align:left;
+  padding:.65rem .85rem;
+  border-radius:12px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:#eafff0;
+  font-size:.85rem;
+  cursor:pointer;
+  font-weight:500;
+  transition:background .2s ease, border-color .2s ease;
+}
+.bw-mini-sim-opt:hover{background:rgba(255,255,255,.08);border-color:rgba(124,198,255,.3)}
+.bw-mini-sim-opt.correct{background:rgba(47,139,77,.22);border-color:rgba(80,180,100,.45);color:#dff5e6}
+.bw-mini-sim-opt.wrong{background:rgba(196,82,82,.18);border-color:rgba(196,82,82,.4);color:#ffd1d1}
+.bw-mini-sim-opt:disabled{cursor:default}
+.bw-mini-sim-feedback{
+  margin-top:.65rem;
+  font-size:.84rem;
+  padding:.6rem .85rem;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(208,237,216,.88);
+  line-height:1.45;
+}
+.bw-mini-sim-progress{
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:rgba(124,198,255,.82);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-exp-list-modal,.bw-exp-modal,.bw-exp-node-panel,.bw-exp-progress-fill{transition:none}
+}
+
+/* ═══ Fin Biocosmos F5 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F6 — Eventos temporales + Director del Mundo
+   ═══════════════════════════════════════════════════════════ */
+
+/* Botón flotante "Director del Mundo" (solo admins, esquina superior izquierda) */
+.bw-dir-btn{
+  position:absolute;
+  z-index:3;
+  top:1.1rem;
+  left:1.4rem;
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.5rem .9rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(255,186,18,.20), rgba(176,38,214,.10));
+  border:1px solid rgba(255,186,18,.45);
+  color:#fff79b;
+  font-weight:700;
+  font-size:.78rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-dir-btn.show{display:inline-flex}
+.bw-dir-btn:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(255,186,18,.4)}
+
+@media (max-width: 768px){
+  .bw-dir-btn{top:.7rem;left:.8rem;font-size:.72rem;padding:.42rem .75rem}
+}
+
+/* Banner de evento activo (cuando una season está activa) */
+.bw-event-banner{
+  position:absolute;
+  z-index:3;
+  top:5rem;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.4rem .9rem;
+  border-radius:999px;
+  background:rgba(8,22,14,.85);
+  border:1px solid rgba(255,186,18,.4);
+  color:#fff79b;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 20px rgba(255,186,18,.25);
+  animation:bwEventBannerIn .6s ease;
+}
+.bw-event-banner.show{display:inline-flex}
+@keyframes bwEventBannerIn{
+  from{opacity:0;transform:translate(-50%, -8px)}
+  to{opacity:1;transform:translate(-50%, 0)}
+}
+
+/* Modal Director del Mundo */
+.bw-dir-modal{
+  position:fixed;
+  inset:0;
+  z-index:870;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+  background:rgba(3,12,7,.86);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.bw-dir-modal.show{display:flex;opacity:1}
+.bw-dir-panel{
+  width:min(720px, 96vw);
+  max-height:88vh;
+  overflow-y:auto;
+  padding:1.6rem;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(13,31,19,.96), rgba(8,22,14,.99));
+  border:1px solid rgba(255,186,18,.22);
+  color:#eafff0;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+}
+.bw-dir-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.6rem;
+}
+.bw-dir-head h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;font-size:1.4rem;margin:0;
+  background:linear-gradient(135deg, #ffd86b, #ff8a00);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.bw-dir-sub{
+  font-size:.82rem;color:rgba(208,237,216,.78);
+  margin:0 0 1.2rem;
+}
+.bw-dir-section{
+  margin-bottom:1.4rem;
+  padding-bottom:1.2rem;
+  border-bottom:1px dashed rgba(255,255,255,.08);
+}
+.bw-dir-section:last-child{border-bottom:none;padding-bottom:0;margin-bottom:0}
+.bw-dir-section h3{
+  font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,186,18,.85);font-weight:800;
+  margin:0 0 .7rem;
+}
+.bw-dir-row{
+  display:flex;gap:.6rem;
+  margin-bottom:.55rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.bw-dir-row label{
+  font-size:.78rem;font-weight:600;
+  color:rgba(208,237,216,.8);
+  min-width:90px;
+}
+.bw-dir-row input,
+.bw-dir-row select,
+.bw-dir-row textarea{
+  flex:1;
+  min-width:140px;
+  padding:.5rem .75rem;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:#eafff0;
+  font-size:.82rem;
+  font-family:inherit;
+}
+.bw-dir-row textarea{min-height:60px;resize:vertical}
+.bw-dir-row input:focus,
+.bw-dir-row select:focus,
+.bw-dir-row textarea:focus{
+  outline:none;border-color:rgba(255,186,18,.55);
+}
+.bw-dir-actions{
+  display:flex;gap:.55rem;margin-top:.8rem;
+  flex-wrap:wrap;
+}
+.bw-dir-btn-primary{
+  padding:.55rem 1rem;border-radius:10px;
+  background:linear-gradient(135deg, #ffd86b, #ff8a00);
+  color:#1a0e00;
+  font-weight:800;font-size:.84rem;
+  border:none;cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-dir-btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(255,138,0,.42)}
+.bw-dir-btn-sec{
+  padding:.5rem .9rem;border-radius:10px;
+  background:rgba(255,255,255,.07);
+  color:rgba(208,237,216,.85);
+  font-weight:600;font-size:.82rem;
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+}
+.bw-dir-list{
+  display:flex;flex-direction:column;gap:.5rem;
+  margin-top:.5rem;
+}
+.bw-dir-event-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.7rem .9rem;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+.bw-dir-event-item .bw-dir-event-info{flex:1;min-width:0}
+.bw-dir-event-item strong{font-size:.88rem}
+.bw-dir-event-item small{
+  display:block;font-size:.7rem;font-weight:500;
+  color:rgba(208,237,216,.7);margin-top:.15rem;letter-spacing:.02em;
+}
+.bw-dir-event-item .bw-dir-event-type{
+  font-size:.66rem;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:.18rem .55rem;border-radius:999px;
+  background:rgba(255,186,18,.18);
+  border:1px solid rgba(255,186,18,.4);
+  color:#fff79b;
+}
+.bw-dir-event-item .bw-dir-event-del{
+  background:transparent;border:none;
+  color:rgba(196,82,82,.85);
+  cursor:pointer;font-size:1.1rem;
+  padding:.2rem .4rem;border-radius:8px;
+  transition:background .2s ease;
+}
+.bw-dir-event-item .bw-dir-event-del:hover{background:rgba(196,82,82,.18)}
+.bw-dir-feedback{
+  margin-top:.6rem;
+  padding:.5rem .8rem;
+  border-radius:10px;
+  font-size:.78rem;
+  font-weight:600;
+  display:none;
+}
+.bw-dir-feedback.ok{display:block;background:rgba(47,139,77,.18);border:1px solid rgba(80,180,100,.4);color:#dff5e6}
+.bw-dir-feedback.err{display:block;background:rgba(196,82,82,.18);border:1px solid rgba(196,82,82,.4);color:#ffd1d1}
+
+/* Modificador del cosmos por evento season */
+.bw-cosmos.season-aquatic{
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(43,110,163,.22), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(34,211,238,.18), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #0a1e2a 0%, #050f17 70%, #030a10 100%)!important;
+}
+.bw-cosmos.season-genomic{
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(167,139,250,.22), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(176,38,214,.16), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #170a2a 0%, #0a0517 70%, #050310 100%)!important;
+}
+.bw-cosmos.season-cellular{
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(109,217,159,.26), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(74,222,128,.18), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #0a2316 0%, #061509 70%, #03100a 100%)!important;
+}
+.bw-cosmos.season-evolution{
+  background:
+    radial-gradient(ellipse at 18% 22%, rgba(251,146,60,.22), transparent 60%),
+    radial-gradient(ellipse at 82% 78%, rgba(251,191,36,.16), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #2a1607 0%, #170d05 70%, #100904 100%)!important;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-event-banner{animation:none}
+  .bw-dir-modal{transition:none}
+}
+
+/* ═══ Fin Biocosmos F6 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS F7 — Pulido, accesibilidad, performance
+   ═══════════════════════════════════════════════════════════ */
+
+/* Focus visible para navegación por teclado */
+.bw-cosmos button:focus-visible,
+.bw-cosmos a:focus-visible,
+.bw-region-panel button:focus-visible,
+.bw-region-panel a:focus-visible,
+.bw-caps-btn:focus-visible,
+.bw-exp-btn:focus-visible,
+.bw-dir-btn:focus-visible,
+.bw-top-org:focus-visible,
+.bw-org-settings:focus-visible,
+.bw-action:focus-visible,
+.bw-caps-item:focus-visible,
+.bw-coll-item:focus-visible,
+.bw-exp-card:focus-visible,
+.bw-color:focus-visible{
+  outline:2px solid rgba(124,198,255,.85);
+  outline-offset:3px;
+  border-radius:14px;
+}
+
+/* Indicador "?" de ayuda flotante */
+.bw-help-btn{
+  position:absolute;
+  z-index:3;
+  top:1.1rem;
+  right:9rem;
+  width:34px;height:34px;
+  display:none;
+  align-items:center;justify-content:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.15);
+  color:rgba(208,237,216,.85);
+  font-weight:800;font-size:.92rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:background .25s ease, transform .2s ease;
+}
+.bw-help-btn.show{display:inline-flex}
+.bw-help-btn:hover{background:rgba(255,255,255,.13);transform:scale(1.05)}
+
+@media (max-width: 768px){
+  .bw-help-btn{top:.7rem;right:7rem;width:30px;height:30px;font-size:.82rem}
+}
+
+/* Modal de bienvenida / ayuda */
+.bw-help-modal{
+  position:fixed;
+  inset:0;
+  z-index:870;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+  background:rgba(3,12,7,.86);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.bw-help-modal.show{display:flex;opacity:1}
+.bw-help-panel{
+  width:min(560px, 96vw);
+  max-height:84vh;
+  overflow-y:auto;
+  padding:1.6rem 1.6rem 1.4rem;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(13,31,19,.96), rgba(8,22,14,.99));
+  border:1px solid rgba(80,180,100,.22);
+  color:#eafff0;
+  box-shadow:0 24px 80px rgba(0,0,0,.55);
+}
+.bw-help-panel h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;font-size:1.4rem;margin:0 0 .3rem;
+  background:linear-gradient(135deg, #6dd99f, #fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.bw-help-panel p{
+  font-size:.88rem;color:rgba(208,237,216,.85);
+  line-height:1.55;margin:.5rem 0;
+}
+.bw-help-panel ul{
+  list-style:none;padding:0;margin:1rem 0 0;
+  display:flex;flex-direction:column;gap:.5rem;
+}
+.bw-help-panel li{
+  display:flex;gap:.6rem;align-items:flex-start;
+  font-size:.84rem;color:rgba(208,237,216,.88);
+  line-height:1.45;
+}
+.bw-help-panel li strong{color:#6dd99f}
+.bw-help-panel kbd{
+  display:inline-block;
+  padding:.12rem .42rem;
+  border-radius:5px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  font-family:ui-monospace,'SF Mono',Menlo,monospace;
+  font-size:.74rem;
+  font-weight:700;
+  color:#eafff0;
+}
+.bw-help-cta{
+  margin-top:1.2rem;
+  padding:.7rem 1.4rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, var(--green), #3ba85c);
+  color:#fff;border:none;
+  font-weight:700;font-size:.92rem;
+  cursor:pointer;width:100%;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-help-cta:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(47,139,77,.42)}
+
+/* Toast del Biocosmos (no pisa el toast global) */
+.bw-toast{
+  position:fixed;
+  z-index:880;
+  bottom:1.5rem;
+  left:50%;
+  transform:translateX(-50%) translateY(60px);
+  padding:.7rem 1.2rem;
+  border-radius:999px;
+  background:rgba(8,22,14,.95);
+  border:1px solid rgba(80,180,100,.4);
+  color:#eafff0;
+  font-weight:700;font-size:.85rem;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), opacity .35s ease;
+  max-width:90vw;
+  text-align:center;
+}
+.bw-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* Mejora hover de regiones (cursor pointer + cosmos cursor) */
+.bw-canvas.bw-canvas-interactive{cursor:pointer}
+
+/* Skip link para screen readers */
+.bw-skip-link{
+  position:absolute;
+  top:-100px;
+  left:0;
+  padding:.5rem 1rem;
+  background:#000;
+  color:#fff;
+  z-index:999;
+  font-weight:700;
+}
+.bw-skip-link:focus{top:0}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .bw-help-modal,
+  .bw-toast{transition:none}
+  .bw-help-cta{transition:none}
+}
+
+/* ═══ Fin Biocosmos F7 ═══ */
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -4226,6 +5102,19 @@ window.Analytics = (function(){
       <div class="bw-life-label" id="bwRegionLifeLbl">Vida de la región</div>
     </div>
     <div id="bwRegionDimMsg" class="bw-region-dim-msg" style="display:none"></div>
+    <!-- F4: colección viva — descubrimientos flotando en biotopo -->
+    <div class="bw-coll-wrap" id="bwCollWrap">
+      <div class="bw-coll-header">
+        <span>🧬 Tu colección</span>
+        <span class="bw-coll-count" id="bwCollCount">0 / 0</span>
+      </div>
+      <div class="bw-coll-pond" id="bwCollPond"></div>
+      <div class="bw-coll-tip" id="bwCollTip" aria-hidden="true"></div>
+      <div class="bw-coll-empty" id="bwCollEmpty" style="display:none">
+        <span class="bw-coll-empty-icon">🔬</span>
+        Sin descubrimientos todavía en esta región.
+      </div>
+    </div>
     <div class="bw-region-actions" id="bwRegionActions"></div>
   </aside>
 
@@ -4245,6 +5134,27 @@ window.Analytics = (function(){
     <span class="bw-caps-count" id="bwCapsBtnCount">0</span>
   </button>
 
+  <!-- ═══ F5: Botón flotante "Expediciones" (esquina inferior izquierda) ═══ -->
+  <button class="bw-exp-btn" id="bwExpBtn" type="button" title="Expediciones disponibles">
+    <span aria-hidden="true">🚀</span>
+    <span>Expediciones</span>
+  </button>
+
+  <!-- ═══ F6: Botón "Director del Mundo" (solo admins) ═══ -->
+  <button class="bw-dir-btn" id="bwDirBtn" type="button" title="Director del Mundo (admin)">
+    <span aria-hidden="true">🎬</span>
+    <span>Director del Mundo</span>
+  </button>
+
+  <!-- ═══ F6: Banner de evento activo ═══ -->
+  <div class="bw-event-banner" id="bwEventBanner" aria-live="polite">
+    <span aria-hidden="true">✨</span>
+    <span id="bwEventBannerTxt">Evento activo</span>
+  </div>
+
+  <!-- ═══ F7: Botón de ayuda (?) ═══ -->
+  <button class="bw-help-btn" id="bwHelpBtn" type="button" aria-label="Ayuda y atajos del Biocosmos" title="¿Cómo funciona el Biocosmos? (B)">?</button>
+
   <!-- ═══ F2: Personalización del organismo (esquina inferior derecha) ═══ -->
   <button class="bw-org-settings" id="bwOrgSettingsBtn" type="button" aria-haspopup="true" aria-expanded="false">
     ⚙ Tu organismo
@@ -4259,6 +5169,137 @@ window.Analytics = (function(){
     <small>Los tres colores están disponibles desde el inicio. Más rasgos cosméticos se desbloquean con hitos académicos.</small>
   </div>
 </section>
+
+<!-- ═══ BIOCOSMOS F7: Modal de ayuda / bienvenida ═══ -->
+<div id="bwHelpModal" class="bw-help-modal" role="dialog" aria-modal="true" aria-labelledby="bwHelpTitle" aria-hidden="true">
+  <div class="bw-help-panel">
+    <h2 id="bwHelpTitle">🧬 Tu Biocosmos vivo</h2>
+    <p>Este es tu mundo biológico. Cada región refleja tu progreso real en BioMaster.</p>
+    <ul>
+      <li><strong>Click en una región</strong> → entrás a su biotopo. Las regiones del parcial activo brillan; las de otros parciales aparecen más opacas.</li>
+      <li><strong>Tu organismo evoluciona</strong> con el XP que ganás. Se ve en el cosmos y en el topbar.</li>
+      <li><strong>Cápsulas</strong> aparecen al ganar simulacros (≥60% de aciertos). Se acumulan arriba a la derecha para que las abras cuando quieras.</li>
+      <li><strong>Expediciones</strong> (botón inferior izquierdo) son viajes guiados por el contenido del parcial. Cada una otorga una cápsula garantizada al final.</li>
+      <li><strong>Colección viva</strong> dentro de cada región: tus descubrimientos flotan; los no encontrados aparecen como siluetas.</li>
+    </ul>
+    <p style="margin-top:1rem;font-size:.78rem;color:rgba(208,237,216,.65)">
+      Atajos: <kbd>B</kbd> para volver al Biocosmos · <kbd>Esc</kbd> para cerrar modales · <kbd>?</kbd> para esta ayuda
+    </p>
+    <button class="bw-help-cta" id="bwHelpCta" type="button">¡Entendido, a explorar!</button>
+  </div>
+</div>
+
+<!-- ═══ F7: Toast del Biocosmos ═══ -->
+<div id="bwToast" class="bw-toast" role="status" aria-live="polite"></div>
+
+<!-- ═══ BIOCOSMOS F6: Modal Director del Mundo (admin) ═══ -->
+<div id="bwDirModal" class="bw-dir-modal" role="dialog" aria-modal="true" aria-labelledby="bwDirTitle" aria-hidden="true">
+  <div class="bw-dir-panel">
+    <div class="bw-dir-head">
+      <h2 id="bwDirTitle">🎬 Director del Mundo</h2>
+      <button class="bw-caps-close" id="bwDirClose" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="bw-dir-sub">Activá eventos temporales, regalá cápsulas a los estudiantes y modificá el cosmos sin tocar código.</p>
+
+    <div class="bw-dir-section">
+      <h3>Crear nuevo evento</h3>
+      <div class="bw-dir-row">
+        <label for="bwDirEvType">Tipo:</label>
+        <select id="bwDirEvType">
+          <option value="season">🌍 Season (cambia el cosmos)</option>
+          <option value="event">⚡ Event (boost de descubrimientos)</option>
+          <option value="highlight">⭐ Highlight (destacar región)</option>
+          <option value="grant">🎁 Grant (regalar cápsula)</option>
+        </select>
+      </div>
+      <div class="bw-dir-row">
+        <label for="bwDirEvName">Nombre:</label>
+        <input type="text" id="bwDirEvName" placeholder="Semana Oceánica, Temporada Celular...">
+      </div>
+      <div class="bw-dir-row">
+        <label for="bwDirEvRegion">Región:</label>
+        <select id="bwDirEvRegion">
+          <option value="">— (global) —</option>
+          <option value="celular">🧫 Celular</option>
+          <option value="genetica">🧬 Genética</option>
+          <option value="botanica">🌿 Botánica</option>
+          <option value="microbiologica">🦠 Microbiológica</option>
+          <option value="zoologica">🐾 Zoológica</option>
+          <option value="ecologica">🌎 Ecológica</option>
+          <option value="cientifica">🔬 Científica</option>
+        </select>
+      </div>
+      <div class="bw-dir-row" id="bwDirSeasonRow" style="display:none">
+        <label>Paleta:</label>
+        <select id="bwDirEvSeason">
+          <option value="aquatic">🌊 Aquatic (azul océano)</option>
+          <option value="genomic">🧬 Genomic (violeta ADN)</option>
+          <option value="cellular">🧫 Cellular (verde brillante)</option>
+          <option value="evolution">🦎 Evolution (ámbar fósil)</option>
+        </select>
+      </div>
+      <div class="bw-dir-row" id="bwDirGrantRow" style="display:none">
+        <label>Cápsula:</label>
+        <select id="bwDirEvCatalog"></select>
+      </div>
+      <div class="bw-dir-row" id="bwDirGrantTargetRow" style="display:none">
+        <label>Para:</label>
+        <select id="bwDirEvTarget">
+          <option value="all">Todos los estudiantes</option>
+          <option value="pro">Solo Pro</option>
+        </select>
+      </div>
+      <div class="bw-dir-row">
+        <label for="bwDirEvEnds">Termina:</label>
+        <input type="date" id="bwDirEvEnds">
+      </div>
+      <div class="bw-dir-actions">
+        <button class="bw-dir-btn-primary" id="bwDirCreate" type="button">Crear y activar</button>
+      </div>
+      <div class="bw-dir-feedback" id="bwDirFb"></div>
+    </div>
+
+    <div class="bw-dir-section">
+      <h3>Eventos activos</h3>
+      <div class="bw-dir-list" id="bwDirList">
+        <div class="bw-caps-empty" style="padding:1rem">Cargando eventos…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BIOCOSMOS F5: Modal de lista de expediciones ═══ -->
+<div id="bwExpListModal" class="bw-exp-list-modal" role="dialog" aria-modal="true" aria-labelledby="bwExpListTitle" aria-hidden="true">
+  <div class="bw-exp-list-panel">
+    <div class="bw-exp-list-head">
+      <h2 id="bwExpListTitle">🚀 Expediciones del parcial</h2>
+      <button class="bw-caps-close" id="bwExpListClose" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="bw-exp-list-sub" id="bwExpListSub">Viajes guiados por el contenido del parcial activo. Cada uno otorga una cápsula garantizada al completarlo.</p>
+    <div id="bwExpListGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ BIOCOSMOS F5: Modal del MAPA de expedición ═══ -->
+<div id="bwExpModal" class="bw-exp-modal" role="dialog" aria-modal="true" aria-labelledby="bwExpStageTitle" aria-hidden="true">
+  <div class="bw-exp-stage">
+    <div class="bw-exp-stage-head">
+      <button class="bw-back-btn" id="bwExpStageClose" type="button" aria-label="Salir de la expedición">← Salir de la expedición</button>
+      <h2 id="bwExpStageTitle">Expedición</h2>
+      <div class="bw-exp-progress">
+        <span id="bwExpProgressTxt">0 / 0</span>
+        <div class="bw-exp-progress-bar"><div class="bw-exp-progress-fill" id="bwExpProgressFill"></div></div>
+      </div>
+    </div>
+    <canvas id="bwExpMap" class="bw-exp-map-canvas" aria-hidden="true"></canvas>
+    <aside id="bwExpNodePanel" class="bw-exp-node-panel" aria-hidden="true">
+      <div class="bw-exp-node-eyebrow" id="bwExpNodeEyebrow">Nodo 1 de 7</div>
+      <h3 class="bw-exp-node-title" id="bwExpNodeTitle">…</h3>
+      <div class="bw-exp-node-body" id="bwExpNodeBody">…</div>
+      <div class="bw-exp-node-actions" id="bwExpNodeActions"></div>
+    </aside>
+  </div>
+</div>
 
 <!-- ═══ BIOCOSMOS F3: Modal de cápsulas pendientes ═══ -->
 <div id="bwCapsModal" class="bw-caps-modal" role="dialog" aria-modal="true" aria-labelledby="bwCapsModalTitle" aria-hidden="true">
@@ -25947,6 +26988,1634 @@ BW._auditRegion = function(regionId){
 })()
 /* ════════════════════════════════════════════════════════════════════
    Fin Auditoría F1-F3
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F4 — Colección viva (descubrimientos flotando en biotopo)
+   Filtra por parcial activo. Muestra siluetas para no descubiertos.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ──── Hash determinista del id para posición estable ──── */
+function hashCode(s){
+  let h = 0
+  for (let i = 0; i < s.length; i++){
+    h = ((h << 5) - h) + s.charCodeAt(i)
+    h |= 0
+  }
+  return Math.abs(h)
+}
+
+/* ──── Tamaño según rareza ──── */
+function sizeByRarity(rarity){
+  if (rarity === 'legendario') return 62
+  if (rarity === 'épico') return 56
+  if (rarity === 'raro') return 50
+  return 44
+}
+
+/* ──── Clase de rareza para CSS ──── */
+function rarityClassF4(r){
+  if (r === 'raro') return 'r-raro'
+  if (r === 'épico') return 'r-epico'
+  if (r === 'legendario') return 'r-legend'
+  return ''
+}
+function rarityPillClassF4(r){
+  if (r === 'raro') return 'bw-rarity-raro'
+  if (r === 'épico') return 'bw-rarity-epico'
+  if (r === 'legendario') return 'bw-rarity-legend'
+  return 'bw-rarity-comun'
+}
+
+/* ──── Catalogo de la región filtrado por parcial efectivo ──── */
+function regionCollectionItems(regionId){
+  const target = (BW.nav && BW.nav.regionParcial) ? BW.nav.regionParcial(regionId) : 'p1'
+  const ownedSet = new Set((BW.state.discoveries || []).map(d => d.id))
+  const items = []
+  Object.keys(BW.CATALOG || {}).forEach(id => {
+    const it = BW.CATALOG[id]
+    if (it.region === regionId && it.parcial === target){
+      items.push({ id, ...it, owned: ownedSet.has(id) })
+    }
+  })
+  return items
+}
+
+/* ──── Posición y tamaño de cada item dentro del pond ──── */
+function layoutItems(items, pondW, pondH){
+  const out = []
+  const margin = 38
+  items.forEach((it, idx) => {
+    const seed = hashCode(it.id)
+    const sz = sizeByRarity(it.rarity)
+    // Posición pseudo-aleatoria pero estable
+    const x = margin + ((seed * 17) % Math.max(1, pondW - margin * 2))
+    const y = margin + ((seed * 31) % Math.max(1, pondH - margin * 2))
+    out.push({ ...it, x, y, sz, animDelay: (seed % 4000) / 1000 })
+  })
+  return out
+}
+
+/* ──── Render del arte (usa funciones de F3 vía dispatch art) ──── */
+function drawItemArt(canvas, item){
+  if (!canvas) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const sz = item.sz
+  canvas.width = sz * dpr
+  canvas.height = sz * dpr
+  canvas.style.width = sz + 'px'
+  canvas.style.height = sz + 'px'
+  const ctx = canvas.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  ctx.clearRect(0, 0, sz, sz)
+  // Background sutil con tinte de región
+  const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
+  const tint = regionCfg ? regionCfg.tint : [120,200,150]
+  let bg = ctx.createRadialGradient(sz/2, sz/2, 0, sz/2, sz/2, sz/1.8)
+  bg.addColorStop(0, `rgba(${tint[0]},${tint[1]},${tint[2]},0.22)`)
+  bg.addColorStop(1, `rgba(${tint[0]},${tint[1]},${tint[2]},0)`)
+  ctx.fillStyle = bg
+  ctx.fillRect(0, 0, sz, sz)
+  // Dispatch a renderers de F3 (reutiliza el sistema de art)
+  ctx.save()
+  ctx.translate(sz/2, sz/2)
+  // Necesitamos las funciones art* de F3 — están en su closure.
+  // Solución: re-dibujamos un placeholder simple aquí (forma + emoji del tipo)
+  // Para mantener identidad visual usamos el emoji del tipo o región
+  const emoji = pickItemEmoji(item)
+  ctx.font = `${sz * 0.55}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.globalAlpha = item.owned ? 1 : 0.4
+  ctx.fillText(emoji, 0, 2)
+  ctx.globalAlpha = 1
+  ctx.restore()
+}
+
+/* ──── Emoji representativo según tipo o región ──── */
+function pickItemEmoji(item){
+  // Por tipo, prioridad alta
+  const byType = {
+    'organismo':'',  // se rellena por región abajo
+    'molécula':'⚗',
+    'estructura':'🔬',
+    'fenómeno':'🔄',
+    'fósil':'🦴',
+    'mutación':'🧬',
+    'ley':'📜',
+    'científico':'👨‍🔬',
+    'ecosistema':'🌍',
+    'hallazgo':'💡'
+  }
+  if (byType[item.type] && item.type !== 'organismo') return byType[item.type]
+  // Si es organismo, usar emoji específico por id o por región
+  const byIdHint = {
+    amoeba:'🦠', paramecio:'🦠', euglena:'🦠', plasmodium:'🦠',
+    bacilo:'🦠', coco:'🦠', espirilo:'🦠', eColi:'🦠', lactobacilo:'🦠', cianobacteria:'🦠',
+    halofilo:'🦠', termofilo:'🦠', metanogeno:'🦠',
+    bacteriofago:'🧫', vih:'🧫', influenza:'🧫',
+    levadura:'🍄', moho:'🍄', champinon:'🍄', penicillium:'🍄', amanita:'🍄', liquen:'🍄',
+    musgo:'🌱', helecho:'🌿', pino:'🌲', secuoya:'🌲', rosa:'🌹', maiz:'🌽',
+    cactus:'🌵', orquidea:'🌸', rafflesia:'🌺', welwitschia:'🌿',
+    esponja:'🌊', medusa:'🪼', planaria:'🪱', lombriz:'🪱', caracol:'🐌', pulpo:'🐙',
+    mariposa:'🦋', escorpion:'🦂', tardigrado:'🐻', estrellaMar:'⭐',
+    pezPayaso:'🐠', tortugaMar:'🐢', aguila:'🦅', ornitorrinco:'🦫',
+    ballenaAzul:'🐋', celacanto:'🐟',
+    pinzonesDarwin:'🐦', mariposaMot:'🦋'
+  }
+  if (byIdHint[item.id]) return byIdHint[item.id]
+  // Fallback por región
+  const byRegion = {
+    celular:'🧫', genetica:'🧬', botanica:'🌿',
+    microbiologica:'🦠', zoologica:'🐾', ecologica:'🌎', cientifica:'🔬'
+  }
+  return byRegion[item.region] || '⚗'
+}
+
+/* ──── Render principal del pond ──── */
+function renderCollectionFor(regionId){
+  const pond = document.getElementById('bwCollPond')
+  const empty = document.getElementById('bwCollEmpty')
+  const countEl = document.getElementById('bwCollCount')
+  if (!pond) return
+
+  const items = regionCollectionItems(regionId)
+  const ownedCount = items.filter(i => i.owned).length
+
+  if (countEl) countEl.textContent = `${ownedCount} / ${items.length}`
+
+  pond.innerHTML = ''
+
+  if (items.length === 0){
+    // Región sin items para el parcial activo (caso cientifica P2 → solo evolución)
+    if (empty){
+      empty.style.display = ''
+      empty.innerHTML = '<span class="bw-coll-empty-icon">🌌</span>Esta región no tiene descubrimientos para el parcial activo. Cambiá de parcial para explorar otros.'
+    }
+    pond.style.display = 'none'
+    return
+  }
+
+  pond.style.display = ''
+  if (empty) empty.style.display = 'none'
+
+  // Layout
+  const pondRect = pond.getBoundingClientRect()
+  const pondW = pondRect.width || 360
+  const pondH = pondRect.height || 230
+  const laid = layoutItems(items, pondW, pondH)
+
+  laid.forEach(it => {
+    const btn = document.createElement('button')
+    btn.className = 'bw-coll-item ' + (it.owned ? 'owned ' + rarityClassF4(it.rarity) : 'silhouette') + ' float-anim'
+    btn.type = 'button'
+    btn.dataset.id = it.id
+    btn.style.left = ((it.x / pondW) * 100) + '%'
+    btn.style.top  = ((it.y / pondH) * 100) + '%'
+    btn.style.transform = 'translate(-50%, -50%)'
+    btn.style.width = it.sz + 'px'
+    btn.style.height = it.sz + 'px'
+    btn.style.animationDelay = (-it.animDelay) + 's'
+    btn.setAttribute('aria-label', it.owned ? it.name : 'Sin descubrir')
+    const cv = document.createElement('canvas')
+    btn.appendChild(cv)
+    pond.appendChild(btn)
+    // Render del arte (después de adjuntar para tener dimensiones)
+    requestAnimationFrame(() => drawItemArt(cv, it))
+    // Click → tooltip
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      showItemTooltip(it, btn)
+    })
+    btn.addEventListener('mouseenter', () => showItemTooltip(it, btn))
+    btn.addEventListener('mouseleave', hideItemTooltip)
+  })
+}
+
+/* ──── Tooltip ──── */
+function showItemTooltip(item, anchor){
+  const tip = document.getElementById('bwCollTip')
+  const pond = document.getElementById('bwCollPond')
+  if (!tip || !pond) return
+  const aR = anchor.getBoundingClientRect()
+  const pR = pond.getBoundingClientRect()
+  const x = aR.left + aR.width / 2 - pR.left
+  const y = aR.top - pR.top
+  tip.style.left = x + 'px'
+  tip.style.top  = y + 'px'
+  const themeForTopic = (() => {
+    // Mostrar el primer tema asociado a la región del item
+    const region = (BW.REGIONS || []).find(r => r.id === item.region)
+    if (!region || !region.topics || region.topics.length === 0) return ''
+    const TOPIC_LABELS = BW.TOPIC_LABELS || {}
+    return TOPIC_LABELS[region.topics[0]] || region.topics[0]
+  })()
+  if (item.owned){
+    tip.innerHTML = `<strong>${item.name}</strong>
+      <span class="bw-rarity-pill ${rarityPillClassF4(item.rarity)}">${item.rarity}</span>
+      <small>${item.context}</small>`
+  } else {
+    tip.innerHTML = `<strong>?? Sin descubrir</strong>
+      <span class="bw-rarity-pill ${rarityPillClassF4(item.rarity)}">${item.rarity}</span>
+      <small>Completá simulacros relacionados a ${themeForTopic || 'esta región'} para encontrarlo en una cápsula.</small>`
+  }
+  tip.classList.add('show')
+}
+function hideItemTooltip(){
+  const tip = document.getElementById('bwCollTip')
+  if (tip) tip.classList.remove('show')
+}
+
+/* ──── Hook al abrir el panel de región ──── */
+function hookOpenPanel(){
+  const panel = document.getElementById('bwRegionPanel')
+  if (!panel) return
+  // Cerrar tooltip cuando el panel se oculta
+  const obs = new MutationObserver(() => {
+    if (panel.classList.contains('show')){
+      requestAnimationFrame(() => {
+        try {
+          const nameEl = document.getElementById('bwRegionTitle')
+          if (!nameEl) return
+          const txt = nameEl.textContent.replace(/^Región\s+/, '').trim()
+          const region = (BW.REGIONS || []).find(r => r.name === txt)
+          if (region) renderCollectionFor(region.id)
+        } catch(e){ console.warn('[BW F4] render err:', e) }
+      })
+    } else {
+      hideItemTooltip()
+    }
+  })
+  obs.observe(panel, { attributes:true, attributeFilter:['class'] })
+  // Click fuera → ocultar tooltip
+  panel.addEventListener('click', (e) => {
+    if (!e.target.closest('.bw-coll-item')) hideItemTooltip()
+  })
+}
+
+/* ──── Re-render cuando cambia parcial activo ──── */
+function bindParcialChange(){
+  ['btnP1','btnP2','btnP3'].forEach(id => {
+    const b = document.getElementById(id)
+    if (!b) return
+    b.addEventListener('click', () => {
+      setTimeout(() => {
+        const panel = document.getElementById('bwRegionPanel')
+        if (panel && panel.classList.contains('show')){
+          const nameEl = document.getElementById('bwRegionTitle')
+          if (nameEl){
+            const txt = nameEl.textContent.replace(/^Región\s+/, '').trim()
+            const region = (BW.REGIONS || []).find(r => r.name === txt)
+            if (region) renderCollectionFor(region.id)
+          }
+        }
+      }, 240)
+    })
+  })
+}
+
+/* ──── Re-render tras descubrir un nuevo item (post collect) ──── */
+const _origCollectBtn = () => {
+  const btn = document.getElementById('bwOpenCollectBtn')
+  if (!btn) return
+  btn.addEventListener('click', () => {
+    setTimeout(() => {
+      const panel = document.getElementById('bwRegionPanel')
+      if (panel && panel.classList.contains('show')){
+        const nameEl = document.getElementById('bwRegionTitle')
+        if (nameEl){
+          const txt = nameEl.textContent.replace(/^Región\s+/, '').trim()
+          const region = (BW.REGIONS || []).find(r => r.name === txt)
+          if (region) renderCollectionFor(region.id)
+        }
+      }
+    }, 250)
+  })
+}
+
+/* ──── Init F4 ──── */
+function bwF4Init(){
+  try {
+    hookOpenPanel()
+    bindParcialChange()
+    _origCollectBtn()
+  } catch(e){ console.warn('[BW F4] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF4Init)
+else bwF4Init()
+
+// Helpers
+BW._renderCollection = renderCollectionFor
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F4
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F5 — Expediciones (mapa orgánico + nodos)
+   Cada expedición es un viaje visual de ~5-7 nodos por el contenido
+   real del parcial. Reusa banco de simulacros existente para el
+   mini-sim de cada nodo.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ──── Acceso a bancos del simulacro (mismos del closure global) ──── */
+function bankForParcial(p){
+  try {
+    if (p === 'p1' && typeof E1Q !== 'undefined') return E1Q
+    if (p === 'p3' && typeof EXAM_P3_BANK !== 'undefined') return EXAM_P3_BANK.map(q => ({q:q.q, ops:q.o, a:q.a, theme:q.theme, exp:q.f||''}))
+    if (typeof E23Q !== 'undefined') return E23Q
+  } catch(_){}
+  return []
+}
+
+/* ──── Catálogo de expediciones — basadas en temas reales ──── */
+const EXPEDITIONS = [
+  /* ═══ P1 ═══ */
+  {
+    id:'p1-celular-001', parcial:'p1', region:'celular', rewardRarity:'épico',
+    name:'Viaje al Centro de la Célula',
+    summary:'Recorré la estructura y organelos de la célula eucariota desde la membrana hasta el núcleo.',
+    nodes:[
+      { type:'read', title:'La membrana plasmática',
+        body:'La membrana es una bicapa de fosfolípidos selectivamente permeable. Sus proteínas integrales controlan qué entra y sale. El colesterol modula su fluidez.', topic:'cel' },
+      { type:'sim', theme:'cel', count:3 },
+      { type:'read', title:'El núcleo',
+        body:'El orgánulo más grande de la célula eucariota. Contiene el ADN organizado en cromatina y el nucléolo donde se ensamblan ribosomas.', topic:'cel' },
+      { type:'sim', theme:'cel', count:3 },
+      { type:'capsule', rarity:'común' },
+      { type:'read', title:'Mitocondrias y cloroplastos',
+        body:'Ambos tienen ADN propio y doble membrana — restos de su pasado bacteriano (teoría endosimbiótica de Margulis).', topic:'ene' },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p1-energia-001', parcial:'p1', region:'celular', rewardRarity:'épico',
+    name:'El Camino del ATP',
+    summary:'Cómo la energía fluye desde la luz solar hasta el ATP celular. Foto­síntesis y respiración.',
+    nodes:[
+      { type:'read', title:'Fase luminosa de la fotosíntesis',
+        body:'En los tilacoides: los fotosistemas II y I capturan luz, dividen H₂O y producen ATP + NADPH que alimentarán al ciclo de Calvin.', topic:'ene' },
+      { type:'sim', theme:'ene', count:3 },
+      { type:'read', title:'Glucólisis',
+        body:'En el citoplasma: glucosa → 2 piruvato. Ganancia neta 2 ATP + 2 NADH. No requiere oxígeno y es universal a todos los seres vivos.', topic:'met' },
+      { type:'sim', theme:'met', count:3 },
+      { type:'capsule', rarity:'común' },
+      { type:'read', title:'Ciclo de Krebs y cadena respiratoria',
+        body:'En la matriz mitocondrial el acetil-CoA se oxida produciendo NADH y FADH₂. La cadena respiratoria usa O₂ como aceptor final y genera la mayoría del ATP.', topic:'ene' },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p1-biomol-001', parcial:'p1', region:'celular', rewardRarity:'raro',
+    name:'Las Biomoléculas Esenciales',
+    summary:'Carbohidratos, lípidos, proteínas y ácidos nucleicos: los cuatro pilares químicos de la vida.',
+    nodes:[
+      { type:'read', title:'Carbohidratos',
+        body:'De los monosacáridos (glucosa) a los polisacáridos (almidón, glucógeno, celulosa, quitina). Energía rápida y estructura.', topic:'bio' },
+      { type:'sim', theme:'bio', count:3 },
+      { type:'read', title:'Lípidos y proteínas',
+        body:'Lípidos: membranas y reserva. Proteínas: cadenas de aminoácidos que cumplen casi todas las funciones celulares (enzimas, transporte, soporte).', topic:'bio' },
+      { type:'sim', theme:'bio', count:3 },
+      { type:'reward' }
+    ]
+  },
+
+  /* ═══ P2 ═══ */
+  {
+    id:'p2-mendel-001', parcial:'p2', region:'genetica', rewardRarity:'épico',
+    name:'Las Leyes de Mendel',
+    summary:'Desde la primera ley de segregación hasta los casos no mendelianos: codominancia, epistasis, ligamento al sexo.',
+    nodes:[
+      { type:'read', title:'Primera ley de Mendel',
+        body:'Ley de segregación: los dos alelos de un gen se separan al formar los gametos. Cada gameto recibe solo uno de los dos.', topic:'gen' },
+      { type:'sim', theme:'gen', count:3 },
+      { type:'read', title:'Codominancia y dominancia incompleta',
+        body:'Codominancia: ambos alelos se expresan (AB). Dominancia incompleta: fenotipo intermedio (rosa de Mirabilis).', topic:'gen' },
+      { type:'sim', theme:'gen', count:3 },
+      { type:'capsule', rarity:'común' },
+      { type:'read', title:'Herencia ligada al sexo',
+        body:'Daltonismo y hemofilia: recesivos ligados al X. Los hombres expresan el rasgo con un solo alelo recesivo porque solo tienen un X.', topic:'gen' },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p2-adn-001', parcial:'p2', region:'genetica', rewardRarity:'épico',
+    name:'Replicación del ADN',
+    summary:'De la doble hélice a la PCR — cómo se copia, transcribe y traduce la información genética.',
+    nodes:[
+      { type:'read', title:'Doble hélice',
+        body:'Modelo de Watson y Crick (1953), basado en la Foto 51 de Rosalind Franklin. A-T (2 puentes), G-C (3 puentes).', topic:'gen' },
+      { type:'sim', theme:'gen', count:3 },
+      { type:'read', title:'Replicación semiconservativa',
+        body:'Cada nueva molécula de ADN conserva una hebra parental y sintetiza una nueva. Demostrado por Meselson y Stahl.', topic:'gen' },
+      { type:'sim', theme:'gen', count:3 },
+      { type:'capsule', rarity:'raro' },
+      { type:'read', title:'PCR y biotecnología',
+        body:'La PCR amplifica un segmento de ADN produciendo miles de millones de copias. Base de diagnóstico, forense y construcción de OGM.', topic:'biot' },
+      { type:'sim', theme:'biot', count:3 },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p2-evolucion-001', parcial:'p2', region:'cientifica', rewardRarity:'épico',
+    name:'El Origen de las Especies',
+    summary:'Desde las observaciones de Darwin en las Galápagos hasta el equilibrio Hardy-Weinberg y la especiación.',
+    nodes:[
+      { type:'read', title:'Darwin y Wallace',
+        body:'Darwin y Wallace propusieron juntos en 1858 la teoría de selección natural. Cuatro postulados: variación, herencia, sobreproducción, supervivencia no aleatoria.', topic:'evo' },
+      { type:'sim', theme:'evo', count:3 },
+      { type:'read', title:'Especiación',
+        body:'Alopátrica: separación geográfica. Simpátrica: divergencia en el mismo territorio. Ambas producen aislamiento reproductivo.', topic:'evo' },
+      { type:'sim', theme:'evo', count:3 },
+      { type:'reward' }
+    ]
+  },
+
+  /* ═══ P3 ═══ */
+  {
+    id:'p3-dominios-001', parcial:'p3', region:'cientifica', rewardRarity:'épico',
+    name:'Los Tres Dominios de la Vida',
+    summary:'Bacteria, Archaea y Eukarya: la clasificación de Woese basada en el ARNr 16S.',
+    nodes:[
+      { type:'read', title:'Bacterias',
+        body:'Procariotas con peptidoglicano en pared. Gram + (pared gruesa) o Gram - (pared delgada + membrana externa). Diversas en metabolismo.', topic:'virpro' },
+      { type:'sim', theme:'virpro', count:3 },
+      { type:'read', title:'Archaeas extremófilas',
+        body:'Habitantes de ambientes extremos: termófilas (hidrotermales), halófilas (salinas), metanógenas (pantanos y rumiantes). Membranas con enlace éter.', topic:'virpro' },
+      { type:'sim', theme:'virpro', count:3 },
+      { type:'capsule', rarity:'raro' },
+      { type:'read', title:'Origen de la célula eucariota',
+        body:'Endosimbiosis (Lynn Margulis): mitocondrias y cloroplastos derivan de procariotas engullidos. Evidencia: ADN propio, doble membrana.', topic:'ori' },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p3-reinos-001', parcial:'p3', region:'botanica', rewardRarity:'épico',
+    name:'Bosque de los Reinos',
+    summary:'Recorré Protistas, Fungi, Plantae y Animalia — los reinos eucariotas multicelulares y unicelulares.',
+    nodes:[
+      { type:'read', title:'Protistas',
+        body:'Reino eucariota muy diverso. Incluye amebas (sin forma fija), paramecios (ciliados), euglenas (mixótrofas) y Plasmodium (parásito de la malaria).', topic:'euk' },
+      { type:'sim', theme:'euk', count:3 },
+      { type:'read', title:'Plantas',
+        body:'De los musgos (sin vasos) a las angiospermas (con flores y frutos), pasando por helechos, gimnospermas (pinos, secuoyas). Productoras primarias.', topic:'euk' },
+      { type:'sim', theme:'euk', count:3 },
+      { type:'capsule', rarity:'común' },
+      { type:'read', title:'Animales',
+        body:'De poríferos (esponjas) a cordados (vertebrados). Heterótrofos, móviles, con desarrollo embrionario complejo.', topic:'ani' },
+      { type:'sim', theme:'ani', count:3 },
+      { type:'reward' }
+    ]
+  },
+  {
+    id:'p3-ecologia-001', parcial:'p3', region:'ecologica', rewardRarity:'épico',
+    name:'Ciclos del Planeta',
+    summary:'Ecosistemas, cadenas tróficas y ciclos biogeoquímicos del agua, carbono y nitrógeno.',
+    nodes:[
+      { type:'read', title:'Ecosistemas y biomas',
+        body:'De la selva tropical (máxima biodiversidad) al desierto, taiga, tundra y arrecifes de coral. Cada bioma con su clima, vegetación y fauna típicos.', topic:'eco' },
+      { type:'sim', theme:'eco', count:3 },
+      { type:'read', title:'Cadenas tróficas',
+        body:'Productores → consumidores primarios → secundarios → terciarios → descomponedores. Solo ~10 % de la energía pasa de un nivel al siguiente.', topic:'eco' },
+      { type:'sim', theme:'eco', count:3 },
+      { type:'capsule', rarity:'común' },
+      { type:'read', title:'Ciclos biogeoquímicos',
+        body:'Agua, carbono y nitrógeno fluyen entre seres vivos, atmósfera y suelo. La fijación del N₂ por bacterias Rhizobium es clave para las plantas.', topic:'eco' },
+      { type:'reward' }
+    ]
+  }
+]
+
+BW.EXPEDITIONS = EXPEDITIONS
+
+/* ──── Estado runtime ──── */
+let _currentExp = null
+let _currentNodeIdx = 0
+let _miniSim = null  // {questions, idx, hits}
+
+/* ──── Helpers ──── */
+function activeParcial(){
+  try { return (typeof getActiveParcial === 'function') ? getActiveParcial() : 'p1' } catch(_){ return 'p1' }
+}
+function isExpCompleted(expId){
+  return ((BW.state.expeditions && BW.state.expeditions.completed) || []).includes(expId)
+}
+function userExpProgress(expId){
+  const st = BW.state.expeditions || {}
+  if (st.active === expId) return st.currentNode || 0
+  if (isExpCompleted(expId)) return -1
+  return 0
+}
+
+/* ──── Lista de expediciones (modal) ──── */
+function openExpList(){
+  const modal = document.getElementById('bwExpListModal')
+  const grid  = document.getElementById('bwExpListGrid')
+  if (!modal || !grid) return
+  const p = activeParcial()
+  const list = EXPEDITIONS.filter(e => e.parcial === p)
+  grid.innerHTML = ''
+  if (list.length === 0){
+    grid.innerHTML = '<div class="bw-caps-empty"><div class="bw-caps-empty-icon">🚀</div>Sin expediciones para el parcial activo.</div>'
+  } else {
+    list.forEach(exp => {
+      const card = document.createElement('button')
+      card.className = 'bw-exp-card'
+      card.type = 'button'
+      const completed = isExpCompleted(exp.id)
+      const progress = userExpProgress(exp.id)
+      const regionCfg = (BW.REGIONS || []).find(r => r.id === exp.region)
+      const tagCompleted = completed ? '<span class="bw-exp-tag completed">✓ Completada</span>' : ''
+      const tagProgress = (!completed && progress > 0) ? `<span class="bw-exp-tag">En progreso (${progress}/${exp.nodes.length})</span>` : ''
+      const tagReward = `<span class="bw-exp-tag">Cápsula ${exp.rewardRarity} garantizada</span>`
+      card.innerHTML = `
+        <div class="bw-exp-card-emoji">${regionCfg ? regionCfg.emoji : '🚀'}</div>
+        <div class="bw-exp-card-info">
+          <h3>${exp.name}</h3>
+          <p>${exp.summary}</p>
+          <div class="bw-exp-card-meta">
+            <span class="bw-exp-tag">${exp.nodes.length} nodos</span>
+            <span class="bw-exp-tag">${regionCfg ? regionCfg.name : exp.region}</span>
+            ${tagReward}
+            ${tagCompleted}
+            ${tagProgress}
+          </div>
+        </div>
+      `
+      card.addEventListener('click', () => {
+        closeExpList()
+        startExpedition(exp.id)
+      })
+      grid.appendChild(card)
+    })
+  }
+  modal.classList.add('show')
+  modal.setAttribute('aria-hidden', 'false')
+}
+function closeExpList(){
+  const modal = document.getElementById('bwExpListModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  modal.setAttribute('aria-hidden', 'true')
+}
+
+/* ──── Iniciar / continuar expedición ──── */
+async function startExpedition(expId){
+  const exp = EXPEDITIONS.find(e => e.id === expId)
+  if (!exp) return
+  _currentExp = exp
+  // Cargar progreso previo si es la misma
+  BW.state.expeditions = BW.state.expeditions || { active:null, currentNode:0, nodeProgress:{}, completed:[] }
+  if (BW.state.expeditions.active === expId){
+    _currentNodeIdx = BW.state.expeditions.currentNode || 0
+  } else {
+    BW.state.expeditions.active = expId
+    BW.state.expeditions.currentNode = 0
+    BW.state.expeditions.nodeProgress = {}
+    _currentNodeIdx = 0
+    if (typeof persistState === 'function') await persistState()
+  }
+  // Asegurar parcial correcto
+  if (BW.nav && BW.nav.ensureParcial) await BW.nav.ensureParcial(exp.parcial)
+  openExpModal()
+  renderExpMap()
+  showCurrentNode()
+}
+
+function openExpModal(){
+  const modal = document.getElementById('bwExpModal')
+  if (!modal) return
+  document.getElementById('bwExpStageTitle').textContent = _currentExp.name
+  modal.classList.add('show')
+  modal.setAttribute('aria-hidden', 'false')
+  // Resize canvas cuando se abre
+  setTimeout(resizeMap, 50)
+}
+function closeExpModal(){
+  const modal = document.getElementById('bwExpModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  modal.setAttribute('aria-hidden', 'true')
+  closeNodePanel()
+  stopMapLoop()
+  _currentExp = null
+}
+
+/* ──── Render del mapa de expedición (canvas) ──── */
+let _mapCanvas = null, _mapCtx = null, _mapRaf = 0, _mapT0 = 0
+let _mapNodePositions = []
+
+function resizeMap(){
+  _mapCanvas = document.getElementById('bwExpMap')
+  if (!_mapCanvas) return
+  const rect = _mapCanvas.parentElement.getBoundingClientRect()
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  // Substraer altura del header
+  const headerH = 70
+  const w = rect.width
+  const h = rect.height - headerH
+  _mapCanvas.style.width = w + 'px'
+  _mapCanvas.style.height = h + 'px'
+  _mapCanvas.width = Math.floor(w * dpr)
+  _mapCanvas.height = Math.floor(h * dpr)
+  _mapCtx = _mapCanvas.getContext('2d')
+  _mapCtx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  layoutMapNodes(w, h)
+}
+
+function layoutMapNodes(w, h){
+  if (!_currentExp) return
+  const nodes = _currentExp.nodes
+  // Ruta orgánica: zigzag suave de izquierda a derecha
+  const margin = 80
+  const usable = w - margin * 2
+  _mapNodePositions = nodes.map((n, i) => {
+    const t = i / (nodes.length - 1)
+    const x = margin + t * usable
+    const y = h * 0.5 + Math.sin(t * Math.PI * 2.2) * h * 0.18
+    return { x, y, idx:i, type:n.type }
+  })
+}
+
+function renderExpMap(){
+  if (!_mapCanvas) return
+  resizeMap()
+  _mapT0 = performance.now()
+  if (!REDUCED){
+    _mapRaf = requestAnimationFrame(mapLoop)
+  } else {
+    drawMapFrame(0)
+  }
+}
+function mapLoop(now){
+  const t = (now - _mapT0) / 1000
+  drawMapFrame(t)
+  _mapRaf = requestAnimationFrame(mapLoop)
+}
+function stopMapLoop(){
+  if (_mapRaf) cancelAnimationFrame(_mapRaf)
+  _mapRaf = 0
+}
+
+function drawMapFrame(t){
+  const ctx = _mapCtx
+  if (!ctx || !_currentExp) return
+  const rect = _mapCanvas.getBoundingClientRect()
+  const w = rect.width, h = rect.height
+  ctx.clearRect(0, 0, w, h)
+  // Fondo radial sutil
+  let g = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w, h)/2)
+  g.addColorStop(0, 'rgba(43,110,163,0.10)')
+  g.addColorStop(1, 'rgba(43,110,163,0)')
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h)
+
+  // Ruta entre nodos (curva orgánica)
+  if (_mapNodePositions.length > 1){
+    // Línea base (todo el camino) en gris
+    ctx.strokeStyle = 'rgba(208,237,216,0.18)'
+    ctx.lineWidth = 4
+    ctx.lineCap = 'round'
+    ctx.beginPath()
+    _mapNodePositions.forEach((p, i) => {
+      if (i === 0) ctx.moveTo(p.x, p.y)
+      else {
+        const prev = _mapNodePositions[i-1]
+        const mx = (prev.x + p.x) / 2
+        ctx.quadraticCurveTo(mx, prev.y, p.x, p.y)
+      }
+    })
+    ctx.stroke()
+    // Línea de progreso (hasta el nodo actual) en verde brillante
+    ctx.strokeStyle = `rgba(109,217,159,${0.85 + Math.sin(t*2)*0.1})`
+    ctx.lineWidth = 4
+    ctx.shadowColor = 'rgba(109,217,159,0.6)'
+    ctx.shadowBlur = 10
+    ctx.beginPath()
+    for (let i = 0; i <= _currentNodeIdx && i < _mapNodePositions.length; i++){
+      const p = _mapNodePositions[i]
+      if (i === 0) ctx.moveTo(p.x, p.y)
+      else {
+        const prev = _mapNodePositions[i-1]
+        const mx = (prev.x + p.x) / 2
+        ctx.quadraticCurveTo(mx, prev.y, p.x, p.y)
+      }
+    }
+    ctx.stroke()
+    ctx.shadowBlur = 0
+  }
+
+  // Nodos
+  _mapNodePositions.forEach((p, i) => {
+    const node = _currentExp.nodes[i]
+    const isDone = i < _currentNodeIdx
+    const isCurrent = i === _currentNodeIdx
+    const isReward = node.type === 'reward'
+    // Color base
+    let color = 'rgba(124,198,255,0.6)'
+    if (isReward) color = 'rgba(255,186,18,0.9)'
+    else if (node.type === 'sim') color = 'rgba(251,191,36,0.7)'
+    else if (node.type === 'capsule') color = 'rgba(176,38,214,0.7)'
+    else if (node.type === 'read') color = 'rgba(109,217,159,0.7)'
+    if (isDone) color = 'rgba(109,217,159,0.95)'
+    // Halo del nodo actual
+    if (isCurrent && !REDUCED){
+      const pulse = 1 + Math.sin(t * 3) * 0.15
+      ctx.beginPath()
+      let gh = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 36 * pulse)
+      gh.addColorStop(0, color.replace(/[\d.]+\)$/, '0.45)'))
+      gh.addColorStop(1, color.replace(/[\d.]+\)$/, '0)'))
+      ctx.fillStyle = gh
+      ctx.arc(p.x, p.y, 36 * pulse, 0, Math.PI*2); ctx.fill()
+    }
+    // Círculo
+    ctx.beginPath()
+    ctx.arc(p.x, p.y, isCurrent ? 18 : 14, 0, Math.PI*2)
+    ctx.fillStyle = color
+    ctx.fill()
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)'
+    ctx.lineWidth = 2
+    ctx.stroke()
+    // Emoji/icono dentro
+    const ic = node.type === 'read' ? '📖' : node.type === 'sim' ? '⚡' : node.type === 'capsule' ? '🔬' : '🏆'
+    ctx.font = `${isCurrent ? 18 : 14}px "Apple Color Emoji","Segoe UI Emoji",sans-serif`
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(ic, p.x, p.y)
+  })
+
+  // Progress UI
+  const progressTxt = document.getElementById('bwExpProgressTxt')
+  const progressFill = document.getElementById('bwExpProgressFill')
+  if (progressTxt) progressTxt.textContent = `${_currentNodeIdx} / ${_currentExp.nodes.length}`
+  if (progressFill) progressFill.style.width = ((_currentNodeIdx / _currentExp.nodes.length) * 100) + '%'
+}
+
+/* ──── Mostrar nodo actual en el panel ──── */
+function showCurrentNode(){
+  if (!_currentExp) return
+  if (_currentNodeIdx >= _currentExp.nodes.length){
+    completeExpedition()
+    return
+  }
+  const node = _currentExp.nodes[_currentNodeIdx]
+  const panel = document.getElementById('bwExpNodePanel')
+  if (!panel) return
+  const eyebrow = document.getElementById('bwExpNodeEyebrow')
+  const title = document.getElementById('bwExpNodeTitle')
+  const body = document.getElementById('bwExpNodeBody')
+  const actions = document.getElementById('bwExpNodeActions')
+  eyebrow.textContent = `Nodo ${_currentNodeIdx + 1} de ${_currentExp.nodes.length}`
+  actions.innerHTML = ''
+
+  if (node.type === 'read'){
+    title.textContent = node.title
+    body.textContent = node.body
+    const btn = document.createElement('button')
+    btn.className = 'bw-btn'
+    btn.type = 'button'
+    btn.textContent = 'Continuar →'
+    btn.addEventListener('click', advanceNode)
+    actions.appendChild(btn)
+  }
+  else if (node.type === 'sim'){
+    startMiniSim(node)
+    return
+  }
+  else if (node.type === 'capsule'){
+    title.textContent = '🔬 Cápsula encontrada'
+    body.innerHTML = `Avanzaste por una zona rica en biología. Una cápsula <strong>${node.rarity}</strong> se agrega a tus pendientes — abrila desde el cosmos.`
+    const btn = document.createElement('button')
+    btn.className = 'bw-btn'
+    btn.type = 'button'
+    btn.textContent = 'Recibir y continuar →'
+    btn.addEventListener('click', async () => {
+      // Crear cápsula y agregar a pendientes
+      const parcial = _currentExp.parcial
+      const id = pickRandomCatalogForRegion(_currentExp.region, parcial, node.rarity)
+      if (id){
+        const capId = 'cap-exp-' + Date.now().toString(36)
+        BW.state.capsulesPending = BW.state.capsulesPending || []
+        BW.state.capsulesPending.push({
+          id: capId, catalogId: id, rarity: node.rarity,
+          source: 'expedicion:' + _currentExp.id,
+          createdAt: new Date().toISOString()
+        })
+        try { if (typeof persistState === 'function') await persistState() } catch(_){}
+        // Refrescar UI de cápsulas
+        try {
+          if (typeof window !== 'undefined'){
+            const capsBtn = document.getElementById('bwCapsBtn')
+            if (capsBtn) capsBtn.classList.add('show')
+            const cnt = document.getElementById('bwCapsBtnCount')
+            if (cnt) cnt.textContent = String((BW.state.capsulesPending || []).length)
+          }
+        } catch(_){}
+      }
+      advanceNode()
+    })
+    actions.appendChild(btn)
+  }
+  else if (node.type === 'reward'){
+    title.textContent = '🏆 Expedición casi completa'
+    body.innerHTML = `Llegaste al final. Recibís una cápsula <strong>${_currentExp.rewardRarity}</strong> garantizada y se desbloquea esta expedición en tu historial.`
+    const btn = document.createElement('button')
+    btn.className = 'bw-btn'
+    btn.type = 'button'
+    btn.textContent = 'Reclamar recompensa final 🏆'
+    btn.addEventListener('click', completeExpedition)
+    actions.appendChild(btn)
+  }
+
+  panel.classList.add('show')
+  panel.setAttribute('aria-hidden', 'false')
+}
+
+function closeNodePanel(){
+  const panel = document.getElementById('bwExpNodePanel')
+  if (!panel) return
+  panel.classList.remove('show')
+  panel.setAttribute('aria-hidden', 'true')
+}
+
+/* ──── Mini-sim integrado ──── */
+function startMiniSim(node){
+  const panel = document.getElementById('bwExpNodePanel')
+  if (!panel) return
+  const bank = bankForParcial(_currentExp.parcial)
+  const pool = bank.filter(q => q.theme === node.theme)
+  if (pool.length === 0){
+    // Sin preguntas — saltar y avanzar
+    setTimeout(advanceNode, 50)
+    return
+  }
+  const count = Math.min(node.count || 3, pool.length)
+  const questions = [...pool].sort(() => Math.random() - 0.5).slice(0, count)
+  _miniSim = { questions, idx:0, hits:0 }
+  renderMiniSimQuestion()
+}
+
+function renderMiniSimQuestion(){
+  if (!_miniSim) return
+  const title = document.getElementById('bwExpNodeTitle')
+  const body = document.getElementById('bwExpNodeBody')
+  const actions = document.getElementById('bwExpNodeActions')
+  const eyebrow = document.getElementById('bwExpNodeEyebrow')
+  const q = _miniSim.questions[_miniSim.idx]
+  eyebrow.innerHTML = `Nodo ${_currentNodeIdx + 1} de ${_currentExp.nodes.length} <span class="bw-mini-sim-progress" style="margin-left:.5rem">${_miniSim.idx + 1}/${_miniSim.questions.length}</span>`
+  title.textContent = '⚡ Mini-simulacro'
+  body.innerHTML = `
+    <div class="bw-mini-sim-q">${q.q}</div>
+    <div class="bw-mini-sim-opts" id="bwMiniSimOpts"></div>
+    <div class="bw-mini-sim-feedback" id="bwMiniSimFb" style="display:none"></div>
+  `
+  actions.innerHTML = ''
+  const optsWrap = body.querySelector('#bwMiniSimOpts')
+  q.ops.forEach((opt, i) => {
+    const b = document.createElement('button')
+    b.className = 'bw-mini-sim-opt'
+    b.type = 'button'
+    b.textContent = opt
+    b.addEventListener('click', () => answerMiniSim(i, b))
+    optsWrap.appendChild(b)
+  })
+}
+
+function answerMiniSim(selectedIdx, btn){
+  if (!_miniSim) return
+  const q = _miniSim.questions[_miniSim.idx]
+  const correct = (selectedIdx === q.a)
+  // Disable all options
+  const optsWrap = document.getElementById('bwMiniSimOpts')
+  optsWrap.querySelectorAll('.bw-mini-sim-opt').forEach((b, i) => {
+    b.disabled = true
+    if (i === q.a) b.classList.add('correct')
+    if (i === selectedIdx && !correct) b.classList.add('wrong')
+  })
+  if (correct) _miniSim.hits++
+  const fb = document.getElementById('bwMiniSimFb')
+  if (fb){
+    fb.style.display = ''
+    fb.innerHTML = `<strong>${correct ? '✓ Correcto' : '✗ Incorrecto'}</strong> — ${q.exp || ''}`
+  }
+  const actions = document.getElementById('bwExpNodeActions')
+  actions.innerHTML = ''
+  const nextBtn = document.createElement('button')
+  nextBtn.className = 'bw-btn'
+  nextBtn.type = 'button'
+  const isLast = _miniSim.idx === _miniSim.questions.length - 1
+  nextBtn.textContent = isLast ? 'Terminar mini-simulacro →' : 'Siguiente pregunta →'
+  nextBtn.addEventListener('click', () => {
+    if (isLast){
+      // Otorgar XP por hits
+      try {
+        if (typeof S !== 'undefined' && S && S.stats){
+          S.stats.xp = (S.stats.xp || 0) + _miniSim.hits * 5
+          if (typeof persistState === 'function') persistState()
+          try { window.BW?.hook?.onSimComplete({ score: _miniSim.hits/_miniSim.questions.length, parcial: _currentExp.parcial, topic: _miniSim.questions[0].theme }) } catch(_){}
+        }
+      } catch(_){}
+      _miniSim = null
+      advanceNode()
+    } else {
+      _miniSim.idx++
+      renderMiniSimQuestion()
+    }
+  })
+  actions.appendChild(nextBtn)
+}
+
+/* ──── Avanzar al siguiente nodo ──── */
+async function advanceNode(){
+  if (!_currentExp) return
+  _currentNodeIdx++
+  if (!BW.state.expeditions) BW.state.expeditions = { active:null, currentNode:0, nodeProgress:{}, completed:[] }
+  BW.state.expeditions.currentNode = _currentNodeIdx
+  BW.state.expeditions.nodeProgress[_currentNodeIdx - 1] = 'done'
+  try { if (typeof persistState === 'function') await persistState() } catch(_){}
+  showCurrentNode()
+}
+
+/* ──── Completar expedición ──── */
+async function completeExpedition(){
+  if (!_currentExp) return
+  // Otorgar cápsula garantizada de la rareza definida
+  const id = pickRandomCatalogForRegion(_currentExp.region, _currentExp.parcial, _currentExp.rewardRarity)
+  if (id){
+    const capId = 'cap-exp-reward-' + Date.now().toString(36)
+    BW.state.capsulesPending = BW.state.capsulesPending || []
+    BW.state.capsulesPending.push({
+      id: capId, catalogId: id, rarity: _currentExp.rewardRarity,
+      source: 'expedicion:' + _currentExp.id,
+      createdAt: new Date().toISOString()
+    })
+  }
+  // Marcar expedición como completada
+  if (!BW.state.expeditions) BW.state.expeditions = { active:null, currentNode:0, nodeProgress:{}, completed:[] }
+  if (!BW.state.expeditions.completed.includes(_currentExp.id)){
+    BW.state.expeditions.completed.push(_currentExp.id)
+  }
+  BW.state.expeditions.active = null
+  BW.state.expeditions.currentNode = 0
+  BW.state.expeditions.nodeProgress = {}
+  // Otorgar XP bonus
+  try {
+    if (typeof S !== 'undefined' && S && S.stats){
+      S.stats.xp = (S.stats.xp || 0) + 50
+    }
+    if (typeof persistState === 'function') await persistState()
+  } catch(_){}
+  // Refrescar UI de cápsulas
+  try {
+    const capsBtn = document.getElementById('bwCapsBtn')
+    if (capsBtn) capsBtn.classList.add('show')
+    const cnt = document.getElementById('bwCapsBtnCount')
+    if (cnt) cnt.textContent = String((BW.state.capsulesPending || []).length)
+  } catch(_){}
+  // Mensaje final
+  try { if (typeof toast === 'function') toast(`🏆 Expedición completa: ${_currentExp.name} (+50 XP + cápsula ${_currentExp.rewardRarity})`) } catch(_){}
+  closeExpModal()
+}
+
+/* ──── Helper: elegir item del catálogo aleatorio para región/parcial/rareza ──── */
+function pickRandomCatalogForRegion(regionId, parcial, rarity){
+  const owned = new Set((BW.state.discoveries || []).map(d => d.id))
+  const order = ['legendario','épico','raro','común']
+  let candidates = Object.keys(BW.CATALOG || {}).filter(id => {
+    const it = BW.CATALOG[id]
+    return it.region === regionId && it.parcial === parcial && it.rarity === rarity && !owned.has(id)
+  })
+  if (candidates.length === 0){
+    // Fallback: bajar de rareza
+    const startIdx = order.indexOf(rarity)
+    for (let i = startIdx; i < order.length; i++){
+      candidates = Object.keys(BW.CATALOG || {}).filter(id => {
+        const it = BW.CATALOG[id]
+        return it.region === regionId && it.parcial === parcial && it.rarity === order[i] && !owned.has(id)
+      })
+      if (candidates.length > 0) break
+    }
+  }
+  if (candidates.length === 0){
+    // Fallback final: cualquier región del parcial
+    candidates = Object.keys(BW.CATALOG || {}).filter(id => {
+      const it = BW.CATALOG[id]
+      return it.parcial === parcial && !owned.has(id)
+    })
+  }
+  if (candidates.length === 0) return null
+  return candidates[Math.floor(Math.random() * candidates.length)]
+}
+
+/* ──── Visibilidad del botón de expediciones según auth ──── */
+function showExpBtn(){
+  const btn = document.getElementById('bwExpBtn')
+  if (!btn) return
+  const lo = document.getElementById('logoutBtn')
+  if (lo && lo.style.display !== 'none') btn.classList.add('show')
+  else btn.classList.remove('show')
+}
+
+/* ──── Init F5 ──── */
+function bwF5Init(){
+  try {
+    const expBtn = document.getElementById('bwExpBtn')
+    if (expBtn) expBtn.addEventListener('click', openExpList)
+    const closeListBtn = document.getElementById('bwExpListClose')
+    if (closeListBtn) closeListBtn.addEventListener('click', closeExpList)
+    const listModal = document.getElementById('bwExpListModal')
+    if (listModal) listModal.addEventListener('click', (e) => { if (e.target === listModal) closeExpList() })
+    const closeExpBtn = document.getElementById('bwExpStageClose')
+    if (closeExpBtn) closeExpBtn.addEventListener('click', closeExpModal)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        const lm = document.getElementById('bwExpListModal')
+        if (lm && lm.classList.contains('show')) closeExpList()
+        const em = document.getElementById('bwExpModal')
+        if (em && em.classList.contains('show')) closeExpModal()
+      }
+    })
+    window.addEventListener('resize', () => { if (_currentExp) resizeMap() })
+    // Visibilidad del botón
+    showExpBtn()
+    const lo = document.getElementById('logoutBtn')
+    if (lo) new MutationObserver(showExpBtn).observe(lo, { attributes:true, attributeFilter:['style'] })
+  } catch(e){ console.warn('[BW F5] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF5Init)
+else bwF5Init()
+
+// Helpers
+BW._openExpList = openExpList
+BW._startExp = startExpedition
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F5
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F6 — Eventos temporales + Director del Mundo
+   Tabla: public.world_events (migración: supabase/migrations/world_events.sql)
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+function getSb(){ try { return typeof sb !== 'undefined' ? sb : null } catch(_){ return null } }
+async function getUid(){
+  try {
+    const s = getSb()
+    if (!s) return null
+    const { data } = await s.auth.getUser()
+    return data?.user?.id || null
+  } catch(_){ return null }
+}
+function isAdminUI(){
+  // Heurística: el botón admin del topbar está visible solo para admins
+  const ab = document.getElementById('adminBtn')
+  return !!(ab && ab.style.display && ab.style.display !== 'none')
+}
+
+/* ────── Eventos: fetch ────── */
+let _activeEvents = []
+let _grantsConsumedInSession = new Set()
+
+async function fetchActiveEvents(){
+  const s = getSb()
+  if (!s) return []
+  try {
+    const { data, error } = await s
+      .from('world_events')
+      .select('id, type, name, region, payload, starts_at, ends_at, active')
+      .eq('active', true)
+      .order('starts_at', { ascending:false })
+    if (error){ console.warn('[BW F6] fetch err:', error); return [] }
+    // Filtrar por fechas
+    const now = new Date()
+    return (data || []).filter(e => {
+      if (e.ends_at && new Date(e.ends_at) < now) return false
+      if (e.starts_at && new Date(e.starts_at) > now) return false
+      return true
+    })
+  } catch(e){ console.warn('[BW F6] fetch exception:', e); return [] }
+}
+
+/* ────── Aplicación visual de eventos ────── */
+function applyEvents(events){
+  _activeEvents = events
+  const cosmos = document.getElementById('sec-cosmos')
+  if (cosmos){
+    cosmos.classList.remove('season-aquatic','season-genomic','season-cellular','season-evolution')
+    const season = events.find(e => e.type === 'season')
+    if (season && season.payload && season.payload.palette){
+      cosmos.classList.add('season-' + season.payload.palette)
+    }
+  }
+  // Banner
+  const banner = document.getElementById('bwEventBanner')
+  const txt = document.getElementById('bwEventBannerTxt')
+  const visibleEvents = events.filter(e => e.type === 'season' || e.type === 'event' || e.type === 'highlight')
+  if (visibleEvents.length > 0 && banner && txt){
+    txt.textContent = visibleEvents[0].name
+    banner.classList.add('show')
+  } else if (banner){
+    banner.classList.remove('show')
+  }
+  // Re-render del cosmos para que los highlights se vean
+  try { if (BW.scene && BW.scene.renderOnce) BW.scene.renderOnce() } catch(_){}
+}
+
+/* ────── Override drawRegion para aplicar highlights de eventos ────── */
+if (BW.scene && BW.scene.drawRegion){
+  const _origDrawRegion = BW.scene.drawRegion.bind(BW.scene)
+  BW.scene.drawRegion = function(t, layout, alpha, hover){
+    _origDrawRegion(t, layout, alpha, hover)
+    // Highlight: anillo dorado si esta región está destacada
+    const highlight = _activeEvents.find(e => e.type === 'highlight' && e.region === layout.id)
+    if (highlight){
+      const ctx = this.ctx
+      ctx.strokeStyle = `rgba(255,216,107,${0.6 + Math.sin(t * 2) * 0.2})`
+      ctx.lineWidth = 2.5
+      ctx.shadowColor = 'rgba(255,216,107,0.6)'
+      ctx.shadowBlur = 12
+      ctx.setLineDash([])
+      ctx.beginPath(); ctx.arc(layout.x, layout.y, layout.r * 1.55, 0, Math.PI * 2); ctx.stroke()
+      ctx.shadowBlur = 0
+    }
+  }
+}
+
+/* ────── Eventos "event": boost de probabilidad de descubrimiento ────── */
+// Lo hacemos consultable desde F3 vía BW.events.discoveryBoostFor(region)
+function discoveryBoostFor(regionId, parcial){
+  let boost = 1
+  _activeEvents.forEach(e => {
+    if (e.type !== 'event') return
+    if (e.region && e.region !== regionId) return
+    if (e.payload && e.payload.parcial && e.payload.parcial !== parcial) return
+    const m = (e.payload && Number(e.payload.multiplier)) || 1.5
+    boost *= m
+  })
+  return boost
+}
+
+/* ────── Eventos "grant": consumir y agregar cápsula ────── */
+async function consumeGrants(){
+  const grants = _activeEvents.filter(e => e.type === 'grant')
+  if (grants.length === 0) return
+  const consumed = (BW.state.consumedGrants = BW.state.consumedGrants || [])
+  let changed = false
+  for (const g of grants){
+    if (consumed.includes(g.id)) continue
+    // Eligibility
+    const target = (g.payload && g.payload.target) || 'all'
+    let eligible = (target === 'all')
+    if (target === 'pro'){
+      try { eligible = (typeof isPro === 'function' && isPro()) } catch(_){ eligible = false }
+    }
+    if (!eligible){ consumed.push(g.id); continue }
+    // Pick catalog item
+    const catId = g.payload && g.payload.catalogId
+    if (!catId || !BW.CATALOG[catId]){ consumed.push(g.id); continue }
+    const item = BW.CATALOG[catId]
+    BW.state.capsulesPending = BW.state.capsulesPending || []
+    BW.state.capsulesPending.push({
+      id: 'cap-grant-' + g.id.slice(0,8),
+      catalogId: catId,
+      rarity: item.rarity,
+      source: 'grant:' + (g.name || 'evento'),
+      createdAt: new Date().toISOString()
+    })
+    consumed.push(g.id)
+    changed = true
+  }
+  if (changed){
+    try { if (typeof persistState === 'function') await persistState() } catch(_){}
+    // Refrescar UI cápsulas
+    try {
+      const btn = document.getElementById('bwCapsBtn')
+      if (btn) btn.classList.add('show')
+      const cnt = document.getElementById('bwCapsBtnCount')
+      if (cnt) cnt.textContent = String((BW.state.capsulesPending || []).length)
+    } catch(_){}
+  }
+}
+
+/* ────── Refresco periódico ────── */
+let _eventsRefreshTimer = 0
+async function refreshEvents(){
+  const events = await fetchActiveEvents()
+  applyEvents(events)
+  await consumeGrants()
+}
+function startEventsLoop(){
+  refreshEvents()
+  if (_eventsRefreshTimer) clearInterval(_eventsRefreshTimer)
+  _eventsRefreshTimer = setInterval(refreshEvents, 5 * 60 * 1000) // cada 5 min
+}
+
+/* ────────────────────────────────────────────────
+   DIRECTOR DEL MUNDO — UI Admin
+   ──────────────────────────────────────────────── */
+
+function showDirectorButton(){
+  const btn = document.getElementById('bwDirBtn')
+  if (!btn) return
+  if (isAdminUI()) btn.classList.add('show')
+  else btn.classList.remove('show')
+}
+
+function openDirector(){
+  const modal = document.getElementById('bwDirModal')
+  if (!modal) return
+  populateCatalogSelect()
+  modal.classList.add('show')
+  modal.setAttribute('aria-hidden', 'false')
+  refreshDirectorList()
+  // UI condicional según tipo
+  syncDirectorTypeUI()
+}
+function closeDirector(){
+  const modal = document.getElementById('bwDirModal')
+  if (!modal) return
+  modal.classList.remove('show')
+  modal.setAttribute('aria-hidden', 'true')
+}
+
+function populateCatalogSelect(){
+  const sel = document.getElementById('bwDirEvCatalog')
+  if (!sel) return
+  if (sel.options.length > 0) return // ya poblado
+  sel.innerHTML = ''
+  Object.keys(BW.CATALOG || {}).forEach(id => {
+    const it = BW.CATALOG[id]
+    const o = document.createElement('option')
+    o.value = id
+    o.textContent = `[${it.parcial.toUpperCase()}] ${it.name} (${it.rarity})`
+    sel.appendChild(o)
+  })
+}
+
+function syncDirectorTypeUI(){
+  const type = document.getElementById('bwDirEvType').value
+  document.getElementById('bwDirSeasonRow').style.display = (type === 'season') ? '' : 'none'
+  document.getElementById('bwDirGrantRow').style.display = (type === 'grant') ? '' : 'none'
+  document.getElementById('bwDirGrantTargetRow').style.display = (type === 'grant') ? '' : 'none'
+}
+
+async function refreshDirectorList(){
+  const list = document.getElementById('bwDirList')
+  if (!list) return
+  list.innerHTML = '<div class="bw-caps-empty" style="padding:1rem">Cargando eventos…</div>'
+  const s = getSb()
+  if (!s){
+    list.innerHTML = '<div class="bw-caps-empty" style="padding:1rem">Supabase no disponible.</div>'
+    return
+  }
+  try {
+    const { data, error } = await s
+      .from('world_events')
+      .select('id, type, name, region, payload, starts_at, ends_at, active, created_at')
+      .order('created_at', { ascending:false })
+      .limit(50)
+    if (error){ throw error }
+    list.innerHTML = ''
+    if (!data || data.length === 0){
+      list.innerHTML = '<div class="bw-caps-empty" style="padding:1rem">Sin eventos creados todavía.</div>'
+      return
+    }
+    data.forEach(ev => {
+      const item = document.createElement('div')
+      item.className = 'bw-dir-event-item'
+      const regionTxt = ev.region ? ev.region : 'global'
+      const endsTxt = ev.ends_at ? ('termina ' + new Date(ev.ends_at).toLocaleDateString()) : 'sin fecha de fin'
+      const stat = ev.active ? '✓ activo' : '— inactivo'
+      item.innerHTML = `
+        <span class="bw-dir-event-type">${ev.type}</span>
+        <div class="bw-dir-event-info">
+          <strong>${ev.name}</strong>
+          <small>${regionTxt} · ${endsTxt} · ${stat}</small>
+        </div>
+        <button class="bw-dir-event-del" type="button" title="Desactivar">×</button>
+      `
+      item.querySelector('.bw-dir-event-del').addEventListener('click', async () => {
+        if (!confirm('¿Desactivar este evento?')) return
+        const { error: err2 } = await s.from('world_events').update({ active:false }).eq('id', ev.id)
+        if (err2){ showDirectorFb('Error al desactivar: ' + err2.message, true); return }
+        showDirectorFb('Evento desactivado', false)
+        refreshDirectorList()
+        refreshEvents()
+      })
+      list.appendChild(item)
+    })
+  } catch(e){
+    list.innerHTML = `<div class="bw-caps-empty" style="padding:1rem">Error: ${e.message || e}</div>`
+  }
+}
+
+function showDirectorFb(msg, isErr){
+  const fb = document.getElementById('bwDirFb')
+  if (!fb) return
+  fb.className = 'bw-dir-feedback ' + (isErr ? 'err' : 'ok')
+  fb.textContent = msg
+  setTimeout(() => { fb.style.display = 'none' }, 4500)
+}
+
+async function createEventFromForm(){
+  const type = document.getElementById('bwDirEvType').value
+  const name = (document.getElementById('bwDirEvName').value || '').trim()
+  const region = document.getElementById('bwDirEvRegion').value || null
+  const ends = document.getElementById('bwDirEvEnds').value || null
+
+  if (!name){ showDirectorFb('Falta nombre del evento', true); return }
+
+  const payload = {}
+  if (type === 'season'){
+    payload.palette = document.getElementById('bwDirEvSeason').value
+  } else if (type === 'event'){
+    payload.multiplier = 1.5
+  } else if (type === 'grant'){
+    payload.catalogId = document.getElementById('bwDirEvCatalog').value
+    payload.target = document.getElementById('bwDirEvTarget').value
+  }
+
+  const s = getSb()
+  if (!s){ showDirectorFb('Supabase no disponible', true); return }
+  const uid = await getUid()
+  const row = {
+    type, name, region, payload,
+    starts_at: new Date().toISOString(),
+    ends_at: ends ? new Date(ends + 'T23:59:59').toISOString() : null,
+    active: true,
+    created_by: uid
+  }
+  const { error } = await s.from('world_events').insert(row)
+  if (error){
+    showDirectorFb('Error al crear: ' + error.message, true)
+    return
+  }
+  showDirectorFb('Evento creado y activo ✓', false)
+  // Reset form
+  document.getElementById('bwDirEvName').value = ''
+  document.getElementById('bwDirEvEnds').value = ''
+  refreshDirectorList()
+  refreshEvents()
+}
+
+/* ────── Init F6 ────── */
+function bwF6Init(){
+  try {
+    const dirBtn = document.getElementById('bwDirBtn')
+    if (dirBtn) dirBtn.addEventListener('click', openDirector)
+    const closeBtn = document.getElementById('bwDirClose')
+    if (closeBtn) closeBtn.addEventListener('click', closeDirector)
+    const modal = document.getElementById('bwDirModal')
+    if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeDirector() })
+    const typeSel = document.getElementById('bwDirEvType')
+    if (typeSel) typeSel.addEventListener('change', syncDirectorTypeUI)
+    const createBtn = document.getElementById('bwDirCreate')
+    if (createBtn) createBtn.addEventListener('click', createEventFromForm)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        const dm = document.getElementById('bwDirModal')
+        if (dm && dm.classList.contains('show')) closeDirector()
+      }
+    })
+    // Visibilidad del botón director según admin
+    showDirectorButton()
+    const ab = document.getElementById('adminBtn')
+    if (ab) new MutationObserver(showDirectorButton).observe(ab, { attributes:true, attributeFilter:['style'] })
+    // Inicio del loop de eventos
+    startEventsLoop()
+  } catch(e){ console.warn('[BW F6] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF6Init)
+else bwF6Init()
+
+/* ────── API pública ────── */
+BW.events = {
+  fetchActive: fetchActiveEvents,
+  refresh: refreshEvents,
+  active: () => _activeEvents,
+  discoveryBoostFor
+}
+BW.director = {
+  show: openDirector,
+  hide: closeDirector,
+  createEvent: createEventFromForm,
+  refreshList: refreshDirectorList
+}
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F6
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS F7 — Pulido, accesibilidad, performance, atajos
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+const HELP_SEEN_KEY = 'biomaster_bw_help_seen_v1'
+
+/* ────── Toast propio del Biocosmos ────── */
+let _toastTimer = 0
+function bwToast(msg, ms){
+  const el = document.getElementById('bwToast')
+  if (!el) return
+  el.textContent = msg
+  el.classList.add('show')
+  clearTimeout(_toastTimer)
+  _toastTimer = setTimeout(() => el.classList.remove('show'), ms || 3500)
+}
+BW.toast = bwToast
+
+/* ────── Visibilidad del help button según auth ────── */
+function showHelpButton(){
+  const btn = document.getElementById('bwHelpBtn')
+  if (!btn) return
+  const lo = document.getElementById('logoutBtn')
+  const authed = !!(lo && lo.style.display !== 'none')
+  if (authed) btn.classList.add('show')
+  else btn.classList.remove('show')
+}
+
+function openHelp(){
+  const m = document.getElementById('bwHelpModal')
+  if (!m) return
+  m.classList.add('show')
+  m.setAttribute('aria-hidden', 'false')
+}
+function closeHelp(){
+  const m = document.getElementById('bwHelpModal')
+  if (!m) return
+  m.classList.remove('show')
+  m.setAttribute('aria-hidden', 'true')
+  try { localStorage.setItem(HELP_SEEN_KEY, '1') } catch(_){}
+}
+
+/* ────── Mostrar bienvenida la primera vez ────── */
+function maybeShowFirstHelp(){
+  try {
+    const seen = localStorage.getItem(HELP_SEEN_KEY)
+    if (seen) return
+    // Solo mostrar si el cosmos está visible y hay sesión
+    const sec = document.getElementById('sec-cosmos')
+    const lo = document.getElementById('logoutBtn')
+    if (!sec || sec.style.display === 'none') return
+    if (!(lo && lo.style.display !== 'none')) return
+    setTimeout(openHelp, 800)
+  } catch(_){}
+}
+
+/* ────── Atajos de teclado globales ────── */
+function bindKeyboardShortcuts(){
+  document.addEventListener('keydown', (e) => {
+    // Ignorar si el usuario está escribiendo en un input/textarea
+    const tag = (e.target && e.target.tagName) || ''
+    const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (e.target && e.target.isContentEditable)
+    if (isTyping) return
+    // B → scroll al cosmos (solo si no es Ctrl/Meta/Alt)
+    if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey && !e.altKey){
+      if (BW.scrollToCosmos) { BW.scrollToCosmos(); e.preventDefault() }
+    }
+    // ? → abrir ayuda
+    if (e.key === '?'){
+      openHelp(); e.preventDefault()
+    }
+  })
+}
+
+/* ────── Performance: pausar rAF del cosmos cuando NO está en viewport ────── */
+function setupViewportPause(){
+  const sec = document.getElementById('sec-cosmos')
+  if (!sec || !BW.scene) return
+  if (!('IntersectionObserver' in window)) return
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        // Reanudar rAF si estaba pausado por scroll
+        try {
+          if (BW.scene.paused){
+            BW.scene.paused = false
+            if (!REDUCED && !BW.scene.raf) BW.scene.raf = requestAnimationFrame(BW.scene.loop)
+          }
+        } catch(_){}
+      } else {
+        // Pausar
+        try { BW.scene.paused = true } catch(_){}
+      }
+    })
+  }, { threshold: 0.1 })
+  obs.observe(sec)
+}
+
+/* ────── Throttle del resize global de canvas ────── */
+function setupThrottledResize(){
+  let resizeTimer = 0
+  let resizing = false
+  window.addEventListener('resize', () => {
+    if (resizing) return
+    resizing = true
+    cancelAnimationFrame(resizeTimer)
+    resizeTimer = requestAnimationFrame(() => {
+      try {
+        if (BW.scene && BW.scene.resize) BW.scene.resize()
+      } catch(_){}
+      resizing = false
+    })
+  }, { passive:true })
+}
+
+/* ────── Reducir densidad de partículas en pantallas pequeñas ────── */
+function tuneParticlesForViewport(){
+  try {
+    if (!BW.scene || !BW.scene.particles) return
+    const w = window.innerWidth || 1024
+    if (w < 480 && BW.scene.particles.length > 25){
+      // Reducir
+      BW.scene.particles = BW.scene.particles.slice(0, 25)
+    }
+  } catch(_){}
+}
+
+/* ────── Aria-labels y mejoras finales ────── */
+function applyA11yLabels(){
+  // Botón flotante de cápsulas
+  const capsBtn = document.getElementById('bwCapsBtn')
+  if (capsBtn && !capsBtn.getAttribute('aria-label')) capsBtn.setAttribute('aria-label', 'Cápsulas pendientes')
+  // Botón expediciones
+  const expBtn = document.getElementById('bwExpBtn')
+  if (expBtn && !expBtn.getAttribute('aria-label')) expBtn.setAttribute('aria-label', 'Expediciones disponibles')
+  // Botón director
+  const dirBtn = document.getElementById('bwDirBtn')
+  if (dirBtn && !dirBtn.getAttribute('aria-label')) dirBtn.setAttribute('aria-label', 'Director del Mundo (admin)')
+  // Hint visual de scroll
+  const hint = document.getElementById('bwScrollHint')
+  if (hint && !hint.getAttribute('aria-label')) hint.setAttribute('aria-label', 'Continuar al estudio (Tab para enfocar)')
+  // Top org button
+  const top = document.getElementById('bwTopOrgBtn')
+  if (top && !top.getAttribute('aria-label')) top.setAttribute('aria-label', 'Tu organismo en el Biocosmos')
+}
+
+/* ────── Init F7 ────── */
+function bwF7Init(){
+  try {
+    bindKeyboardShortcuts()
+    setupViewportPause()
+    setupThrottledResize()
+    tuneParticlesForViewport()
+    applyA11yLabels()
+
+    const helpBtn = document.getElementById('bwHelpBtn')
+    if (helpBtn) helpBtn.addEventListener('click', openHelp)
+    const helpCta = document.getElementById('bwHelpCta')
+    if (helpCta) helpCta.addEventListener('click', closeHelp)
+    const helpModal = document.getElementById('bwHelpModal')
+    if (helpModal) helpModal.addEventListener('click', (e) => { if (e.target === helpModal) closeHelp() })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){
+        const m = document.getElementById('bwHelpModal')
+        if (m && m.classList.contains('show')) closeHelp()
+      }
+    })
+
+    showHelpButton()
+    const lo = document.getElementById('logoutBtn')
+    if (lo) new MutationObserver(showHelpButton).observe(lo, { attributes:true, attributeFilter:['style'] })
+
+    // Primera vez → bienvenida
+    setTimeout(maybeShowFirstHelp, 2400)
+  } catch(e){ console.warn('[BW F7] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bwF7Init)
+else bwF7Init()
+
+// Public helpers
+BW.help = { open: openHelp, close: closeHelp, reset: () => { try { localStorage.removeItem(HELP_SEEN_KEY) } catch(_){} } }
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos F7 — Biocosmos completo F1-F7
    ════════════════════════════════════════════════════════════════════ */
 </script>
 <!-- Botón flotante: modo enfoque -->
