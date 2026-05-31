@@ -25738,7 +25738,7 @@ BW.TOPIC_TO_PARCIAL = TOPIC_TO_PARCIAL
 BW.TOPIC_LABELS = TOPIC_LABELS
 
 /* ────── FIX 1: corregir topics de la región Botánica ────── */
-(function fixBotanicaTopics(){
+;(function fixBotanicaTopics(){
   if (!BW.REGIONS) return
   const bot = BW.REGIONS.find(r => r.id === 'botanica')
   if (bot && JSON.stringify(bot.topics) === JSON.stringify(['pla'])){
