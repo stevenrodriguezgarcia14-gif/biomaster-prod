@@ -28101,6 +28101,43 @@ if (!window.BW) return
 const BW = window.BW
 const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
 
+// ──── ASIGNACIÓN TEMPRANA DEFENSIVA ────
+// Garantizamos que BW.events y BW.director EXISTAN aunque algo más
+// abajo en el IIFE falle. Los métodos completos se asignan al final.
+BW.events = BW.events || {
+  fetchActive: () => Promise.resolve([]),
+  refresh: () => Promise.resolve(),
+  active: () => [],
+  discoveryBoostFor: () => 1
+}
+BW.director = BW.director || {}
+if (!BW.director.show){
+  BW.director.show = function(){
+    const m = document.getElementById('bwDirModal')
+    if (m){ m.classList.add('show'); m.setAttribute('aria-hidden', 'false') }
+  }
+}
+if (!BW.director.hide){
+  BW.director.hide = function(){
+    const m = document.getElementById('bwDirModal')
+    if (m){ m.classList.remove('show'); m.setAttribute('aria-hidden', 'true') }
+  }
+}
+if (!BW.director.forceShow){
+  BW.director.forceShow = function(){
+    const b = document.getElementById('bwDirBtn')
+    if (b){ b.classList.add('show'); return true }
+    return false
+  }
+}
+if (!BW.director.debug){
+  BW.director.debug = function(){
+    const ab = document.getElementById('adminBtn')
+    const btn = document.getElementById('bwDirBtn')
+    console.log('admin:', !!ab && ab.style.display !== 'none', 'btn:', !!btn, 'show:', btn && btn.classList.contains('show'))
+  }
+}
+
 function getSb(){ try { return typeof sb !== 'undefined' ? sb : null } catch(_){ return null } }
 async function getUid(){
   try {
