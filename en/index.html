@@ -27886,5 +27886,43 @@ else init()
 })();
 </script>
 
+  <!-- ═══ BIOCOSMOS — Helper standalone de Director (script separado, mínimo) ═══
+       Este script es totalmente independiente de cualquier otro Biocosmos IIFE.
+       Si BWDir no existe tras cargar la página, este bloque es la prueba
+       de que el archivo cargado contiene la última versión (NO cache viejo).
+       Versión: 1 — agregado para diagnóstico de cache. -->
+  <script>
+  (function(){
+    function f(){
+      var b = document.getElementById('bwDirBtn');
+      if (b){ b.classList.add('show'); return 'ok'; }
+      return 'no-btn';
+    }
+    function d(){
+      var b  = document.getElementById('bwDirBtn');
+      var ab = document.getElementById('adminBtn');
+      var info = {
+        BWDir_loaded: 'YES (este mensaje confirma que NO hay cache)',
+        BW: typeof window.BW,
+        BW_director: (window.BW && typeof window.BW.director) || 'undefined',
+        BW_scene: (window.BW && typeof window.BW.scene) || 'undefined',
+        BW_events: (window.BW && typeof window.BW.events) || 'undefined',
+        adminBtn_exists: !!ab,
+        adminBtn_display: ab ? (ab.style.display || '(inline empty)') : 'N/A',
+        adminBtn_computed: ab ? window.getComputedStyle(ab).display : 'N/A',
+        adminBtn_visible: ab ? ab.offsetParent !== null : false,
+        badge_admin: !!document.querySelector('.badge-admin'),
+        dirBtn_exists: !!b,
+        dirBtn_show: b ? b.classList.contains('show') : false
+      };
+      console.table(info);
+      console.log('Usá BWDir.force() para forzar el botón Director del Mundo a visible.');
+      return info;
+    }
+    window.BWDir = { force:f, debug:d, version:1 };
+    console.log('[BWDir] standalone helper listo. Usá BWDir.debug() para diagnosticar, BWDir.force() para mostrar el botón Director.');
+  })();
+  </script>
+
 </body>
 </html>
