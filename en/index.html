@@ -27092,9 +27092,43 @@ async function getUid(){
   } catch(_){ return null }
 }
 function isAdminUI(){
-  // Heurística: el botón admin del topbar está visible solo para admins
+  // Detección multimodal — el inline style del adminBtn puede no estar
+  // seteado cuando F6 init corre. Chequeamos varias fuentes con OR.
+
+  // 1) Inline style del adminBtn
   const ab = document.getElementById('adminBtn')
-  return !!(ab && ab.style.display && ab.style.display !== 'none')
+  if (ab){
+    const inlineDisp = ab.style && ab.style.display
+    if (inlineDisp && inlineDisp !== 'none') return true
+    // 2) Computed style (cubre CSS rules)
+    try {
+      const cs = window.getComputedStyle(ab).display
+      if (cs && cs !== 'none' && ab.offsetParent !== null) return true
+    } catch(_){}
+  }
+
+  // 3) Badge admin en el DOM (existe solo si renderActiveUser lo agregó)
+  if (document.querySelector('.badge-admin')) return true
+
+  // 4) S.user.role si está expuesto
+  try {
+    if (typeof S !== 'undefined' && S){
+      if (S.user && S.user.role === 'admin') return true
+      if (S.role === 'admin') return true
+      if (S.profile && S.profile.role === 'admin') return true
+    }
+  } catch(_){}
+
+  // 5) window._currentSession con role
+  try {
+    if (window._currentSession && window._currentSession.user){
+      const meta = window._currentSession.user.user_metadata || {}
+      const app  = window._currentSession.user.app_metadata  || {}
+      if (meta.role === 'admin' || app.role === 'admin') return true
+    }
+  } catch(_){}
+
+  return false
 }
 
 /* ────── Eventos: fetch ────── */
@@ -27242,8 +27276,23 @@ function startEventsLoop(){
 function showDirectorButton(){
   const btn = document.getElementById('bwDirBtn')
   if (!btn) return
-  if (isAdminUI()) btn.classList.add('show')
+  const admin = isAdminUI()
+  if (admin) btn.classList.add('show')
   else btn.classList.remove('show')
+}
+
+// Polling de seguridad: re-evaluar visibilidad del botón Director cada 1.5s
+// durante los primeros 30s tras carga (la detección de admin puede llegar
+// tarde si el perfil se hidrata en background).
+let _dirPollTicks = 0
+let _dirPollTimer = 0
+function startDirectorPoll(){
+  if (_dirPollTimer) return
+  _dirPollTimer = setInterval(() => {
+    showDirectorButton()
+    _dirPollTicks++
+    if (_dirPollTicks > 20) { clearInterval(_dirPollTimer); _dirPollTimer = 0 }
+  }, 1500)
 }
 
 function openDirector(){
@@ -27405,7 +27454,16 @@ function bwF6Init(){
     // Visibilidad del botón director según admin
     showDirectorButton()
     const ab = document.getElementById('adminBtn')
-    if (ab) new MutationObserver(showDirectorButton).observe(ab, { attributes:true, attributeFilter:['style'] })
+    if (ab){
+      new MutationObserver(showDirectorButton).observe(ab, { attributes:true, attributeFilter:['style','class'] })
+    }
+    // También observar el topbar entero por si renderActiveUser reemplaza nodos
+    const topbar = document.querySelector('.topbar')
+    if (topbar){
+      new MutationObserver(showDirectorButton).observe(topbar, { childList:true, subtree:true, attributes:true, attributeFilter:['style','class'] })
+    }
+    // Polling de seguridad (cubre detección async tardía)
+    startDirectorPoll()
     // Inicio del loop de eventos
     startEventsLoop()
   } catch(e){ console.warn('[BW F6] init error:', e) }
@@ -27424,7 +27482,34 @@ BW.director = {
   show: openDirector,
   hide: closeDirector,
   createEvent: createEventFromForm,
-  refreshList: refreshDirectorList
+  refreshList: refreshDirectorList,
+  // ─── Diagnóstico ───
+  debug(){
+    const ab = document.getElementById('adminBtn')
+    const btn = document.getElementById('bwDirBtn')
+    const sec = document.getElementById('sec-cosmos')
+    const info = {
+      adminBtnExists: !!ab,
+      adminBtnInlineDisplay: ab ? (ab.style.display || '(empty)') : 'N/A',
+      adminBtnComputedDisplay: ab ? window.getComputedStyle(ab).display : 'N/A',
+      adminBtnVisible: ab ? ab.offsetParent !== null : false,
+      badgeAdminInDom: !!document.querySelector('.badge-admin'),
+      isAdminUI_result: isAdminUI(),
+      bwDirBtnExists: !!btn,
+      bwDirBtnHasShow: btn ? btn.classList.contains('show') : false,
+      bwDirBtnComputedDisplay: btn ? window.getComputedStyle(btn).display : 'N/A',
+      cosmosVisible: sec ? sec.style.display !== 'none' : false,
+      tip: 'Si isAdminUI_result es false: tu cuenta NO tiene role=admin en la BD. Si es true pero no se ve el botón: usá BW.director.forceShow() para forzarlo.'
+    }
+    console.table(info)
+    return info
+  },
+  // ─── Forzar el botón (útil para testing visual sin ser admin) ───
+  forceShow(){
+    const btn = document.getElementById('bwDirBtn')
+    if (btn) { btn.classList.add('show'); console.log('[BW] Director button forzado a visible.') }
+    return !!btn
+  }
 }
 
 })()
