@@ -4015,6 +4015,31 @@ window.Analytics = (function(){
   }
 })()
 </script>
+<!-- ═══ BIOCOSMOS — Captura temprana de errores JS (diagnóstico) ═══
+     Debe estar antes del script principal para capturar errores de F1-F7. -->
+<script>
+(function(){
+  window._bwErrors = window._bwErrors || [];
+  window.addEventListener('error', function(e){
+    try {
+      window._bwErrors.push({
+        msg: e.message,
+        file: (e.filename || '').split('/').pop(),
+        line: e.lineno,
+        col: e.colno,
+        stack: e.error && e.error.stack ? String(e.error.stack).slice(0, 500) : null
+      });
+    } catch(_){}
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    try {
+      window._bwErrors.push({
+        msg: '[unhandled promise] ' + (e.reason && (e.reason.message || e.reason))
+      });
+    } catch(_){}
+  });
+})();
+</script>
 </head>
 <body class="lp-open">
 <div class="toast" id="toastEl"></div>
@@ -27893,34 +27918,109 @@ else init()
        Versión: 1 — agregado para diagnóstico de cache. -->
   <script>
   (function(){
+    // ─── Mostrar botón Director ───
     function f(){
       var b = document.getElementById('bwDirBtn');
       if (b){ b.classList.add('show'); return 'ok'; }
       return 'no-btn';
     }
+    // ─── Abrir modal Director (independiente de BW.director) ───
+    function openModal(){
+      var m = document.getElementById('bwDirModal');
+      if (!m) return 'no-modal';
+      m.classList.add('show');
+      m.setAttribute('aria-hidden', 'false');
+      var closeBtn = document.getElementById('bwDirClose');
+      if (closeBtn && !closeBtn._bwxBound){
+        closeBtn._bwxBound = true;
+        closeBtn.addEventListener('click', closeModal);
+      }
+      m.addEventListener('click', function(e){ if (e.target === m) closeModal() });
+      return 'ok';
+    }
+    function closeModal(){
+      var m = document.getElementById('bwDirModal');
+      if (!m) return;
+      m.classList.remove('show');
+      m.setAttribute('aria-hidden', 'true');
+    }
+    // ─── Fix completo: forzar botón + bindear click si no tiene handler ───
+    function fix(){
+      var btn = document.getElementById('bwDirBtn');
+      if (!btn) return 'no-btn';
+      btn.classList.add('show');
+      if (!btn._bwxBound){
+        btn._bwxBound = true;
+        btn.addEventListener('click', function(){
+          try {
+            if (window.BW && window.BW.director && typeof window.BW.director.show === 'function'){
+              window.BW.director.show();
+            } else {
+              openModal();
+            }
+          } catch(e){ openModal() }
+        });
+      }
+      console.log('[BWDir] Fix aplicado: botón visible y click handler bindeado.');
+      return 'ok';
+    }
+    // ─── Debug completo de todas las fases ───
     function d(){
       var b  = document.getElementById('bwDirBtn');
       var ab = document.getElementById('adminBtn');
       var info = {
-        BWDir_loaded: 'YES (este mensaje confirma que NO hay cache)',
-        BW: typeof window.BW,
-        BW_director: (window.BW && typeof window.BW.director) || 'undefined',
-        BW_scene: (window.BW && typeof window.BW.scene) || 'undefined',
-        BW_events: (window.BW && typeof window.BW.events) || 'undefined',
-        adminBtn_exists: !!ab,
-        adminBtn_display: ab ? (ab.style.display || '(inline empty)') : 'N/A',
-        adminBtn_computed: ab ? window.getComputedStyle(ab).display : 'N/A',
-        adminBtn_visible: ab ? ab.offsetParent !== null : false,
-        badge_admin: !!document.querySelector('.badge-admin'),
-        dirBtn_exists: !!b,
-        dirBtn_show: b ? b.classList.contains('show') : false
+        '── HELPER ──': '',
+        'BWDir_loaded': 'YES (NO hay cache)',
+        'BWDir_version': 2,
+        '── window.BW (F1-F7) ──': '',
+        'BW_global': typeof window.BW,
+        'BW.scene (F1)': (window.BW && typeof window.BW.scene) || 'MISSING',
+        'BW.hook (F1)': (window.BW && typeof window.BW.hook) || 'MISSING',
+        'BW.scrollToCosmos (F2)': (window.BW && typeof window.BW.scrollToCosmos) || 'MISSING',
+        'BW.CATALOG (F3)': (window.BW && typeof window.BW.CATALOG) || 'MISSING',
+        'BW.nav (audit)': (window.BW && typeof window.BW.nav) || 'MISSING',
+        'BW._renderCollection (F4)': (window.BW && typeof window.BW._renderCollection) || 'MISSING',
+        'BW.EXPEDITIONS (F5)': (window.BW && typeof window.BW.EXPEDITIONS) || 'MISSING',
+        'BW.events (F6)': (window.BW && typeof window.BW.events) || 'MISSING',
+        'BW.director (F6)': (window.BW && typeof window.BW.director) || 'MISSING',
+        'BW.toast (F7)': (window.BW && typeof window.BW.toast) || 'MISSING',
+        'BW.help (F7)': (window.BW && typeof window.BW.help) || 'MISSING',
+        'BWDirector (FX)': typeof window.BWDirector,
+        '── ADMIN ──': '',
+        'adminBtn exists': !!ab,
+        'adminBtn inline display': ab ? (ab.style.display || '(empty)') : 'N/A',
+        'adminBtn computed display': ab ? window.getComputedStyle(ab).display : 'N/A',
+        'adminBtn visible': ab ? ab.offsetParent !== null : false,
+        '.badge-admin in DOM': !!document.querySelector('.badge-admin'),
+        '── BOTÓN DIRECTOR ──': '',
+        'dirBtn exists': !!b,
+        'dirBtn has .show': b ? b.classList.contains('show') : false,
+        'dirBtn computed display': b ? window.getComputedStyle(b).display : 'N/A',
+        'dirBtn click bound': b ? !!b._bwxBound : false
       };
       console.table(info);
-      console.log('Usá BWDir.force() para forzar el botón Director del Mundo a visible.');
+      console.log('SOLUCIÓN: corré  BWDir.fix()  para que el botón aparezca y funcione AHORA.');
+      console.log('Las fases con MISSING fallaron al cargar. La más importante: BW.director (F6).');
       return info;
     }
-    window.BWDir = { force:f, debug:d, version:1 };
-    console.log('[BWDir] standalone helper listo. Usá BWDir.debug() para diagnosticar, BWDir.force() para mostrar el botón Director.');
+    // ─── Mostrar errores JS capturados ───
+    function errors(){
+      var errs = window._bwErrors || [];
+      if (errs.length === 0){
+        console.log('[BWDir] Sin errores JS capturados. (Si F6 falla pero no hay error aquí, los listeners se cargaron tarde.)');
+        return [];
+      }
+      console.log('[BWDir] Errores JS capturados (' + errs.length + '):');
+      errs.forEach(function(e, i){
+        console.log('─── #' + (i+1) + ' ───');
+        console.log('Mensaje:', e.msg);
+        if (e.file) console.log('Archivo:', e.file, 'línea:', e.line, 'col:', e.col);
+        if (e.stack) console.log('Stack:', e.stack);
+      });
+      return errs;
+    }
+    window.BWDir = { force:f, debug:d, fix:fix, openModal:openModal, closeModal:closeModal, errors:errors, version:3 };
+    console.log('[BWDir v3] Helpers: BWDir.debug() / BWDir.fix() / BWDir.errors() / BWDir.force() / BWDir.openModal()');
   })();
   </script>
 
