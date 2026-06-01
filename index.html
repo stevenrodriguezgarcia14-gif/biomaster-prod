@@ -3987,6 +3987,300 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 }
 
 /* ═══ Fin Biocosmos F7 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS LAB — Estación de Control (solo admins)
+   Toolkit de QA / demo / marketing. Acento cian para
+   diferenciarlo del Director del Mundo (dorado).
+   ═══════════════════════════════════════════════════════════ */
+
+/* Botón flotante "Estación de Control" (solo admins) — bajo el Director */
+.bw-lab-btn{
+  position:absolute;
+  z-index:3;
+  top:3.4rem;
+  left:1.4rem;
+  display:none;
+  align-items:center;
+  gap:.5rem;
+  padding:.5rem .9rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, rgba(34,211,238,.20), rgba(56,189,248,.08));
+  border:1px solid rgba(34,211,238,.45);
+  color:#bdf3ff;
+  font-weight:700;
+  font-size:.78rem;
+  cursor:pointer;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bw-lab-btn.show{display:inline-flex}
+.bw-lab-btn:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(34,211,238,.4)}
+@media (max-width: 768px){
+  .bw-lab-btn{top:3rem;left:.8rem;font-size:.72rem;padding:.42rem .75rem}
+}
+
+/* Badge persistente cuando el modo demo dejó cambios en pantalla */
+.bw-lab-demobadge{
+  position:fixed;
+  z-index:880;
+  bottom:1.1rem;
+  left:50%;
+  transform:translateX(-50%);
+  display:none;
+  align-items:center;
+  gap:.7rem;
+  padding:.5rem .9rem;
+  border-radius:999px;
+  background:rgba(8,22,30,.92);
+  border:1px solid rgba(34,211,238,.5);
+  color:#bdf3ff;
+  font-size:.76rem;
+  font-weight:700;
+  letter-spacing:.03em;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 0 22px rgba(34,211,238,.3);
+}
+.bw-lab-demobadge.show{display:inline-flex}
+.bw-lab-demobadge button{
+  background:rgba(34,211,238,.16);
+  border:1px solid rgba(34,211,238,.5);
+  color:#eafff0;
+  font-weight:700;font-size:.72rem;
+  padding:.25rem .6rem;border-radius:999px;cursor:pointer;
+}
+
+/* Modal de la estación */
+.bw-lab-modal{
+  position:fixed;
+  inset:0;
+  z-index:875;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:2rem 1rem;
+  background:rgba(2,10,14,.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.bw-lab-modal.show{display:flex;opacity:1}
+.bw-lab-panel{
+  position:relative;
+  width:min(860px, 97vw);
+  max-height:90vh;
+  display:flex;flex-direction:column;
+  border-radius:24px;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(34,211,238,.10), transparent 55%),
+    linear-gradient(180deg, rgba(10,26,34,.97), rgba(5,15,21,.99));
+  border:1px solid rgba(34,211,238,.24);
+  color:#eafff0;
+  box-shadow:0 24px 80px rgba(0,0,0,.6), inset 0 0 60px rgba(34,211,238,.04);
+  overflow:hidden;
+}
+/* Línea de "scanner" decorativa superior */
+.bw-lab-panel::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg, transparent, rgba(34,211,238,.7), transparent);
+  animation:bwLabScan 4s linear infinite;
+}
+@keyframes bwLabScan{
+  0%{transform:translateX(-60%);opacity:.3}
+  50%{opacity:.9}
+  100%{transform:translateX(60%);opacity:.3}
+}
+.bw-lab-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.3rem 1.5rem .7rem;
+  flex-wrap:wrap;gap:.6rem;
+}
+.bw-lab-head h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-weight:700;font-size:1.35rem;margin:0;
+  background:linear-gradient(135deg, #67e8f9, #38bdf8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.bw-lab-head .bw-lab-eyebrow{
+  display:block;font-family:inherit;font-size:.62rem;font-weight:800;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(34,211,238,.7);margin-bottom:.15rem;
+  -webkit-text-fill-color:rgba(34,211,238,.7);
+}
+.bw-lab-close{
+  background:transparent;border:none;color:rgba(208,237,216,.7);
+  font-size:1.2rem;cursor:pointer;padding:.2rem .5rem;border-radius:8px;
+  line-height:1;
+}
+.bw-lab-close:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* Banner de modo (demo / persistente) */
+.bw-lab-mode{
+  margin:0 1.5rem .4rem;
+  padding:.55rem .9rem;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:.6rem;flex-wrap:wrap;
+  font-size:.76rem;font-weight:700;
+}
+.bw-lab-mode.demo{ background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.4);color:#bdf3ff }
+.bw-lab-mode.persist{ background:rgba(255,138,0,.14);border:1px solid rgba(255,138,0,.45);color:#ffd9a8 }
+.bw-lab-mode .bw-lab-mode-txt{display:flex;align-items:center;gap:.45rem}
+.bw-lab-switch{display:flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer}
+.bw-lab-switch input{accent-color:#38bdf8;width:16px;height:16px;cursor:pointer}
+
+/* Tabs */
+.bw-lab-tabs{
+  display:flex;gap:.3rem;flex-wrap:wrap;
+  padding:0 1.5rem;margin-bottom:.3rem;
+}
+.bw-lab-tab{
+  padding:.45rem .8rem;border-radius:10px 10px 0 0;
+  background:transparent;border:1px solid transparent;border-bottom:none;
+  color:rgba(208,237,216,.65);font-weight:700;font-size:.76rem;cursor:pointer;
+  transition:color .15s, background .15s;
+}
+.bw-lab-tab:hover{color:#eafff0}
+.bw-lab-tab.active{
+  color:#67e8f9;
+  background:rgba(34,211,238,.08);
+  border-color:rgba(34,211,238,.25);
+}
+.bw-lab-body{
+  overflow-y:auto;
+  padding:1rem 1.5rem 1.2rem;
+  flex:1;
+}
+.bw-lab-pane{display:none}
+.bw-lab-pane.active{display:block;animation:bwLabFade .25s ease}
+@keyframes bwLabFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.bw-lab-pane h3{
+  font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(34,211,238,.85);font-weight:800;margin:1rem 0 .6rem;
+}
+.bw-lab-pane h3:first-child{margin-top:0}
+.bw-lab-pane p.bw-lab-hint{font-size:.76rem;color:rgba(208,237,216,.6);margin:.2rem 0 .8rem}
+
+/* Botones de acción */
+.bw-lab-grid{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.bw-lab-action{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.5rem .85rem;border-radius:12px;
+  background:rgba(34,211,238,.06);
+  border:1px solid rgba(34,211,238,.25);
+  color:#eafff0;font-weight:600;font-size:.78rem;cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.bw-lab-action:hover{transform:translateY(-1px);background:rgba(34,211,238,.14);box-shadow:0 6px 16px rgba(34,211,238,.2)}
+.bw-lab-action.primary{
+  background:linear-gradient(135deg, #67e8f9, #38bdf8);
+  color:#04161c;border:none;font-weight:800;
+}
+.bw-lab-action.danger{
+  background:rgba(196,82,82,.12);border-color:rgba(196,82,82,.45);color:#ffd1d1;
+}
+.bw-lab-action.danger:hover{background:rgba(196,82,82,.22)}
+.bw-lab-action small{opacity:.7;font-weight:600}
+
+/* Matriz de rarezas / tipos */
+.bw-lab-matrix{display:flex;flex-direction:column;gap:.4rem}
+.bw-lab-mrow{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.55rem .8rem;border-radius:12px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+}
+.bw-lab-chip{
+  flex-shrink:0;width:11px;height:11px;border-radius:50%;
+  box-shadow:0 0 8px currentColor;
+}
+.bw-lab-mrow .bw-lab-mname{font-weight:700;font-size:.82rem;min-width:96px;text-transform:capitalize}
+.bw-lab-mrow .bw-lab-mbar{flex:1;height:7px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;min-width:60px}
+.bw-lab-mrow .bw-lab-mbar > i{display:block;height:100%;border-radius:999px;background:currentColor;transition:width .4s ease}
+.bw-lab-mrow .bw-lab-mcount{font-size:.74rem;font-weight:700;color:rgba(208,237,216,.8);min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.bw-lab-mrow .bw-lab-mbtns{display:flex;gap:.3rem}
+.bw-lab-mini{
+  padding:.28rem .55rem;border-radius:8px;font-size:.68rem;font-weight:700;cursor:pointer;
+  background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.3);color:#bdf3ff;
+}
+.bw-lab-mini:hover{background:rgba(34,211,238,.2)}
+
+/* Sliders de progreso por región */
+.bw-lab-region{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.45rem .2rem;
+}
+.bw-lab-region .bw-lab-rname{min-width:120px;font-size:.8rem;font-weight:600}
+.bw-lab-region input[type=range]{flex:1;accent-color:#38bdf8;cursor:pointer}
+.bw-lab-region .bw-lab-rval{min-width:44px;text-align:right;font-size:.74rem;font-variant-numeric:tabular-nums;color:rgba(208,237,216,.75)}
+
+.bw-lab-stagebtns{display:flex;flex-wrap:wrap;gap:.4rem}
+.bw-lab-stage{
+  padding:.45rem .7rem;border-radius:10px;cursor:pointer;font-size:.76rem;font-weight:700;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#eafff0;
+}
+.bw-lab-stage.active{background:rgba(34,211,238,.18);border-color:rgba(34,211,238,.5);color:#bdf3ff}
+.bw-lab-xprow{display:flex;align-items:center;gap:.5rem;margin:.5rem 0;flex-wrap:wrap}
+.bw-lab-xprow input{
+  width:130px;padding:.45rem .6rem;border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:#eafff0;font-size:.82rem;
+}
+
+/* Galería de vista previa */
+.bw-lab-gallery{
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(130px,1fr));gap:.55rem;
+}
+.bw-lab-card{
+  padding:.6rem;border-radius:12px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  font-size:.72rem;position:relative;overflow:hidden;
+}
+.bw-lab-card.locked{opacity:.55;filter:saturate(.4)}
+.bw-lab-card .bw-lab-cname{font-weight:700;font-size:.78rem;display:block;margin-bottom:.2rem}
+.bw-lab-card .bw-lab-ctag{font-size:.64rem;text-transform:uppercase;letter-spacing:.04em;color:rgba(208,237,216,.6)}
+.bw-lab-card .bw-lab-cctx{display:block;margin-top:.3rem;color:rgba(208,237,216,.7);line-height:1.3}
+.bw-lab-card .bw-lab-clock{position:absolute;top:.5rem;right:.5rem;font-size:.8rem}
+
+/* Lista para quitar descubrimientos */
+.bw-lab-owned{display:flex;flex-wrap:wrap;gap:.35rem;max-height:200px;overflow-y:auto}
+.bw-lab-owned span{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.25rem .55rem;border-radius:999px;font-size:.72rem;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+}
+.bw-lab-owned span button{background:none;border:none;color:rgba(196,82,82,.85);cursor:pointer;font-size:.85rem;line-height:1}
+
+/* Log de sesión */
+.bw-lab-log{
+  margin:0 1.5rem 1rem;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:.6rem;
+}
+.bw-lab-log h4{
+  margin:0 0 .4rem;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(208,237,216,.5);font-weight:800;
+}
+.bw-lab-logbox{
+  max-height:96px;overflow-y:auto;
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:.68rem;line-height:1.55;color:rgba(189,243,255,.8);
+}
+.bw-lab-logbox div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bw-lab-logbox .t{color:rgba(208,237,216,.4);margin-right:.4rem}
+
+@media (max-width: 600px){
+  .bw-lab-head h2{font-size:1.15rem}
+  .bw-lab-region .bw-lab-rname{min-width:90px}
+}
+@media (prefers-reduced-motion: reduce){
+  .bw-lab-panel::before{animation:none}
+  .bw-lab-pane.active{animation:none}
+  .bw-lab-modal{transition:none}
+}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -5171,6 +5465,12 @@ window.Analytics = (function(){
     <span>Director del Mundo</span>
   </button>
 
+  <!-- ═══ LAB: Botón "Estación de Control" (solo admins) ═══ -->
+  <button class="bw-lab-btn" id="bwLabBtn" type="button" title="Estación de Control Biocosmos (admin)" aria-label="Estación de Control Biocosmos (admin)">
+    <span aria-hidden="true">🧪</span>
+    <span>Estación de Control</span>
+  </button>
+
   <!-- ═══ F6: Banner de evento activo ═══ -->
   <div class="bw-event-banner" id="bwEventBanner" aria-live="polite">
     <span aria-hidden="true">✨</span>
@@ -5291,6 +5591,129 @@ window.Analytics = (function(){
       </div>
     </div>
   </div>
+</div>
+
+<!-- ═══ BIOCOSMOS LAB: Estación de Control (admin) ═══ -->
+<div id="bwLabModal" class="bw-lab-modal" role="dialog" aria-modal="true" aria-labelledby="bwLabTitle" aria-hidden="true">
+  <div class="bw-lab-panel">
+    <div class="bw-lab-head">
+      <div>
+        <span class="bw-lab-eyebrow">Biocosmos · Acceso restringido</span>
+        <h2 id="bwLabTitle">🧪 Estación de Control</h2>
+      </div>
+      <button class="bw-lab-close" id="bwLabClose" type="button" aria-label="Cerrar">✕</button>
+    </div>
+
+    <!-- Banner de modo -->
+    <div class="bw-lab-mode demo" id="bwLabMode">
+      <span class="bw-lab-mode-txt"><span aria-hidden="true">●</span> <span id="bwLabModeTxt">Modo demo — los cambios NO se guardan</span></span>
+      <label class="bw-lab-switch">
+        <input type="checkbox" id="bwLabPersist">
+        <span>Guardar en mi cuenta</span>
+      </label>
+    </div>
+
+    <!-- Tabs -->
+    <div class="bw-lab-tabs" role="tablist">
+      <button class="bw-lab-tab active" data-pane="unlock" type="button">🔓 Desbloqueo</button>
+      <button class="bw-lab-tab" data-pane="rarity" type="button">💎 Rarezas</button>
+      <button class="bw-lab-tab" data-pane="progress" type="button">📈 Progreso</button>
+      <button class="bw-lab-tab" data-pane="preview" type="button">👁 Vista previa</button>
+      <button class="bw-lab-tab" data-pane="demo" type="button">🎬 Demo</button>
+      <button class="bw-lab-tab" data-pane="reset" type="button">♻ Reset</button>
+    </div>
+
+    <div class="bw-lab-body">
+      <!-- DESBLOQUEO -->
+      <div class="bw-lab-pane active" data-pane="unlock">
+        <h3>Desbloqueo rápido</h3>
+        <p class="bw-lab-hint">Colecta entradas del catálogo curado. En modo demo no se guarda.</p>
+        <div class="bw-lab-grid">
+          <button class="bw-lab-action primary" data-act="unlock-all" type="button">✦ Desbloquear TODO el catálogo</button>
+        </div>
+        <h3>Por tipo</h3>
+        <div class="bw-lab-grid" id="bwLabTypeBtns"></div>
+        <h3>Por región</h3>
+        <div class="bw-lab-grid" id="bwLabRegionBtns"></div>
+      </div>
+
+      <!-- RAREZAS -->
+      <div class="bw-lab-pane" data-pane="rarity">
+        <h3>Control de rarezas</h3>
+        <p class="bw-lab-hint">Existen / faltan por rareza. Desbloqueá todas las de una rareza o generá una cápsula de esa rareza.</p>
+        <div class="bw-lab-matrix" id="bwLabRarityMatrix"></div>
+      </div>
+
+      <!-- PROGRESO -->
+      <div class="bw-lab-pane" data-pane="progress">
+        <h3>Etapa evolutiva del organismo</h3>
+        <p class="bw-lab-hint">Visual y desacoplado del XP real del ranking. No afecta tu posición.</p>
+        <div class="bw-lab-stagebtns" id="bwLabStageBtns"></div>
+        <div class="bw-lab-xprow">
+          <label for="bwLabXp" style="font-size:.78rem;font-weight:600">XP de evolución:</label>
+          <input type="number" id="bwLabXp" min="0" step="100" value="0">
+          <button class="bw-lab-action" data-act="set-xp" type="button">Aplicar XP</button>
+        </div>
+        <h3>Exploración por región (zonas)</h3>
+        <p class="bw-lab-hint">Controla cuánto "vive" cada región. 1.0 = región plena.</p>
+        <div id="bwLabRegionSliders"></div>
+        <div class="bw-lab-grid" style="margin-top:.6rem">
+          <button class="bw-lab-action" data-act="explore-all" type="button">🌅 Encender todas las regiones</button>
+          <button class="bw-lab-action" data-act="explore-none" type="button">🌑 Apagar todas</button>
+        </div>
+      </div>
+
+      <!-- VISTA PREVIA -->
+      <div class="bw-lab-pane" data-pane="preview">
+        <h3>Vista previa del catálogo</h3>
+        <p class="bw-lab-hint">Revela contenido bloqueado sin desbloquearlo. Solo lectura.</p>
+        <div class="bw-lab-grid" style="margin-bottom:.6rem">
+          <button class="bw-lab-action" data-act="prev-all" type="button">Mostrar todo</button>
+          <button class="bw-lab-action" data-act="prev-locked" type="button">Solo bloqueados</button>
+        </div>
+        <div class="bw-lab-gallery" id="bwLabGallery"></div>
+      </div>
+
+      <!-- DEMO -->
+      <div class="bw-lab-pane" data-pane="demo">
+        <h3>Presets para grabación</h3>
+        <p class="bw-lab-hint">Estados listos para TikTok / Instagram / capturas. Ideal en modo demo.</p>
+        <div class="bw-lab-grid">
+          <button class="bw-lab-action primary" data-act="preset-master" type="button">🏆 Maestro · todo desbloqueado</button>
+          <button class="bw-lab-action" data-act="preset-caps" type="button">🎁 Lluvia de cápsulas (1 por rareza)</button>
+          <button class="bw-lab-action" data-act="preset-shine" type="button">✨ Cosmos pleno (todas las regiones)</button>
+        </div>
+        <h3>Restaurar</h3>
+        <div class="bw-lab-grid">
+          <button class="bw-lab-action" data-act="restore" type="button">↩ Restaurar mi estado real</button>
+        </div>
+      </div>
+
+      <!-- RESET -->
+      <div class="bw-lab-pane" data-pane="reset">
+        <h3>Reseteo</h3>
+        <p class="bw-lab-hint">Volver a estado inicial. En modo persistente esto SÍ borra tu progreso de Biocosmos guardado.</p>
+        <div class="bw-lab-grid">
+          <button class="bw-lab-action danger" data-act="reset-world" type="button">♻ Resetear todo el Biocosmos</button>
+          <button class="bw-lab-action" data-act="restore" type="button">↩ Restaurar mi estado real (deshacer sesión)</button>
+        </div>
+        <h3>Quitar un descubrimiento específico</h3>
+        <div class="bw-lab-owned" id="bwLabOwned"></div>
+      </div>
+    </div>
+
+    <!-- Log de sesión -->
+    <div class="bw-lab-log">
+      <h4>Registro de sesión</h4>
+      <div class="bw-lab-logbox" id="bwLabLog"><div class="t">—</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Badge persistente: modo demo con cambios en pantalla -->
+<div class="bw-lab-demobadge" id="bwLabDemoBadge" role="status">
+  <span>🧪 Modo demo activo — los cambios no están guardados</span>
+  <button id="bwLabDemoRestore" type="button">Restaurar</button>
 </div>
 
 <!-- ═══ BIOCOSMOS F5: Modal de lista de expediciones ═══ -->
@@ -24687,11 +25110,25 @@ function scrollToContent(){
 
 // ──── API pública ────
 window.BW = {
-  state: _state, // sólo para inspección — preferir mutar via métodos
+  // Getter → siempre devuelve el _state vivo (loadFromProgress lo reasigna,
+  // así evitamos referencias obsoletas en F3/F4/F6 y en BW.lab).
+  get state(){ return _state },
   REGIONS, STAGES, ORG_COLORS,
   scene,
   hook,
   scrollToContent,
+  // ──── API interna aditiva para el panel admin BW.lab (no altera flujos) ────
+  // Opera SIEMPRE sobre el _state vivo (= S.world). No toca S.stats.xp ni el
+  // ranking: evolutionXp se mueve sólo aquí, desacoplado del XP real.
+  _lab: {
+    get state(){ return _state },
+    REGIONS, STAGES, ORG_COLORS,
+    recompute(){ try { recomputeExploredAll() } catch(_){} },
+    refreshUI(){ try { refreshTopOrganism() } catch(_){} },
+    render(){ try { if (_cosmosShown && scene.canvas) scene.renderOnce() } catch(_){} },
+    persist(){ try { return (typeof persistState === 'function') ? persistState() : null } catch(_){ return null } },
+    stageForXp(xp){ try { return currentStage(xp) } catch(_){ return STAGES[0] } }
+  },
   // Recargar estado desde S.world (útil tras loadProfile)
   syncFromProgress(){
     loadFromProgress()
@@ -28906,6 +29343,491 @@ else init()
 })()
 /* ════════════════════════════════════════════════════════════════════
    Fin Biocosmos FX
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   BIOCOSMOS LAB — Estación de Control (solo admins)
+   Toolkit de QA / demo / marketing. Opera SOLO sobre la cuenta del admin
+   que lo usa (su propio user_progress.data.world). No toca otros usuarios,
+   ni auth, ni pagos, ni RLS, ni el XP real del ranking.
+   · Modo demo (default): cambios en memoria, NO se persisten → cero riesgo.
+   · Modo persistente (opt-in): persistState() sobre la propia cuenta.
+   Aislado en su IIFE; todo en try/catch para no romper flujos.
+   ════════════════════════════════════════════════════════════════════ */
+;(function(){
+'use strict'
+if (!window.BW) return
+const BW = window.BW
+const REDUCED = (typeof matchMedia === 'function') && matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ────── Rarezas canónicas (6 niveles, aditivo a las 4 del catálogo) ────── */
+const RARITIES = [
+  { id:'común',      label:'Común',      color:'#9fb4a8' },
+  { id:'poco común', label:'Poco común', color:'#6dd99f' },
+  { id:'raro',       label:'Raro',       color:'#5fb6ff' },
+  { id:'épico',      label:'Épico',      color:'#b06ad6' },
+  { id:'legendario', label:'Legendario', color:'#ffd86b' },
+  { id:'mítico',     label:'Mítico',     color:'#ff7eb6' }
+]
+BW.RARITIES = RARITIES
+
+/* ────── Acceso a estado vivo, catálogo y helpers de F1 ────── */
+function L(){ return BW._lab || null }
+function st(){ const l = L(); return l ? l.state : (BW.state || {}) }
+function catalog(){ return BW.CATALOG || {} }
+function clone(o){ try { return JSON.parse(JSON.stringify(o)) } catch(_){ return o } }
+function rarityColor(id){ const r = RARITIES.find(x => x.id === id); return r ? r.color : '#9fb4a8' }
+
+/* ────── Detección de admin (reusa lo existente) ────── */
+function isAdmin(){
+  try { if (window.BWDirector && typeof BWDirector.detectAdmin === 'function') return BWDirector.detectAdmin() } catch(_){}
+  try {
+    const ab = document.getElementById('adminBtn')
+    if (ab){
+      if (ab.style && ab.style.display && ab.style.display !== 'none') return true
+      const cs = window.getComputedStyle(ab).display
+      if (cs && cs !== 'none' && ab.offsetParent !== null) return true
+    }
+    if (document.querySelector('.badge-admin')) return true
+    if (typeof S !== 'undefined' && S){
+      if (S.user && S.user.role === 'admin') return true
+      if (S.role === 'admin') return true
+      if (S.profile && S.profile.role === 'admin') return true
+    }
+  } catch(_){}
+  return false
+}
+
+/* ────── Log de sesión (chokepoint único — listo para enchufar BD luego) ────── */
+const _log = []
+function log(action, detail){
+  const e = { t:new Date(), action:action, detail:detail || '' }
+  _log.unshift(e)
+  if (_log.length > 200) _log.length = 200
+  try { console.info('[BW.lab]', action, detail || '') } catch(_){}
+  renderLog()
+}
+function renderLog(){
+  const box = document.getElementById('bwLabLog')
+  if (!box) return
+  if (!_log.length){ box.innerHTML = '<div class="t">—</div>'; return }
+  box.innerHTML = _log.slice(0, 60).map(e => {
+    const hh = e.t.toLocaleTimeString()
+    return `<div><span class="t">${hh}</span>${esc(e.action)}${e.detail ? ' · ' + esc(String(e.detail)) : ''}</div>`
+  }).join('')
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
+function toast(msg){ try { if (typeof BW.toast === 'function') BW.toast(msg); else if (typeof window.toast === 'function') window.toast(msg) } catch(_){} }
+
+/* ────── Modo demo / persistente + snapshot ────── */
+let _persist = false
+let _dirty = false
+let _snap = null
+
+function snapshot(){
+  const s = st()
+  _snap = clone({
+    organism: s.organism, regions: s.regions, discoveries: s.discoveries,
+    capsulesPending: s.capsulesPending, expeditions: s.expeditions
+  })
+}
+function refreshAll(recompute){
+  const l = L(); if (!l) return
+  try { if (recompute) l.recompute() } catch(_){}
+  try { l.refreshUI() } catch(_){}
+  try { l.render() } catch(_){}
+}
+function persistNow(){ const l = L(); try { if (l && l.persist) l.persist() } catch(_){} }
+
+// Aplica tras una mutación de estado
+function commit(recompute){
+  _dirty = true
+  refreshAll(recompute !== false)
+  refreshCapsBtn()
+  if (_persist) persistNow()
+}
+
+/* ────── Mutaciones (todas sobre el estado vivo) ────── */
+function unlock(filterFn, labelTxt){
+  const cat = catalog(), s = st()
+  s.discoveries = s.discoveries || []
+  const owned = new Set(s.discoveries.map(d => d.id))
+  let n = 0
+  Object.keys(cat).forEach(id => {
+    const it = cat[id]
+    if (!filterFn(it, id) || owned.has(id)) return
+    s.discoveries.push({ id:id, region:it.region, type:it.type, rarity:it.rarity, discoveredAt:new Date().toISOString(), source:'lab' })
+    owned.add(id); n++
+  })
+  commit(true)
+  log('Desbloquear ' + labelTxt, n + ' nuevos')
+  toast(n ? (n + ' desbloqueados — ' + labelTxt) : ('Ya tenías todos — ' + labelTxt))
+  renderRarityMatrix(); renderOwned()
+}
+function grantCapsule(rarity){
+  const cat = catalog(), s = st()
+  const ids = Object.keys(cat).filter(id => cat[id].rarity === rarity)
+  if (!ids.length){ toast('Sin ítems "' + rarity + '" en el catálogo'); log('Cápsula ' + rarity, 'sin ítems'); return }
+  const id = ids[Math.floor(Math.random() * ids.length)]
+  s.capsulesPending = s.capsulesPending || []
+  s.capsulesPending.push({ id:'cap-lab-' + Date.now().toString(36) + Math.random().toString(36).slice(2,5), catalogId:id, rarity:rarity, source:'lab', createdAt:new Date().toISOString() })
+  commit(false)
+  log('Generar cápsula ' + rarity, cat[id].name)
+  toast('Cápsula ' + rarity + ' añadida')
+}
+function setStage(stageId){
+  const s = st(), stages = (L() && L().STAGES) || []
+  const stg = stages.find(x => x.id === stageId); if (!stg) return
+  s.organism = s.organism || {}
+  s.organism.stage = stg.id
+  s.organism.evolutionXp = stg.min
+  commit(false)
+  log('Etapa → ' + stg.name)
+  renderStageBtns(); syncXpInput()
+}
+function setEvolutionXp(v){
+  const s = st(), stages = (L() && L().STAGES) || []
+  s.organism = s.organism || {}
+  s.organism.evolutionXp = Math.max(0, Math.floor(v) || 0)
+  let cur = stages[0]
+  stages.forEach(x => { if (s.organism.evolutionXp >= x.min) cur = x })
+  if (cur) s.organism.stage = cur.id
+  commit(false)
+  log('XP evolución = ' + s.organism.evolutionXp)
+  renderStageBtns()
+}
+function setExplored(regionId, v){
+  const s = st()
+  if (s.regions && s.regions[regionId]) s.regions[regionId].explored = Math.max(0, Math.min(1, v))
+  commit(false) // sin recompute para que el valor manual no se sobrescriba
+  log('Exploración ' + regionId + ' = ' + Number(v).toFixed(2))
+}
+function setExploredAll(v){
+  const s = st(), regs = (L() && L().REGIONS) || []
+  regs.forEach(r => { if (s.regions && s.regions[r.id]) s.regions[r.id].explored = v })
+  commit(false)
+  log('Exploración global = ' + v)
+  renderRegionSliders()
+}
+function removeDiscovery(id){
+  const s = st()
+  s.discoveries = (s.discoveries || []).filter(d => d.id !== id)
+  commit(true)
+  log('Quitar descubrimiento', id)
+  renderOwned(); renderRarityMatrix()
+}
+function resetWorld(){
+  if (_persist && !confirm('⚠ Modo PERSISTENTE: esto BORRA tu progreso de Biocosmos guardado. ¿Continuar?')) return
+  const s = st(), regs = (L() && L().REGIONS) || []
+  s.organism = { stage:'microbio', evolutionXp:0, color:(s.organism && s.organism.color) || 'green', traits:[] }
+  const r = {}; regs.forEach(x => { r[x.id] = { explored:0, lastVisit:null } }); s.regions = r
+  s.discoveries = []
+  s.capsulesPending = []
+  s.expeditions = { active:null, currentNode:0, nodeProgress:{}, completed:[] }
+  commit(false)
+  log('Reset Biocosmos completo')
+  toast('Biocosmos reseteado')
+  renderRarityMatrix(); renderOwned(); renderStageBtns(); renderRegionSliders(); syncXpInput()
+}
+function restore(){
+  if (!_snap){ toast('Sin snapshot que restaurar'); return }
+  const s = st()
+  s.organism = clone(_snap.organism)
+  s.regions = clone(_snap.regions)
+  s.discoveries = clone(_snap.discoveries)
+  s.capsulesPending = clone(_snap.capsulesPending)
+  s.expeditions = clone(_snap.expeditions)
+  _dirty = false
+  refreshAll(true); refreshCapsBtn()
+  if (_persist) persistNow()
+  hideDemoBadge()
+  log('Restaurar estado real')
+  toast('Estado real restaurado')
+  renderRarityMatrix(); renderOwned(); renderStageBtns(); renderRegionSliders(); syncXpInput()
+}
+
+/* ────── Presets de demo ────── */
+function presetMaster(){
+  unlock(() => true, 'todo (preset)')
+  setStage('maestro')
+  setExploredAll(1)
+  log('Preset: Maestro')
+  toast('Preset Maestro listo para grabar')
+}
+function presetCaps(){
+  RARITIES.forEach(r => grantCapsule(r.id))
+  log('Preset: lluvia de cápsulas')
+}
+function presetShine(){
+  setExploredAll(1)
+  log('Preset: cosmos pleno')
+  toast('Todas las regiones encendidas')
+}
+
+/* ────── Cápsulas: refrescar botón flotante existente ────── */
+function refreshCapsBtn(){
+  try {
+    const s = st(), n = (s.capsulesPending || []).length
+    const btn = document.getElementById('bwCapsBtn')
+    if (btn){ if (n > 0) btn.classList.add('show'); else btn.classList.remove('show') }
+    const c = document.getElementById('bwCapsBtnCount'); if (c) c.textContent = String(n)
+    const t = document.getElementById('bwTopCapBadge'); if (t){ if (n>0){ t.style.display='inline-flex'; t.textContent=String(n) } else t.style.display='none' }
+  } catch(_){}
+}
+
+/* ────── Construcción dinámica de paneles ────── */
+function catalogTypes(){
+  const cat = catalog(), set = {}
+  Object.keys(cat).forEach(id => { const t = cat[id].type || '—'; set[t] = (set[t] || 0) + 1 })
+  return set
+}
+function renderTypeButtons(){
+  const wrap = document.getElementById('bwLabTypeBtns'); if (!wrap) return
+  const types = catalogTypes()
+  wrap.innerHTML = Object.keys(types).sort().map(t =>
+    `<button class="bw-lab-action" data-act="unlock-type" data-arg="${esc(t)}" type="button">${esc(t)} <small>(${types[t]})</small></button>`
+  ).join('') || '<span class="bw-lab-hint">Catálogo vacío.</span>'
+}
+function renderRegionButtons(){
+  const wrap = document.getElementById('bwLabRegionBtns'); if (!wrap) return
+  const regs = (L() && L().REGIONS) || []
+  wrap.innerHTML = regs.map(r =>
+    `<button class="bw-lab-action" data-act="unlock-region" data-arg="${esc(r.id)}" type="button">${r.emoji || ''} ${esc(r.name)}</button>`
+  ).join('')
+}
+function renderRarityMatrix(){
+  const wrap = document.getElementById('bwLabRarityMatrix'); if (!wrap) return
+  const cat = catalog(), s = st()
+  const owned = new Set((s.discoveries || []).map(d => d.id))
+  wrap.innerHTML = RARITIES.map(r => {
+    const ids = Object.keys(cat).filter(id => cat[id].rarity === r.id)
+    const have = ids.filter(id => owned.has(id)).length
+    const total = ids.length
+    const pct = total ? Math.round(have / total * 100) : 0
+    const dim = total ? '' : ' style="opacity:.5"'
+    return `<div class="bw-lab-mrow"${dim}>
+      <span class="bw-lab-chip" style="color:${r.color}"></span>
+      <span class="bw-lab-mname">${r.label}</span>
+      <span class="bw-lab-mbar" style="color:${r.color}"><i style="width:${pct}%"></i></span>
+      <span class="bw-lab-mcount">${have}/${total}</span>
+      <span class="bw-lab-mbtns">
+        <button class="bw-lab-mini" data-act="unlock-rarity" data-arg="${esc(r.id)}" type="button" ${total?'':'disabled'}>Desbloquear</button>
+        <button class="bw-lab-mini" data-act="grant-rarity" data-arg="${esc(r.id)}" type="button" ${total?'':'disabled'}>Cápsula</button>
+      </span>
+    </div>`
+  }).join('')
+}
+function renderStageBtns(){
+  const wrap = document.getElementById('bwLabStageBtns'); if (!wrap) return
+  const stages = (L() && L().STAGES) || []
+  const cur = (st().organism && st().organism.stage) || 'microbio'
+  wrap.innerHTML = stages.map(s =>
+    `<button class="bw-lab-stage${s.id === cur ? ' active' : ''}" data-act="set-stage" data-arg="${esc(s.id)}" type="button">${s.emoji || ''} ${esc(s.name)}</button>`
+  ).join('')
+}
+function syncXpInput(){
+  const inp = document.getElementById('bwLabXp'); if (!inp) return
+  inp.value = String((st().organism && st().organism.evolutionXp) || 0)
+}
+function renderRegionSliders(){
+  const wrap = document.getElementById('bwLabRegionSliders'); if (!wrap) return
+  const regs = (L() && L().REGIONS) || [], s = st()
+  wrap.innerHTML = regs.map(r => {
+    const v = (s.regions && s.regions[r.id]) ? (s.regions[r.id].explored || 0) : 0
+    return `<div class="bw-lab-region">
+      <span class="bw-lab-rname">${r.emoji || ''} ${esc(r.name)}</span>
+      <input type="range" min="0" max="1" step="0.05" value="${v}" data-region="${esc(r.id)}">
+      <span class="bw-lab-rval" data-rval="${esc(r.id)}">${Math.round(v*100)}%</span>
+    </div>`
+  }).join('')
+  wrap.querySelectorAll('input[type=range]').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const rid = inp.getAttribute('data-region')
+      const val = parseFloat(inp.value)
+      const lbl = wrap.querySelector('[data-rval="' + rid + '"]'); if (lbl) lbl.textContent = Math.round(val*100) + '%'
+      setExplored(rid, val)
+    })
+  })
+}
+let _prevMode = 'all'
+function renderGallery(mode){
+  _prevMode = mode || _prevMode
+  const wrap = document.getElementById('bwLabGallery'); if (!wrap) return
+  const cat = catalog(), s = st()
+  const owned = new Set((s.discoveries || []).map(d => d.id))
+  let ids = Object.keys(cat)
+  if (_prevMode === 'locked') ids = ids.filter(id => !owned.has(id))
+  if (!ids.length){ wrap.innerHTML = '<span class="bw-lab-hint">Nada para mostrar.</span>'; return }
+  wrap.innerHTML = ids.map(id => {
+    const it = cat[id], isOwned = owned.has(id)
+    return `<div class="bw-lab-card${isOwned ? '' : ' locked'}">
+      <span class="bw-lab-clock">${isOwned ? '✓' : '🔒'}</span>
+      <span class="bw-lab-cname" style="color:${rarityColor(it.rarity)}">${esc(it.name)}</span>
+      <span class="bw-lab-ctag">${esc(it.type)} · ${esc(it.rarity)} · ${esc(it.region)}</span>
+      <span class="bw-lab-cctx">${esc(it.context || '')}</span>
+    </div>`
+  }).join('')
+}
+function renderOwned(){
+  const wrap = document.getElementById('bwLabOwned'); if (!wrap) return
+  const cat = catalog(), list = (st().discoveries || [])
+  if (!list.length){ wrap.innerHTML = '<span class="bw-lab-hint">Sin descubrimientos.</span>'; return }
+  wrap.innerHTML = list.map(d => {
+    const it = cat[d.id]
+    return `<span><span style="color:${rarityColor((it&&it.rarity)||d.rarity)}">${esc((it && it.name) || d.id)}</span><button data-act="remove-disc" data-arg="${esc(d.id)}" type="button" aria-label="Quitar">✕</button></span>`
+  }).join('')
+}
+
+/* ────── Modo: banner + toggle ────── */
+function syncModeUI(){
+  const bar = document.getElementById('bwLabMode')
+  const txt = document.getElementById('bwLabModeTxt')
+  const chk = document.getElementById('bwLabPersist')
+  if (bar){ bar.classList.toggle('demo', !_persist); bar.classList.toggle('persist', _persist) }
+  if (txt) txt.textContent = _persist ? 'Modo persistente — se guarda en TU cuenta' : 'Modo demo — los cambios NO se guardan'
+  if (chk) chk.checked = _persist
+}
+function setPersist(on){
+  if (on){
+    if (!confirm('Modo PERSISTENTE: los cambios se guardarán en TU cuenta (no afecta a otros usuarios). ¿Continuar?')){
+      const chk = document.getElementById('bwLabPersist'); if (chk) chk.checked = false
+      return
+    }
+    _persist = true
+    syncModeUI()
+    persistNow()
+    hideDemoBadge()
+    log('Modo persistente ON', 'estado guardado en cuenta')
+    toast('Modo persistente: cambios guardados')
+  } else {
+    _persist = false
+    syncModeUI()
+    log('Modo demo ON', 'los cambios no se guardan')
+  }
+}
+
+/* ────── Badge de demo (cuando se cierra el panel con cambios sin guardar) ────── */
+function showDemoBadge(){ const b = document.getElementById('bwLabDemoBadge'); if (b) b.classList.add('show') }
+function hideDemoBadge(){ const b = document.getElementById('bwLabDemoBadge'); if (b) b.classList.remove('show') }
+
+/* ────── Tabs ────── */
+function activateTab(pane){
+  document.querySelectorAll('#bwLabModal .bw-lab-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-pane') === pane))
+  document.querySelectorAll('#bwLabModal .bw-lab-pane').forEach(p => p.classList.toggle('active', p.getAttribute('data-pane') === pane))
+  if (pane === 'preview') renderGallery()
+  if (pane === 'rarity') renderRarityMatrix()
+  if (pane === 'reset') renderOwned()
+  if (pane === 'progress'){ renderStageBtns(); renderRegionSliders(); syncXpInput() }
+}
+
+/* ────── Abrir / cerrar ────── */
+function openLab(){
+  if (!isAdmin()){ toast('Solo administradores'); return }
+  const modal = document.getElementById('bwLabModal'); if (!modal) return
+  snapshot()
+  // Reconstruir todo el contenido dinámico
+  renderTypeButtons(); renderRegionButtons(); renderRarityMatrix()
+  renderStageBtns(); renderRegionSliders(); syncXpInput()
+  renderGallery('all'); renderOwned(); renderLog()
+  syncModeUI()
+  activateTab('unlock')
+  modal.classList.add('show'); modal.setAttribute('aria-hidden', 'false')
+  hideDemoBadge()
+}
+function closeLab(){
+  const modal = document.getElementById('bwLabModal'); if (!modal) return
+  modal.classList.remove('show'); modal.setAttribute('aria-hidden', 'true')
+  // Si quedaron cambios de demo en pantalla, recordatorio flotante
+  if (!_persist && _dirty) showDemoBadge()
+}
+
+/* ────── Visibilidad del botón según admin ────── */
+function refreshLabButton(){
+  const btn = document.getElementById('bwLabBtn'); if (!btn) return
+  if (isAdmin()) btn.classList.add('show'); else btn.classList.remove('show')
+}
+
+/* ────── Delegación de eventos de acciones ────── */
+function onAction(act, arg){
+  switch(act){
+    case 'unlock-all':    unlock(() => true, 'todo'); break
+    case 'unlock-type':   unlock(it => it.type === arg, 'tipo ' + arg); break
+    case 'unlock-region': unlock(it => it.region === arg, arg); break
+    case 'unlock-rarity': unlock(it => it.rarity === arg, arg); break
+    case 'grant-rarity':  grantCapsule(arg); break
+    case 'set-stage':     setStage(arg); break
+    case 'set-xp':        { const inp = document.getElementById('bwLabXp'); setEvolutionXp(inp ? parseInt(inp.value, 10) : 0); break }
+    case 'explore-all':   setExploredAll(1); break
+    case 'explore-none':  setExploredAll(0); break
+    case 'prev-all':      renderGallery('all'); break
+    case 'prev-locked':   renderGallery('locked'); break
+    case 'preset-master': presetMaster(); break
+    case 'preset-caps':   presetCaps(); break
+    case 'preset-shine':  presetShine(); break
+    case 'restore':       restore(); break
+    case 'reset-world':   resetWorld(); break
+    case 'remove-disc':   removeDiscovery(arg); break
+  }
+}
+
+/* ────── Init ────── */
+function init(){
+  try {
+    const btn = document.getElementById('bwLabBtn')
+    if (btn) btn.addEventListener('click', openLab)
+    const closeBtn = document.getElementById('bwLabClose')
+    if (closeBtn) closeBtn.addEventListener('click', closeLab)
+    const modal = document.getElementById('bwLabModal')
+    if (modal){
+      modal.addEventListener('click', e => { if (e.target === modal) closeLab() })
+      // Tabs
+      modal.querySelectorAll('.bw-lab-tab').forEach(t =>
+        t.addEventListener('click', () => activateTab(t.getAttribute('data-pane'))))
+      // Acciones (delegación)
+      modal.addEventListener('click', e => {
+        const el = e.target.closest('[data-act]'); if (!el) return
+        onAction(el.getAttribute('data-act'), el.getAttribute('data-arg'))
+      })
+    }
+    const chk = document.getElementById('bwLabPersist')
+    if (chk) chk.addEventListener('change', () => setPersist(chk.checked))
+    const dre = document.getElementById('bwLabDemoRestore')
+    if (dre) dre.addEventListener('click', restore)
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape'){
+        const m = document.getElementById('bwLabModal')
+        if (m && m.classList.contains('show')) closeLab()
+      }
+    })
+    // Visibilidad del botón (admin puede hidratarse tarde)
+    refreshLabButton()
+    let ticks = 0
+    const tmr = setInterval(() => { refreshLabButton(); if (++ticks > 25) clearInterval(tmr) }, 1500)
+    const ab = document.getElementById('adminBtn')
+    if (ab) new MutationObserver(refreshLabButton).observe(ab, { attributes:true, attributeFilter:['style','class'] })
+    const tb = document.querySelector('.topbar')
+    if (tb) new MutationObserver(refreshLabButton).observe(tb, { childList:true, subtree:true, attributes:true, attributeFilter:['style','class'] })
+  } catch(e){ console.warn('[BW.lab] init error:', e) }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init)
+else init()
+
+/* ────── API pública ────── */
+BW.lab = {
+  open: openLab,
+  close: closeLab,
+  isAdmin: isAdmin,
+  setPersist: setPersist,
+  restore: restore,
+  log: log,
+  RARITIES: RARITIES,
+  // diagnóstico
+  debug(){ const info = { admin:isAdmin(), persist:_persist, dirty:_dirty, hasSnapshot:!!_snap, discoveries:(st().discoveries||[]).length, capsules:(st().capsulesPending||[]).length }; try{console.table(info)}catch(_){}; return info }
+}
+
+})()
+/* ════════════════════════════════════════════════════════════════════
+   Fin Biocosmos LAB
    ════════════════════════════════════════════════════════════════════ */
 </script>
 <!-- Botón flotante: modo enfoque -->
