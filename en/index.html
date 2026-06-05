@@ -4361,7 +4361,7 @@ window.Analytics = (function(){
     <div class="container lp-hero-inner">
       <span class="lp-eyebrow">🧬 Gamified platform for university General Biology</span>
       <h1>Pass your General Biology exam. <span class="hl">With diagnostics, a daily plan and gamified practice.</span></h1>
-      <p class="lp-sub">In a 15-minute diagnostic you'll know exactly which topic you're weak in, what to study today and how far you are from being ready for the exam. Earn XP, level up and master every topic while you study.</p>
+      <p class="lp-sub">With a 5–7 minute diagnostic you'll know exactly which topic you're weak in, what to study today and how far you are from being ready for the exam. Earn XP, level up and master every topic while you study.</p>
       <div class="lp-cta-row">
         <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Start free →</button>
         <button class="lp-btn-secondary" onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">See the plans</button>
@@ -4436,8 +4436,8 @@ window.Analytics = (function(){
       <div class="lp-features">
         <div class="lp-feat">
           <div class="lp-feat-icon">🎯</div>
-          <h3>Smart diagnostic <span class="pro-badge" style="margin-left:.4rem">Pro</span></h3>
-          <p>15 mixed questions in 5–7 minutes. At the end you get a real map of strengths and weaknesses, with automatic recommendations on what to prioritize.</p>
+          <h3>Smart diagnostic <span class="pro-badge" style="margin-left:.4rem;background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Free</span></h3>
+          <p>15 mixed questions in 5–7 minutes. At the end you get a real map of strengths and weaknesses, with automatic recommendations on what to prioritize. <strong>It's free, no card required</strong> — start here.</p>
         </div>
         <div class="lp-feat">
           <div class="lp-feat-icon">📋</div>
@@ -5760,7 +5760,7 @@ window.Analytics = (function(){
       </div>
       <div class="nav-sec-lbl">📍 Study plan</div>
       <a href="#hoy">📅 What to study today <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
-      <a href="#diagnostico">🎯 Diagnostic <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
+      <a href="#diagnostico">🎯 Diagnostic <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem;background:#2f8b4d;color:#fff;border-color:#2f8b4d">Free</span></a>
       <a href="#plan-estudio">📋 My plan <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
       <a href="#prediccion">🔮 Prediction <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
       <a href="#errlog">📛 Common mistakes <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
@@ -5861,7 +5861,7 @@ window.Analytics = (function(){
     <section class="section" id="diagnostico">
       <div class="section-head">
         <div>
-          <h2>🎯 Smart diagnostic <span class="pro-badge">Pro</span></h2>
+          <h2>🎯 Smart diagnostic <span class="pro-badge" style="background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Free</span></h2>
           <p class="module-desc">15 mixed questions. At the end you know exactly which subtopics you're good at, which need review and which require studying from scratch.</p>
         </div>
       </div>
@@ -5893,6 +5893,7 @@ window.Analytics = (function(){
             <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
           </div>
           <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Retake</button>
+          <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Share my result</button>
           <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Build my study plan →</button>
         </div>
       </div>
@@ -16181,8 +16182,9 @@ function applyPremiumGating(){
   const diagStartBtn = document.getElementById('diagStartBtn')
   const diagLockBtn = document.getElementById('diagLockBtn')
   if (diagStartBtn && diagLockBtn){
-    diagStartBtn.style.display = pro ? '' : 'none'
-    diagLockBtn.style.display = pro ? 'none' : ''
+    // [GROWTH] Free diagnostic for everyone: start button always visible, lock never.
+    diagStartBtn.style.display = ''
+    diagLockBtn.style.display = 'none'
   }
   // 4. Hoy: panel locked vs activo
   const hoyL = document.getElementById('hoyCardLocked')
@@ -16420,11 +16422,30 @@ function checkSimulacroAccess(){
 
 // ═══ DIAGNÓSTICO INICIAL — multi-parcial ═══
 let _diagState = null
+// [GROWTH] Viral loop: after finishing the diagnostic, the student can share
+// their result. Every completed diagnostic becomes an acquisition channel.
+window.shareDiagResult = function(){
+  const url = 'https://biomaster.app/en'
+  const text = "I just took the free BioMaster diagnostic and now I know exactly which Biology topics I need to work on 🧬 Try yours (5 min, free):"
+  try {
+    if (navigator.share){
+      navigator.share({ title: 'BioMaster', text, url }).catch(()=>{})
+    } else if (navigator.clipboard){
+      navigator.clipboard.writeText(text + ' ' + url)
+        .then(()=> toast('🔗 Link copied — paste it in your study group chat', false))
+        .catch(()=> toast('Copy and share: ' + url, false))
+    } else {
+      toast('Share: ' + url, false)
+    }
+  } catch(_){ toast('Share: ' + url, false) }
+}
 function diagStart(){
-  if (!isPro()){
-    window.showPaywall('diagnostico')
-    return
-  }
+  // [GROWTH] Diagnostic UNLOCKED for Free: it's the product's "aha" moment.
+  // Free users experience the real value (their strengths/weaknesses map), which
+  // drives conversion and word-of-mouth. The full plan, "What to study today",
+  // pass prediction and common mistakes REMAIN Pro (their gates were untouched —
+  // the upsell happens right after the diagnostic).
+  // To revert: restore  if (!isPro()){ window.showPaywall('diagnostico'); return }
   // ═══ Diagnóstico independiente por parcial ═══
   // P2 usa E23Q (genética/evolución/origen). P1 usa E1Q. P3 usa una
   // muestra balanceada de EXAM_P3_BANK por sus 4 áreas grandes.
