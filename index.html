@@ -4477,7 +4477,7 @@ window.Analytics = (function(){
     <div class="container lp-hero-inner">
       <span class="lp-eyebrow">🧬 Plataforma gamificada de Biología General universitaria</span>
       <h1>Aprobá tu parcial de Biología General. <span class="hl">Con diagnóstico, plan diario y práctica gamificada.</span></h1>
-      <p class="lp-sub">En 15 minutos de diagnóstico sabés exactamente en qué tema estás débil, qué estudiar hoy y cuánto te falta para llegar preparado al examen. Ganás XP, subís de nivel y dominás cada tema mientras estudiás.</p>
+      <p class="lp-sub">Con un diagnóstico de 5–7 minutos sabés exactamente en qué tema estás débil, qué estudiar hoy y cuánto te falta para llegar preparado al examen. Ganás XP, subís de nivel y dominás cada tema mientras estudiás.</p>
       <div class="lp-cta-row">
         <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Empezar gratis →</button>
         <button class="lp-btn-secondary" onclick="document.getElementById('lp-precio').scrollIntoView({behavior:'smooth'})">Ver los planes</button>
@@ -4552,8 +4552,8 @@ window.Analytics = (function(){
       <div class="lp-features">
         <div class="lp-feat">
           <div class="lp-feat-icon">🎯</div>
-          <h3>Diagnóstico inteligente <span class="pro-badge" style="margin-left:.4rem">Pro</span></h3>
-          <p>15 preguntas mezcladas en 5–7 minutos. Al final tenés un mapa real de fortalezas y debilidades, con recomendaciones automáticas de qué priorizar.</p>
+          <h3>Diagnóstico inteligente <span class="pro-badge" style="margin-left:.4rem;background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Gratis</span></h3>
+          <p>15 preguntas mezcladas en 5–7 minutos. Al final tenés un mapa real de fortalezas y debilidades, con recomendaciones automáticas de qué priorizar. <strong>Es gratis, sin tarjeta</strong> — empezá por acá.</p>
         </div>
         <div class="lp-feat">
           <div class="lp-feat-icon">📋</div>
@@ -5874,7 +5874,7 @@ window.Analytics = (function(){
       </div>
       <div class="nav-sec-lbl">📍 Plan de estudio</div>
       <a href="#hoy">📅 Qué estudiar hoy <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
-      <a href="#diagnostico">🎯 Diagnóstico <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
+      <a href="#diagnostico">🎯 Diagnóstico <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem;background:#2f8b4d;color:#fff;border-color:#2f8b4d">Gratis</span></a>
       <a href="#plan-estudio">📋 Mi plan <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
       <a href="#prediccion">🔮 Predicción <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
       <a href="#errlog">📛 Errores frecuentes <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
@@ -5975,7 +5975,7 @@ window.Analytics = (function(){
     <section class="section" id="diagnostico">
       <div class="section-head">
         <div>
-          <h2>🎯 Diagnóstico inteligente <span class="pro-badge">Pro</span></h2>
+          <h2>🎯 Diagnóstico inteligente <span class="pro-badge" style="background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Gratis</span></h2>
           <p class="module-desc">15 preguntas mezcladas. Al final sabés exactamente en qué subtemas estás bien, cuáles necesitan repaso y cuáles requieren estudiar desde cero.</p>
         </div>
       </div>
@@ -6007,6 +6007,7 @@ window.Analytics = (function(){
             <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
           </div>
           <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Volver a hacer</button>
+          <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Compartir mi resultado</button>
           <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Construir mi plan de estudio →</button>
         </div>
       </div>
@@ -17183,8 +17184,9 @@ function applyPremiumGating(){
   const diagStartBtn = document.getElementById('diagStartBtn')
   const diagLockBtn = document.getElementById('diagLockBtn')
   if (diagStartBtn && diagLockBtn){
-    diagStartBtn.style.display = pro ? '' : 'none'
-    diagLockBtn.style.display = pro ? 'none' : ''
+    // [GROWTH] Diagnóstico libre para todos: botón de empezar siempre visible, candado nunca.
+    diagStartBtn.style.display = ''
+    diagLockBtn.style.display = 'none'
   }
   // 4. Hoy: panel locked vs activo
   const hoyL = document.getElementById('hoyCardLocked')
@@ -17422,11 +17424,30 @@ function checkSimulacroAccess(){
 
 // ═══ DIAGNÓSTICO INICIAL — multi-parcial ═══
 let _diagState = null
+// [GROWTH] Loop viral: al terminar el diagnóstico, el estudiante puede compartir
+// su resultado. Cada diagnóstico completado se vuelve un canal de captación.
+window.shareDiagResult = function(){
+  const url = 'https://biomaster.app/'
+  const text = 'Hice el diagnóstico gratis de BioMaster y ya sé exactamente qué temas de Biología tengo que reforzar 🧬 Probá el tuyo (5 min, gratis):'
+  try {
+    if (navigator.share){
+      navigator.share({ title: 'BioMaster', text, url }).catch(()=>{})
+    } else if (navigator.clipboard){
+      navigator.clipboard.writeText(text + ' ' + url)
+        .then(()=> toast('🔗 Enlace copiado — pegalo en tu grupo de WhatsApp', false))
+        .catch(()=> toast('Copiá y compartí: ' + url, false))
+    } else {
+      toast('Compartí: ' + url, false)
+    }
+  } catch(_){ toast('Compartí: ' + url, false) }
+}
 function diagStart(){
-  if (!isPro()){
-    window.showPaywall('diagnostico')
-    return
-  }
+  // [GROWTH] Diagnóstico LIBERADO para Free: es el momento "aha" del producto.
+  // El usuario gratis vive el valor real (su mapa de fortalezas/debilidades) y eso
+  // impulsa conversión y recomendación boca a boca. El plan completo, "Qué estudiar
+  // hoy", la predicción de aprobación y los errores frecuentes SIGUEN siendo Pro
+  // (sus gates no se tocaron — el upsell ocurre justo después del diagnóstico).
+  // Para revertir: restaurar  if (!isPro()){ window.showPaywall('diagnostico'); return }
   // ═══ Diagnóstico independiente por parcial ═══
   // P2 usa E23Q (genética/evolución/origen). P1 usa E1Q. P3 usa una
   // muestra balanceada de EXAM_P3_BANK por sus 4 áreas grandes.
