@@ -6006,6 +6006,13 @@ window.Analytics = (function(){
             <strong style="font-size:.88rem">📌 Recomendaciones automáticas</strong>
             <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
           </div>
+          <div class="diag-result" id="diagReviewWrap" style="display:none">
+            <details open>
+              <summary style="font-size:.88rem;font-weight:700;cursor:pointer">📖 Revisá lo que fallaste</summary>
+              <p class="muted" style="font-size:.78rem;margin:.3rem 0 .5rem">Repasar el error con la explicación correcta es donde más se aprende. Leé cada una antes de seguir.</p>
+              <div id="diagReview"></div>
+            </details>
+          </div>
           <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Volver a hacer</button>
           <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Compartir mi resultado</button>
           <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Construir mi plan de estudio →</button>
@@ -6156,6 +6163,7 @@ window.Analytics = (function(){
                   <li>La <strong>biología</strong> es la ciencia que estudia la vida en todos sus niveles: desde moléculas hasta ecosistemas.</li>
                   <li>Aporta a salud, agricultura, biotecnología, conservación y comprensión de fenómenos naturales.</li>
                   <li>Se basa en <em>evidencia empírica</em> y método científico, no en opiniones.</li>
+                  <li><strong>Temas unificadores de la biología:</strong> la enorme diversidad de la vida se entiende a través de pocos hilos conductores — sobre todo la <em>evolución</em> (el tema central que explica a la vez la <em>unidad</em> y la <em>diversidad</em> de los seres vivos), la relación <em>estructura-función</em>, el <em>flujo de información</em> genética, las <em>transformaciones de energía y materia</em>, y las <em>interacciones</em> en todos los niveles.</li>
                   <li><span class="mark-yellow">Clave:</span> distinguir <em>ciencia básica</em> (busca conocimiento) de <em>ciencia aplicada</em> (resuelve problemas concretos).</li>
                 </ul>
               </div>
@@ -6208,6 +6216,11 @@ window.Analytics = (function(){
                   <li><strong>Ley científica:</strong> describe regularidad observada; no explica por qué ocurre.</li>
                   <li><span class="mark-yellow">Cómo lo preguntan:</span> "Después de plantear hipótesis y predicción, ¿qué sigue?" → <em>el experimento</em>. "Diferencia entre teoría y ley" → la teoría explica, la ley describe.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: razonamiento inductivo vs deductivo y por qué la ciencia es confiable</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Razonamiento inductivo:</strong> de muchas observaciones particulares se llega a una generalización (ej.: "todos los organismos observados están hechos de células" → la teoría celular). <strong>Razonamiento deductivo:</strong> de una idea general se predice un caso particular (ej.: "si todas las células vienen de otras células, entonces este caldo estéril no generará vida" → predicción comprobable). <strong>Experimento controlado:</strong> compara un grupo experimental con un grupo control idéntico salvo en la variable independiente; las demás variables se mantienen constantes (variables controladas) para que el efecto observado se deba solo a la variable estudiada. <strong>Por qué la ciencia es confiable:</strong> no por la autoridad de quien la propone, sino porque los resultados deben ser <em>reproducibles</em> por otros y pasar por <em>revisión por pares</em>. Una hipótesis nunca se "prueba" como verdad absoluta: se acumula evidencia que la apoya o la refuta.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> Un científico observa 100 cisnes blancos y concluye "todos los cisnes son blancos". ¿Qué tipo de razonamiento usó y cuál es su límite? <em>Respuesta: inductivo (de casos particulares a una generalización); su límite es que una sola observación contraria (un cisne negro) puede refutar la conclusión.</em></div>
               </div>
 
             </div>
@@ -6274,68 +6287,130 @@ window.Analytics = (function(){
                 </ul>
               </div>
 
+              <div class="subitem" data-keywords="grupos funcionales hidroxilo carbonilo carboxilo amino fosfato sulfhidrilo metilo polaridad reactividad quimica organica"><strong>2.1.5 Grupos funcionales</strong>
+                <ul class="list">
+                  <li>Son grupos de átomos que dan <strong>propiedades químicas específicas</strong> a una molécula orgánica. La misma cadena de carbono se comporta distinto según qué grupos funcionales lleve.</li>
+                  <li><strong>Hidroxilo (—OH):</strong> polar. En alcoholes y azúcares; hace la molécula soluble en agua.</li>
+                  <li><strong>Carbonilo (C=O):</strong> en aldehídos (al final) y cetonas (en medio de la cadena).</li>
+                  <li><strong>Carboxilo (—COOH):</strong> ácido (libera H⁺). En ácidos grasos y aminoácidos.</li>
+                  <li><strong>Amino (—NH₂):</strong> básico (acepta H⁺). En aminoácidos.</li>
+                  <li><strong>Fosfato (—OPO₃²⁻):</strong> en ATP y ácidos nucleicos; clave en transferencia de energía.</li>
+                  <li><strong>Sulfhidrilo (—SH):</strong> en la cisteína; dos —SH forman puentes disulfuro que estabilizan proteínas.</li>
+                  <li><span class="mark-yellow">Clave:</span> la <em>polaridad</em>, la <em>acidez/basicidad</em> y la reactividad de una biomolécula dependen de sus grupos funcionales (ej.: un aminoácido tiene amino + carboxilo + su grupo R).</li>
+                </ul>
+              </div>
+
+              <div class="subitem" data-keywords="monomero polimero macromolecula sintesis deshidratacion condensacion hidrolisis enlace agua biomoleculas digestion"><strong>2.2.0 Monómeros y polímeros: cómo se construyen y se rompen</strong>
+                <ul class="list">
+                  <li><strong>Idea unificadora:</strong> tres de las cuatro biomoléculas (carbohidratos, proteínas, ácidos nucleicos) son <em>polímeros</em>: cadenas de unidades repetidas llamadas <em>monómeros</em>. Los lípidos <em>no</em> son polímeros verdaderos.</li>
+                  <li><strong>Síntesis por deshidratación (condensación):</strong> para UNIR dos monómeros, la célula <em>libera</em> una molécula de agua. Así se forman el enlace glucosídico (carbohidratos), el peptídico (proteínas) y el fosfodiéster (ácidos nucleicos).</li>
+                  <li><strong>Hidrólisis:</strong> para ROMPER un polímero se <em>añade</em> una molécula de agua por cada enlace (lo contrario de la deshidratación). Así funciona la digestión.</li>
+                  <li><span class="mark-green">Una sola lógica para todo:</span> sin importar la biomolécula, construir = quitar agua; romper = poner agua.</li>
+                  <li><span class="mark-red">Error:</span> creer que cada biomolécula se arma con un mecanismo distinto. El mecanismo (deshidratación/hidrólisis) es el mismo; cambian solo el monómero y el nombre del enlace.</li>
+                </ul>
+              </div>
+
               <div class="subitem" data-keywords="carbohidratos glucidos monosacarido disacarido polisacarido glucosa fructosa galactosa sacarosa lactosa maltosa almidon glucogeno celulosa quitina"><strong>2.2.1 Carbohidratos</strong>
                 <ul class="list">
-                  <li><strong>Función principal:</strong> energía rápida y estructura.</li>
-                  <li><strong>Monosacáridos:</strong> unidad básica. Glucosa, fructosa, galactosa, ribosa (en ARN), desoxirribosa (en ADN).</li>
-                  <li><strong>Disacáridos:</strong> dos monosacáridos unidos por enlace glucosídico. Sacarosa (glucosa+fructosa), lactosa (glucosa+galactosa), maltosa (glucosa+glucosa).</li>
-                  <li><strong>Polisacáridos:</strong>
+                  <li><strong>Funciones:</strong> energía inmediata (glucosa), reserva de energía (almidón, glucógeno), estructura (celulosa, quitina) y reconocimiento celular (glucoproteínas).</li>
+                  <li><strong>Monosacáridos (el monómero):</strong> azúcares simples. Se clasifican de dos formas:
                     <ul class="list">
-                      <li><em>Almidón:</em> reserva en plantas.</li>
-                      <li><em>Glucógeno:</em> reserva en animales (hígado y músculo).</li>
-                      <li><em>Celulosa:</em> estructura en pared celular vegetal. Humanos no la digerimos.</li>
-                      <li><em>Quitina:</em> exoesqueleto de artrópodos y pared celular de hongos.</li>
+                      <li><em>Por número de carbonos:</em> triosas (3C, ej. gliceraldehído), pentosas (5C: ribosa y desoxirribosa), hexosas (6C: glucosa, fructosa, galactosa).</li>
+                      <li><em>Por grupo funcional:</em> aldosas (tienen un grupo <em>aldehído</em>, ej. glucosa) y cetosas (tienen un grupo <em>cetona</em>, ej. fructosa).</li>
                     </ul>
                   </li>
-                  <li><span class="mark-yellow">Clave:</span> almidón = planta, glucógeno = animal, celulosa = pared vegetal, quitina = artrópodos/hongos.</li>
-                  <li><span class="mark-red">Error:</span> confundir glucógeno (reserva animal) con celulosa (estructura vegetal).</li>
+                  <li><strong>Isómeros:</strong> glucosa, fructosa y galactosa comparten la fórmula C₆H₁₂O₆ pero con átomos ordenados distinto → propiedades distintas. En agua, los monosacáridos adoptan forma de <em>anillo</em>.</li>
+                  <li><strong>Disacáridos:</strong> dos monosacáridos unidos por un <em>enlace glucosídico</em> (formado por deshidratación). Sacarosa (glucosa+fructosa, el azúcar de mesa), lactosa (glucosa+galactosa, el de la leche), maltosa (glucosa+glucosa).</li>
+                  <li><strong>Polisacáridos (polímeros):</strong>
+                    <ul class="list">
+                      <li><em>Almidón</em> (reserva vegetal): mezcla de <strong>amilosa</strong> (cadena lineal) y <strong>amilopectina</strong> (ramificada). Enlaces α(1→4).</li>
+                      <li><em>Glucógeno</em> (reserva animal, en hígado y músculo): muy ramificado → se moviliza rápido cuando hace falta energía.</li>
+                      <li><em>Celulosa</em> (estructura, pared vegetal): enlaces β(1→4) que forman fibras rígidas. El humano no la digiere → es "fibra".</li>
+                      <li><em>Quitina</em>: exoesqueleto de artrópodos y pared celular de hongos; como la celulosa pero con un grupo nitrogenado.</li>
+                    </ul>
+                  </li>
+                  <li><strong>Azúcares reductores:</strong> los que tienen el grupo carbonilo libre (glucosa, fructosa, maltosa, lactosa) dan positivo con el reactivo de Benedict/Fehling. La <em>sacarosa NO</em> es reductora (su carbonilo está comprometido en el enlace).</li>
+                  <li><span class="mark-yellow">Clave:</span> almidón = planta, glucógeno = animal, celulosa = pared vegetal, quitina = artrópodos/hongos. Regla de oro: enlaces <em>α = digeribles</em>, enlaces <em>β = no digeribles</em>.</li>
+                  <li><span class="mark-red">Error:</span> confundir glucógeno (reserva animal) con celulosa (estructura vegetal); o creer que la sacarosa es azúcar reductor.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: isómeros, anillos α/β y por qué no digerimos la celulosa</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Isómeros:</strong> glucosa, fructosa y galactosa comparten la misma fórmula (C₆H₁₂O₆) pero difieren en cómo se ordenan sus átomos → son <em>isómeros</em>. Por eso tienen distinto sabor y se metabolizan distinto aunque "pesen" lo mismo. <strong>Formas de anillo:</strong> en agua la glucosa se cierra en un anillo que puede quedar en dos versiones: <em>α-glucosa</em> (OH del carbono 1 hacia abajo) y <em>β-glucosa</em> (hacia arriba). <strong>Esa diferencia diminuta lo decide todo:</strong> el almidón y el glucógeno se arman con enlaces <em>α(1→4)</em>, que nuestra enzima amilasa rompe → son digeribles. La celulosa se arma con enlaces <em>β(1→4)</em>, que forman fibras rectas y rígidas que no tenemos enzima para cortar → no la digerimos (es "fibra"). Los rumiantes y las termitas sí la aprovechan, pero gracias a microorganismos simbiontes en su tubo digestivo, no a enzimas propias. <strong>Quitina:</strong> es como la celulosa pero con un grupo nitrogenado en cada unidad; da dureza al exoesqueleto de los insectos y a la pared de los hongos.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> ¿Por qué podés digerir el almidón de una papa pero no la celulosa de la lechuga, si ambos son polímeros de glucosa? <em>Respuesta: el almidón usa enlaces α(1→4) que tu amilasa corta; la celulosa usa enlaces β(1→4) para los que no tenés enzima.</em></div>
               </div>
 
               <div class="subitem" data-keywords="lipidos grasas trigliceridos saturados insaturados fosfolipidos esteroides colesterol ceras hidrofobico anfipatico"><strong>2.2.2 Lípidos</strong>
                 <ul class="list">
-                  <li><strong>Característica común:</strong> hidrofóbicos (no se disuelven en agua) por sus largas regiones apolares.</li>
-                  <li><strong>Triglicéridos (grasas y aceites):</strong> glicerol + 3 ácidos grasos. Función: reserva energética concentrada.</li>
-                  <li><strong>Saturados vs insaturados:</strong> saturados sin dobles enlaces (sólidos a temperatura ambiente, grasas animales). Insaturados con dobles enlaces (líquidos, aceites vegetales).</li>
-                  <li><strong>Fosfolípidos:</strong> glicerol + 2 ácidos grasos + grupo fosfato. <em>Anfipáticos</em>: cabeza hidrofílica, cola hidrofóbica. Forman bicapas → membranas celulares.</li>
-                  <li><strong>Esteroides:</strong> 4 anillos de carbono. Colesterol, hormonas sexuales (estrógeno, testosterona), cortisol.</li>
-                  <li><strong>Ceras:</strong> impermeabilizantes (cutícula vegetal, plumas).</li>
+                  <li><strong>Característica común:</strong> son hidrofóbicos (no se disuelven en agua) por sus largas regiones apolares de hidrocarburo. NO son polímeros verdaderos.</li>
+                  <li><strong>Triglicéridos (grasas y aceites):</strong> glicerol + 3 ácidos grasos unidos por <em>enlaces éster</em> (deshidratación). Son la principal reserva de energía concentrada.</li>
+                  <li><strong>Saturados vs insaturados:</strong> los saturados no tienen dobles enlaces (cadena recta, sólidos a temperatura ambiente, grasas animales); los insaturados tienen dobles enlaces C=C que doblan la cadena (líquidos, aceites vegetales).</li>
+                  <li><strong>Ácidos grasos esenciales (omega-3 y omega-6):</strong> el cuerpo no los fabrica → hay que obtenerlos de la dieta (pescado, semillas, nueces).</li>
+                  <li><strong>Fosfolípidos:</strong> glicerol + 2 ácidos grasos + grupo fosfato. <em>Anfipáticos</em>: cabeza hidrofílica + cola hidrofóbica. En agua forman bicapas → la base de toda membrana celular.</li>
+                  <li><strong>Esteroides:</strong> 4 anillos de carbono fusionados. El <em>colesterol</em> regula la fluidez de la membrana y es precursor de las hormonas esteroides (estrógeno, testosterona, cortisol) y de la vitamina D.</li>
+                  <li><strong>Ceras:</strong> muy hidrofóbicas; impermeabilizan (cutícula de las hojas, plumas de las aves, cera del oído).</li>
+                  <li><strong>Funciones de los lípidos:</strong> reserva energética (más del doble de energía por gramo que los carbohidratos), aislamiento térmico, protección de órganos, membranas, hormonas y vitaminas liposolubles (A, D, E, K).</li>
                   <li><span class="mark-yellow">Clave:</span> los fosfolípidos forman bicapas porque son <em>anfipáticos</em>.</li>
                   <li><span class="mark-red">Error:</span> "los lípidos son polímeros". <em>No son</em>: no se forman por monómeros repetidos como carbohidratos o proteínas.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: por qué la manteca es sólida y el aceite líquido</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>La forma manda:</strong> un ácido graso <em>saturado</em> no tiene dobles enlaces, así que su cadena es recta y muchas cadenas se apilan apretadas → sólido a temperatura ambiente (manteca, sebo). Un ácido graso <em>insaturado</em> tiene uno o más dobles enlaces C=C que producen un <em>codo</em> en la cadena; esos codos impiden el apilamiento apretado → líquido (aceites vegetales). <strong>Grasas trans:</strong> son insaturadas pero "enderezadas" industrialmente, por eso se comportan como saturadas y son dañinas para las arterias. <strong>Por qué guardan tanta energía:</strong> los triglicéridos almacenan más del doble de energía por gramo que los carbohidratos, porque sus carbonos están más "reducidos" (más enlaces C—H disponibles para oxidar). <strong>Por qué los fosfolípidos forman membranas:</strong> tienen una cabeza que "ama" el agua y dos colas que la "rechazan"; en agua se autoorganizan en una bicapa con las colas escondidas adentro — la base de toda membrana celular.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> ¿Por qué un fosfolípido forma una bicapa en agua pero un triglicérido no? <em>Respuesta: el fosfolípido es anfipático (cabeza hidrofílica + colas hidrofóbicas); el triglicérido es todo hidrofóbico, así que se agrupa en gotas, no en bicapas.</em></div>
               </div>
 
               <div class="subitem" data-keywords="proteinas aminoacidos enlace peptidico estructura primaria secundaria terciaria cuaternaria desnaturalizacion enzimas hormonas anticuerpos"><strong>2.2.3 Proteínas</strong>
                 <ul class="list">
-                  <li><strong>Monómero:</strong> aminoácido (20 distintos en seres vivos). Cada uno con grupo amino, grupo carboxilo y grupo R variable.</li>
-                  <li><strong>Enlace peptídico:</strong> une el grupo carboxilo de un aa con el amino del siguiente, liberando agua (síntesis por deshidratación).</li>
+                  <li><strong>Monómero — el aminoácido:</strong> un carbono central (α) unido a 4 grupos: amino (—NH₂), carboxilo (—COOH), un hidrógeno y un grupo <em>R</em> (cadena lateral) variable. Hay 20 aminoácidos estándar; lo único que cambia entre ellos es el grupo R.</li>
+                  <li><strong>Clasificación de aminoácidos según su grupo R:</strong>
+                    <ul class="list">
+                      <li><em>Apolares / hidrofóbicos</em> (alanina, valina, leucina): tienden a esconderse en el interior de la proteína, lejos del agua.</li>
+                      <li><em>Polares / hidrofílicos</em> (serina, treonina, cisteína): quedan en la superficie, en contacto con el agua.</li>
+                      <li><em>Ácidos / cargados negativamente</em> (aspartato, glutamato).</li>
+                      <li><em>Básicos / cargados positivamente</em> (lisina, arginina, histidina).</li>
+                      <li><em>Casos especiales:</em> glicina (R = solo un H, el más pequeño) y prolina (su R forma un anillo que "dobla" la cadena).</li>
+                    </ul>
+                  </li>
+                  <li><strong>Enlace peptídico:</strong> une el grupo carboxilo de un aminoácido con el amino del siguiente, liberando agua (síntesis por deshidratación). Una cadena de aminoácidos es un <em>polipéptido</em>.</li>
                   <li><strong>Estructura primaria:</strong> secuencia de aminoácidos.</li>
                   <li><strong>Estructura secundaria:</strong> hélice alfa o lámina beta, mantenida por puentes de hidrógeno entre carbonilos y aminos.</li>
                   <li><strong>Estructura terciaria:</strong> plegamiento 3D total de la cadena, mantenido por interacciones entre grupos R (puentes disulfuro, iónicos, hidrofóbicos, puentes de hidrógeno).</li>
                   <li><strong>Estructura cuaternaria:</strong> unión de varias cadenas polipeptídicas (ej: hemoglobina = 4 subunidades).</li>
-                  <li><strong>Desnaturalización:</strong> pérdida de estructura 3D por calor, pH extremo o agentes químicos. La proteína pierde función.</li>
-                  <li><strong>Funciones:</strong> enzimas (catálisis), estructural (queratina, colágeno), transporte (hemoglobina), defensa (anticuerpos), señalización (hormonas como insulina), motoras (actina, miosina).</li>
+                  <li><strong>Desnaturalización:</strong> pérdida de la estructura 3D por calor, pH extremo o agentes químicos. La proteína pierde función (a veces de forma irreversible, como la clara de huevo al cocinarse).</li>
+                  <li><strong>Chaperonas:</strong> proteínas que ayudan a otras a plegarse correctamente y evitan que se agreguen o plieguen mal.</li>
+                  <li><strong>Funciones (7 categorías):</strong> enzimática (catálisis), estructural (queratina, colágeno), transporte (hemoglobina, canales de membrana), defensa (anticuerpos), señalización (hormonas como la insulina), movimiento (actina, miosina) y reserva (caseína, ovoalbúmina).</li>
                   <li><span class="mark-yellow">Clave:</span> la <em>función</em> depende de la <em>forma</em>; la forma depende de la secuencia de aminoácidos.</li>
                   <li><span class="mark-red">Error:</span> "una proteína desnaturalizada solo cambia su secuencia". <em>No</em>: la secuencia (estructura primaria) no cambia; lo que se pierde es el plegamiento.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: de la secuencia a la función (y la anemia falciforme)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Los 4 niveles, paso a paso:</strong> ① <em>Primaria</em> = el orden exacto de aminoácidos (lo dicta el gen). ② <em>Secundaria</em> = la cadena se enrolla en hélice α o se pliega en lámina β por puentes de hidrógeno del esqueleto. ③ <em>Terciaria</em> = la forma 3D global, sostenida por interacciones entre grupos R (puentes disulfuro, iónicos, hidrofóbicos). ④ <em>Cuaternaria</em> = varias cadenas unidas (la hemoglobina son 4). <strong>Por qué importa:</strong> la función nace de la forma, y la forma nace de la secuencia. <strong>Ejemplo real (anemia falciforme):</strong> cambiar UN solo aminoácido (glutamato → valina) en la hemoglobina la vuelve pegajosa; los glóbulos rojos se deforman en hoz y se atascan en los capilares. Un cambio mínimo en la estructura primaria arruina toda la función. <strong>Desnaturalización:</strong> el calor o el pH extremo rompen las interacciones que sostienen la forma 3D (no la secuencia) y la proteína deja de funcionar — como la clara de huevo al cocinarse, que ya no vuelve atrás.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> Una proteína se calienta y pierde su función, pero su secuencia de aminoácidos sigue intacta. ¿Qué nivel(es) se perdió? <em>Respuesta: la secundaria, terciaria y cuaternaria (el plegamiento); la primaria no cambia con la desnaturalización.</em></div>
               </div>
 
               <div class="subitem" data-keywords="acidos nucleicos ADN ARN nucleotido base nitrogenada azucar fosfato adenina timina citosina guanina uracilo doble helice"><strong>2.2.4 Ácidos nucleicos</strong>
                 <ul class="list">
-                  <li><strong>Monómero:</strong> nucleótido = base nitrogenada + azúcar (pentosa) + grupo fosfato.</li>
-                  <li><strong>Bases:</strong>
+                  <li><strong>Monómero — el nucleótido:</strong> 3 partes: una base nitrogenada + un azúcar (pentosa) + uno o más grupos fosfato.</li>
+                  <li><strong>Enlace fosfodiéster:</strong> une el fosfato (carbono 5') de un nucleótido con el OH (carbono 3') del siguiente → forma el esqueleto azúcar-fosfato de la cadena.</li>
+                  <li><strong>Bases nitrogenadas:</strong>
                     <ul class="list">
                       <li><em>Purinas (2 anillos):</em> adenina (A), guanina (G).</li>
                       <li><em>Pirimidinas (1 anillo):</em> citosina (C), timina (T, solo en ADN), uracilo (U, solo en ARN).</li>
                     </ul>
                   </li>
-                  <li><strong>ADN:</strong> azúcar = desoxirribosa, doble cadena antiparalela en hélice, bases A-T y C-G por puentes de hidrógeno.</li>
-                  <li><strong>ARN:</strong> azúcar = ribosa, una sola cadena, bases A-U y C-G.</li>
-                  <li><strong>Función ADN:</strong> almacenar la información genética.</li>
-                  <li><strong>Función ARN:</strong> intermediario y ejecutor (ARNm transcribe, ARNt transporta aminoácidos, ARNr forma ribosoma).</li>
-                  <li><span class="mark-yellow">Clave:</span> emparejamiento de bases <em>A-T (ADN) o A-U (ARN), C-G siempre</em>.</li>
-                  <li><span class="mark-red">Error:</span> incluir T en ARN o U en ADN.</li>
+                  <li><strong>ADN:</strong> azúcar = desoxirribosa; doble cadena antiparalela enrollada en hélice; bases A-T y C-G unidas por puentes de hidrógeno. Almacena la información genética. <em>Regla de Chargaff:</em> %A = %T y %C = %G.</li>
+                  <li><strong>ARN:</strong> azúcar = ribosa; una sola cadena; bases A-U y C-G. Tipos: <em>ARNm</em> (lleva el mensaje del gen), <em>ARNt</em> (transporta aminoácidos), <em>ARNr</em> (forma el ribosoma).</li>
+                  <li><strong>No solo información:</strong> algunos nucleótidos funcionan como moneda de energía (ATP, GTP) o como transportadores de electrones (NAD⁺, FAD).</li>
+                  <li><span class="mark-yellow">Clave:</span> emparejamiento de bases <em>A-T (ADN) o A-U (ARN), C-G siempre</em>; purina siempre con pirimidina.</li>
+                  <li><span class="mark-red">Error:</span> incluir T en ARN o U en ADN; o decir que el ARN es de doble cadena como el ADN.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: antiparalelo, 5'→3' y por qué el ADN es más estable que el ARN</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Antiparalelo:</strong> las dos hebras del ADN corren en sentidos opuestos — una va 5'→3' y la otra 3'→5'. Los extremos se nombran por el carbono del azúcar que queda libre (5' con fosfato, 3' con OH). Importa porque las enzimas que copian el ADN solo trabajan en dirección 5'→3'. <strong>Emparejamiento complementario:</strong> A se une con T por <em>2</em> puentes de hidrógeno y C con G por <em>3</em>; por eso el ADN rico en C-G cuesta más separar (necesita más calor). <strong>Purina con pirimidina siempre:</strong> una base de 2 anillos (purina: A, G) se empareja con una de 1 anillo (pirimidina: T, C, U), manteniendo constante el ancho de la doble hélice. <strong>ADN vs ARN — estabilidad:</strong> la desoxirribosa del ADN <em>carece</em> de un oxígeno (en el carbono 2') que la ribosa del ARN sí tiene; ese oxígeno extra hace al ARN más reactivo y menos estable. Por eso la información a largo plazo se guarda en ADN (estable, doble cadena) y el ARN es un mensajero temporal.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> Una región de ADN es rica en pares C-G y otra en pares A-T. ¿Cuál cuesta más separar al calentar y por qué? <em>Respuesta: la rica en C-G, porque cada par C-G tiene 3 puentes de hidrógeno frente a los 2 del par A-T.</em></div>
               </div>
 
             </div>
@@ -6358,50 +6433,65 @@ window.Analytics = (function(){
 
               <div class="subitem" data-keywords="teoria celular schleiden schwann virchow celulas unidad estructural funcional reproduccion"><strong>3.1.1 Teoría celular</strong>
                 <ul class="list">
-                  <li>Todos los seres vivos están formados por <strong>una o más células</strong>.</li>
-                  <li>La célula es la <strong>unidad estructural y funcional</strong> de la vida.</li>
-                  <li>Toda célula proviene de <strong>otra célula preexistente</strong> (Virchow).</li>
-                  <li><span class="mark-yellow">Clave:</span> la teoría celular se construyó con aportes de Schleiden (plantas), Schwann (animales) y Virchow (origen).</li>
+                  <li><strong>Qué es:</strong> el marco que afirma que la célula es la base de toda la vida. Nació con el microscopio: Hooke (1665) acuñó la palabra "célula" al observar corcho; van Leeuwenhoek vio los primeros microorganismos vivos.</li>
+                  <li><strong>1) Todo ser vivo está formado por una o más células.</strong> Es la unidad mínima que está viva (una bacteria es una sola célula; un humano, billones).</li>
+                  <li><strong>2) La célula es la unidad estructural y funcional de la vida.</strong> <em>Estructural</em> = el "ladrillo" con que se construyen los organismos; <em>funcional</em> = en ella ocurren todas las reacciones que mantienen la vida.</li>
+                  <li><strong>3) Toda célula proviene de otra célula preexistente</strong> (Virchow: "omnis cellula e cellula"). Refuta la generación espontánea: las células no surgen de la nada.</li>
+                  <li><strong>Aportes históricos:</strong> Schleiden (1838, las plantas están hechas de células), Schwann (1839, también los animales), Virchow (1855, el origen celular).</li>
+                  <li><strong>Adiciones modernas:</strong> las células contienen la información hereditaria (ADN) que pasa de madre a hija, y todas comparten una composición química y un metabolismo básico similares.</li>
+                  <li><span class="mark-red">Excepción / trampa de examen:</span> los <em>virus</em> NO cumplen la teoría celular (son acelulares y no se reproducen por sí solos), por eso muchos no los consideran seres vivos.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="caracteristicas comunes celulas membrana citoplasma ribosomas adn material genetico"><strong>3.1.2 Características comunes a todas las células</strong>
                 <ul class="list">
-                  <li><strong>Membrana plasmática</strong> que las separa del entorno.</li>
-                  <li><strong>Citoplasma</strong> con citosol acuoso.</li>
-                  <li><strong>Ribosomas</strong> para sintetizar proteínas.</li>
-                  <li><strong>Material genético (ADN)</strong>.</li>
-                  <li>Capacidad de obtener energía y reproducirse.</li>
+                  <li><strong>Membrana plasmática:</strong> bicapa de fosfolípidos que separa el interior del entorno y controla selectivamente qué entra y sale. Sin ella no hay "adentro" ni "afuera".</li>
+                  <li><strong>Citoplasma con citosol:</strong> el medio acuoso (agua, iones, enzimas) donde flotan los componentes y ocurren muchas reacciones (como la glucólisis).</li>
+                  <li><strong>Ribosomas:</strong> las "máquinas" que leen el ARN y fabrican las proteínas. Toda célula los tiene (70S en procariotas, 80S en eucariotas).</li>
+                  <li><strong>Material genético (ADN):</strong> las instrucciones para fabricar todas las proteínas y para reproducirse. En procariotas está libre en el citoplasma; en eucariotas, dentro del núcleo.</li>
+                  <li><strong>Capacidad de obtener energía y reproducirse:</strong> toda célula transforma energía (metabolismo) y puede originar nuevas células.</li>
+                  <li><span class="mark-yellow">Clave:</span> estas 4 estructuras (membrana, citosol, ribosomas, ADN) están en TODA célula, procariota o eucariota — son el "mínimo común" de la vida.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="procariota eucariota nucleo organelas membranosas tamaño bacterias arqueas plantas animales hongos protistas"><strong>3.1.3 Procariotas vs eucariotas</strong>
                 <ul class="list">
-                  <li><strong>Procariotas:</strong> sin núcleo definido (ADN libre en nucleoide), sin organelas membranosas, ribosomas más pequeños (70S), generalmente unicelulares. Bacterias y arqueas.</li>
-                  <li><strong>Eucariotas:</strong> núcleo verdadero rodeado de envoltura nuclear, organelas membranosas (mitocondrias, RE, Golgi, lisosomas, etc.), ribosomas 80S. Plantas, animales, hongos, protistas.</li>
+                  <li><strong>Procariotas:</strong> sin núcleo definido (ADN circular libre en el nucleoide), sin organelas membranosas, ribosomas más pequeños (70S), pared de peptidoglicano. Muchas tienen <em>plásmidos</em> (pequeños anillos de ADN extra, importantes en la resistencia a antibióticos). Bacterias y arqueas.</li>
+                  <li><strong>Eucariotas:</strong> núcleo verdadero rodeado de envoltura nuclear, organelas membranosas (mitocondrias, RE, Golgi, lisosomas, etc.), ribosomas 80S, ADN lineal asociado a histonas. Plantas, animales, hongos, protistas.</li>
                   <li><strong>Tamaño:</strong> procariotas 1-10 µm, eucariotas 10-100 µm.</li>
-                  <li><span class="mark-yellow">Clave:</span> "no tener núcleo definido" es la diferencia más mencionada en examen.</li>
-                  <li><span class="mark-red">Error:</span> decir que las procariotas no tienen ribosomas. Sí tienen, son distintos (70S).</li>
+                  <li><strong>¿Por qué las células son pequeñas?</strong> Por la relación <em>superficie/volumen</em>: al crecer una célula, su volumen aumenta más rápido (al cubo) que su superficie (al cuadrado). Llega un punto en que la membrana ya no alcanza para intercambiar suficientes nutrientes y desechos con el interior. Por eso las células se mantienen pequeñas o se dividen.</li>
+                  <li><span class="mark-yellow">Clave:</span> "no tener núcleo definido" es la diferencia más mencionada en examen. Otra clave: procariota = 70S, eucariota = 80S.</li>
+                  <li><span class="mark-red">Error:</span> decir que las procariotas no tienen ribosomas. Sí tienen, son distintos (70S). Otro error: creer que las procariotas no tienen ADN — sí lo tienen, solo que sin envoltura nuclear.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: relación superficie/volumen (por qué no existe una célula gigante)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6">Imaginá un cubo de 1 cm de lado: superficie = 6 cm², volumen = 1 cm³ → relación 6:1. Si el cubo crece a 2 cm de lado: superficie = 24 cm², volumen = 8 cm³ → relación 3:1. <strong>Al duplicar el tamaño, la relación superficie/volumen cae a la mitad.</strong> En una célula, la membrana (superficie) es por donde entran nutrientes y salen desechos; el citoplasma (volumen) es lo que hay que abastecer. Si la célula crece demasiado, su superficie no alcanza para abastecer su volumen → muere o debe dividirse. Por eso las células son microscópicas, y las que necesitan mucha superficie (como las del intestino) la aumentan con <em>microvellosidades</em>.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> ¿Por qué las células del intestino tienen microvellosidades en vez de simplemente ser más grandes? <em>Respuesta: necesitan mucha superficie para absorber; agrandarse empeoraría su relación superficie/volumen, así que en vez de crecer pliegan su membrana en microvellosidades para ganar superficie.</em></div>
               </div>
 
-              <div class="subitem" data-keywords="nucleo envoltura nuclear nucleolo cromatina poros nucleares ADN genes"><strong>3.1.4.1 El núcleo</strong>
+              <div class="subitem" data-keywords="nucleo envoltura nuclear nucleolo cromatina cromosoma poros nucleares lamina nuclear ADN genes ARN ribosomal"><strong>3.1.4.1 El núcleo</strong>
                 <ul class="list">
-                  <li>Contiene la mayor parte del ADN celular.</li>
-                  <li><strong>Envoltura nuclear:</strong> doble membrana con poros nucleares que regulan el paso de moléculas grandes.</li>
-                  <li><strong>Nucleolo:</strong> región interna densa donde se sintetizan ribosomas.</li>
-                  <li><strong>Cromatina:</strong> ADN + proteínas (histonas) en estado descondensado durante la interfase.</li>
+                  <li><strong>Función:</strong> es el centro de control de la célula — guarda el ADN y dirige qué proteínas se fabrican y cuándo. Solo lo tienen las células eucariotas.</li>
+                  <li>Contiene casi todo el ADN celular (el resto está en mitocondrias y cloroplastos).</li>
+                  <li><strong>Envoltura nuclear:</strong> doble membrana que separa el ADN del citoplasma. Su membrana externa se continúa con el retículo endoplásmico. Por dentro la sostiene la <em>lámina nuclear</em> (filamentos intermedios) que le da forma.</li>
+                  <li><strong>Poros nucleares:</strong> canales proteicos que atraviesan la doble membrana y deciden QUÉ entra y sale: dejan pasar libremente moléculas pequeñas e iones, pero controlan el paso de las grandes (entran factores de transcripción y proteínas; sale el ARN mensajero hacia los ribosomas).</li>
+                  <li><strong>Nucleolo:</strong> región densa <em>sin membrana</em> dentro del núcleo donde se transcribe el ARN ribosomal y se arman las subunidades de los ribosomas. Una célula que fabrica muchas proteínas tiene nucleolos grandes y visibles.</li>
+                  <li><strong>Cromatina vs cromosoma:</strong> es el MISMO ADN en distinto grado de compactación. En interfase está descondensado (cromatina) para poder leerse; antes de dividirse se compacta al máximo y se ve como cromosoma.</li>
+                  <li><span class="mark-red">Error:</span> creer que cromatina y cromosoma son moléculas distintas. Es el mismo ADN: relajado para trabajar, compactado para repartirse.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="sistema endomembranas reticulo endoplasmico rugoso liso golgi vesiculas lisosoma proteinas lipidos sintesis"><strong>3.1.4.2 Sistema de endomembranas</strong>
                 <ul class="list">
-                  <li><strong>Retículo endoplásmico rugoso (RER):</strong> con ribosomas adheridos. Síntesis de proteínas que serán secretadas o irán a membranas.</li>
-                  <li><strong>Retículo endoplásmico liso (REL):</strong> sin ribosomas. Síntesis de lípidos, detoxificación, almacenamiento de Ca²⁺.</li>
-                  <li><strong>Aparato de Golgi:</strong> recibe vesículas del RE, modifica, empaqueta y dirige proteínas a su destino. "Centro de empaque".</li>
-                  <li><strong>Lisosomas (animales):</strong> vesículas con enzimas digestivas, degradan macromoléculas y orgánulos viejos.</li>
-                  <li><strong>Vacuolas (plantas y protistas):</strong> almacenamiento, mantenimiento de turgencia.</li>
-                  <li><span class="mark-yellow">Clave:</span> el flujo típico es <em>RER → vesículas → Golgi → vesículas → membrana o destino final</em>.</li>
+                  <li><strong>Qué es:</strong> un conjunto de organelos conectados (por membrana o por vesículas) que fabrican, modifican, empaquetan y transportan proteínas y lípidos. Funciona como una "línea de producción".</li>
+                  <li><strong>Retículo endoplásmico rugoso (RER):</strong> tiene ribosomas adheridos. Las proteínas que entran a él se pliegan y empiezan a <em>glicosilarse</em> (se les añaden azúcares); son las que se van a secretar, a la membrana o a los lisosomas.</li>
+                  <li><strong>Retículo endoplásmico liso (REL):</strong> sin ribosomas. Sintetiza lípidos y hormonas esteroides, <em>detoxifica</em> fármacos y alcohol (muy abundante en el hígado) y almacena Ca²⁺ (clave en la contracción muscular).</li>
+                  <li><strong>Aparato de Golgi:</strong> recibe vesículas del RE por su cara <em>cis</em> (entrada), modifica las proteínas (termina la glicosilación y las "etiqueta" con marcadores de destino) y las despacha por su cara <em>trans</em> (salida). Es el "centro de correo y empaque".</li>
+                  <li><strong>Lisosomas (animales):</strong> vesículas con enzimas hidrolíticas activas a pH ácido (~5). Digieren lo que entra por endocitosis, reciclan organelos viejos (<em>autofagia</em>) y destruyen bacterias dentro de los glóbulos blancos.</li>
+                  <li><strong>Vacuolas:</strong> en plantas, una gran vacuola central almacena agua y solutos y genera la <em>presión de turgencia</em> que mantiene la planta erguida; en protistas, las vacuolas contráctiles expulsan el exceso de agua.</li>
+                  <li><span class="mark-yellow">La ruta secretora (qué ocurre paso a paso):</span> ribosoma en el RER → la proteína entra al RER, se pliega y glicosila → vesícula → Golgi (cis→trans: modifica y etiqueta) → vesícula → membrana plasmática (exocitosis) o destino final.</li>
+                  <li><span class="mark-red">Error:</span> pensar que el Golgi "fabrica" las proteínas. No: las <em>modifica y despacha</em>; quien las fabrica es el ribosoma.</li>
                 </ul>
               </div>
 
@@ -6413,6 +6503,11 @@ window.Analytics = (function(){
                   <li><strong>Peroxisomas:</strong> degradación de peróxido de hidrógeno y oxidación de ácidos grasos.</li>
                   <li><span class="mark-yellow">Clave:</span> mitocondria y cloroplasto tienen ADN propio → <em>teoría endosimbiótica</em>.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: las 4 pruebas de la teoría endosimbiótica (Lynn Margulis)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6">La teoría endosimbiótica propone que las mitocondrias y los cloroplastos fueron <em>procariotas de vida libre</em> que una célula ancestral fagocitó y, en vez de digerirlos, los conservó en simbiosis. Las pruebas que la sostienen: <strong>① ADN propio:</strong> tienen su propio ADN circular, parecido al de las bacterias. <strong>② Ribosomas 70S:</strong> tienen ribosomas tipo bacteriano (70S), no 80S como el resto de la célula eucariota. <strong>③ Doble membrana:</strong> la membrana interna sería la del procariota original y la externa, la de la vesícula que lo englobó. <strong>④ Se dividen solas:</strong> se reproducen por fisión binaria (como las bacterias), independientemente de la división celular. <strong>Mitocondria</strong> = un procariota aerobio ancestral; <strong>cloroplasto</strong> = una cianobacteria ancestral.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> ¿Por qué el hecho de que la mitocondria tenga ribosomas 70S (no 80S) apoya la endosimbiosis? <em>Respuesta: 70S es el tipo de ribosoma de las bacterias; que la mitocondria los tenga sugiere que desciende de una bacteria de vida libre, no de la propia célula eucariota.</em></div>
               </div>
 
               <div class="subitem" data-keywords="superficie celular pared celular plantas hongos bacterias glucocaliz cilios flagelos microvellosidades"><strong>3.1.4.4 Especializaciones de superficie</strong>
@@ -6422,15 +6517,19 @@ window.Analytics = (function(){
                   <li><strong>Cilios:</strong> cortos y numerosos. Movimiento de fluidos o de la célula.</li>
                   <li><strong>Flagelos:</strong> largos y escasos. Movimiento celular (espermatozoides, bacterias).</li>
                   <li><strong>Microvellosidades:</strong> proyecciones que aumentan superficie de absorción (intestino).</li>
+                  <li><strong>Matriz extracelular (MEC):</strong> en células animales, red de glucoproteínas (sobre todo <em>colágeno</em>) secretada al exterior que da soporte, une las células al tejido y transmite señales hacia adentro mediante proteínas de membrana llamadas <em>integrinas</em>.</li>
+                  <li><span class="mark-red">Error:</span> creer que solo las plantas tienen estructuras de soporte externo. Las células animales no tienen pared, pero sí tienen MEC.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="citoesqueleto microfilamentos actina microtubulos tubulina filamentos intermedios queratina forma movimiento"><strong>3.1.4.5 Citoesqueleto</strong>
                 <ul class="list">
                   <li>Red de fibras proteicas que da forma, soporte y permite movimiento.</li>
-                  <li><strong>Microfilamentos (actina):</strong> contracción muscular, división celular.</li>
-                  <li><strong>Microtúbulos (tubulina):</strong> huso mitótico, transporte intracelular, cilios y flagelos.</li>
-                  <li><strong>Filamentos intermedios (queratina, etc.):</strong> resistencia mecánica.</li>
+                  <li><strong>Microfilamentos (actina):</strong> los más delgados; contracción muscular, división celular (anillo contráctil), movimiento ameboide.</li>
+                  <li><strong>Microtúbulos (tubulina):</strong> los más gruesos; huso mitótico, "rieles" para el transporte intracelular, estructura de cilios y flagelos.</li>
+                  <li><strong>Filamentos intermedios (queratina, láminas, etc.):</strong> grosor medio; resistencia mecánica y anclaje de organelos.</li>
+                  <li><strong>Centrosoma y centríolos:</strong> el centrosoma es el centro organizador de microtúbulos; contiene dos centríolos y organiza el huso durante la división celular (en animales).</li>
+                  <li><strong>Proteínas motoras (cinesina, dineína, miosina):</strong> "caminan" sobre los filamentos gastando ATP para transportar vesículas y organelos, y para mover cilios/flagelos.</li>
                 </ul>
               </div>
 
@@ -6484,6 +6583,18 @@ window.Analytics = (function(){
                 </ul>
               </div>
 
+              <div class="subitem" data-keywords="comunicacion senalizacion celular ligando receptor membrana intracelular transduccion segundo mensajero AMPc calcio recepcion respuesta endocrina paracrina sinaptica hormona"><strong>3.2.6 Comunicación y señalización celular</strong>
+                <ul class="list">
+                  <li>Las células se comunican mediante <strong>señales químicas (ligandos)</strong> que se unen a <strong>receptores</strong> específicos. Una célula solo responde si tiene el receptor para esa señal.</li>
+                  <li><strong>Tres etapas (Sutherland):</strong> ① <em>Recepción</em> (el ligando se une al receptor) → ② <em>Transducción</em> (una cascada de moléculas transmite y amplifica la señal) → ③ <em>Respuesta</em> (cambio en la actividad enzimática o en la expresión génica).</li>
+                  <li><strong>Receptores de membrana:</strong> para señales <em>hidrofílicas</em> que no cruzan la bicapa (ej.: receptores acoplados a proteína G, receptores tirosina quinasa). La señal actúa desde afuera.</li>
+                  <li><strong>Receptores intracelulares:</strong> para señales <em>hidrofóbicas</em> (ej.: hormonas esteroides) que sí atraviesan la membrana y se unen a receptores dentro de la célula, alterando la transcripción.</li>
+                  <li><strong>Segundos mensajeros:</strong> moléculas pequeñas como el <em>AMPc</em> y el <em>Ca²⁺</em> que difunden la señal y la amplifican dentro de la célula.</li>
+                  <li><strong>Según la distancia:</strong> endocrina (hormonas por la sangre), paracrina (a células vecinas), sináptica (entre neuronas), autocrina (a la propia célula).</li>
+                  <li><span class="mark-red">Error:</span> creer que toda señal usa receptores de membrana. Las señales hidrofóbicas (esteroides) <em>cruzan</em> la membrana y usan receptores <em>intracelulares</em>.</li>
+                </ul>
+              </div>
+
             </div>
           </div>
         </details>
@@ -6502,8 +6613,10 @@ window.Analytics = (function(){
             <div class="warn">⭐ <strong>Clave:</strong> base conceptual para fotosíntesis y respiración. Dominar enzimas (sitio activo, inhibición, factores) suele dar puntos fáciles.</div>
             <div class="grid2">
 
-              <div class="subitem" data-keywords="termodinamica primera ley segunda ley energia entropia trabajo biologico flujo energia"><strong>3.3.1 Energía y leyes de la termodinámica</strong>
+              <div class="subitem" data-keywords="metabolismo catabolismo anabolismo termodinamica primera ley segunda ley energia entropia trabajo biologico flujo energia cinetica potencial"><strong>3.3.1 Metabolismo, energía y termodinámica</strong>
                 <ul class="list">
+                  <li><strong>Metabolismo = catabolismo + anabolismo.</strong> El <em>catabolismo</em> degrada moléculas grandes en pequeñas y <em>libera</em> energía (ej.: respiración celular, digestión). El <em>anabolismo</em> construye moléculas grandes a partir de pequeñas y <em>consume</em> energía (ej.: síntesis de proteínas, fotosíntesis). La energía que libera el catabolismo financia al anabolismo.</li>
+                  <li><strong>Tipos de energía:</strong> <em>cinética</em> (la del movimiento, incluido el calor) y <em>potencial</em> (la almacenada, como la energía química de los enlaces). El metabolismo convierte una forma en otra.</li>
                   <li><strong>Primera ley:</strong> la energía no se crea ni se destruye, se transforma.</li>
                   <li><strong>Segunda ley:</strong> en cada transformación, parte de la energía se dispersa como <em>calor</em>; la entropía (desorden) del universo aumenta.</li>
                   <li>Los seres vivos <em>no violan</em> la segunda ley: mantienen orden interno gracias al aporte continuo de energía y aumentan el desorden de su entorno.</li>
@@ -6523,7 +6636,7 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="ATP adenosin trifosfato hidrolisis ADP fosfato energia enlace alta energia"><strong>3.3.3 ATP, la moneda energética</strong>
                 <ul class="list">
                   <li><strong>ATP = adenosín trifosfato:</strong> adenosina (adenina+ribosa) + 3 grupos fosfato.</li>
-                  <li>Los enlaces entre fosfatos son de "alta energía": al hidrolizarse el último (ATP → ADP + Pi) se liberan ~7,3 kcal/mol.</li>
+                  <li>Los enlaces entre fosfatos son de "alta energía": al hidrolizarse el último (ATP → ADP + Pi) se liberan ~7,3 kcal/mol (≈ 30,5 kJ/mol). La repulsión entre las cargas negativas de los fosfatos es parte de por qué liberan tanta energía.</li>
                   <li>El ATP no se "almacena" en grandes cantidades; se sintetiza y consume continuamente.</li>
                   <li><strong>Síntesis de ATP:</strong> ADP + Pi + energía → ATP. Ocurre en respiración, fotosíntesis y fermentación.</li>
                 </ul>
@@ -6551,10 +6664,16 @@ window.Analytics = (function(){
                   <li><strong>Inhibición competitiva:</strong> el inhibidor se une al <em>sitio activo</em>, compite con el sustrato.</li>
                   <li><strong>Inhibición no competitiva:</strong> el inhibidor se une a otro sitio (alostérico) y cambia la forma del sitio activo.</li>
                   <li><strong>Retroalimentación negativa (feedback):</strong> el producto final inhibe una enzima al inicio de la ruta. Permite regulación.</li>
-                  <li><strong>Factores que afectan actividad:</strong> temperatura (cada enzima tiene una óptima), pH (también óptimo), concentración de sustrato, presencia de inhibidores.</li>
+                  <li><strong>Factores que afectan actividad:</strong> temperatura (cada enzima tiene una óptima; demasiado calor la desnaturaliza), pH (también óptimo), concentración de sustrato y presencia de inhibidores.</li>
+                  <li><strong>Saturación (Vmax):</strong> al aumentar el sustrato, la velocidad sube… hasta que <em>todos</em> los sitios activos están ocupados. Ahí la enzima llega a su velocidad máxima (Vmax) y agregar más sustrato ya no acelera la reacción.</li>
                   <li><strong>Desnaturalización enzimática:</strong> calor o pH extremo destruyen la forma 3D y la enzima pierde función.</li>
                   <li><span class="mark-yellow">Cómo lo preguntan:</span> "Cuando un inhibidor se une al sitio activo se llama..." → competitiva. "Cuando el producto final inhibe una enzima al inicio se llama..." → retroalimentación.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: cómo trabaja una enzima y los dos tipos de inhibición</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Energía de activación:</strong> toda reacción necesita un "empujón" inicial de energía para arrancar. La enzima <em>baja</em> ese umbral acercando y orientando los sustratos en su sitio activo, sin cambiar el resultado final ni consumirse. <strong>Ajuste inducido:</strong> al unirse el sustrato, el sitio activo se amolda a él (no es una "llave-cerradura" rígida). <strong>Inhibición competitiva:</strong> el inhibidor se parece al sustrato y bloquea el sitio activo; se puede vencer agregando <em>más sustrato</em>. <strong>Inhibición no competitiva (alostérica):</strong> el inhibidor se une a otro sitio y deforma el activo; agregar más sustrato <em>no</em> la revierte. <strong>Regulación por retroalimentación:</strong> el producto final de una vía suele inhibir alostéricamente a la primera enzima → la célula produce solo lo que necesita.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> Si agregar más sustrato revierte la inhibición, ¿de qué tipo es? <em>Respuesta: competitiva (el inhibidor compite por el sitio activo; más sustrato lo desplaza). Si NO se revierte, es no competitiva/alostérica.</em></div>
               </div>
 
             </div>
@@ -6591,7 +6710,8 @@ window.Analytics = (function(){
                   <li><strong>Fotosistema II (P680):</strong> capta luz, excita electrones. La energía se usa para <em>fotólisis del agua</em>: 2 H₂O → 4 H⁺ + 4 e⁻ + O₂. <em>Aquí se libera el oxígeno</em>.</li>
                   <li>Los electrones excitados pasan por la <strong>cadena de transporte de electrones tilacoidal</strong>, generando un gradiente de H⁺ entre lumen y estroma.</li>
                   <li><strong>Fotosistema I (P700):</strong> reexcita electrones, que terminan reduciendo NADP⁺ a <strong>NADPH</strong>.</li>
-                  <li><strong>Quimiósmosis:</strong> los H⁺ regresan al estroma a través de ATP sintasa, generando <strong>ATP</strong>.</li>
+                  <li><strong>Quimiósmosis:</strong> los H⁺ regresan al estroma a través de ATP sintasa, generando <strong>ATP</strong> (fotofosforilación).</li>
+                  <li><strong>Flujo cíclico vs no cíclico:</strong> lo descrito arriba es el flujo <em>no cíclico</em> (produce ATP + NADPH + O₂). En el flujo <em>cíclico</em>, los electrones del fotosistema I vuelven a la cadena en vez de reducir NADP⁺ → genera ATP extra (sin NADPH ni O₂) para ajustar la proporción ATP:NADPH que pide el ciclo de Calvin.</li>
                   <li><strong>Productos finales:</strong> ATP, NADPH y O₂.</li>
                 </ul>
               </div>
@@ -6622,6 +6742,8 @@ window.Analytics = (function(){
                   <li><strong>Tilacoides:</strong> sacos aplanados internos donde está la clorofila. Apilados forman <em>grana</em> (singular: granum).</li>
                   <li><strong>Estroma:</strong> matriz acuosa que rodea los tilacoides. Sitio del ciclo de Calvin.</li>
                   <li><strong>Pigmentos:</strong> clorofila a (principal, absorbe rojo y azul, refleja verde), clorofila b (auxiliar), carotenoides (amarillo/naranja, también auxiliares y antioxidantes).</li>
+                  <li><strong>Espectro de absorción:</strong> la clorofila absorbe sobre todo luz <em>azul y roja</em> y refleja la <em>verde</em> → por eso vemos verdes las plantas. Los carotenoides amplían el rango captando longitudes de onda que la clorofila no aprovecha y disipan el exceso de energía (fotoprotección).</li>
+                  <li><span class="mark-yellow">Clave:</span> en otoño la clorofila se degrada y quedan visibles los carotenoides → las hojas se ven amarillas/naranjas.</li>
                 </ul>
               </div>
 
@@ -6632,6 +6754,11 @@ window.Analytics = (function(){
                   <li><strong>Rendimiento total típico:</strong> ~30–32 ATP por glucosa.</li>
                   <li>Es el proceso opuesto a la fotosíntesis (ambos se necesitan en ecosistemas).</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Profundización: el balance completo de ATP (de dónde sale cada uno)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Dos formas de fabricar ATP:</strong> por <em>fosforilación a nivel de sustrato</em> (una enzima transfiere un fosfato directamente a ADP — ocurre en la glucólisis y en Krebs) y por <em>fosforilación oxidativa</em> (la ATP sintasa usa el gradiente de H⁺ de la cadena de transporte). <strong>Conteo por glucosa:</strong> glucólisis = 2 ATP + 2 NADH; oxidación del piruvato = 2 NADH; Krebs = 2 ATP + 6 NADH + 2 FADH₂. Esos 10 NADH y 2 FADH₂ entran a la cadena: cada NADH rinde ~2,5 ATP y cada FADH₂ ~1,5 ATP → ~28 ATP por fosforilación oxidativa. <strong>Total ≈ 30-32 ATP.</strong> El número no es exacto porque el NADH producido en el citoplasma (glucólisis) "paga peaje" para entrar a la mitocondria, perdiendo algo de rendimiento.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Comprobá si entendiste:</strong> ¿Por qué la respiración aeróbica rinde ~15× más ATP que la fermentación? <em>Respuesta: la fermentación solo aprovecha los 2 ATP de la glucólisis (a nivel de sustrato); la respiración además oxida todos los NADH y FADH₂ en la cadena de transporte, con O₂ como aceptor final, sumando ~28 ATP por fosforilación oxidativa.</em></div>
               </div>
 
               <div class="subitem" data-keywords="glucolisis citoplasma glucosa piruvato ATP NADH 6 carbonos 3 carbonos sin oxigeno"><strong>3.5.2 Glucólisis</strong>
@@ -6669,6 +6796,7 @@ window.Analytics = (function(){
                   <li>El <strong>O₂ es el aceptor final de electrones</strong>: O₂ + e⁻ + H⁺ → H₂O. <em>Por eso necesitamos respirar oxígeno</em>.</li>
                   <li>El gradiente de H⁺ impulsa la <strong>ATP sintasa</strong> → produce mucho ATP. Esto se llama <em>quimiósmosis</em>.</li>
                   <li><strong>Rendimiento aproximado:</strong> ~26-28 ATP en esta etapa.</li>
+                  <li><span class="mark-yellow">Conexión clave:</span> la <em>quimiósmosis</em> es el MISMO mecanismo en la mitocondria (respiración) y en el cloroplasto (fotosíntesis): una cadena de transporte bombea H⁺ → se forma un gradiente → la ATP sintasa lo aprovecha para fabricar ATP. Cambia dónde ocurre y de dónde vienen los electrones, no la idea.</li>
                   <li><span class="mark-red">Error:</span> "el oxígeno produce el ATP". <em>No</em>: el oxígeno acepta electrones; el ATP lo produce la ATP sintasa usando el gradiente de H⁺.</li>
                 </ul>
               </div>
@@ -6844,6 +6972,7 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="epigenetica metilacion ADN histonas expresion genica activar silenciar genes ambiente"><strong>4.4.8 Epigenética</strong><ul class="list"><li>La <strong>epigenética</strong> estudia cambios <em>heredables</em> en la expresión génica <strong>sin modificar la secuencia de bases del ADN</strong>.</li><li>Puede involucrar <em>metilación del ADN</em> y <em>modificaciones de histonas</em>.</li><li>Estos mecanismos <em>activan o silencian</em> genes según el tipo celular, la etapa del desarrollo o el ambiente.</li><li>Ayuda a explicar por qué células con el <em>mismo ADN</em> pueden tener funciones diferentes.</li><li><span class="mark-red">Error:</span> epigenética no significa mutación; la secuencia del ADN puede permanecer igual.</li></ul></div>
               <div class="subitem" data-keywords="ligamiento genetico cromosoma crossing over recombinantes proporciones independencia"><strong>4.4.9 Ligamiento genético</strong><ul class="list"><li>Genes ubicados en el <strong>mismo cromosoma</strong> tienden a heredarse juntos.</li><li>Cuanto más cerca están dos genes, <em>menos probable</em> es que se separen por entrecruzamiento.</li><li>El <strong>crossing over</strong> puede romper el ligamiento y generar <em>recombinación</em>.</li><li>El ligamiento <em>modifica las proporciones</em> esperadas si se comparan con la independencia mendeliana.</li><li><span class="mark-yellow">Cálculo:</span> puede relacionarse con proporciones de recombinantes y no recombinantes si el curso lo pide.</li><li><span class="mark-red">Error:</span> no asumir independencia de genes solo porque se está trabajando con dos caracteres.</li></ul></div>
               <div class="subitem" data-keywords="herencia ligada al sexo cromosoma X hemofilia daltonismo trastornos geneticos humanos mutaciones cromosomicas down turner klinefelter no disyuncion"><strong>4.4.10 Herencia ligada al sexo y trastornos genéticos humanos</strong><ul class="list"><li>Algunos trastornos hereditarios se deben a <strong>mutaciones génicas</strong> y otros a <strong>alteraciones cromosómicas</strong>.</li><li>La <strong>herencia ligada al sexo</strong> se refiere a genes ubicados en los cromosomas sexuales, especialmente en el <em>cromosoma X</em>.</li><li>En <em>hombres (XY)</em>, un alelo recesivo presente en el cromosoma X suele expresarse con mayor facilidad porque <strong>no existe otro alelo en un segundo cromosoma X</strong> que lo enmascare.</li><li>Ejemplos de rasgos recesivos ligados al X son la <strong>hemofilia</strong> y el <strong>daltonismo</strong>, por eso suelen observarse con mayor frecuencia en hombres.</li><li>En cambio, síndrome de <strong>Down</strong>, <strong>Turner</strong> y <strong>Klinefelter</strong> son ejemplos de <em>alteraciones cromosómicas</em>, no de herencia ligada al sexo recesiva.</li><li>Down corresponde a <em>trisomía 21</em>, Turner a <em>X0</em> y Klinefelter a <em>XXY</em>.</li><li>La <strong>no disyunción</strong> durante meiosis puede originar gametos con número anormal de cromosomas.</li><li><span class="mark-yellow">Cálculo:</span> puede requerir cruces de herencia ligada al sexo o inferencia de probabilidades familiares.</li><li><span class="mark-red">Error:</span> no confundir un trastorno por mutación génica ligada al sexo con una alteración en el número de cromosomas.</li></ul></div>
+              <div class="subitem" data-keywords="pedigri arbol genealogico herencia autosomica recesiva dominante ligada X portador consanguinidad simbolos cuadrado circulo genograma"><strong>4.4.11 Lectura de árboles genealógicos (pedigríes)</strong><ul class="list"><li>Un <strong>pedigrí</strong> es un diagrama familiar para rastrear cómo se hereda un rasgo. <em>Cuadrado</em> = varón, <em>círculo</em> = mujer, símbolo <em>relleno</em> = afectado, línea horizontal entre dos = cruce, línea vertical = descendencia.</li><li><strong>Cómo identificar el patrón de herencia:</strong></li><li style="margin-left:1.2em"><strong>→ Recesivo:</strong> el rasgo puede "saltarse" generaciones; dos progenitores NO afectados pueden tener un hijo afectado (ambos eran portadores heterocigotos).</li><li style="margin-left:1.2em"><strong>→ Dominante:</strong> el rasgo aparece en todas las generaciones; cada afectado tiene al menos un progenitor afectado.</li><li style="margin-left:1.2em"><strong>→ Autosómico:</strong> afecta por igual a hombres y mujeres.</li><li style="margin-left:1.2em"><strong>→ Ligado al X recesivo:</strong> afecta mucho más a los hombres; un hombre afectado NO lo transmite a sus hijos varones (les pasa el Y), pero TODAS sus hijas quedan portadoras.</li><li><span class="mark-yellow">Estrategia de examen:</span> ①¿se salta generaciones? → recesivo. ②¿afecta más a hombres? → sospechar ligado al X. ③asigná genotipos empezando por los afectados (recesivos = homocigotos) y deducí hacia atrás.</li><li><span class="mark-blue">🔬 Escenario:</span> dos padres de visión normal tienen un hijo daltónico. ¿Genotipos? La madre debe ser portadora (XᴰXᵈ) y el padre normal (XᴰY); el hijo afectado es XᵈY y recibió el Xᵈ de su madre.</li><li><span class="mark-red">Error:</span> asumir que un rasgo más frecuente en hombres es ligado al Y; casi siempre es ligado al X recesivo.</li></ul></div>
               <div class="subitem" data-keywords="adn estructura nucleotido doble helice replicacion semiconservativa helicasa polimerasa topoisomerasa primasa SSB ligasa hebra lider rezagada okazaki burbuja bidireccional semiconservativa meselson stahl chargaff watson crick franklin"><strong>4.5 ADN: estructura y replicación</strong><ul class="list"><li><strong>Estructura:</strong> nucleótido = grupo fosfato + desoxirribosa + base (A, T, G, C). Doble hélice antiparalela. Apareamiento por puentes H: A=T (2 puentes) y G≡C (3 puentes, más fuerte). Reglas de Chargaff: %A=%T y %G=%C. Modelo de Watson y Crick (1953), datos de difracción de Franklin.</li><li><strong>Replicación semiconservativa:</strong> cada molécula hija conserva una hebra vieja + una hebra nueva. Demostrado por Meselson y Stahl (1958) con isótopos de nitrógeno.</li><li><strong>Replicación bidireccional:</strong> comienza en orígenes de replicación (uno en procariotas, muchos en eucariotas) y avanza en dos horquillas en direcciones opuestas.</li><li><strong>Enzimas clave (orden en la horquilla):</strong></li>
 <li style="margin-left:1.2em"><strong>→ Helicasa:</strong> abre la doble hélice rompiendo los puentes de H.</li>
 <li style="margin-left:1.2em"><strong>→ Topoisomerasa (girasa en procariotas):</strong> alivia el superenrollamiento delante de la horquilla. Muchos antibióticos (quinolonas) atacan la girasa bacteriana.</li>
@@ -9662,8 +9791,8 @@ const E23Q = [
   {q:'13. El síndrome de Klinefelter tiene el cariotipo:',ops:['A) 45,X','B) 47,XXY','C) 47,XYY','D) 46,XX'],a:1,exp:'47,XXY: por no-disyunción durante la meiosis.',theme:'gen'},
   {q:'14. La selección sexual con frecuencia conduce a:',ops:['A) Agresión','B) Monomorfismo','C) Dimorfismo sexual','D) Depredación'],a:2,exp:'Favorece rasgos que aumentan el éxito reproductivo → dimorfismo sexual.',theme:'evo'},
   {q:'15. El experimento de Miller y Urey demostró:',ops:['A) La gran antigüedad de la Tierra','B) Que los aminoácidos pueden ensamblarse espontáneamente','C) Que el oxígeno es necesario para la vida','D) Que el ARN fue la primera molécula autorreplicativa'],a:1,exp:'Miller y Urey (1953) sintetizaron aminoácidos sin vida previa.',theme:'ori'},
-  {q:'16. Las partículas de arcilla con carga negativa desempeñaron un papel en:',ops:['A) La formación temprana de proteínas','B) La replicación temprana de ADN','C) La fotosíntesis temprana','D) La declinación temprana de oxígeno'],a:0,exp:'Las arcillas pudieron concentrar y organizar aminoácidos.',theme:'ori'},
-  {q:'17. La vida comenzó con células semejantes a:',ops:['A) Procariotas autótrofos','B) Procariotas heterótrofos aerobios','C) Procariotas heterótrofos anaerobios','D) Procariotas autótrofas aerobios'],a:2,exp:'Procariotas anaerobios heterótrofos (sin O₂ atmosférico).',theme:'ori'},
+  {q:'16. Las partículas de arcilla con carga negativa desempeñaron un papel en:',ops:['A) La formación temprana de proteínas','B) La replicación temprana de ADN','C) La fotosíntesis temprana','D) La declinación temprana de oxígeno'],a:0,exp:'Hipótesis de las arcillas (Cairns-Smith/Bernal): sus superficies cargadas habrían concentrado y ordenado monómeros (aminoácidos y nucleótidos) favoreciendo su polimerización en macromoléculas. Es una hipótesis sobre el origen abiótico, no un hecho demostrado.',theme:'ori'},
+  {q:'17. La vida comenzó con células semejantes a:',ops:['A) Procariotas autótrofos','B) Procariotas heterótrofos aerobios','C) Procariotas heterótrofos anaerobios','D) Procariotas autótrofas aerobios'],a:2,exp:'Hipótesis heterótrofa (Oparin-Haldane): sin O₂ atmosférico, las primeras células habrían sido procariotas anaerobias que consumían moléculas orgánicas del "caldo primordial". Es la hipótesis clásica más enseñada, pero hoy está en debate con las hipótesis quimioautótrofas (fuentes hidrotermales), donde la primera vida obtendría energía de reacciones inorgánicas.',theme:'ori'},
   {q:'18. Bacillus anthracis sobrevive condiciones duras formando:',ops:['A) Un pilus','B) Un heterocisto','C) Una endóspora','D) Un plásmido'],a:2,exp:'Endósporas: estructuras de resistencia bacteriana.',theme:'ori'},
   {q:'19. ¿De qué manera difieren las bacterias gramnegativas de las grampositivas?',ops:['A) No son patógenas','B) Su pared celular de peptidoglicano es más delgada','C) Las gramnegativas no pueden teñirse','D) Las gramnegativas no realizan fotosíntesis'],a:1,exp:'Gramnegativas: peptidoglicano delgado + membrana externa.',theme:'ori'},
   {q:'20. Las bacterias que introdujeron oxígeno por primera vez fueron:',ops:['A) Metanógenas','B) Patógenas','C) Líquenes','D) Cianobacterias'],a:3,exp:'Cianobacterias: fotosíntesis oxigénica.',theme:'ori'},
@@ -9678,15 +9807,15 @@ const E23Q = [
   {q:'29. La codominancia se refiere a:',ops:['A) El heterocigota expresa simultáneamente ambos fenotipos','B) Proporción fenotípica','C) Varios genes modifican una característica','D) Un gen con más de dos alelos'],a:0,exp:'Codominancia: ambos alelos expresados (ej. AB).',theme:'gen'},
   {q:'30. Evolución convergente:',ops:['A) Un gen con varios alelos','B) Estructuras similares de ancestros distintos','C) Organismos relacionados diferentes','D) Grupo no fértil'],a:1,exp:'Convergente: linajes no relacionados desarrollan rasgos similares.',theme:'evo'},
   {q:'31. Los órganos análogos son:',ops:['A) Misma función, origen distinto','B) Misma estructura interna','C) Funciones diferentes','D) Alas y brazos'],a:0,exp:'Análogos: misma función, origen distinto.',theme:'evo'},
-  {q:'32. Orden de menor a mayor complejidad de los tres dominios:',ops:['A) Archaea/Bacteria/Eukarya','B) Bacteria/Archaea/Eukarya','C) Bacteria/Eukarya/Archaea','D) Eukarya/Archaea/Bacteria'],a:1,exp:'Bacteria y Archaea son procariotas; Eukarya es más compleja.',theme:'ori'},
+  {q:'32. ¿Cuál afirmación sobre los tres dominios (Bacteria, Archaea, Eukarya) es correcta?',ops:['A) Forman una escala de menor a mayor complejidad, de Bacteria a Eukarya','B) Bacteria y Archaea son linajes hermanos igual de antiguos; ninguno es "más evolucionado"','C) Archaea es un tipo de bacteria más compleja','D) Eukarya evolucionó directamente a partir de Bacteria'],a:1,exp:'No se ordenan en una "escala de complejidad" (eso es la scala naturae, ya refutada). Bacteria y Archaea son procariotas pero linajes independientes de igual antigüedad; la posición en el árbol filogenético no significa "más evolucionado".',theme:'ori'},
   {q:'33. Plantas pequeñas, sin vasos, sin semillas, sin flores ni frutos:',ops:['A) Glaucofitas','B) Briofitas','C) Pteridofitas','D) Gimnospermas'],a:1,exp:'Briofitas: musgos y hepáticas.',theme:'ori'},
-  {q:'34. Los helechos y licopodios son ejemplos de:',ops:['A) Plantas vasculares con semillas','B) Briofitas','C) Plantas vasculares sin semillas','D) Gimnospermas'],a:2,exp:'Pteridofitas.',theme:'ori'},
+  {q:'34. Los helechos y licopodios son ejemplos de:',ops:['A) Plantas vasculares con semillas','B) Briofitas','C) Plantas vasculares sin semillas','D) Gimnospermas'],a:2,exp:'Son pteridofitas: plantas vasculares SIN semillas. Se reproducen por esporas y dependen del agua para la fecundación. Se distinguen de las briofitas (sin vasos) y de las gimnospermas (vasculares CON semillas).',theme:'ori'},
   {q:'35. Plantas vasculares con troncos leñosos, hojas aciculadas y semillas en conos:',ops:['A) Briofitas','B) Pteridofitas','C) Gimnospermas','D) Angiospermas'],a:2,exp:'Gimnospermas: semillas desnudas.',theme:'ori'},
   {q:'36. Característica de los quitridiomicetos:',ops:['A) Tienen esporas flageladas','B) Viven en tierra muy seca','C) Simbiontes con raíces','D) Sí tienen septos'],a:0,exp:'Únicos hongos con zoósporas flageladas.',theme:'ori'},
   {q:'37. Las micorrizas:',ops:['A) Son un tipo de liquen','B) Reúnen energía solar','C) Reúnen nutrientes inorgánicos','D) Asociaciones de basidiomicetos'],a:2,exp:'Simbiosis raíz-hongo: amplifica absorción mineral.',theme:'ori'},
-  {q:'38. Combinación de fotoautótrofo y hongo:',ops:['A) Endomicorriza','B) Ectomicorriza','C) Liquen','D) Patógeno'],a:2,exp:'Liquen.',theme:'ori'},
-  {q:'39. Campo de la biología que estudia la biodiversidad como producto de la evolución:',ops:['A) Sistemática','B) Taxonomía','C) Geología','D) Ecología'],a:0,exp:'Sistemática.',theme:'ori'},
-  {q:'40. Una célula n + n es:',ops:['A) Monocarióta','B) Diploide','C) Cenocítica','D) Dicarióta'],a:3,exp:'n+n = dicarióta.',theme:'ori'},
+  {q:'38. Combinación de fotoautótrofo y hongo:',ops:['A) Endomicorriza','B) Ectomicorriza','C) Liquen','D) Patógeno'],a:2,exp:'Liquen: simbiosis mutualista entre un hongo y un fotoautótrofo (alga verde o cianobacteria). NO confundir con micorriza (endo/ecto), que es hongo + raíz de una planta, no hongo + alga.',theme:'ori'},
+  {q:'39. Campo de la biología que estudia la biodiversidad como producto de la evolución:',ops:['A) Sistemática','B) Taxonomía','C) Geología','D) Ecología'],a:0,exp:'Sistemática: estudia la diversidad incluyendo las relaciones evolutivas (filogenia) entre los organismos. La taxonomía (distractor B) solo nombra y clasifica; la sistemática añade la historia evolutiva que conecta a los grupos.',theme:'ori'},
+  {q:'40. Una célula n + n es:',ops:['A) Monocarióta','B) Diploide','C) Cenocítica','D) Dicarióta'],a:3,exp:'Dicariótica: tiene dos núcleos haploides distintos que aún NO se han fusionado (típica de la fase dicarionte de los hongos basidiomicetos). NO es diploide (2n): un diploide tiene un solo núcleo con dos juegos cromosómicos fusionados; aquí los núcleos siguen separados.',theme:'ori'},
 
   // ═══ EXPANSIÓN P2 — Genética molecular (gen) ═══
   {q:'¿Qué ocurre durante la transcripción?',ops:['A) La información del ARNm se usa para sintetizar proteínas','B) El ADN se replica con ADN polimerasa','C) El ADN sirve como molde para sintetizar ARN mensajero','D) Los ribosomas fabrican ARN propio'],a:2,exp:'Transcripción: ADN → ARNm (ARN polimerasa lee la hebra molde en dirección 3\'→5\' y sintetiza el ARNm 5\'→3\'). La traducción convierte el ARNm en proteína.',theme:'gen'},
@@ -9701,6 +9830,14 @@ const E23Q = [
   {q:'Un organismo tetraploide (4n) se origina por:',ops:['A) Mitosis extra sin citocinesis','B) Cruce entre especies diferentes sin más cambios','C) Duplicación del genoma completo sin división celular (poliploidía)','D) Una mutación puntual en el ADN'],a:2,exp:'La poliploidía ocurre cuando el genoma se duplica. Es más común en plantas (trigo 6n, fresa 8n) y puede producir especiación instantánea.',theme:'gen'},
   {q:'¿Cuál enzima es responsable de sintetizar el cebador (primer) durante la replicación del ADN?',ops:['A) Helicasa','B) ADN polimerasa I','C) Ligasa','D) Primasa'],a:3,exp:'La primasa (una ARN polimerasa) sintetiza el cebador de ARN necesario porque la ADN polimerasa no puede iniciar una nueva cadena; solo puede extender una existente.',theme:'gen'},
   {q:'¿Qué son los genes ligados al sexo?',ops:['A) Genes que solo expresan los hombres','B) Genes ubicados en los cromosomas sexuales (X o Y) con patrones de herencia distintos entre sexos','C) Genes que determinan solo el sexo del organismo','D) Genes que se activan durante la pubertad'],a:1,exp:'Los genes ligados al X (hemofilia, daltonismo) se heredan de forma diferente en hombres y mujeres. Los hombres XY solo tienen un alelo X → son hemicigotos.',theme:'gen'},
+
+  // ═══ EXPANSIÓN P2 — Genética de PROBLEMAS (aplicación / Bloom alto) ═══
+  {q:'En un cruce AaBb × AaBb (genes en cromosomas distintos), ¿cuál es la probabilidad de un descendiente aabb?',ops:['A) 1/16','B) 1/8','C) 1/4','D) 1/2'],a:0,exp:'Regla del producto: P(aa)=1/4 y P(bb)=1/4 son independientes → se MULTIPLICAN: 1/4 × 1/4 = 1/16. Error frecuente: sumarlas (1/4+1/4=1/2); la regla de la suma solo aplica a eventos mutuamente excluyentes, no a dos genes independientes.',theme:'gen'},
+  {q:'Dos plantas RrYy (semilla lisa y amarilla, ambos rasgos dominantes) se cruzan. De 320 semillas, ¿cuántas se esperan rugosas Y verdes (rryy)?',ops:['A) ~20','B) ~80','C) ~120','D) ~180'],a:0,exp:'Doble recesivo: P(rryy)=1/4 × 1/4 = 1/16. 320 × 1/16 = 20. En la proporción dihíbrida 9:3:3:1, el doble recesivo es la fracción 1/16. Error frecuente: usar 1/4 (la proporción 3:1 de un solo gen) y responder 80.',theme:'gen'},
+  {q:'Una mujer portadora de daltonismo (ligado al X) tiene descendencia con un hombre de visión normal. ¿Qué proporción de los HIJOS VARONES se espera daltónicos?',ops:['A) 0%','B) 25%','C) 50%','D) 100%'],a:2,exp:'La madre XᶜX transmite Xᶜ o X (50% cada uno). Los varones reciben su único cromosoma X de la madre → 1/2 son XᶜY (daltónicos). El padre XY no aporta X a sus hijos varones. Error frecuente: responder 25%, que sería la proporción sobre el TOTAL de hijos, no solo entre los varones.',theme:'gen'},
+  {q:'Un padre de grupo sanguíneo AB y una madre de grupo O tienen hijos. ¿Qué grupos sanguíneos son posibles en la descendencia?',ops:['A) Solo AB','B) A o B','C) A, B, AB u O','D) Solo O'],a:1,exp:'Padre AB = IᴬIᴮ; madre O = ii. Cada hijo recibe Iᴬ o Iᴮ del padre y siempre i de la madre → Iᴬi (grupo A) o Iᴮi (grupo B). Ningún hijo puede ser AB ni O. Aunque Iᴬ e Iᴮ son codominantes, el genotipo ii de la madre limita el resultado.',theme:'gen'},
+  {q:'Una planta de flor púrpura (rasgo dominante) se cruza con una blanca (pp) y la mitad de la descendencia resulta blanca. ¿Cuál era el genotipo de la planta púrpura?',ops:['A) PP','B) Pp','C) pp','D) No se puede saber'],a:1,exp:'Es un cruce de prueba. Si la púrpura fuera PP, toda la descendencia sería púrpura (Pp). Como aparece 50% blanca (pp), la púrpura tuvo que aportar un alelo p → era Pp (Pp × pp → 1/2 Pp púrpura : 1/2 pp blanca). El cruce de prueba revela el genotipo oculto de un fenotipo dominante.',theme:'gen'},
+  {q:'En un cruce Aa × Aa, un descendiente NO muestra el rasgo recesivo. ¿Cuál es la probabilidad de que sea portador (Aa)?',ops:['A) 1/4','B) 1/2','C) 2/3','D) 3/4'],a:2,exp:'La descendencia es 1 AA : 2 Aa : 1 aa. Pero ya sabemos que NO es aa (no muestra el rasgo) → solo quedan AA y Aa en proporción 1:2. La probabilidad de Aa dentro de ese grupo es 2/3. Es probabilidad CONDICIONAL: se descarta el caso aa antes de calcular. Error frecuente: responder 1/2 sin condicionar.',theme:'gen'},
 
   // ═══ EXPANSIÓN P2 — Evolución (evo) — DE 4 A 19 PREGUNTAS ═══
   {q:'¿Cuáles son los cuatro postulados de Darwin y Wallace para la selección natural?',ops:['A) Mutación, migración, deriva, selección','B) Variación heredable en la población, más individuos nacen de los que sobreviven, la supervivencia no es aleatoria, los rasgos favorables se heredan','C) Herencia, mutación, especiación, extinción','D) Reproducción, migración, aislamiento, selección'],a:1,exp:'Darwin y Wallace: 1) variación heredable existe, 2) se producen más individuos de los que pueden sobrevivir, 3) la supervivencia no es azar (depende de los rasgos), 4) los rasgos ventajosos se heredan.',theme:'evo'},
@@ -17501,6 +17638,7 @@ function diagStart(){
     q: q.q,
     ops: q.ops || q.o,
     a: q.a,
+    exp: q.exp || '',
     theme: q.theme
   }))
 
@@ -17537,7 +17675,9 @@ function diagRenderQuestion(){
 
 function diagAnswer(picked, correct, theme){
   if (!_diagState) return
-  _diagState.answers.push({ theme, correct: picked === correct })
+  // Guardamos la pregunta y la opción elegida para poder mostrar revisión por ítem al final.
+  const q = _diagState.questions[_diagState.current]
+  _diagState.answers.push({ theme, correct: picked === correct, picked, q })
   _diagState.current++
   diagRenderQuestion()
 }
@@ -17612,6 +17752,35 @@ function diagFinish(){
     if (s >= 0.8) reco.push(`✅ Dominás bien ${labels[t] || t} (${Math.round(s*100)}%). Mantenelo con flashcards y un simulacro semanal.`)
   })
   recos.innerHTML = reco.map(r => `<div style="margin-bottom:.4rem">${r}</div>`).join('')
+  // ═══ [PEDAGOGÍA] Revisión por ítem — feedback correctivo posterior ═══
+  // El feedback explicativo es la intervención de mayor tamaño de efecto en
+  // aprendizaje (Hattie & Timperley 2007, d≈0.70). Mostramos cada pregunta
+  // fallada con la respuesta correcta y la explicación para convertir el
+  // diagnóstico en un momento de aprendizaje, no solo de medición.
+  try {
+    const reviewWrap = document.getElementById('diagReviewWrap')
+    const review = document.getElementById('diagReview')
+    if (review){
+      const missed = _diagState.answers.filter(a => a && a.q && !a.correct)
+      if (!missed.length){
+        review.innerHTML = `<div style="padding:.5rem .2rem;color:var(--green);font-weight:700">✅ No fallaste ninguna. Aun así, confirmá que es dominio (y no suerte) con un simulacro nuevo del tema.</div>`
+      } else {
+        review.innerHTML = missed.map(a => {
+          const q = a.q
+          const yourTxt = (q.ops && q.ops[a.picked] != null) ? q.ops[a.picked] : '—'
+          const corrTxt = (q.ops && q.ops[q.a] != null) ? q.ops[q.a] : '—'
+          const expHtml = q.exp ? `<div style="margin-top:.4rem;font-size:.82rem;line-height:1.55"><strong>Por qué:</strong> ${q.exp}</div>` : ''
+          return `<div style="border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;margin-bottom:.5rem;background:var(--soft)">
+            <div style="font-weight:700;font-size:.86rem;margin-bottom:.35rem">${q.q}</div>
+            <div style="font-size:.82rem;color:var(--red)">✗ Tu respuesta: ${yourTxt}</div>
+            <div style="font-size:.82rem;color:var(--green);font-weight:700">✓ Correcta: ${corrTxt}</div>
+            ${expHtml}
+          </div>`
+        }).join('')
+      }
+      if (reviewWrap) reviewWrap.style.display = 'block'
+    }
+  } catch(e){ console.warn('[diag review]', e) }
   // Actualizar Hoy y predicción
   renderTodayPlan()
   renderReadinessGauge()
