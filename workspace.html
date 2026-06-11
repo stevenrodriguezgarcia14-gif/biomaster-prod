@@ -639,7 +639,9 @@ select option{background:var(--bg1)}
         </div>
         <div class="fg">
           <label>Responsable</label>
-          <input name="assignee_name" placeholder="Steven, Fiorella...">
+          <select name="assignee_name" id="assigneeSelect">
+            <option value="">Sin asignar</option>
+          </select>
         </div>
       </div>
       <div class="fg">
@@ -712,7 +714,7 @@ const { createClient } = supabase
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 let profile = null
-let tasks = [], notes = [], activity = [], notifications = []
+let tasks = [], notes = [], activity = [], notifications = [], admins = []
 let currentView = 'overview'
 let noteFilter = 'all'
 let editTaskId = null, editNoteId = null
@@ -756,8 +758,9 @@ async function init() {
     document.getElementById('sbAv').textContent = (p.name||'A').charAt(0).toUpperCase()
     document.getElementById('sbName').textContent = p.name || 'Admin'
 
-    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications()])
+    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins()])
     initNav()
+    populateAssigneeSelect()
     renderView('overview')
     renderNotifBadge()
     showApp()
@@ -797,6 +800,26 @@ async function loadNotifications() {
   const { data } = await sb.from('workspace_notifications').select('*')
     .eq('recipient_id', profile.id).order('created_at', {ascending:false}).limit(40)
   notifications = data || []
+}
+async function loadAdmins() {
+  const { data } = await sb.from('profiles').select('id, name').eq('role', 'admin').order('name')
+  admins = (data || []).filter(a => a.name)
+}
+function populateAssigneeSelect() {
+  const sel = document.getElementById('assigneeSelect')
+  if (!sel) return
+  sel.innerHTML = '<option value="">Sin asignar</option>' +
+    admins.map(a => `<option value="${esc(a.name)}">${esc(a.name)}</option>`).join('')
+}
+// Conserva un responsable heredado (texto libre) que no esté en la lista de admins
+function ensureAssigneeOption(name) {
+  const sel = document.getElementById('assigneeSelect')
+  if (!sel || !name) return
+  if (![...sel.options].some(o => o.value === name)) {
+    const o = document.createElement('option')
+    o.value = name; o.textContent = name + ' (heredado)'
+    sel.appendChild(o)
+  }
 }
 
 // ─── NOTIFICATIONS UI ───
@@ -1258,7 +1281,8 @@ function openEditTask(id) {
   f.title.value = t.title||''; f.description.value = t.description||''
   f.checklist.value = (t.checklist||[]).map(c=>c.text).join('\n')
   f.status.value = t.status||'todo'; f.priority.value = t.priority||'normal'
-  f.category.value = t.category||'general'; f.assignee_name.value = t.assignee_name||''
+  f.category.value = t.category||'general'
+  ensureAssigneeOption(t.assignee_name); f.assignee_name.value = t.assignee_name||''
   f.due_date.value = t.due_date||''
   openModal('taskModal')
 }
@@ -1405,3 +1429,4 @@ init().catch(err => {
 </script>
 </body>
 </html>
+
