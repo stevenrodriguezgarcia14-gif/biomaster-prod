@@ -389,6 +389,43 @@ select option{background:var(--bg1)}
 .empty svg{width:34px;height:34px;stroke:var(--dim);fill:none;opacity:.45;stroke-width:1.5}
 .empty p{font-size:.8rem}
 
+/* ─── NOTIFICATIONS ─── */
+.bell-wrap{position:relative}
+.bell-btn{
+  position:relative;width:34px;height:34px;border-radius:var(--rs);
+  background:var(--bg3);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background var(--t);
+}
+.bell-btn:hover{background:var(--bg4)}
+.bell-btn svg{width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2}
+.bell-btn.has-unread svg{stroke:var(--green-b)}
+.bell-badge{
+  position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;padding:0 4px;
+  background:var(--red);color:#fff;font-size:.6rem;font-weight:700;border-radius:9px;
+  display:none;align-items:center;justify-content:center;line-height:1;
+}
+.bell-badge.show{display:flex}
+.notif-panel{
+  position:absolute;top:42px;right:0;width:340px;max-width:92vw;max-height:440px;
+  background:var(--bg2);border:1px solid var(--border-b);border-radius:var(--r);
+  box-shadow:var(--shadow);z-index:1002;overflow:hidden;display:none;flex-direction:column;
+}
+.notif-panel.open{display:flex;animation:fadeUp .18s ease}
+.notif-hd{display:flex;align-items:center;justify-content:space-between;padding:.7rem .9rem;border-bottom:1px solid var(--border)}
+.notif-hd strong{font-size:.84rem;color:var(--text)}
+.notif-hd button{background:none;border:none;color:var(--green-b);font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit}
+.notif-list{overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border-b) transparent}
+.notif-item{display:flex;gap:.65rem;padding:.65rem .9rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--t)}
+.notif-item:hover{background:var(--bg3)}
+.notif-item.unread{background:var(--green-s2)}
+.notif-av{width:30px;height:30px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700;color:#fff;flex-shrink:0}
+.notif-body-txt{flex:1;min-width:0}
+.notif-title{font-size:.78rem;color:var(--text);font-weight:600;line-height:1.3}
+.notif-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notif-time{font-size:.64rem;color:var(--dim);margin-top:.2rem}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--green-b);flex-shrink:0;margin-top:.4rem}
+.notif-empty{padding:1.8rem 1rem;text-align:center;color:var(--dim);font-size:.78rem}
+
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
@@ -489,6 +526,16 @@ select option{background:var(--bg1)}
       <span class="view-title" id="vTitle">Overview</span>
       <span class="view-sub" id="vSub">Centro de operaciones</span>
       <div class="view-acts">
+        <div class="bell-wrap">
+          <button class="bell-btn" id="bellBtn" onclick="toggleNotifPanel(event)" title="Notificaciones">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="bell-badge" id="bellBadge">0</span>
+          </button>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-hd"><strong>Notificaciones</strong><button onclick="markAllNotifsRead()">Marcar leídas</button></div>
+            <div class="notif-list" id="notifList"></div>
+          </div>
+        </div>
         <div class="rt-dot" id="rtDot" title="Sincronización en vivo"></div>
         <button class="btn btn-primary btn-sm" id="mainBtn" onclick="primaryAction()" hidden>
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round"/></svg>
@@ -665,7 +712,7 @@ const { createClient } = supabase
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 let profile = null
-let tasks = [], notes = [], activity = []
+let tasks = [], notes = [], activity = [], notifications = []
 let currentView = 'overview'
 let noteFilter = 'all'
 let editTaskId = null, editNoteId = null
@@ -709,9 +756,10 @@ async function init() {
     document.getElementById('sbAv').textContent = (p.name||'A').charAt(0).toUpperCase()
     document.getElementById('sbName').textContent = p.name || 'Admin'
 
-    await Promise.all([loadTasks(), loadNotes(), loadActivity()])
+    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications()])
     initNav()
     renderView('overview')
+    renderNotifBadge()
     showApp()
     initRealtime()
   } catch(e) {
@@ -744,6 +792,75 @@ async function loadNotes() {
 async function loadActivity() {
   const { data } = await sb.from('workspace_activity').select('*').order('created_at', {ascending:false}).limit(80)
   activity = data || []
+}
+async function loadNotifications() {
+  const { data } = await sb.from('workspace_notifications').select('*')
+    .eq('recipient_id', profile.id).order('created_at', {ascending:false}).limit(40)
+  notifications = data || []
+}
+
+// ─── NOTIFICATIONS UI ───
+function unreadNotifCount() { return notifications.filter(n => !n.read).length }
+
+function renderNotifBadge() {
+  const n = unreadNotifCount()
+  const badge = document.getElementById('bellBadge')
+  const btn = document.getElementById('bellBtn')
+  if (!badge || !btn) return
+  badge.textContent = n > 9 ? '9+' : String(n)
+  badge.classList.toggle('show', n > 0)
+  btn.classList.toggle('has-unread', n > 0)
+}
+
+function renderNotifList() {
+  const list = document.getElementById('notifList')
+  if (!list) return
+  if (!notifications.length) {
+    list.innerHTML = '<div class="notif-empty">Sin notificaciones todavía</div>'
+    return
+  }
+  list.innerHTML = notifications.map(n => {
+    const init = (n.actor_name || 'A').charAt(0).toUpperCase()
+    return `
+      <div class="notif-item ${n.read ? '' : 'unread'}" onclick="onNotifClick('${n.id}','${n.entity_type||''}','${n.entity_id||''}')">
+        <div class="notif-av">${init}</div>
+        <div class="notif-body-txt">
+          <div class="notif-title">${esc(n.title)}</div>
+          ${n.body ? `<div class="notif-sub">${esc(n.body)}</div>` : ''}
+          <div class="notif-time">${timeAgo(n.created_at)}</div>
+        </div>
+        ${n.read ? '' : '<div class="notif-dot"></div>'}
+      </div>`
+  }).join('')
+}
+
+function toggleNotifPanel(e) {
+  if (e) e.stopPropagation()
+  const p = document.getElementById('notifPanel')
+  const opening = !p.classList.contains('open')
+  p.classList.toggle('open', opening)
+  if (opening) renderNotifList()
+}
+
+async function onNotifClick(id, etype, eid) {
+  await markNotifRead(id)
+  document.getElementById('notifPanel').classList.remove('open')
+  if (etype === 'task' && eid && tasks.find(x => x.id === eid)) openDetail(eid)
+}
+
+async function markNotifRead(id) {
+  const n = notifications.find(x => x.id === id)
+  if (!n || n.read) return
+  n.read = true; renderNotifBadge(); renderNotifList()
+  await sb.from('workspace_notifications').update({ read: true }).eq('id', id)
+}
+
+async function markAllNotifsRead() {
+  const unread = notifications.filter(n => !n.read)
+  if (!unread.length) return
+  unread.forEach(n => n.read = true)
+  renderNotifBadge(); renderNotifList()
+  await sb.from('workspace_notifications').update({ read: true }).eq('recipient_id', profile.id).eq('read', false)
 }
 
 // ─── NAV ───
@@ -1095,6 +1212,12 @@ function initRealtime() {
       await loadNotes()
       if (currentView === 'notes') renderNotes()
     })
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'workspace_notifications', filter:`recipient_id=eq.${profile.id}`}, (payload) => {
+      notifications.unshift(payload.new)
+      renderNotifBadge()
+      if (document.getElementById('notifPanel').classList.contains('open')) renderNotifList()
+      toast(payload.new.title)
+    })
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'workspace_activity'}, async (payload) => {
       await loadActivity()
       if (currentView === 'activity') renderActivity()
@@ -1262,6 +1385,14 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal.open').forEach(el => closeModal(el.id))
     closeDetailPanel()
+    document.getElementById('notifPanel')?.classList.remove('open')
+  }
+})
+// Cerrar el panel de notificaciones al hacer click fuera
+document.addEventListener('click', e => {
+  const panel = document.getElementById('notifPanel')
+  if (panel?.classList.contains('open') && !e.target.closest('.bell-wrap')) {
+    panel.classList.remove('open')
   }
 })
 
