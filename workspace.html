@@ -765,6 +765,7 @@ async function init() {
     renderNotifBadge()
     showApp()
     initRealtime()
+    openTaskFromUrl()
   } catch(e) {
     console.error(e)
     deny()
@@ -1375,6 +1376,15 @@ function closeDetailPanel() {
 
 function onDetailOverlayClick(e) {
   if (e.target === document.getElementById('detailOverlay')) closeDetailPanel()
+}
+
+// Deep-link: abrir una tarea puntual desde el correo (?task=<id>)
+function openTaskFromUrl() {
+  const id = new URLSearchParams(location.search).get('task')
+  if (id && tasks.find(t => t.id === id)) {
+    renderView('tasks')
+    openDetail(id)
+  }
 }
 
 // ─── MISC ───
