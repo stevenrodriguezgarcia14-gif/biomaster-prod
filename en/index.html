@@ -1059,6 +1059,121 @@
 /* ═══ Fin Biocosmos F3 ═══ */
 
 /* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS R2 — Premium rarities, "scientific specimen plate"
+   No emojis. Rarity = MATERIAL + 2.5D depth.
+   common=engraved paper · rare=bronze · epic=holographic silver ·
+   legendary=prismatic foil. Reuses r-raro / r-epico / r-legend.
+   ═══════════════════════════════════════════════════════════ */
+@keyframes bwSpin{ to{ transform:rotate(360deg) } }
+@keyframes bwBrush{ 0%,100%{ transform:translateX(-32%) } 50%{ transform:translateX(32%) } }
+
+.bw-spec{
+  position:relative;
+  width:min(290px,80vw);
+  margin:0 auto;
+  transform:perspective(950px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transform-style:preserve-3d;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.55));
+  will-change:transform;
+}
+.bw-spec-frame{
+  position:relative;z-index:0;
+  border-radius:16px;padding:5px;overflow:hidden;
+  background:linear-gradient(135deg,#e9e4d4,#c7bfa6 55%,#ddd6bf);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 6px rgba(0,0,0,.25);
+}
+.bw-spec-window{
+  position:relative;z-index:1;
+  border-radius:12px;overflow:hidden;aspect-ratio:1/1;
+  background:radial-gradient(circle at 50% 38%, rgba(20,40,28,.5), rgba(4,12,7,.96));
+  box-shadow:inset 0 2px 10px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.bw-spec-window .bw-discovery-art{ width:100%;height:100%;filter:none;animation:none }
+.bw-spec-sheen{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,28%),
+            rgba(255,255,255,.22), rgba(255,255,255,.04) 38%, transparent 60%);
+  mix-blend-mode:screen;
+}
+.bw-spec-corner{
+  position:absolute;top:-9px;right:12px;z-index:3;
+  font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  padding:.28rem .62rem;border-radius:7px;
+  color:#3a3320;background:linear-gradient(135deg,#efe9d6,#cbc3aa);
+  box-shadow:0 4px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.6);
+  transform:translateZ(30px);
+}
+/* RARE — bronze */
+.bw-spec.r-raro{ filter:drop-shadow(0 26px 42px rgba(120,80,20,.45)) }
+.bw-spec.r-raro .bw-spec-frame{
+  background:linear-gradient(135deg,#6e4a1c,#cda35a 28%,#8a6128 52%,#e8c889 72%,#6e4a1c);
+}
+.bw-spec.r-raro .bw-spec-frame::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,245,210,.5) 50%,transparent 65%);
+  animation:bwBrush 5s ease-in-out infinite;
+}
+.bw-spec.r-raro .bw-spec-corner{ color:#3a2708;background:linear-gradient(135deg,#f0d49a,#c9974a) }
+/* EPIC — holographic silver */
+.bw-spec.r-epico{ filter:drop-shadow(0 26px 44px rgba(150,90,200,.4)) }
+.bw-spec.r-epico .bw-spec-frame{ background:#aeb6c8 }
+.bw-spec.r-epico .bw-spec-frame::before{
+  content:'';position:absolute;inset:-60%;z-index:-1;
+  background:conic-gradient(from 0deg,#c9d2e6,#9aa7c4,#e6d6ff,#a9c4e6,#d6c0ee,#c9d2e6);
+  animation:bwSpin 9s linear infinite;
+}
+.bw-spec.r-epico .bw-spec-corner{ color:#2b2440;background:linear-gradient(135deg,#e9e2ff,#bcb0e0) }
+/* LEGENDARY — prismatic foil */
+.bw-spec.r-legend{ filter:drop-shadow(0 28px 50px rgba(255,186,18,.5)) }
+.bw-spec.r-legend .bw-spec-frame{ background:#3a2f12 }
+.bw-spec.r-legend .bw-spec-frame::before{
+  content:'';position:absolute;inset:-60%;z-index:-1;
+  background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff8a3d,#ff5d5d);
+  animation:bwSpin 5.5s linear infinite;filter:saturate(1.25);
+}
+.bw-spec.r-legend .bw-spec-window::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(125deg,transparent 30%,rgba(255,216,107,.18) 50%,transparent 70%);
+  mix-blend-mode:screen;
+}
+.bw-spec.r-legend .bw-spec-corner{
+  color:#4a2f00;background:linear-gradient(135deg,#fff0b8,#ffc64d);
+  box-shadow:0 4px 14px rgba(255,186,18,.5), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+/* —— Rarity pills as a seal (all views) —— */
+.bw-rarity-raro{ background:linear-gradient(135deg,rgba(205,163,90,.28),rgba(138,97,40,.22));
+  color:#f0d49a;border:1px solid rgba(205,163,90,.55) }
+.bw-rarity-epico{ background:linear-gradient(135deg,rgba(176,38,214,.28),rgba(150,90,200,.2));
+  color:#e9d6ff;border:1px solid rgba(190,120,230,.55) }
+.bw-rarity-legend{ background:linear-gradient(135deg,rgba(255,186,18,.3),rgba(255,138,0,.2));
+  color:#fff0b8;border:1px solid rgba(255,200,80,.6);box-shadow:0 0 14px rgba(255,186,18,.3) }
+
+/* —— Pending sample discs with material —— */
+.bw-caps-orb-mini{ position:relative;overflow:hidden;
+  background:radial-gradient(circle at 36% 30%,#e9e4d4,#a9a48e 72%);animation:none }
+.bw-caps-orb-mini.r-raro{ background:linear-gradient(135deg,#6e4a1c,#e8c889 50%,#8a6128) }
+.bw-caps-orb-mini.r-epico{ background:conic-gradient(from 0deg,#c9d2e6,#9aa7c4,#e6d6ff,#a9c4e6,#c9d2e6);animation:bwSpin 7s linear infinite }
+.bw-caps-orb-mini.r-legend{ background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff5d5d);animation:bwSpin 6s linear infinite }
+.bw-caps-orb-mini::after{ content:'';position:absolute;inset:20%;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.55),rgba(0,0,0,.12) 70%);mix-blend-mode:screen }
+
+/* —— Sealed capsule (closed state): epic/legend material ring —— */
+.bw-orb-big.r-epico::after,.bw-orb-big.r-legend::after{
+  content:'';position:absolute;inset:-7px;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(2px) }
+.bw-orb-big.r-epico::after{ background:conic-gradient(from 0deg,#c9d2e6,#e6d6ff,#a9c4e6,#c9d2e6);animation:bwSpin 8s linear infinite }
+.bw-orb-big.r-legend::after{ background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff5d5d);animation:bwSpin 5s linear infinite }
+
+@media (prefers-reduced-motion: reduce){
+  .bw-spec{ transform:none!important;transition:none }
+  .bw-spec-frame::before,.bw-spec-frame::after,
+  .bw-spec.r-epico .bw-spec-frame::before,.bw-spec.r-legend .bw-spec-frame::before,
+  .bw-caps-orb-mini,.bw-orb-big.r-epico::after,.bw-orb-big.r-legend::after{ animation:none!important }
+}
+/* ═══ Fin Biocosmos R2 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
    BIOCOSMOS F4 — Colección viva (biotopo con descubrimientos)
    Sin tabla, sin grid. Items flotando libres en una "pecera".
    ═══════════════════════════════════════════════════════════ */
@@ -5659,7 +5774,15 @@ window.Analytics = (function(){
 
   <!-- Estado 2: descubrimiento revelado -->
   <div id="bwOpenStageOpened" class="bw-open-stage-opened">
-    <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+    <div class="bw-spec" id="bwSpecPlate">
+      <div class="bw-spec-frame">
+        <div class="bw-spec-window">
+          <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+          <span class="bw-spec-sheen" aria-hidden="true"></span>
+        </div>
+      </div>
+      <span class="bw-spec-corner" id="bwSpecCorner">Common</span>
+    </div>
     <h2 id="bwDiscName" class="bw-discovery-name">…</h2>
     <div class="bw-discovery-meta">
       <span class="bw-disc-type" id="bwDiscType">organism</span>
@@ -5892,6 +6015,13 @@ window.Analytics = (function(){
             <strong style="font-size:.88rem">📌 Automatic recommendations</strong>
             <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
           </div>
+          <div class="diag-result" id="diagReviewWrap" style="display:none">
+            <details open>
+              <summary style="font-size:.88rem;font-weight:700;cursor:pointer">📖 Review what you missed</summary>
+              <p class="muted" style="font-size:.78rem;margin:.3rem 0 .5rem">Reviewing the error with the correct explanation is where most learning happens. Read each one before moving on.</p>
+              <div id="diagReview"></div>
+            </details>
+          </div>
           <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Retake</button>
           <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Share my result</button>
           <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Build my study plan →</button>
@@ -6042,6 +6172,7 @@ window.Analytics = (function(){
                   <li><strong>Biology</strong> is the science that studies life at all its levels: from molecules to ecosystems.</li>
                   <li>It contributes to health, agriculture, biotechnology, conservation and understanding of natural phenomena.</li>
                   <li>It is based on <em>empirical evidence</em> and the scientific method, not opinions.</li>
+                  <li><strong>Unifying themes of biology:</strong> the enormous diversity of life is understood through a few common threads — above all <em>evolution</em> (the central theme that explains both the <em>unity</em> and the <em>diversity</em> of living things), the <em>structure-function</em> relationship, the <em>flow</em> of genetic information, the <em>transformations of energy and matter</em>, and <em>interactions</em> at every level.</li>
                   <li><span class="mark-yellow">Key:</span> distinguish <em>basic science</em> (seeks knowledge) from <em>applied science</em> (solves concrete problems).</li>
                 </ul>
               </div>
@@ -6073,9 +6204,10 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="niveles organizacion vida atomo molecula celula tejido organo organismo poblacion comunidad ecosistema biosfera"><strong>1.4 Levels of organization of life</strong>
                 <ul class="list">
                   <li><strong>Ascending order:</strong> atom → molecule → organelle → cell → tissue → organ → organ system → organism → population → community → ecosystem → biosphere.</li>
-                  <li><strong>Each level has emergent properties</strong> that do not appear at the lower level.</li>
+                  <li><strong>Emergent properties:</strong> at each level, new properties appear that do NOT exist at the lower level, because of <em>how</em> the parts are organized. Example: oxygen and hydrogen separately do not "wet" anything; combined as water, they do. A single neuron does not think; millions organized together do.</li>
+                  <li><strong>The whole is more than the sum of its parts:</strong> knowing the pieces is not enough; how they connect matters. That is why biology studies every level, not just molecules.</li>
                   <li><span class="mark-yellow">Key:</span> the <em>cell</em> is the first level at which life appears; an isolated atom or molecule is not a living thing.</li>
-                  <li><span class="mark-red">Error:</span> mixing up the order or skipping the cellular level in an ordering question.</li>
+                  <li><span class="mark-red">Error:</span> mixing up the order or skipping a level. Note: <em>organelle</em> goes between molecule and cell, and <em>organ system</em> between organ and organism.</li>
                 </ul>
               </div>
 
@@ -6094,6 +6226,11 @@ window.Analytics = (function(){
                   <li><strong>Scientific law:</strong> describes an observed regularity; it does not explain why it occurs.</li>
                   <li><span class="mark-yellow">How it's asked:</span> "After stating the hypothesis and prediction, what comes next?" → <em>the experiment</em>. "Difference between theory and law" → theory explains, law describes.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: inductive vs deductive reasoning and why science is reliable</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Inductive reasoning:</strong> from many particular observations you reach a generalization (e.g., "every organism observed is made of cells" → the cell theory). <strong>Deductive reasoning:</strong> from a general idea you predict a particular case (e.g., "if all cells come from other cells, then this sterile broth will not generate life" → a testable prediction). <strong>Controlled experiment:</strong> compares an experimental group with a control group identical except for the independent variable; the other variables are kept constant (controlled variables) so the observed effect is due only to the variable being studied. <strong>Why science is reliable:</strong> not because of the authority of whoever proposes it, but because results must be <em>reproducible</em> by others and pass <em>peer review</em>. A hypothesis is never "proven" as absolute truth: evidence accumulates that supports or refutes it.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> A scientist observes 100 white swans and concludes "all swans are white". What type of reasoning is this and what is its limit? <em>Answer: inductive (from particular cases to a generalization); its limit is that a single contrary observation (one black swan) can refute the conclusion.</em></div>
               </div>
 
             </div>
@@ -6160,68 +6297,130 @@ window.Analytics = (function(){
                 </ul>
               </div>
 
+              <div class="subitem" data-keywords="grupos funcionales hidroxilo carbonilo carboxilo amino fosfato sulfhidrilo metilo polaridad reactividad quimica organica"><strong>2.1.5 Functional groups</strong>
+                <ul class="list">
+                  <li>They are groups of atoms that give <strong>specific chemical properties</strong> to an organic molecule. The same carbon chain behaves differently depending on which functional groups it carries.</li>
+                  <li><strong>Hydroxyl (—OH):</strong> polar. In alcohols and sugars; makes the molecule water-soluble.</li>
+                  <li><strong>Carbonyl (C=O):</strong> in aldehydes (at the end) and ketones (within the chain).</li>
+                  <li><strong>Carboxyl (—COOH):</strong> acidic (releases H⁺). In fatty acids and amino acids.</li>
+                  <li><strong>Amino (—NH₂):</strong> basic (accepts H⁺). In amino acids.</li>
+                  <li><strong>Phosphate (—OPO₃²⁻):</strong> in ATP and nucleic acids; key in energy transfer.</li>
+                  <li><strong>Sulfhydryl (—SH):</strong> in cysteine; two —SH form disulfide bridges that stabilize proteins.</li>
+                  <li><span class="mark-yellow">Key:</span> the <em>polarity</em>, <em>acidity/basicity</em> and reactivity of a biomolecule depend on its functional groups (e.g., an amino acid has amino + carboxyl + its R group).</li>
+                </ul>
+              </div>
+
+              <div class="subitem" data-keywords="monomero polimero macromolecula sintesis deshidratacion condensacion hidrolisis enlace agua biomoleculas digestion"><strong>2.2.0 Monomers and polymers: how they are built and broken</strong>
+                <ul class="list">
+                  <li><strong>Unifying idea:</strong> three of the four biomolecules (carbohydrates, proteins, nucleic acids) are <em>polymers</em>: chains of repeating units called <em>monomers</em>. Lipids are <em>not</em> true polymers.</li>
+                  <li><strong>Dehydration synthesis (condensation):</strong> to JOIN two monomers, the cell <em>releases</em> one water molecule. This is how the glycosidic bond (carbohydrates), the peptide bond (proteins) and the phosphodiester bond (nucleic acids) all form.</li>
+                  <li><strong>Hydrolysis:</strong> to BREAK a polymer, one water molecule is <em>added</em> per bond (the reverse of dehydration). This is how digestion works.</li>
+                  <li><span class="mark-green">One logic for everything:</span> regardless of the biomolecule, building = removing water; breaking = adding water.</li>
+                  <li><span class="mark-red">Mistake:</span> thinking each biomolecule is assembled by a different mechanism. The mechanism (dehydration/hydrolysis) is the same; only the monomer and the bond's name change.</li>
+                </ul>
+              </div>
+
               <div class="subitem" data-keywords="carbohidratos glucidos monosacarido disacarido polisacarido glucosa fructosa galactosa sacarosa lactosa maltosa almidon glucogeno celulosa quitina"><strong>2.2.1 Carbohydrates</strong>
                 <ul class="list">
-                  <li><strong>Main function:</strong> quick energy and structure.</li>
-                  <li><strong>Monosaccharides:</strong> basic unit. Glucose, fructose, galactose, ribose (in RNA), deoxyribose (in DNA).</li>
-                  <li><strong>Disaccharides:</strong> two monosaccharides joined by a glycosidic bond. Sucrose (glucose+fructose), lactose (glucose+galactose), maltose (glucose+glucose).</li>
-                  <li><strong>Polysaccharides:</strong>
+                  <li><strong>Functions:</strong> immediate energy (glucose), energy reserve (starch, glycogen), structure (cellulose, chitin) and cell recognition (glycoproteins).</li>
+                  <li><strong>Monosaccharides (the monomer):</strong> simple sugars. Classified two ways:
                     <ul class="list">
-                      <li><em>Starch:</em> energy reserve in plants.</li>
-                      <li><em>Glycogen:</em> energy reserve in animals (liver and muscle).</li>
-                      <li><em>Cellulose:</em> structure in plant cell walls. Humans cannot digest it.</li>
-                      <li><em>Chitin:</em> exoskeleton of arthropods and cell walls of fungi.</li>
+                      <li><em>By number of carbons:</em> trioses (3C, e.g. glyceraldehyde), pentoses (5C: ribose and deoxyribose), hexoses (6C: glucose, fructose, galactose).</li>
+                      <li><em>By functional group:</em> aldoses (have an <em>aldehyde</em> group, e.g. glucose) and ketoses (have a <em>ketone</em> group, e.g. fructose).</li>
                     </ul>
                   </li>
-                  <li><span class="mark-yellow">Key:</span> starch = plant, glycogen = animal, cellulose = plant wall, chitin = arthropods/fungi.</li>
-                  <li><span class="mark-red">Error:</span> confusing glycogen (animal reserve) with cellulose (plant structure).</li>
+                  <li><strong>Isomers:</strong> glucose, fructose and galactose share the formula C₆H₁₂O₆ but with atoms arranged differently → different properties. In water, monosaccharides take a <em>ring</em> form.</li>
+                  <li><strong>Disaccharides:</strong> two monosaccharides joined by a <em>glycosidic bond</em> (formed by dehydration). Sucrose (glucose+fructose, table sugar), lactose (glucose+galactose, milk sugar), maltose (glucose+glucose).</li>
+                  <li><strong>Polysaccharides (polymers):</strong>
+                    <ul class="list">
+                      <li><em>Starch</em> (plant reserve): a mix of <strong>amylose</strong> (linear chain) and <strong>amylopectin</strong> (branched). α(1→4) bonds.</li>
+                      <li><em>Glycogen</em> (animal reserve, in liver and muscle): highly branched → mobilized quickly when energy is needed.</li>
+                      <li><em>Cellulose</em> (structure, plant wall): β(1→4) bonds forming rigid fibers. Humans cannot digest it → it is "fiber".</li>
+                      <li><em>Chitin</em>: exoskeleton of arthropods and cell wall of fungi; like cellulose but with a nitrogen-containing group.</li>
+                    </ul>
+                  </li>
+                  <li><strong>Reducing sugars:</strong> those with a free carbonyl group (glucose, fructose, maltose, lactose) test positive with Benedict's/Fehling's reagent. <em>Sucrose is NOT</em> reducing (its carbonyl is tied up in the bond).</li>
+                  <li><span class="mark-yellow">Key:</span> starch = plant, glycogen = animal, cellulose = plant wall, chitin = arthropods/fungi. Golden rule: <em>α bonds = digestible</em>, <em>β bonds = not digestible</em>.</li>
+                  <li><span class="mark-red">Error:</span> confusing glycogen (animal reserve) with cellulose (plant structure); or thinking sucrose is a reducing sugar.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: isomers, α/β rings and why we cannot digest cellulose</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Isomers:</strong> glucose, fructose and galactose share the same formula (C₆H₁₂O₆) but differ in how their atoms are arranged → they are <em>isomers</em>. That is why they taste different and are metabolized differently even though they "weigh" the same. <strong>Ring forms:</strong> in water, glucose closes into a ring that can be in two versions: <em>α-glucose</em> (C1 hydroxyl pointing down) and <em>β-glucose</em> (pointing up). <strong>That tiny difference decides everything:</strong> starch and glycogen are built with <em>α(1→4)</em> bonds, which our amylase enzyme cuts → digestible. Cellulose is built with <em>β(1→4)</em> bonds, which form straight, rigid fibers we have no enzyme to cut → we cannot digest it (it is "fiber"). Ruminants and termites do use it, but thanks to symbiotic microorganisms in their gut, not their own enzymes. <strong>Chitin:</strong> like cellulose but with a nitrogen-containing group on each unit; it hardens the exoskeleton of insects and the cell wall of fungi.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> Why can you digest the starch in a potato but not the cellulose in lettuce, if both are glucose polymers? <em>Answer: starch uses α(1→4) bonds your amylase cuts; cellulose uses β(1→4) bonds you have no enzyme for.</em></div>
               </div>
 
               <div class="subitem" data-keywords="lipidos grasas trigliceridos saturados insaturados fosfolipidos esteroides colesterol ceras hidrofobico anfipatico"><strong>2.2.2 Lipids</strong>
                 <ul class="list">
-                  <li><strong>Common characteristic:</strong> hydrophobic (insoluble in water) due to their long nonpolar regions.</li>
-                  <li><strong>Triglycerides (fats and oils):</strong> glycerol + 3 fatty acids. Function: concentrated energy reserve.</li>
-                  <li><strong>Saturated vs unsaturated:</strong> saturated have no double bonds (solid at room temperature, animal fats). Unsaturated have double bonds (liquid, vegetable oils).</li>
-                  <li><strong>Phospholipids:</strong> glycerol + 2 fatty acids + phosphate group. <em>Amphipathic</em>: hydrophilic head, hydrophobic tail. Form bilayers → cell membranes.</li>
-                  <li><strong>Steroids:</strong> 4 carbon rings. Cholesterol, sex hormones (estrogen, testosterone), cortisol.</li>
-                  <li><strong>Waxes:</strong> waterproofing agents (plant cuticle, feathers).</li>
+                  <li><strong>Common characteristic:</strong> hydrophobic (insoluble in water) due to their long nonpolar hydrocarbon regions. They are NOT true polymers.</li>
+                  <li><strong>Triglycerides (fats and oils):</strong> glycerol + 3 fatty acids joined by <em>ester bonds</em> (dehydration). The main concentrated energy reserve.</li>
+                  <li><strong>Saturated vs unsaturated:</strong> saturated have no double bonds (straight chain, solid at room temperature, animal fats); unsaturated have C=C double bonds that kink the chain (liquid, vegetable oils).</li>
+                  <li><strong>Essential fatty acids (omega-3 and omega-6):</strong> the body cannot make them → they must come from the diet (fish, seeds, nuts).</li>
+                  <li><strong>Phospholipids:</strong> glycerol + 2 fatty acids + phosphate group. <em>Amphipathic</em>: hydrophilic head + hydrophobic tail. In water they form bilayers → the basis of every cell membrane.</li>
+                  <li><strong>Steroids:</strong> 4 fused carbon rings. <em>Cholesterol</em> regulates membrane fluidity and is the precursor of steroid hormones (estrogen, testosterone, cortisol) and vitamin D.</li>
+                  <li><strong>Waxes:</strong> highly hydrophobic; waterproofing (leaf cuticle, bird feathers, earwax).</li>
+                  <li><strong>Lipid functions:</strong> energy reserve (more than twice the energy per gram of carbohydrates), thermal insulation, organ protection, membranes, hormones and fat-soluble vitamins (A, D, E, K).</li>
                   <li><span class="mark-yellow">Key:</span> phospholipids form bilayers because they are <em>amphipathic</em>.</li>
                   <li><span class="mark-red">Error:</span> "lipids are polymers". <em>They are not</em>: they are not formed by repeated monomers like carbohydrates or proteins.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: why butter is solid and oil is liquid</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Shape rules:</strong> a <em>saturated</em> fatty acid has no double bonds, so its chain is straight and many chains stack tightly → solid at room temperature (butter, tallow). An <em>unsaturated</em> fatty acid has one or more C=C double bonds that create a <em>kink</em> in the chain; those kinks prevent tight stacking → liquid (vegetable oils). <strong>Trans fats:</strong> they are unsaturated but industrially "straightened", so they behave like saturated fats and harm the arteries. <strong>Why they store so much energy:</strong> triglycerides store more than twice the energy per gram of carbohydrates, because their carbons are more "reduced" (more C—H bonds available to oxidize). <strong>Why phospholipids form membranes:</strong> they have a head that "loves" water and two tails that "reject" it; in water they self-organize into a bilayer with the tails hidden inside — the basis of every cell membrane.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> Why does a phospholipid form a bilayer in water but a triglyceride does not? <em>Answer: the phospholipid is amphipathic (hydrophilic head + hydrophobic tails); the triglyceride is entirely hydrophobic, so it clusters into droplets, not bilayers.</em></div>
               </div>
 
               <div class="subitem" data-keywords="proteinas aminoacidos enlace peptidico estructura primaria secundaria terciaria cuaternaria desnaturalizacion enzimas hormonas anticuerpos"><strong>2.2.3 Proteins</strong>
                 <ul class="list">
-                  <li><strong>Monomer:</strong> amino acid (20 different ones in living things). Each has an amino group, a carboxyl group and a variable R group.</li>
-                  <li><strong>Peptide bond:</strong> joins the carboxyl group of one amino acid with the amino group of the next, releasing water (dehydration synthesis).</li>
+                  <li><strong>Monomer — the amino acid:</strong> a central (α) carbon bonded to 4 groups: amino (—NH₂), carboxyl (—COOH), a hydrogen, and a variable <em>R</em> group (side chain). There are 20 standard amino acids; the only thing that changes between them is the R group.</li>
+                  <li><strong>Amino acid classification by R group:</strong>
+                    <ul class="list">
+                      <li><em>Nonpolar / hydrophobic</em> (alanine, valine, leucine): tend to hide inside the protein, away from water.</li>
+                      <li><em>Polar / hydrophilic</em> (serine, threonine, cysteine): stay on the surface, in contact with water.</li>
+                      <li><em>Acidic / negatively charged</em> (aspartate, glutamate).</li>
+                      <li><em>Basic / positively charged</em> (lysine, arginine, histidine).</li>
+                      <li><em>Special cases:</em> glycine (R = just an H, the smallest) and proline (its R forms a ring that "bends" the chain).</li>
+                    </ul>
+                  </li>
+                  <li><strong>Peptide bond:</strong> joins the carboxyl group of one amino acid with the amino group of the next, releasing water (dehydration synthesis). A chain of amino acids is a <em>polypeptide</em>.</li>
                   <li><strong>Primary structure:</strong> amino acid sequence.</li>
                   <li><strong>Secondary structure:</strong> alpha helix or beta sheet, maintained by hydrogen bonds between carbonyls and aminos.</li>
                   <li><strong>Tertiary structure:</strong> total 3D folding of the chain, maintained by interactions between R groups (disulfide, ionic, hydrophobic bonds, hydrogen bonds).</li>
                   <li><strong>Quaternary structure:</strong> assembly of several polypeptide chains (e.g.: hemoglobin = 4 subunits).</li>
-                  <li><strong>Denaturation:</strong> loss of 3D structure due to heat, extreme pH or chemical agents. The protein loses its function.</li>
-                  <li><strong>Functions:</strong> enzymes (catalysis), structural (keratin, collagen), transport (hemoglobin), defense (antibodies), signaling (hormones such as insulin), motor (actin, myosin).</li>
+                  <li><strong>Denaturation:</strong> loss of the 3D structure due to heat, extreme pH or chemical agents. The protein loses its function (sometimes irreversibly, like an egg white when cooked).</li>
+                  <li><strong>Chaperones:</strong> proteins that help others fold correctly and prevent them from aggregating or misfolding.</li>
+                  <li><strong>Functions (7 categories):</strong> enzymatic (catalysis), structural (keratin, collagen), transport (hemoglobin, membrane channels), defense (antibodies), signaling (hormones such as insulin), movement (actin, myosin) and storage (casein, ovalbumin).</li>
                   <li><span class="mark-yellow">Key:</span> <em>function</em> depends on <em>shape</em>; shape depends on the amino acid sequence.</li>
                   <li><span class="mark-red">Error:</span> "a denatured protein only changes its sequence". <em>No</em>: the sequence (primary structure) does not change; what is lost is the folding.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: from sequence to function (and sickle-cell anemia)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>The 4 levels, step by step:</strong> ① <em>Primary</em> = the exact order of amino acids (dictated by the gene). ② <em>Secondary</em> = the chain coils into an α-helix or folds into a β-sheet through backbone hydrogen bonds. ③ <em>Tertiary</em> = the overall 3D shape, held by interactions between R groups (disulfide, ionic, hydrophobic). ④ <em>Quaternary</em> = several chains joined (hemoglobin has 4). <strong>Why it matters:</strong> function comes from shape, and shape comes from sequence. <strong>Real example (sickle-cell anemia):</strong> changing ONE amino acid (glutamate → valine) in hemoglobin makes it sticky; red blood cells deform into a sickle shape and jam in the capillaries. A tiny change in the primary structure ruins the whole function. <strong>Denaturation:</strong> heat or extreme pH break the interactions that hold the 3D shape (not the sequence) and the protein stops working — like an egg white when cooked, which cannot go back.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> A protein is heated and loses its function, but its amino-acid sequence is still intact. Which level(s) were lost? <em>Answer: the secondary, tertiary and quaternary (the folding); the primary structure does not change with denaturation.</em></div>
               </div>
 
               <div class="subitem" data-keywords="acidos nucleicos ADN ARN nucleotido base nitrogenada azucar fosfato adenina timina citosina guanina uracilo doble helice"><strong>2.2.4 Nucleic acids</strong>
                 <ul class="list">
-                  <li><strong>Monomer:</strong> nucleotide = nitrogenous base + sugar (pentose) + phosphate group.</li>
-                  <li><strong>Bases:</strong>
+                  <li><strong>Monomer — the nucleotide:</strong> 3 parts: a nitrogenous base + a sugar (pentose) + one or more phosphate groups.</li>
+                  <li><strong>Phosphodiester bond:</strong> joins the phosphate (carbon 5') of one nucleotide with the OH (carbon 3') of the next → forms the sugar-phosphate backbone of the chain.</li>
+                  <li><strong>Nitrogenous bases:</strong>
                     <ul class="list">
                       <li><em>Purines (2 rings):</em> adenine (A), guanine (G).</li>
                       <li><em>Pyrimidines (1 ring):</em> cytosine (C), thymine (T, DNA only), uracil (U, RNA only).</li>
                     </ul>
                   </li>
-                  <li><strong>DNA:</strong> sugar = deoxyribose, double antiparallel strand in a helix, bases A-T and C-G via hydrogen bonds.</li>
-                  <li><strong>RNA:</strong> sugar = ribose, single strand, bases A-U and C-G.</li>
-                  <li><strong>DNA function:</strong> store genetic information.</li>
-                  <li><strong>RNA function:</strong> intermediary and executor (mRNA transcribes, tRNA transports amino acids, rRNA forms the ribosome).</li>
-                  <li><span class="mark-yellow">Key:</span> base pairing <em>A-T (DNA) or A-U (RNA), C-G always</em>.</li>
-                  <li><span class="mark-red">Error:</span> including T in RNA or U in DNA.</li>
+                  <li><strong>DNA:</strong> sugar = deoxyribose; double antiparallel strand coiled in a helix; bases A-T and C-G joined by hydrogen bonds. Stores the genetic information. <em>Chargaff's rule:</em> %A = %T and %C = %G.</li>
+                  <li><strong>RNA:</strong> sugar = ribose; single strand; bases A-U and C-G. Types: <em>mRNA</em> (carries the gene's message), <em>tRNA</em> (transports amino acids), <em>rRNA</em> (forms the ribosome).</li>
+                  <li><strong>Not just information:</strong> some nucleotides act as energy currency (ATP, GTP) or electron carriers (NAD⁺, FAD).</li>
+                  <li><span class="mark-yellow">Key:</span> base pairing <em>A-T (DNA) or A-U (RNA), C-G always</em>; purine always with pyrimidine.</li>
+                  <li><span class="mark-red">Error:</span> including T in RNA or U in DNA; or saying RNA is double-stranded like DNA.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: antiparallel, 5'→3' and why DNA is more stable than RNA</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Antiparallel:</strong> the two DNA strands run in opposite directions — one goes 5'→3' and the other 3'→5'. The ends are named after the free sugar carbon (5' with phosphate, 3' with OH). This matters because the enzymes that copy DNA only work in the 5'→3' direction. <strong>Complementary pairing:</strong> A binds T with <em>2</em> hydrogen bonds and C binds G with <em>3</em>; that is why C-G-rich DNA is harder to separate (needs more heat). <strong>Always purine with pyrimidine:</strong> a two-ring base (purine: A, G) pairs with a one-ring base (pyrimidine: T, C, U), keeping the width of the double helix constant. <strong>DNA vs RNA — stability:</strong> the deoxyribose in DNA <em>lacks</em> an oxygen (on carbon 2') that RNA's ribose has; that extra oxygen makes RNA more reactive and less stable. That is why long-term information is stored in DNA (stable, double-stranded) and RNA is a temporary messenger.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> One DNA region is rich in C-G pairs and another in A-T pairs. Which is harder to separate when heated, and why? <em>Answer: the C-G-rich one, because each C-G pair has 3 hydrogen bonds versus 2 in an A-T pair.</em></div>
               </div>
 
             </div>
@@ -6244,50 +6443,66 @@ window.Analytics = (function(){
 
               <div class="subitem" data-keywords="teoria celular schleiden schwann virchow celulas unidad estructural funcional reproduccion"><strong>3.1.1 Cell theory</strong>
                 <ul class="list">
-                  <li>All living things are made up of <strong>one or more cells</strong>.</li>
-                  <li>The cell is the <strong>structural and functional unit</strong> of life.</li>
-                  <li>Every cell comes from <strong>another pre-existing cell</strong> (Virchow).</li>
-                  <li><span class="mark-yellow">Key:</span> cell theory was built with contributions from Schleiden (plants), Schwann (animals) and Virchow (origin).</li>
+                  <li><strong>What it is:</strong> the framework stating that the cell is the basis of all life. It was born with the microscope: Hooke (1665) coined the word "cell" while observing cork; van Leeuwenhoek saw the first living microorganisms.</li>
+                  <li><strong>1) Every living thing is made of one or more cells.</strong> It is the smallest unit that is alive (a bacterium is a single cell; a human, trillions).</li>
+                  <li><strong>2) The cell is the structural and functional unit of life.</strong> <em>Structural</em> = the "brick" organisms are built from; <em>functional</em> = all the reactions that sustain life happen inside it.</li>
+                  <li><strong>3) Every cell comes from another pre-existing cell</strong> (Virchow: "omnis cellula e cellula"). This refutes spontaneous generation: cells do not arise from nothing.</li>
+                  <li><strong>Historical contributions:</strong> Schleiden (1838, plants are made of cells), Schwann (1839, animals too), Virchow (1855, the cellular origin).</li>
+                  <li><strong>Modern additions:</strong> cells contain the hereditary information (DNA) that passes from mother to daughter, and they all share a similar chemical composition and basic metabolism.</li>
+                  <li><span class="mark-red">Exception / exam trap:</span> <em>viruses</em> do NOT satisfy cell theory (they are acellular and cannot reproduce on their own), which is why many do not consider them living things.</li>
                 </ul>
               </div>
+              <div class="subitem" data-keywords="microscopia microscopio optico luz electronico TEM SEM resolucion aumento magnificacion celulas tamano observar hooke leeuwenhoek"><strong>3.1.1.1 Studying cells: microscopy</strong><ul class="list"><li>Cells are <strong>microscopic</strong> (most &lt; 100 µm), so they are studied with microscopes; their discovery depended on the development of these instruments.</li><li><strong>Magnification vs resolution (don't confuse them):</strong> <em>magnification</em> is how much larger the image appears; <em>resolution</em> is the ability to tell two nearby points apart as separate. Magnifying without resolution only gives a larger blurry image.</li><li><strong>Light microscope:</strong> uses visible light; magnifies up to ~1000×. It allows observing <em>living cells</em> and their movement, but its resolution is limited by the wavelength of light (~0.2 µm).</li><li><strong>Electron microscope:</strong> uses an electron beam (much shorter wavelength) → far greater resolution; it reveals organelles and fine detail. But the sample must be <em>fixed/dead</em> (in a vacuum). <em>TEM</em> (transmission: sees the interior) vs <em>SEM</em> (scanning: sees the surface in 3D).</li><li><span class="mark-red">Error:</span> the electron microscope does NOT work for viewing living cells; it gains resolution but loses the ability to observe processes in real time.</li></ul></div>
 
               <div class="subitem" data-keywords="caracteristicas comunes celulas membrana citoplasma ribosomas adn material genetico"><strong>3.1.2 Characteristics common to all cells</strong>
                 <ul class="list">
-                  <li><strong>Plasma membrane</strong> that separates them from the environment.</li>
-                  <li><strong>Cytoplasm</strong> with aqueous cytosol.</li>
-                  <li><strong>Ribosomes</strong> to synthesize proteins.</li>
-                  <li><strong>Genetic material (DNA)</strong>.</li>
-                  <li>Ability to obtain energy and reproduce.</li>
+                  <li><strong>Plasma membrane:</strong> a phospholipid bilayer that separates the inside from the environment and selectively controls what enters and leaves. Without it there is no "inside" or "outside".</li>
+                  <li><strong>Cytoplasm with cytosol:</strong> the aqueous medium (water, ions, enzymes) where the components float and many reactions occur (such as glycolysis).</li>
+                  <li><strong>Ribosomes:</strong> the "machines" that read RNA and build proteins. Every cell has them (70S in prokaryotes, 80S in eukaryotes).</li>
+                  <li><strong>Genetic material (DNA):</strong> the instructions to build all proteins and to reproduce. In prokaryotes it is free in the cytoplasm; in eukaryotes, inside the nucleus.</li>
+                  <li><strong>Ability to obtain energy and reproduce:</strong> every cell transforms energy (metabolism) and can give rise to new cells.</li>
+                  <li><span class="mark-yellow">Key:</span> these 4 structures (membrane, cytosol, ribosomes, DNA) are present in EVERY cell, prokaryotic or eukaryotic — they are the "common minimum" of life.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="procariota eucariota nucleo organelas membranosas tamaño bacterias arqueas plantas animales hongos protistas"><strong>3.1.3 Prokaryotes vs. eukaryotes</strong>
                 <ul class="list">
-                  <li><strong>Prokaryotes:</strong> no defined nucleus (DNA free in nucleoid), no membrane-bound organelles, smaller ribosomes (70S), generally unicellular. Bacteria and archaea.</li>
-                  <li><strong>Eukaryotes:</strong> true nucleus surrounded by a nuclear envelope, membrane-bound organelles (mitochondria, ER, Golgi, lysosomes, etc.), 80S ribosomes. Plants, animals, fungi, protists.</li>
+                  <li><strong>Prokaryotes:</strong> no defined nucleus (circular DNA free in the nucleoid), no membrane-bound organelles, smaller ribosomes (70S), peptidoglycan wall. Many carry <em>plasmids</em> (small extra rings of DNA, important in antibiotic resistance). Bacteria and archaea.</li>
+                  <li><strong>Eukaryotes:</strong> true nucleus surrounded by a nuclear envelope, membrane-bound organelles (mitochondria, ER, Golgi, lysosomes, etc.), 80S ribosomes, linear DNA wrapped on histones. Plants, animals, fungi, protists.</li>
                   <li><strong>Size:</strong> prokaryotes 1–10 µm, eukaryotes 10–100 µm.</li>
-                  <li><span class="mark-yellow">Key:</span> "no defined nucleus" is the most commonly tested difference.</li>
-                  <li><span class="mark-red">Error:</span> saying that prokaryotes have no ribosomes. They do, just different ones (70S).</li>
+                  <li><strong>Why are cells small?</strong> Because of the <em>surface-area-to-volume ratio</em>: as a cell grows, its volume increases faster (cubed) than its surface area (squared). At some point the membrane can no longer exchange enough nutrients and waste with the interior. That is why cells stay small or divide.</li>
+                  <li><span class="mark-yellow">Key:</span> "no defined nucleus" is the most commonly tested difference. Another key: prokaryote = 70S, eukaryote = 80S.</li>
+                  <li><span class="mark-red">Error:</span> saying that prokaryotes have no ribosomes. They do, just different ones (70S). Another error: thinking prokaryotes have no DNA — they do, just without a nuclear envelope.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: surface-area-to-volume ratio (why there is no giant cell)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6">Picture a cube 1 cm per side: surface = 6 cm², volume = 1 cm³ → ratio 6:1. If the cube grows to 2 cm per side: surface = 24 cm², volume = 8 cm³ → ratio 3:1. <strong>Doubling the size halves the surface-area-to-volume ratio.</strong> In a cell, the membrane (surface) is where nutrients enter and waste leaves; the cytoplasm (volume) is what must be supplied. If the cell grows too large, its surface cannot supply its volume → it dies or must divide. That is why cells are microscopic, and those that need lots of surface (like intestinal cells) increase it with <em>microvilli</em>.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> Why do intestinal cells have microvilli instead of simply being larger? <em>Answer: they need lots of surface to absorb; growing larger would worsen their surface-area-to-volume ratio, so instead of growing they fold their membrane into microvilli to gain surface.</em></div>
               </div>
 
               <div class="subitem" data-keywords="nucleo envoltura nuclear nucleolo cromatina poros nucleares ADN genes"><strong>3.1.4.1 The nucleus</strong>
                 <ul class="list">
-                  <li>Contains most of the cell's DNA.</li>
-                  <li><strong>Nuclear envelope:</strong> double membrane with nuclear pores that regulate the passage of large molecules.</li>
-                  <li><strong>Nucleolus:</strong> dense internal region where ribosomes are synthesized.</li>
-                  <li><strong>Chromatin:</strong> DNA + proteins (histones) in an uncondensed state during interphase.</li>
+                  <li><strong>Function:</strong> it is the cell's control center — it stores the DNA and directs which proteins are made and when. Only eukaryotic cells have it.</li>
+                  <li>Contains almost all of the cell's DNA (the rest is in mitochondria and chloroplasts).</li>
+                  <li><strong>Nuclear envelope:</strong> a double membrane that separates the DNA from the cytoplasm. Its outer membrane is continuous with the endoplasmic reticulum. Inside, it is supported by the <em>nuclear lamina</em> (intermediate filaments) that gives it shape.</li>
+                  <li><strong>Nuclear pores:</strong> protein channels crossing the double membrane that decide WHAT enters and leaves: small molecules and ions pass freely, but they control the passage of large ones (transcription factors and proteins enter; messenger RNA exits toward the ribosomes).</li>
+                  <li><strong>Nucleolus:</strong> a dense region <em>without a membrane</em> inside the nucleus where ribosomal RNA is transcribed and ribosome subunits are assembled. A cell that makes many proteins has large, visible nucleoli.</li>
+                  <li><strong>Chromatin vs chromosome:</strong> it is the SAME DNA at different degrees of compaction. In interphase it is uncondensed (chromatin) so it can be read; before dividing it compacts to the maximum and becomes visible as a chromosome.</li>
+                  <li><span class="mark-red">Error:</span> thinking chromatin and chromosome are different molecules. It is the same DNA: relaxed to work, compacted to be distributed.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="sistema endomembranas reticulo endoplasmico rugoso liso golgi vesiculas lisosoma proteinas lipidos sintesis"><strong>3.1.4.2 Endomembrane system</strong>
                 <ul class="list">
-                  <li><strong>Rough endoplasmic reticulum (RER):</strong> with attached ribosomes. Synthesis of proteins that will be secreted or go to membranes.</li>
-                  <li><strong>Smooth endoplasmic reticulum (SER):</strong> no ribosomes. Lipid synthesis, detoxification, Ca²⁺ storage.</li>
-                  <li><strong>Golgi apparatus:</strong> receives vesicles from the ER, modifies, packages and directs proteins to their destination. "Packaging center".</li>
-                  <li><strong>Lysosomes (animals):</strong> vesicles with digestive enzymes; they degrade macromolecules and old organelles.</li>
-                  <li><strong>Vacuoles (plants and protists):</strong> storage, turgor maintenance.</li>
-                  <li><span class="mark-yellow">Key:</span> the typical flow is <em>RER → vesicles → Golgi → vesicles → membrane or final destination</em>.</li>
+                  <li><strong>What it is:</strong> a set of organelles connected (by membrane or by vesicles) that make, modify, package and transport proteins and lipids. It works like a "production line".</li>
+                  <li><strong>Rough endoplasmic reticulum (RER):</strong> has attached ribosomes. The proteins that enter it fold and begin to be <em>glycosylated</em> (sugars are added); these are the ones that will be secreted, go to the membrane or to lysosomes.</li>
+                  <li><strong>Smooth endoplasmic reticulum (SER):</strong> no ribosomes. It synthesizes lipids and steroid hormones, <em>detoxifies</em> drugs and alcohol (very abundant in the liver) and stores Ca²⁺ (key in muscle contraction).</li>
+                  <li><strong>Golgi apparatus:</strong> receives vesicles from the ER at its <em>cis</em> face (entry), modifies the proteins (finishes glycosylation and "tags" them with destination markers) and ships them out from its <em>trans</em> face (exit). It is the "mail and packaging center".</li>
+                  <li><strong>Lysosomes (animals):</strong> vesicles with hydrolytic enzymes active at acidic pH (~5). They digest what enters by endocytosis, recycle old organelles (<em>autophagy</em>) and destroy bacteria inside white blood cells.</li>
+                  <li><strong>Vacuoles:</strong> in plants, a large central vacuole stores water and solutes and generates the <em>turgor pressure</em> that keeps the plant upright; in protists, contractile vacuoles expel excess water.</li>
+                  <li><span class="mark-yellow">The secretory pathway (what happens step by step):</span> ribosome on the RER → the protein enters the RER, folds and is glycosylated → vesicle → Golgi (cis→trans: modifies and tags) → vesicle → plasma membrane (exocytosis) or final destination.</li>
+                  <li><span class="mark-red">Error:</span> thinking the Golgi "makes" the proteins. No: it <em>modifies and ships</em> them; the ribosome makes them.</li>
                 </ul>
               </div>
 
@@ -6299,6 +6514,11 @@ window.Analytics = (function(){
                   <li><strong>Peroxisomes:</strong> degradation of hydrogen peroxide and oxidation of fatty acids.</li>
                   <li><span class="mark-yellow">Key:</span> mitochondria and chloroplasts have their own DNA → <em>endosymbiotic theory</em>.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: the 4 pieces of evidence for the endosymbiotic theory (Lynn Margulis)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6">The endosymbiotic theory proposes that mitochondria and chloroplasts were once <em>free-living prokaryotes</em> that an ancestral cell engulfed and, instead of digesting, kept in symbiosis. The supporting evidence: <strong>① Their own DNA:</strong> they have their own circular DNA, similar to bacterial DNA. <strong>② 70S ribosomes:</strong> they have bacterial-type ribosomes (70S), not the 80S of the rest of the eukaryotic cell. <strong>③ Double membrane:</strong> the inner membrane would be the original prokaryote's, and the outer one the vesicle that engulfed it. <strong>④ They divide on their own:</strong> they reproduce by binary fission (like bacteria), independently of cell division. <strong>Mitochondrion</strong> = an ancestral aerobic prokaryote; <strong>chloroplast</strong> = an ancestral cyanobacterium.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> Why does the mitochondrion having 70S (not 80S) ribosomes support endosymbiosis? <em>Answer: 70S is the bacterial ribosome type; the mitochondrion having them suggests it descends from a free-living bacterium, not from the eukaryotic cell itself.</em></div>
               </div>
 
               <div class="subitem" data-keywords="superficie celular pared celular plantas hongos bacterias glucocaliz cilios flagelos microvellosidades"><strong>3.1.4.4 Surface specializations</strong>
@@ -6308,15 +6528,19 @@ window.Analytics = (function(){
                   <li><strong>Cilia:</strong> short and numerous. Move fluids or propel the cell.</li>
                   <li><strong>Flagella:</strong> long and few. Cell motility (sperm, bacteria).</li>
                   <li><strong>Microvilli:</strong> projections that increase the absorption surface area (intestine).</li>
+                  <li><strong>Extracellular matrix (ECM):</strong> in animal cells, a network of glycoproteins (mainly <em>collagen</em>) secreted outward that provides support, binds cells to the tissue and transmits signals inward through membrane proteins called <em>integrins</em>.</li>
+                  <li><span class="mark-red">Error:</span> thinking only plants have external support structures. Animal cells have no wall, but they do have an ECM.</li>
                 </ul>
               </div>
 
               <div class="subitem" data-keywords="citoesqueleto microfilamentos actina microtubulos tubulina filamentos intermedios queratina forma movimiento"><strong>3.1.4.5 Cytoskeleton</strong>
                 <ul class="list">
                   <li>Network of protein fibers that gives shape, support and enables movement.</li>
-                  <li><strong>Microfilaments (actin):</strong> muscle contraction, cell division.</li>
-                  <li><strong>Microtubules (tubulin):</strong> mitotic spindle, intracellular transport, cilia and flagella.</li>
-                  <li><strong>Intermediate filaments (keratin, etc.):</strong> mechanical resistance.</li>
+                  <li><strong>Microfilaments (actin):</strong> the thinnest; muscle contraction, cell division (contractile ring), amoeboid movement.</li>
+                  <li><strong>Microtubules (tubulin):</strong> the thickest; mitotic spindle, "tracks" for intracellular transport, structure of cilia and flagella.</li>
+                  <li><strong>Intermediate filaments (keratin, lamins, etc.):</strong> medium thickness; mechanical resistance and organelle anchoring.</li>
+                  <li><strong>Centrosome and centrioles:</strong> the centrosome is the microtubule-organizing center; it contains two centrioles and organizes the spindle during cell division (in animals).</li>
+                  <li><strong>Motor proteins (kinesin, dynein, myosin):</strong> they "walk" along the filaments using ATP to transport vesicles and organelles, and to move cilia/flagella.</li>
                 </ul>
               </div>
 
@@ -6324,7 +6548,8 @@ window.Analytics = (function(){
                 <ul class="list">
                   <li><strong>Fluid mosaic model</strong> (Singer and Nicolson, 1972).</li>
                   <li><strong>Phospholipid bilayer:</strong> hydrophilic heads facing outward, hydrophobic tails facing inward.</li>
-                  <li><strong>Cholesterol:</strong> intercalated among phospholipids, regulates fluidity.</li>
+                  <li><strong>Cholesterol:</strong> intercalated among phospholipids, it <em>buffers</em> fluidity: in heat it reduces it (prevents the membrane from becoming too fluid) and in cold it maintains it (prevents solidifying).</li>
+                  <li><strong>Factors affecting fluidity:</strong> <em>temperature</em> (more heat = more fluid), the proportion of <em>unsaturated fatty acids</em> (their kinks prevent tight packing → more fluid) and <em>cholesterol</em> (a buffer). A membrane that is too rigid or too fluid does not work well.</li>
                   <li><strong>Integral (transmembrane) proteins:</strong> span the bilayer. Function as channels, transporters, receptors.</li>
                   <li><strong>Peripheral proteins:</strong> on one face of the membrane. Support and signaling functions.</li>
                   <li><strong>Glycoproteins and glycolipids:</strong> bear carbohydrates; serve in cell recognition.</li>
@@ -6370,6 +6595,18 @@ window.Analytics = (function(){
                 </ul>
               </div>
 
+              <div class="subitem" data-keywords="comunicacion senalizacion celular ligando receptor membrana intracelular transduccion segundo mensajero AMPc calcio recepcion respuesta endocrina paracrina sinaptica hormona"><strong>3.2.6 Cell communication and signaling</strong>
+                <ul class="list">
+                  <li>Cells communicate through <strong>chemical signals (ligands)</strong> that bind to specific <strong>receptors</strong>. A cell only responds if it has the receptor for that signal.</li>
+                  <li><strong>Three stages (Sutherland):</strong> ① <em>Reception</em> (the ligand binds the receptor) → ② <em>Transduction</em> (a cascade of molecules relays and amplifies the signal) → ③ <em>Response</em> (a change in enzyme activity or gene expression).</li>
+                  <li><strong>Membrane receptors:</strong> for <em>hydrophilic</em> signals that cannot cross the bilayer (e.g., G-protein-coupled receptors, receptor tyrosine kinases). The signal acts from outside.</li>
+                  <li><strong>Intracellular receptors:</strong> for <em>hydrophobic</em> signals (e.g., steroid hormones) that do cross the membrane and bind receptors inside the cell, altering transcription.</li>
+                  <li><strong>Second messengers:</strong> small molecules such as <em>cAMP</em> and <em>Ca²⁺</em> that spread the signal and amplify it inside the cell.</li>
+                  <li><strong>By distance:</strong> endocrine (hormones via the blood), paracrine (to neighboring cells), synaptic (between neurons), autocrine (to the cell itself).</li>
+                  <li><span class="mark-red">Mistake:</span> believing every signal uses membrane receptors. Hydrophobic signals (steroids) <em>cross</em> the membrane and use <em>intracellular</em> receptors.</li>
+                </ul>
+              </div>
+
             </div>
           </div>
         </details>
@@ -6388,8 +6625,10 @@ window.Analytics = (function(){
             <div class="warn">⭐ <strong>Key:</strong> conceptual foundation for photosynthesis and respiration. Mastering enzymes (active site, inhibition, factors) tends to earn easy points.</div>
             <div class="grid2">
 
-              <div class="subitem" data-keywords="termodinamica primera ley segunda ley energia entropia trabajo biologico flujo energia"><strong>3.3.1 Energy and the laws of thermodynamics</strong>
+              <div class="subitem" data-keywords="metabolismo catabolismo anabolismo termodinamica primera ley segunda ley energia entropia trabajo biologico flujo energia cinetica potencial"><strong>3.3.1 Metabolism, energy and thermodynamics</strong>
                 <ul class="list">
+                  <li><strong>Metabolism = catabolism + anabolism.</strong> <em>Catabolism</em> breaks large molecules into smaller ones and <em>releases</em> energy (e.g., cellular respiration, digestion). <em>Anabolism</em> builds large molecules from smaller ones and <em>consumes</em> energy (e.g., protein synthesis, photosynthesis). The energy released by catabolism funds anabolism.</li>
+                  <li><strong>Types of energy:</strong> <em>kinetic</em> (the energy of motion, including heat) and <em>potential</em> (stored energy, such as the chemical energy in bonds). Metabolism converts one form into the other.</li>
                   <li><strong>First law:</strong> energy is neither created nor destroyed; it is transformed.</li>
                   <li><strong>Second law:</strong> in every transformation, some energy is dispersed as <em>heat</em>; the entropy (disorder) of the universe increases.</li>
                   <li>Living things <em>do not violate</em> the second law: they maintain internal order thanks to a continuous input of energy and increase the disorder of their surroundings.</li>
@@ -6409,7 +6648,7 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="ATP adenosin trifosfato hidrolisis ADP fosfato energia enlace alta energia"><strong>3.3.3 ATP, the energy currency</strong>
                 <ul class="list">
                   <li><strong>ATP = adenosine triphosphate:</strong> adenosine (adenine + ribose) + 3 phosphate groups.</li>
-                  <li>The bonds between phosphates are "high energy": when the last one is hydrolyzed (ATP → ADP + Pi), ~7.3 kcal/mol is released.</li>
+                  <li>The bonds between phosphates are "high energy": when the last one is hydrolyzed (ATP → ADP + Pi), ~7.3 kcal/mol (≈ 30.5 kJ/mol) is released. The repulsion between the negative charges of the phosphates is part of why they release so much energy.</li>
                   <li>ATP is not "stored" in large quantities; it is continuously synthesized and consumed.</li>
                   <li><strong>ATP synthesis:</strong> ADP + Pi + energy → ATP. Occurs in respiration, photosynthesis and fermentation.</li>
                 </ul>
@@ -6419,9 +6658,11 @@ window.Analytics = (function(){
                 <ul class="list">
                   <li><strong>Oxidation:</strong> loss of electrons (also loss of H or gain of O).</li>
                   <li><strong>Reduction:</strong> gain of electrons (gain of H or loss of O).</li>
+                  <li><strong>They always go together (redox reaction):</strong> if one molecule is oxidized (loses e⁻), another is reduced (gains them). Electrons do not disappear — they are transferred from one to the other.</li>
                   <li><strong>Mnemonic:</strong> "OIL RIG" — Oxidation Is Loss, Reduction Is Gain.</li>
-                  <li><strong>Carriers:</strong> NAD⁺/NADH and NADP⁺/NADPH (accept or donate electrons and H).</li>
-                  <li>In metabolism, energy typically "travels" as electrons carried by these molecules.</li>
+                  <li><strong>Electron carriers:</strong> NAD⁺/NADH and FAD/FADH₂ (respiration), NADP⁺/NADPH (photosynthesis). The "⁺" marks the <em>oxidized</em> form (ready to accept electrons); the form with H is the <em>reduced</em> one (loaded with electrons and energy).</li>
+                  <li><strong>Why it matters:</strong> the energy from food "travels" as high-energy electrons in these carriers to the electron transport chain, where it is released to make ATP.</li>
+                  <li><span class="mark-red">Error:</span> thinking oxidation always involves oxygen. It is gain/loss of <em>electrons</em>; oxygen is just a common acceptor, not the only one.</li>
                 </ul>
               </div>
 
@@ -6437,10 +6678,16 @@ window.Analytics = (function(){
                   <li><strong>Competitive inhibition:</strong> the inhibitor binds to the <em>active site</em>, competing with the substrate.</li>
                   <li><strong>Noncompetitive inhibition:</strong> the inhibitor binds to another site (allosteric) and changes the shape of the active site.</li>
                   <li><strong>Negative feedback:</strong> the final product inhibits an enzyme at the beginning of the pathway. Enables regulation.</li>
-                  <li><strong>Factors affecting activity:</strong> temperature (each enzyme has an optimum), pH (also has an optimum), substrate concentration, presence of inhibitors.</li>
+                  <li><strong>Factors affecting activity:</strong> temperature (each enzyme has an optimum; too much heat denatures it), pH (also has an optimum), substrate concentration and presence of inhibitors.</li>
+                  <li><strong>Saturation (Vmax):</strong> as substrate increases, the rate rises… until <em>all</em> active sites are occupied. At that point the enzyme reaches its maximum velocity (Vmax) and adding more substrate no longer speeds up the reaction.</li>
                   <li><strong>Enzyme denaturation:</strong> extreme heat or pH destroys the 3D shape and the enzyme loses its function.</li>
                   <li><span class="mark-yellow">How it's asked:</span> "When an inhibitor binds to the active site it is called…" → competitive. "When the final product inhibits an enzyme at the start of the pathway it is called…" → negative feedback.</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: how an enzyme works and the two types of inhibition</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Activation energy:</strong> every reaction needs an initial energy "push" to start. The enzyme <em>lowers</em> that threshold by bringing the substrates together and orienting them in its active site, without changing the final result or being consumed. <strong>Induced fit:</strong> when the substrate binds, the active site molds around it (it is not a rigid "lock and key"). <strong>Competitive inhibition:</strong> the inhibitor resembles the substrate and blocks the active site; it can be overcome by adding <em>more substrate</em>. <strong>Noncompetitive (allosteric) inhibition:</strong> the inhibitor binds to another site and distorts the active site; adding more substrate does <em>not</em> reverse it. <strong>Feedback regulation:</strong> the final product of a pathway usually allosterically inhibits the first enzyme → the cell makes only what it needs.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> If adding more substrate reverses the inhibition, what type is it? <em>Answer: competitive (the inhibitor competes for the active site; more substrate displaces it). If it is NOT reversed, it is noncompetitive/allosteric.</em></div>
               </div>
 
             </div>
@@ -6477,7 +6724,8 @@ window.Analytics = (function(){
                   <li><strong>Photosystem II (P680):</strong> absorbs light, excites electrons. The energy is used for <em>photolysis of water</em>: 2 H₂O → 4 H⁺ + 4 e⁻ + O₂. <em>This is where oxygen is released</em>.</li>
                   <li>The excited electrons pass through the <strong>thylakoid electron transport chain</strong>, generating an H⁺ gradient between the lumen and the stroma.</li>
                   <li><strong>Photosystem I (P700):</strong> re-excites electrons, which ultimately reduce NADP⁺ to <strong>NADPH</strong>.</li>
-                  <li><strong>Chemiosmosis:</strong> H⁺ ions flow back to the stroma through ATP synthase, generating <strong>ATP</strong>.</li>
+                  <li><strong>Chemiosmosis:</strong> H⁺ ions flow back to the stroma through ATP synthase, generating <strong>ATP</strong> (photophosphorylation).</li>
+                  <li><strong>Cyclic vs non-cyclic flow:</strong> what is described above is <em>non-cyclic</em> flow (produces ATP + NADPH + O₂). In <em>cyclic</em> flow, electrons from photosystem I return to the chain instead of reducing NADP⁺ → it makes extra ATP (no NADPH or O₂) to adjust the ATP:NADPH ratio the Calvin cycle needs.</li>
                   <li><strong>Final products:</strong> ATP, NADPH and O₂.</li>
                 </ul>
               </div>
@@ -6508,6 +6756,8 @@ window.Analytics = (function(){
                   <li><strong>Thylakoids:</strong> flattened internal sacs where chlorophyll is found. Stacked they form <em>grana</em> (singular: granum).</li>
                   <li><strong>Stroma:</strong> aqueous matrix surrounding the thylakoids. Site of the Calvin cycle.</li>
                   <li><strong>Pigments:</strong> chlorophyll a (primary, absorbs red and blue, reflects green), chlorophyll b (accessory), carotenoids (yellow/orange, also accessory and antioxidant).</li>
+                  <li><strong>Absorption spectrum:</strong> chlorophyll absorbs mostly <em>blue and red</em> light and reflects <em>green</em> → that is why plants look green. Carotenoids widen the range by capturing wavelengths chlorophyll misses and dissipate excess energy (photoprotection).</li>
+                  <li><span class="mark-yellow">Key:</span> in autumn chlorophyll breaks down and the carotenoids become visible → leaves turn yellow/orange.</li>
                 </ul>
               </div>
 
@@ -6518,6 +6768,11 @@ window.Analytics = (function(){
                   <li><strong>Typical total yield:</strong> ~30–32 ATP per glucose.</li>
                   <li>It is the reverse of photosynthesis (both are needed in ecosystems).</li>
                 </ul>
+                <details style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:.5rem .8rem;margin:.4rem 0">
+                  <summary style="cursor:pointer;font-size:.83rem;color:var(--blue);font-weight:600">🔬 Deep dive: the full ATP balance (where each one comes from)</summary>
+                  <p style="margin-top:.5rem;font-size:.82rem;line-height:1.6"><strong>Two ways to make ATP:</strong> by <em>substrate-level phosphorylation</em> (an enzyme transfers a phosphate directly to ADP — happens in glycolysis and Krebs) and by <em>oxidative phosphorylation</em> (ATP synthase uses the H⁺ gradient from the electron transport chain). <strong>Count per glucose:</strong> glycolysis = 2 ATP + 2 NADH; pyruvate oxidation = 2 NADH; Krebs = 2 ATP + 6 NADH + 2 FADH₂. Those 10 NADH and 2 FADH₂ enter the chain: each NADH yields ~2.5 ATP and each FADH₂ ~1.5 ATP → ~28 ATP by oxidative phosphorylation. <strong>Total ≈ 30-32 ATP.</strong> The number is not exact because the NADH made in the cytoplasm (glycolysis) "pays a toll" to enter the mitochondrion, losing some yield.</p>
+                </details>
+                <div style="background:rgba(34,197,94,.09);border-left:3px solid var(--green);padding:.5rem .8rem;border-radius:0 8px 8px 0;margin:.4rem 0;font-size:.83rem">✅ <strong>Check yourself:</strong> Why does aerobic respiration yield ~15× more ATP than fermentation? <em>Answer: fermentation only uses the 2 ATP from glycolysis (substrate-level); respiration also oxidizes all the NADH and FADH₂ in the electron transport chain, with O₂ as the final acceptor, adding ~28 ATP by oxidative phosphorylation.</em></div>
               </div>
 
               <div class="subitem" data-keywords="glucolisis citoplasma glucosa piruvato ATP NADH 6 carbonos 3 carbonos sin oxigeno"><strong>3.5.2 Glycolysis</strong>
@@ -6555,6 +6810,7 @@ window.Analytics = (function(){
                   <li><strong>O₂ is the final electron acceptor</strong>: O₂ + e⁻ + H⁺ → H₂O. <em>That is why we need to breathe oxygen</em>.</li>
                   <li>The H⁺ gradient drives <strong>ATP synthase</strong> → produces a large amount of ATP. This is called <em>chemiosmosis</em>.</li>
                   <li><strong>Approximate yield:</strong> ~26–28 ATP in this stage.</li>
+                  <li><span class="mark-yellow">Key connection:</span> <em>chemiosmosis</em> is the SAME mechanism in the mitochondrion (respiration) and the chloroplast (photosynthesis): an electron transport chain pumps H⁺ → a gradient forms → ATP synthase uses it to make ATP. What changes is where it happens and where the electrons come from, not the idea.</li>
                   <li><span class="mark-red">Mistake:</span> "oxygen produces ATP". <em>No</em>: oxygen accepts electrons; ATP is produced by ATP synthase using the H⁺ gradient.</li>
                 </ul>
               </div>
@@ -6567,6 +6823,18 @@ window.Analytics = (function(){
                   <li><strong>Alcoholic fermentation:</strong> pyruvate → acetaldehyde + CO₂ → ethanol + NAD⁺. In yeasts (beer, wine, bread).</li>
                   <li><strong>Total yield:</strong> only 2 ATP per glucose (from glycolysis).</li>
                   <li><span class="mark-yellow">Key:</span> fermentation does <em>not</em> produce more ATP than glycolysis; it only regenerates NAD⁺ so that glycolysis can continue.</li>
+                </ul>
+              </div>
+
+              <div class="subitem" data-keywords="conexiones metabolicas grasas lipidos proteinas aminoacidos beta oxidacion desaminacion glicerol acetil CoA krebs no solo glucosa anabolismo catabolismo regulacion ATP ADP AMP"><strong>3.5.6 Not just glucose: how fats and proteins are burned</strong>
+                <ul class="list">
+                  <li>Cellular respiration <strong>does not burn only glucose</strong>. Other nutrients enter the SAME pathways (glycolysis and Krebs), which act as a "crossroads" of metabolism.</li>
+                  <li><strong>Other carbohydrates:</strong> fructose, galactose and glycogen are converted into glycolysis intermediates and follow the same route as glucose.</li>
+                  <li><strong>Fats (lipids):</strong> the <em>glycerol</em> of the triglyceride enters glycolysis; the <em>fatty acids</em> are cut into 2-carbon fragments by <strong>β-oxidation</strong> and become acetyl-CoA, which enters the Krebs cycle. Because each fatty acid yields a lot of acetyl-CoA, fats provide more than twice the energy per gram of carbohydrates.</li>
+                  <li><strong>Proteins:</strong> amino acids first have their amino group removed (<em>deamination</em>, which produces urea as waste), and the remaining carbon skeleton enters as pyruvate, acetyl-CoA or a Krebs intermediate, depending on the amino acid.</li>
+                  <li><strong>It works both ways:</strong> those same intermediates are also used to <em>build</em> sugars, fats and amino acids when energy is plentiful (anabolism). That is why excess sugar is stored as fat.</li>
+                  <li><strong>Regulation:</strong> the cell does not respire at full speed all the time. When there is plenty of <em>ATP</em>, a key glycolysis enzyme (phosphofructokinase) is slowed down; when <em>ADP/AMP</em> rises (a signal of low energy), it speeds up. It is feedback based on energy demand.</li>
+                  <li><span class="mark-red">Error:</span> thinking fats and proteins have a "separate pathway". They converge on glycolysis and Krebs, the same pathways as glucose.</li>
                 </ul>
               </div>
 
@@ -6730,6 +6998,7 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="epigenetica metilacion ADN histonas expresion genica activar silenciar genes ambiente"><strong>4.4.8 Epigenetics</strong><ul class="list"><li><strong>Epigenetics</strong> studies <em>heritable</em> changes in gene expression <strong>without modifying the DNA base sequence</strong>.</li><li>It can involve <em>DNA methylation</em> and <em>histone modifications</em>.</li><li>These mechanisms <em>activate or silence</em> genes according to cell type, developmental stage or environment.</li><li>It helps explain why cells with the <em>same DNA</em> can have different functions.</li><li><span class="mark-red">Mistake:</span> epigenetics does not mean mutation; the DNA sequence can remain unchanged.</li></ul></div>
               <div class="subitem" data-keywords="ligamiento genetico cromosoma crossing over recombinantes proporciones independencia"><strong>4.4.9 Genetic linkage</strong><ul class="list"><li>Genes located on the <strong>same chromosome</strong> tend to be inherited together.</li><li>The closer two genes are, the <em>less likely</em> they are to be separated by crossing over.</li><li><strong>Crossing over</strong> can break linkage and generate <em>recombination</em>.</li><li>Linkage <em>modifies the expected proportions</em> when compared to Mendelian independence.</li><li><span class="mark-yellow">Calculation:</span> may relate to proportions of recombinants and non-recombinants if the course requires it.</li><li><span class="mark-red">Mistake:</span> do not assume gene independence just because two traits are being studied.</li></ul></div>
               <div class="subitem" data-keywords="herencia ligada al sexo cromosoma X hemofilia daltonismo trastornos geneticos humanos mutaciones cromosomicas down turner klinefelter no disyuncion"><strong>4.4.10 Sex-linked inheritance and human genetic disorders</strong><ul class="list"><li>Some hereditary disorders result from <strong>gene mutations</strong> and others from <strong>chromosomal abnormalities</strong>.</li><li><strong>Sex-linked inheritance</strong> refers to genes located on the sex chromosomes, especially on the <em>X chromosome</em>.</li><li>In <em>males (XY)</em>, a recessive allele on the X chromosome is more likely to be expressed because <strong>there is no second X chromosome allele</strong> to mask it.</li><li>Examples of X-linked recessive traits are <strong>hemophilia</strong> and <strong>color blindness</strong>, which is why they are more frequently observed in males.</li><li>In contrast, <strong>Down</strong>, <strong>Turner</strong> and <strong>Klinefelter</strong> syndromes are examples of <em>chromosomal abnormalities</em>, not X-linked recessive inheritance.</li><li>Down corresponds to <em>trisomy 21</em>, Turner to <em>X0</em> and Klinefelter to <em>XXY</em>.</li><li><strong>Nondisjunction</strong> during meiosis can give rise to gametes with an abnormal chromosome number.</li><li><span class="mark-yellow">Calculation:</span> may require sex-linked inheritance crosses or inference of family probabilities.</li><li><span class="mark-red">Mistake:</span> do not confuse a disorder caused by a sex-linked gene mutation with an abnormality in chromosome number.</li></ul></div>
+              <div class="subitem" data-keywords="pedigri arbol genealogico herencia autosomica recesiva dominante ligada X portador consanguinidad simbolos cuadrado circulo genograma"><strong>4.4.11 Reading pedigrees (family trees)</strong><ul class="list"><li>A <strong>pedigree</strong> is a family diagram used to trace how a trait is inherited. <em>Square</em> = male, <em>circle</em> = female, <em>filled</em> symbol = affected, horizontal line between two = mating, vertical line = offspring.</li><li><strong>How to identify the inheritance pattern:</strong></li><li style="margin-left:1.2em"><strong>→ Recessive:</strong> the trait can "skip" generations; two UNaffected parents can have an affected child (both were heterozygous carriers).</li><li style="margin-left:1.2em"><strong>→ Dominant:</strong> the trait appears in every generation; each affected individual has at least one affected parent.</li><li style="margin-left:1.2em"><strong>→ Autosomal:</strong> affects males and females equally.</li><li style="margin-left:1.2em"><strong>→ X-linked recessive:</strong> affects males far more; an affected male does NOT pass it to his sons (he gives them the Y), but ALL his daughters become carriers.</li><li><span class="mark-yellow">Exam strategy:</span> ①Does it skip generations? → recessive. ②Does it affect more males? → suspect X-linked. ③Assign genotypes starting from the affected individuals (recessives = homozygous) and work backward.</li><li><span class="mark-blue">🔬 Scenario:</span> two parents with normal vision have a color-blind son. Genotypes? The mother must be a carrier (XᴰXᵈ) and the father normal (XᴰY); the affected son is XᵈY and received the Xᵈ from his mother.</li><li><span class="mark-red">Mistake:</span> assuming a trait more common in males is Y-linked; it is almost always X-linked recessive.</li></ul></div>
               <div class="subitem" data-keywords="adn estructura nucleotido doble helice replicacion semiconservativa helicasa polimerasa topoisomerasa primasa SSB ligasa hebra lider rezagada okazaki burbuja bidireccional semiconservativa meselson stahl chargaff watson crick franklin"><strong>4.5 DNA: structure and replication</strong><ul class="list"><li><strong>Structure:</strong> nucleotide = phosphate group + deoxyribose + base (A, T, G, C). Antiparallel double helix. Base pairing via H-bonds: A=T (2 bonds) and G≡C (3 bonds, stronger). Chargaff's rules: %A=%T and %G=%C. Watson and Crick model (1953), X-ray diffraction data from Franklin.</li><li><strong>Semiconservative replication:</strong> each daughter molecule retains one old strand + one new strand. Demonstrated by Meselson and Stahl (1958) with nitrogen isotopes.</li><li><strong>Bidirectional replication:</strong> starts at replication origins (one in prokaryotes, many in eukaryotes) and proceeds as two forks in opposite directions.</li><li><strong>Key enzymes (order at the fork):</strong></li>
 <li style="margin-left:1.2em"><strong>→ Helicase:</strong> opens the double helix by breaking H-bonds.</li>
 <li style="margin-left:1.2em"><strong>→ Topoisomerase (gyrase in prokaryotes):</strong> relieves supercoiling ahead of the fork. Many antibiotics (quinolones) target bacterial gyrase.</li>
@@ -9508,8 +9777,8 @@ const E23Q = [
   {q:'13. Klinefelter syndrome has the karyotype:',ops:['A) 45,X','B) 47,XXY','C) 47,XYY','D) 46,XX'],a:1,exp:'47,XXY: caused by non-disjunction during meiosis.',theme:'gen'},
   {q:'14. Sexual selection frequently leads to:',ops:['A) Aggression','B) Monomorphism','C) Sexual dimorphism','D) Predation'],a:2,exp:'It favours traits that increase reproductive success → sexual dimorphism.',theme:'evo'},
   {q:'15. The Miller and Urey experiment demonstrated:',ops:['A) The great age of the Earth','B) That amino acids can assemble spontaneously','C) That oxygen is necessary for life','D) That RNA was the first self-replicating molecule'],a:1,exp:'Miller and Urey (1953) synthesised amino acids without pre-existing life.',theme:'ori'},
-  {q:'16. Negatively charged clay particles played a role in:',ops:['A) Early protein formation','B) Early DNA replication','C) Early photosynthesis','D) Early decline in oxygen'],a:0,exp:'Clays could concentrate and organise amino acids.',theme:'ori'},
-  {q:'17. Life began with cells resembling:',ops:['A) Autotrophic prokaryotes','B) Aerobic heterotrophic prokaryotes','C) Anaerobic heterotrophic prokaryotes','D) Aerobic autotrophic prokaryotes'],a:2,exp:'Anaerobic heterotrophic prokaryotes (no atmospheric O₂).',theme:'ori'},
+  {q:'16. Negatively charged clay particles played a role in:',ops:['A) Early protein formation','B) Early DNA replication','C) Early photosynthesis','D) Early decline in oxygen'],a:0,exp:'Clay hypothesis (Cairns-Smith/Bernal): their charged surfaces could concentrate and order monomers (amino acids and nucleotides), promoting their polymerization into macromolecules. It is a hypothesis about abiotic origin, not a demonstrated fact.',theme:'ori'},
+  {q:'17. Life began with cells resembling:',ops:['A) Autotrophic prokaryotes','B) Aerobic heterotrophic prokaryotes','C) Anaerobic heterotrophic prokaryotes','D) Aerobic autotrophic prokaryotes'],a:2,exp:'Heterotrophic hypothesis (Oparin-Haldane): with no atmospheric O₂, the first cells would have been anaerobic prokaryotes consuming organic molecules from the "primordial soup". It is the classic, most-taught hypothesis, but today it is debated against chemoautotrophic hypotheses (hydrothermal vents), where the first life would obtain energy from inorganic reactions.',theme:'ori'},
   {q:'18. Bacillus anthracis survives harsh conditions by forming:',ops:['A) A pilus','B) A heterocyst','C) An endospore','D) A plasmid'],a:2,exp:'Endospores: bacterial resistance structures.',theme:'ori'},
   {q:'19. How do gram-negative bacteria differ from gram-positive bacteria?',ops:['A) They are not pathogenic','B) Their peptidoglycan cell wall is thinner','C) Gram-negative bacteria cannot be stained','D) Gram-negative bacteria do not perform photosynthesis'],a:1,exp:'Gram-negative: thin peptidoglycan + outer membrane.',theme:'ori'},
   {q:'20. The bacteria that first introduced oxygen were:',ops:['A) Methanogens','B) Pathogens','C) Lichens','D) Cyanobacteria'],a:3,exp:'Cyanobacteria: oxygenic photosynthesis.',theme:'ori'},
@@ -9524,15 +9793,15 @@ const E23Q = [
   {q:'29. Codominance refers to:',ops:['A) The heterozygote simultaneously expresses both phenotypes','B) Phenotypic ratio','C) Several genes modify one trait','D) A gene with more than two alleles'],a:0,exp:'Codominance: both alleles expressed (e.g. AB).',theme:'gen'},
   {q:'30. Convergent evolution:',ops:['A) A gene with several alleles','B) Similar structures from distinct ancestors','C) Different related organisms','D) Non-fertile group'],a:1,exp:'Convergent: unrelated lineages develop similar traits.',theme:'evo'},
   {q:'31. Analogous organs are:',ops:['A) Same function, different origin','B) Same internal structure','C) Different functions','D) Wings and arms'],a:0,exp:'Analogous: same function, different origin.',theme:'evo'},
-  {q:'32. Order of increasing complexity of the three domains:',ops:['A) Archaea/Bacteria/Eukarya','B) Bacteria/Archaea/Eukarya','C) Bacteria/Eukarya/Archaea','D) Eukarya/Archaea/Bacteria'],a:1,exp:'Bacteria and Archaea are prokaryotes; Eukarya is more complex.',theme:'ori'},
+  {q:'32. Which statement about the three domains (Bacteria, Archaea, Eukarya) is correct?',ops:['A) They form a scale from lowest to highest complexity, from Bacteria to Eukarya','B) Bacteria and Archaea are equally ancient sister lineages; neither is "more evolved"','C) Archaea is a more complex type of bacteria','D) Eukarya evolved directly from Bacteria'],a:1,exp:'They are not ranked on a "complexity scale" (that is the refuted scala naturae). Bacteria and Archaea are both prokaryotes but independent lineages of equal antiquity; position on the phylogenetic tree does not mean "more evolved".',theme:'ori'},
   {q:'33. Small plants, no vessels, no seeds, no flowers or fruits:',ops:['A) Glaucophytes','B) Bryophytes','C) Pteridophytes','D) Gymnosperms'],a:1,exp:'Bryophytes: mosses and liverworts.',theme:'ori'},
-  {q:'34. Ferns and clubmosses are examples of:',ops:['A) Vascular plants with seeds','B) Bryophytes','C) Vascular plants without seeds','D) Gymnosperms'],a:2,exp:'Pteridophytes.',theme:'ori'},
+  {q:'34. Ferns and clubmosses are examples of:',ops:['A) Vascular plants with seeds','B) Bryophytes','C) Vascular plants without seeds','D) Gymnosperms'],a:2,exp:'They are pteridophytes: vascular plants WITHOUT seeds. They reproduce by spores and depend on water for fertilization. They differ from bryophytes (no vascular tissue) and from gymnosperms (vascular WITH seeds).',theme:'ori'},
   {q:'35. Vascular plants with woody trunks, needle-like leaves and seeds in cones:',ops:['A) Bryophytes','B) Pteridophytes','C) Gymnosperms','D) Angiosperms'],a:2,exp:'Gymnosperms: naked seeds.',theme:'ori'},
   {q:'36. Characteristic of chytridiomycetes:',ops:['A) They have flagellated spores','B) They live in very dry soil','C) Symbionts with roots','D) They do have septa'],a:0,exp:'The only fungi with flagellated zoospores.',theme:'ori'},
   {q:'37. Mycorrhizae:',ops:['A) Are a type of lichen','B) Gather solar energy','C) Gather inorganic nutrients','D) Associations of basidiomycetes'],a:2,exp:'Root-fungus symbiosis: amplifies mineral absorption.',theme:'ori'},
-  {q:'38. Combination of a photoautotroph and a fungus:',ops:['A) Endomycorrhiza','B) Ectomycorrhiza','C) Lichen','D) Pathogen'],a:2,exp:'Lichen.',theme:'ori'},
-  {q:'39. Field of biology that studies biodiversity as a product of evolution:',ops:['A) Systematics','B) Taxonomy','C) Geology','D) Ecology'],a:0,exp:'Systematics.',theme:'ori'},
-  {q:'40. A cell n + n is:',ops:['A) Monokaryon','B) Diploid','C) Coenocytic','D) Dikaryon'],a:3,exp:'n+n = dikaryon.',theme:'ori'},
+  {q:'38. Combination of a photoautotroph and a fungus:',ops:['A) Endomycorrhiza','B) Ectomycorrhiza','C) Lichen','D) Pathogen'],a:2,exp:'Lichen: a mutualistic symbiosis between a fungus and a photoautotroph (green alga or cyanobacterium). Do NOT confuse it with a mycorrhiza (endo/ecto), which is fungus + plant root, not fungus + alga.',theme:'ori'},
+  {q:'39. Field of biology that studies biodiversity as a product of evolution:',ops:['A) Systematics','B) Taxonomy','C) Geology','D) Ecology'],a:0,exp:'Systematics: studies diversity INCLUDING the evolutionary relationships (phylogeny) among organisms. Taxonomy (distractor B) only names and classifies; systematics adds the evolutionary history that connects the groups.',theme:'ori'},
+  {q:'40. A cell n + n is:',ops:['A) Monokaryon','B) Diploid','C) Coenocytic','D) Dikaryon'],a:3,exp:'Dikaryon: it has two distinct haploid nuclei that have NOT yet fused (typical of the dikaryotic phase of basidiomycete fungi). It is NOT diploid (2n): a diploid has a single nucleus with two fused chromosome sets; here the nuclei remain separate.',theme:'ori'},
 
   // ═══ EXPANSIÓN P2 — Genética molecular (gen) ═══
   {q:'What happens during transcription?',ops:['A) The mRNA information is used to synthesise proteins','B) DNA is replicated by DNA polymerase','C) DNA serves as a template to synthesise messenger RNA','D) Ribosomes manufacture their own RNA'],a:2,exp:'Transcription: DNA → mRNA (RNA polymerase reads the template strand 3\'→5\' and synthesises mRNA 5\'→3\'). Translation converts mRNA into protein.',theme:'gen'},
@@ -16499,6 +16768,7 @@ function diagStart(){
     q: q.q,
     ops: q.ops || q.o,
     a: q.a,
+    exp: q.exp || '',
     theme: q.theme
   }))
 
@@ -16535,7 +16805,9 @@ function diagRenderQuestion(){
 
 function diagAnswer(picked, correct, theme){
   if (!_diagState) return
-  _diagState.answers.push({ theme, correct: picked === correct })
+  // Store the question and chosen option so we can show per-item review at the end.
+  const q = _diagState.questions[_diagState.current]
+  _diagState.answers.push({ theme, correct: picked === correct, picked, q })
   _diagState.current++
   diagRenderQuestion()
 }
@@ -16608,6 +16880,35 @@ function diagFinish(){
     if (s >= 0.8) reco.push(`✅ You have a good grasp of ${labels[t] || t} (${Math.round(s*100)}%). Keep it up with flashcards and a weekly mock exam.`)
   })
   recos.innerHTML = reco.map(r => `<div style="margin-bottom:.4rem">${r}</div>`).join('')
+  // ═══ [PEDAGOGY] Per-item review — corrective feedback after the diagnostic ═══
+  // Explanatory feedback is the highest effect-size intervention in learning
+  // (Hattie & Timperley 2007, d≈0.70). We show each missed question with the
+  // correct answer and the explanation so the diagnostic becomes a learning
+  // moment, not just a measurement.
+  try {
+    const reviewWrap = document.getElementById('diagReviewWrap')
+    const review = document.getElementById('diagReview')
+    if (review){
+      const missed = _diagState.answers.filter(a => a && a.q && !a.correct)
+      if (!missed.length){
+        review.innerHTML = `<div style="padding:.5rem .2rem;color:var(--green);font-weight:700">✅ You didn't miss any. Even so, confirm it's mastery (not luck) with a fresh mock exam on the topic.</div>`
+      } else {
+        review.innerHTML = missed.map(a => {
+          const q = a.q
+          const yourTxt = (q.ops && q.ops[a.picked] != null) ? q.ops[a.picked] : '—'
+          const corrTxt = (q.ops && q.ops[q.a] != null) ? q.ops[q.a] : '—'
+          const expHtml = q.exp ? `<div style="margin-top:.4rem;font-size:.82rem;line-height:1.55"><strong>Why:</strong> ${q.exp}</div>` : ''
+          return `<div style="border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;margin-bottom:.5rem;background:var(--soft)">
+            <div style="font-weight:700;font-size:.86rem;margin-bottom:.35rem">${q.q}</div>
+            <div style="font-size:.82rem;color:var(--red)">✗ Your answer: ${yourTxt}</div>
+            <div style="font-size:.82rem;color:var(--green);font-weight:700">✓ Correct: ${corrTxt}</div>
+            ${expHtml}
+          </div>`
+        }).join('')
+      }
+      if (reviewWrap) reviewWrap.style.display = 'block'
+    }
+  } catch(e){ console.warn('[diag review]', e) }
   // Actualizar Hoy y predicción
   renderTodayPlan()
   renderReadinessGauge()
@@ -25341,7 +25642,7 @@ function openCapsulesList(){
           <strong>Unopened capsule</strong>
           <small>${capsuleSourceLabel(cap.source)}</small>
         </div>
-        <span class="bw-rarity-pill ${rarityPillClass(cap.rarity)}">${cap.rarity}</span>
+        <span class="bw-rarity-pill ${rarityPillClass(cap.rarity)}">${rarityLabel(cap.rarity)}</span>
       `
       item.addEventListener('click', () => {
         closeCapsulesList()
@@ -25381,6 +25682,31 @@ function rarityPillClass(r){
   if (r === 'legendario') return 'bw-rarity-legend'
   return 'bw-rarity-comun'
 }
+function rarityLabel(r){
+  if (r === 'raro') return 'Rare'
+  if (r === 'épico') return 'Epic'
+  if (r === 'legendario') return 'Legendary'
+  return 'Common'
+}
+// 2.5D tilt for the specimen plate (bound once, respects reduced-motion)
+function bwBindSpecTilt(plate){
+  if (!plate || plate._tiltBound) return
+  plate._tiltBound = true
+  if (REDUCED) return
+  plate.addEventListener('pointermove', e => {
+    const r = plate.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width - .5
+    const py = (e.clientY - r.top) / r.height - .5
+    plate.style.setProperty('--rx', (py * -8).toFixed(2) + 'deg')
+    plate.style.setProperty('--ry', (px * 10).toFixed(2) + 'deg')
+    plate.style.setProperty('--mx', ((px + .5) * 100).toFixed(1) + '%')
+    plate.style.setProperty('--my', ((py + .5) * 100).toFixed(1) + '%')
+  })
+  plate.addEventListener('pointerleave', () => {
+    plate.style.setProperty('--rx', '0deg'); plate.style.setProperty('--ry', '0deg')
+    plate.style.setProperty('--mx', '50%'); plate.style.setProperty('--my', '28%')
+  })
+}
 
 /* ────────────────────────────────────────────────
    Modal de APERTURA de cápsula
@@ -25403,7 +25729,7 @@ function openCapsuleAnimation(capsuleId){
   // Estilos por rareza
   orb.classList.remove('r-raro','r-epico','r-legend')
   const rcls = rarityClass(cap.rarity); if (rcls) orb.classList.add(rcls)
-  document.getElementById('bwOpenRarity').textContent = cap.rarity
+  document.getElementById('bwOpenRarity').textContent = rarityLabel(cap.rarity)
   document.getElementById('bwOpenSource').textContent = capsuleSourceLabel(cap.source)
   modal.classList.add('show')
   modal.setAttribute('aria-hidden', 'false')
@@ -25438,11 +25764,16 @@ function revealDiscovery(cap){
   document.getElementById('bwDiscName').textContent = item.name
   document.getElementById('bwDiscType').textContent = item.type
   const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
-  document.getElementById('bwDiscRegion').textContent = regionCfg ? (regionCfg.emoji + ' ' + regionCfg.name) : item.region
+  document.getElementById('bwDiscRegion').textContent = regionCfg ? regionCfg.name : item.region
   const rpill = document.getElementById('bwDiscRarity')
-  rpill.textContent = item.rarity
+  rpill.textContent = rarityLabel(item.rarity)
   rpill.className = 'bw-rarity-pill ' + rarityPillClass(item.rarity)
   document.getElementById('bwDiscContext').textContent = item.context
+  // Specimen plate: material + seal by rarity + 2.5D tilt
+  const plate = document.getElementById('bwSpecPlate')
+  if (plate){ plate.className = 'bw-spec ' + rarityClass(item.rarity); bwBindSpecTilt(plate) }
+  const corner = document.getElementById('bwSpecCorner')
+  if (corner) corner.textContent = rarityLabel(item.rarity)
   // Dibujar arte
   drawDiscoveryArt(item)
 }
