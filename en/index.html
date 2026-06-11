@@ -25810,27 +25810,7 @@ async function collectDiscovery(){
    Renders del arte de descubrimiento (canvas)
    Geometrías simples por categoría — sin sprites externos
    ──────────────────────────────────────────────── */
-function drawDiscoveryArt(item){
-  const canvas = document.getElementById('bwDiscoveryArt')
-  if (!canvas) return
-  const dpr = Math.min(window.devicePixelRatio || 1, 2)
-  const sz = canvas.getBoundingClientRect().width || 180
-  canvas.width = sz * dpr; canvas.height = sz * dpr
-  canvas.style.width = sz + 'px'; canvas.style.height = sz + 'px'
-  const ctx = canvas.getContext('2d')
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-  ctx.clearRect(0, 0, sz, sz)
-  // Fondo radial sutil basado en región
-  const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
-  const tint = regionCfg ? regionCfg.tint : [120,200,150]
-  let bg = ctx.createRadialGradient(sz/2, sz/2, 0, sz/2, sz/2, sz/1.5)
-  bg.addColorStop(0, `rgba(${tint[0]},${tint[1]},${tint[2]},0.25)`)
-  bg.addColorStop(1, `rgba(${tint[0]},${tint[1]},${tint[2]},0)`)
-  ctx.fillStyle = bg; ctx.fillRect(0, 0, sz, sz)
-  ctx.save()
-  ctx.translate(sz/2, sz/2)
-  const art = item.art || 'orgMicrobe'
-  const t = performance.now() / 1000
+function _bwArtDispatch(ctx, art, sz, tint, t){
   if      (art === 'molHex')        artMolHex(ctx, sz, tint, t)
   else if (art === 'molChain')      artMolChain(ctx, sz, tint, t)
   else if (art === 'molRing')       artMolRing(ctx, sz, tint, t)
@@ -25859,7 +25839,104 @@ function drawDiscoveryArt(item){
   else if (art === 'orgBug')        artOrgBug(ctx, sz, tint, t)
   else if (art === 'orgBird')       artOrgBird(ctx, sz, tint, t)
   else                              artOrgMicrobe(ctx, sz, tint, t)
+}
+
+// Material finish per rarity (foil = material over the specimen)
+const BW_RARITY_FX = {
+  'común':      { halo:[170,205,185], foil:null,                                                          foilA:0,    spec:0.36 },
+  'raro':       { halo:[205,163,90],  foil:['#5a3c14','#f0d49a','#8a6128','#ffe9bf'],                      foilA:0.42, spec:0.50 },
+  'épico':      { halo:[176,90,214],  foil:['#c9d2e6','#e6d6ff','#9aa7c4','#d6c0ee','#eef2ff'],            foilA:0.48, spec:0.55 },
+  'legendario': { halo:[255,186,18],  foil:['#ff5d5d','#ffd86b','#5dffa0','#5dd6ff','#b06bff','#ff8a3d'],  foilA:0.58, spec:0.62 }
+}
+
+// 3D compositor: silhouette → rarity material → specular light →
+// display scene (back halo + pedestal + contact shadow + cast shadow).
+function drawDiscoveryArt(item){
+  const canvas = document.getElementById('bwDiscoveryArt')
+  if (!canvas) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const sz = canvas.getBoundingClientRect().width || 180
+  canvas.width = sz * dpr; canvas.height = sz * dpr
+  canvas.style.width = sz + 'px'; canvas.style.height = sz + 'px'
+  const ctx = canvas.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  ctx.clearRect(0, 0, sz, sz)
+
+  const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
+  const tint = regionCfg ? regionCfg.tint : [120,200,150]
+  const fx = BW_RARITY_FX[item.rarity] || BW_RARITY_FX['común']
+  const art = item.art || 'orgMicrobe'
+  const t = performance.now() / 1000
+
+  // 1) Object sprite in offscreen (silhouette + material foil + specular)
+  const off = document.createElement('canvas')
+  off.width = sz * dpr; off.height = sz * dpr
+  const octx = off.getContext('2d')
+  octx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  octx.save(); octx.translate(sz/2, sz/2)
+  _bwArtDispatch(octx, art, sz, tint, t)
+  octx.restore()
+  if (fx.foil){
+    octx.globalCompositeOperation = 'source-atop'
+    const fg = octx.createLinearGradient(0, 0, sz, sz)
+    fx.foil.forEach((c, i) => fg.addColorStop(i / (fx.foil.length - 1), c))
+    octx.globalAlpha = fx.foilA
+    octx.fillStyle = fg; octx.fillRect(0, 0, sz, sz)
+    octx.globalAlpha = 1
+  }
+  octx.globalCompositeOperation = 'source-atop'
+  const lg = octx.createLinearGradient(0, 0, sz*0.7, sz*0.7)
+  lg.addColorStop(0, `rgba(255,255,255,${fx.spec})`)
+  lg.addColorStop(0.45, 'rgba(255,255,255,0)')
+  octx.fillStyle = lg; octx.fillRect(0, 0, sz, sz)
+  octx.globalCompositeOperation = 'source-over'
+
+  // 2) Studio background + rarity back halo
+  const bg = ctx.createRadialGradient(sz/2, sz*0.42, 0, sz/2, sz*0.42, sz*0.78)
+  bg.addColorStop(0, `rgba(${tint[0]},${tint[1]},${tint[2]},0.18)`)
+  bg.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, sz, sz)
+  ctx.globalCompositeOperation = 'screen'
+  const halo = ctx.createRadialGradient(sz/2, sz*0.40, 0, sz/2, sz*0.40, sz*0.52)
+  halo.addColorStop(0, `rgba(${fx.halo[0]},${fx.halo[1]},${fx.halo[2]},0.30)`)
+  halo.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = halo; ctx.fillRect(0, 0, sz, sz)
+  ctx.globalCompositeOperation = 'source-over'
+
+  // 3) Display pedestal + contact shadow
+  const pedY = sz * 0.80
+  const ped = ctx.createRadialGradient(sz/2, pedY, 0, sz/2, pedY, sz*0.34)
+  ped.addColorStop(0, `rgba(${fx.halo[0]},${fx.halo[1]},${fx.halo[2]},0.22)`)
+  ped.addColorStop(1, 'rgba(0,0,0,0)')
+  ctx.fillStyle = ped
+  ctx.beginPath(); ctx.ellipse(sz/2, pedY, sz*0.32, sz*0.065, 0, 0, Math.PI*2); ctx.fill()
+  ctx.save()
+  ctx.filter = 'blur(3px)'
+  ctx.fillStyle = 'rgba(0,0,0,0.42)'
+  ctx.beginPath(); ctx.ellipse(sz/2, pedY, sz*0.20, sz*0.04, 0, 0, Math.PI*2); ctx.fill()
   ctx.restore()
+
+  // 4) Object with cast shadow (2.5D depth)
+  ctx.save()
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'
+  ctx.shadowBlur = sz * 0.06
+  ctx.shadowOffsetY = sz * 0.045
+  ctx.drawImage(off, 0, 0, sz, sz)
+  ctx.restore()
+
+  // 5) Glossy sweep (foil rarities only)
+  if (fx.foil){
+    ctx.save()
+    ctx.globalCompositeOperation = 'screen'
+    const a = item.rarity === 'legendario' ? 0.16 : 0.10
+    const sw = ctx.createLinearGradient(0, 0, sz, sz)
+    sw.addColorStop(0, 'rgba(255,255,255,0)')
+    sw.addColorStop(0.46, `rgba(255,255,255,${a})`)
+    sw.addColorStop(0.54, `rgba(255,255,255,${a})`)
+    sw.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.fillStyle = sw; ctx.fillRect(0, 0, sz, sz)
+    ctx.restore()
+  }
 }
 
 function tintCol(tint, a){ return `rgba(${tint[0]},${tint[1]},${tint[2]},${a})` }
