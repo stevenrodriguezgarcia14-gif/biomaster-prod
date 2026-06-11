@@ -808,7 +808,8 @@ async function loadAdmins() {
 function populateAssigneeSelect() {
   const sel = document.getElementById('assigneeSelect')
   if (!sel) return
-  sel.innerHTML = '<option value="">Sin asignar</option>' +
+  const both = admins.length >= 2 ? '<option value="Ambos">Ambos</option>' : ''
+  sel.innerHTML = '<option value="">Sin asignar</option>' + both +
     admins.map(a => `<option value="${esc(a.name)}">${esc(a.name)}</option>`).join('')
 }
 // Conserva un responsable heredado (texto libre) que no esté en la lista de admins
@@ -1429,4 +1430,3 @@ init().catch(err => {
 </script>
 </body>
 </html>
-
