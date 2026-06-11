@@ -3113,6 +3113,122 @@ body.focus-mode .focus-toggle-btn{background:var(--green);color:#fff;border-colo
 /* ═══ Fin Biocosmos F3 ═══ */
 
 /* ═══════════════════════════════════════════════════════════
+   BIOCOSMOS R2 — Rarezas premium estilo "lámina científica"
+   Sin emojis. Rareza = MATERIAL + profundidad 2.5D.
+   común=papel grabado · raro=bronce · épico=plata holográfica ·
+   legendario=foil prismático. Reutiliza r-raro / r-epico / r-legend.
+   ═══════════════════════════════════════════════════════════ */
+@keyframes bwSpin{ to{ transform:rotate(360deg) } }
+@keyframes bwBrush{ 0%,100%{ transform:translateX(-32%) } 50%{ transform:translateX(32%) } }
+
+/* —— Lámina de espécimen (el momento de revelación) —— */
+.bw-spec{
+  position:relative;
+  width:min(290px,80vw);
+  margin:0 auto;
+  transform:perspective(950px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transform-style:preserve-3d;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  filter:drop-shadow(0 26px 40px rgba(0,0,0,.55));
+  will-change:transform;
+}
+.bw-spec-frame{
+  position:relative;z-index:0;
+  border-radius:16px;padding:5px;overflow:hidden;
+  background:linear-gradient(135deg,#e9e4d4,#c7bfa6 55%,#ddd6bf);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 6px rgba(0,0,0,.25);
+}
+.bw-spec-window{
+  position:relative;z-index:1;
+  border-radius:12px;overflow:hidden;aspect-ratio:1/1;
+  background:radial-gradient(circle at 50% 38%, rgba(20,40,28,.5), rgba(4,12,7,.96));
+  box-shadow:inset 0 2px 10px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.bw-spec-window .bw-discovery-art{ width:100%;height:100%;filter:none;animation:none }
+.bw-spec-sheen{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,28%),
+            rgba(255,255,255,.22), rgba(255,255,255,.04) 38%, transparent 60%);
+  mix-blend-mode:screen;
+}
+.bw-spec-corner{
+  position:absolute;top:-9px;right:12px;z-index:3;
+  font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  padding:.28rem .62rem;border-radius:7px;
+  color:#3a3320;background:linear-gradient(135deg,#efe9d6,#cbc3aa);
+  box-shadow:0 4px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.6);
+  transform:translateZ(30px);
+}
+/* RARO — bronce */
+.bw-spec.r-raro{ filter:drop-shadow(0 26px 42px rgba(120,80,20,.45)) }
+.bw-spec.r-raro .bw-spec-frame{
+  background:linear-gradient(135deg,#6e4a1c,#cda35a 28%,#8a6128 52%,#e8c889 72%,#6e4a1c);
+}
+.bw-spec.r-raro .bw-spec-frame::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 35%,rgba(255,245,210,.5) 50%,transparent 65%);
+  animation:bwBrush 5s ease-in-out infinite;
+}
+.bw-spec.r-raro .bw-spec-corner{ color:#3a2708;background:linear-gradient(135deg,#f0d49a,#c9974a) }
+/* ÉPICO — plata holográfica */
+.bw-spec.r-epico{ filter:drop-shadow(0 26px 44px rgba(150,90,200,.4)) }
+.bw-spec.r-epico .bw-spec-frame{ background:#aeb6c8 }
+.bw-spec.r-epico .bw-spec-frame::before{
+  content:'';position:absolute;inset:-60%;z-index:-1;
+  background:conic-gradient(from 0deg,#c9d2e6,#9aa7c4,#e6d6ff,#a9c4e6,#d6c0ee,#c9d2e6);
+  animation:bwSpin 9s linear infinite;
+}
+.bw-spec.r-epico .bw-spec-corner{ color:#2b2440;background:linear-gradient(135deg,#e9e2ff,#bcb0e0) }
+/* LEGENDARIO — foil prismático */
+.bw-spec.r-legend{ filter:drop-shadow(0 28px 50px rgba(255,186,18,.5)) }
+.bw-spec.r-legend .bw-spec-frame{ background:#3a2f12 }
+.bw-spec.r-legend .bw-spec-frame::before{
+  content:'';position:absolute;inset:-60%;z-index:-1;
+  background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff8a3d,#ff5d5d);
+  animation:bwSpin 5.5s linear infinite;filter:saturate(1.25);
+}
+.bw-spec.r-legend .bw-spec-window::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(125deg,transparent 30%,rgba(255,216,107,.18) 50%,transparent 70%);
+  mix-blend-mode:screen;
+}
+.bw-spec.r-legend .bw-spec-corner{
+  color:#4a2f00;background:linear-gradient(135deg,#fff0b8,#ffc64d);
+  box-shadow:0 4px 14px rgba(255,186,18,.5), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+/* —— Píldoras de rareza como sello (todas las vistas) —— */
+.bw-rarity-raro{ background:linear-gradient(135deg,rgba(205,163,90,.28),rgba(138,97,40,.22));
+  color:#f0d49a;border:1px solid rgba(205,163,90,.55) }
+.bw-rarity-epico{ background:linear-gradient(135deg,rgba(176,38,214,.28),rgba(150,90,200,.2));
+  color:#e9d6ff;border:1px solid rgba(190,120,230,.55) }
+.bw-rarity-legend{ background:linear-gradient(135deg,rgba(255,186,18,.3),rgba(255,138,0,.2));
+  color:#fff0b8;border:1px solid rgba(255,200,80,.6);box-shadow:0 0 14px rgba(255,186,18,.3) }
+
+/* —— Discos de muestra (cápsulas pendientes) con material —— */
+.bw-caps-orb-mini{ position:relative;overflow:hidden;
+  background:radial-gradient(circle at 36% 30%,#e9e4d4,#a9a48e 72%);animation:none }
+.bw-caps-orb-mini.r-raro{ background:linear-gradient(135deg,#6e4a1c,#e8c889 50%,#8a6128) }
+.bw-caps-orb-mini.r-epico{ background:conic-gradient(from 0deg,#c9d2e6,#9aa7c4,#e6d6ff,#a9c4e6,#c9d2e6);animation:bwSpin 7s linear infinite }
+.bw-caps-orb-mini.r-legend{ background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff5d5d);animation:bwSpin 6s linear infinite }
+.bw-caps-orb-mini::after{ content:'';position:absolute;inset:20%;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%,rgba(255,255,255,.55),rgba(0,0,0,.12) 70%);mix-blend-mode:screen }
+
+/* —— Cápsula sellada (estado cerrado): anillo de material épico/legend —— */
+.bw-orb-big.r-epico::after,.bw-orb-big.r-legend::after{
+  content:'';position:absolute;inset:-7px;border-radius:50%;pointer-events:none;z-index:-1;filter:blur(2px) }
+.bw-orb-big.r-epico::after{ background:conic-gradient(from 0deg,#c9d2e6,#e6d6ff,#a9c4e6,#c9d2e6);animation:bwSpin 8s linear infinite }
+.bw-orb-big.r-legend::after{ background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff5d5d);animation:bwSpin 5s linear infinite }
+
+@media (prefers-reduced-motion: reduce){
+  .bw-spec{ transform:none!important;transition:none }
+  .bw-spec-frame::before,.bw-spec-frame::after,
+  .bw-spec.r-epico .bw-spec-frame::before,.bw-spec.r-legend .bw-spec-frame::before,
+  .bw-caps-orb-mini,.bw-orb-big.r-epico::after,.bw-orb-big.r-legend::after{ animation:none!important }
+}
+/* ═══ Fin Biocosmos R2 ═══ */
+
+/* ═══════════════════════════════════════════════════════════
    BIOCOSMOS F4 — Colección viva (biotopo con descubrimientos)
    Sin tabla, sin grid. Items flotando libres en una "pecera".
    ═══════════════════════════════════════════════════════════ */
@@ -5775,7 +5891,15 @@ window.Analytics = (function(){
 
   <!-- Estado 2: descubrimiento revelado -->
   <div id="bwOpenStageOpened" class="bw-open-stage-opened">
-    <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+    <div class="bw-spec" id="bwSpecPlate">
+      <div class="bw-spec-frame">
+        <div class="bw-spec-window">
+          <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+          <span class="bw-spec-sheen" aria-hidden="true"></span>
+        </div>
+      </div>
+      <span class="bw-spec-corner" id="bwSpecCorner">Común</span>
+    </div>
     <h2 id="bwDiscName" class="bw-discovery-name">…</h2>
     <div class="bw-discovery-meta">
       <span class="bw-disc-type" id="bwDiscType">organismo</span>
@@ -6195,9 +6319,10 @@ window.Analytics = (function(){
               <div class="subitem" data-keywords="niveles organizacion vida atomo molecula celula tejido organo organismo poblacion comunidad ecosistema biosfera"><strong>1.4 Niveles de organización de la vida</strong>
                 <ul class="list">
                   <li><strong>Orden ascendente:</strong> átomo → molécula → organela → célula → tejido → órgano → sistema de órganos → organismo → población → comunidad → ecosistema → biósfera.</li>
-                  <li><strong>Cada nivel tiene propiedades emergentes</strong> que no aparecen en el nivel inferior.</li>
+                  <li><strong>Propiedades emergentes:</strong> en cada nivel aparecen propiedades nuevas que NO existen en el nivel inferior, por <em>cómo</em> se organizan las partes. Ejemplo: el oxígeno y el hidrógeno por separado no "mojan"; combinados como agua, sí. Una neurona sola no piensa; millones organizadas, sí.</li>
+                  <li><strong>El todo es más que la suma de las partes:</strong> conocer las piezas no basta; importa cómo se conectan. Por eso la biología estudia cada nivel, no solo las moléculas.</li>
                   <li><span class="mark-yellow">Clave:</span> la <em>célula</em> es el primer nivel donde aparece la vida; un átomo o una molécula aislada no son seres vivos.</li>
-                  <li><span class="mark-red">Error:</span> confundir el orden o saltarse el nivel celular en una pregunta de orden.</li>
+                  <li><span class="mark-red">Error:</span> confundir el orden o saltarse un nivel. Ojo: <em>organela</em> va entre molécula y célula, y <em>sistema de órganos</em> entre órgano y organismo.</li>
                 </ul>
               </div>
 
@@ -6442,6 +6567,7 @@ window.Analytics = (function(){
                   <li><span class="mark-red">Excepción / trampa de examen:</span> los <em>virus</em> NO cumplen la teoría celular (son acelulares y no se reproducen por sí solos), por eso muchos no los consideran seres vivos.</li>
                 </ul>
               </div>
+              <div class="subitem" data-keywords="microscopia microscopio optico luz electronico TEM SEM resolucion aumento magnificacion celulas tamano observar hooke leeuwenhoek"><strong>3.1.1.1 El estudio de las células: microscopía</strong><ul class="list"><li>Las células son <strong>microscópicas</strong> (la mayoría &lt; 100 µm), por eso se estudian con microscopios; su descubrimiento dependió del desarrollo de estos instrumentos.</li><li><strong>Aumento vs resolución (no confundir):</strong> el <em>aumento</em> es cuánto más grande se ve la imagen; la <em>resolución</em> es la capacidad de distinguir dos puntos cercanos como separados. Aumentar sin resolución solo produce una imagen borrosa más grande.</li><li><strong>Microscopio óptico (de luz):</strong> usa luz visible; aumenta hasta ~1000×. Permite observar <em>células vivas</em> y su movimiento, pero su resolución está limitada por la longitud de onda de la luz (~0,2 µm).</li><li><strong>Microscopio electrónico:</strong> usa un haz de electrones (longitud de onda mucho menor) → resolución muchísimo mayor; revela organelos y detalles finos. Pero la muestra debe ir <em>fijada/muerta</em> (en vacío). <em>TEM</em> (transmisión: ve el interior) vs <em>SEM</em> (barrido: ve la superficie en 3D).</li><li><span class="mark-red">Error:</span> el microscopio electrónico NO sirve para ver células vivas; gana resolución pero pierde la posibilidad de observar procesos en tiempo real.</li></ul></div>
 
               <div class="subitem" data-keywords="caracteristicas comunes celulas membrana citoplasma ribosomas adn material genetico"><strong>3.1.2 Características comunes a todas las células</strong>
                 <ul class="list">
@@ -6537,7 +6663,8 @@ window.Analytics = (function(){
                 <ul class="list">
                   <li><strong>Modelo del mosaico fluido</strong> (Singer y Nicolson, 1972).</li>
                   <li><strong>Bicapa de fosfolípidos:</strong> cabezas hidrofílicas hacia afuera, colas hidrofóbicas hacia adentro.</li>
-                  <li><strong>Colesterol:</strong> intercalado entre fosfolípidos, regula fluidez.</li>
+                  <li><strong>Colesterol:</strong> intercalado entre fosfolípidos, <em>amortigua</em> la fluidez: en calor la reduce (evita que se vuelva demasiado fluida) y en frío la mantiene (evita que se solidifique).</li>
+                  <li><strong>Factores que afectan la fluidez:</strong> la <em>temperatura</em> (más calor = más fluida), la proporción de <em>ácidos grasos insaturados</em> (sus codos impiden el empaquetamiento apretado → más fluida) y el <em>colesterol</em> (amortiguador). Una membrana demasiado rígida o demasiado fluida no funciona bien.</li>
                   <li><strong>Proteínas integrales (transmembrana):</strong> atraviesan la bicapa. Funcionan como canales, transportadores, receptores.</li>
                   <li><strong>Proteínas periféricas:</strong> en una cara de la membrana. Funciones de soporte y señalización.</li>
                   <li><strong>Glucoproteínas y glucolípidos:</strong> con carbohidratos, sirven para reconocimiento celular.</li>
@@ -6646,9 +6773,11 @@ window.Analytics = (function(){
                 <ul class="list">
                   <li><strong>Oxidación:</strong> pérdida de electrones (también pérdida de H o ganancia de O).</li>
                   <li><strong>Reducción:</strong> ganancia de electrones (ganancia de H o pérdida de O).</li>
+                  <li><strong>Siempre van juntas (reacción redox):</strong> si una molécula se oxida (pierde e⁻), otra se reduce (los gana). Los electrones no desaparecen — se transfieren de una a otra.</li>
                   <li><strong>Mnemotecnia:</strong> "OIL RIG" — Oxidation Is Loss, Reduction Is Gain.</li>
-                  <li><strong>Transportadores:</strong> NAD⁺/NADH y NADP⁺/NADPH (aceptan o donan electrones e H).</li>
-                  <li>En metabolismo, la energía suele "viajar" como electrones en estos transportadores.</li>
+                  <li><strong>Transportadores de electrones:</strong> NAD⁺/NADH y FAD/FADH₂ (respiración), NADP⁺/NADPH (fotosíntesis). El "⁺" marca la forma <em>oxidada</em> (lista para recibir electrones); la forma con H es la <em>reducida</em> (cargada de electrones y energía).</li>
+                  <li><strong>Por qué importa:</strong> la energía de los alimentos "viaja" como electrones de alta energía en estos transportadores hasta la cadena de transporte, donde se libera para fabricar ATP.</li>
+                  <li><span class="mark-red">Error:</span> creer que la oxidación siempre involucra oxígeno. Es ganancia/pérdida de <em>electrones</em>; el oxígeno es solo un aceptor común, no el único.</li>
                 </ul>
               </div>
 
@@ -6809,6 +6938,18 @@ window.Analytics = (function(){
                   <li><strong>Fermentación alcohólica:</strong> piruvato → acetaldehído + CO₂ → etanol + NAD⁺. En levaduras (cerveza, vino, pan).</li>
                   <li><strong>Rendimiento total:</strong> solo 2 ATP por glucosa (los de la glucólisis).</li>
                   <li><span class="mark-yellow">Clave:</span> la fermentación <em>no</em> produce más ATP que la glucólisis; solo regenera NAD⁺ para que esta continúe.</li>
+                </ul>
+              </div>
+
+              <div class="subitem" data-keywords="conexiones metabolicas grasas lipidos proteinas aminoacidos beta oxidacion desaminacion glicerol acetil CoA krebs no solo glucosa anabolismo catabolismo regulacion ATP ADP AMP"><strong>3.5.6 No solo glucosa: cómo se queman grasas y proteínas</strong>
+                <ul class="list">
+                  <li>La respiración celular <strong>no quema únicamente glucosa</strong>. Otros nutrientes entran a las MISMAS vías (glucólisis y Krebs), que funcionan como un "cruce de caminos" del metabolismo.</li>
+                  <li><strong>Otros carbohidratos:</strong> la fructosa, la galactosa y el glucógeno se convierten en intermediarios de la glucólisis y siguen el mismo camino que la glucosa.</li>
+                  <li><strong>Grasas (lípidos):</strong> el <em>glicerol</em> del triglicérido entra a la glucólisis; los <em>ácidos grasos</em> se cortan en fragmentos de 2 carbonos por <strong>β-oxidación</strong> y se convierten en acetil-CoA, que entra al ciclo de Krebs. Como cada ácido graso produce mucho acetil-CoA, las grasas rinden más del doble de energía por gramo que los carbohidratos.</li>
+                  <li><strong>Proteínas:</strong> a los aminoácidos primero se les quita el grupo amino (<em>desaminación</em>, que genera urea como desecho) y el esqueleto carbonado restante entra como piruvato, acetil-CoA o algún intermediario de Krebs, según el aminoácido.</li>
+                  <li><strong>Funciona en los dos sentidos:</strong> esos mismos intermediarios también sirven para <em>fabricar</em> azúcares, grasas y aminoácidos cuando sobra energía (anabolismo). Por eso el exceso de azúcar se almacena como grasa.</li>
+                  <li><strong>Regulación:</strong> la célula no respira "a tope" siempre. Cuando hay mucho <em>ATP</em>, una enzima clave de la glucólisis (fosfofructoquinasa) se frena; cuando sube el <em>ADP/AMP</em> (señal de poca energía), se acelera. Es retroalimentación según la demanda energética.</li>
+                  <li><span class="mark-red">Error:</span> creer que las grasas y proteínas tienen una "vía aparte". Convergen en la glucólisis y Krebs, las mismas vías de la glucosa.</li>
                 </ul>
               </div>
 
@@ -26517,7 +26658,7 @@ function openCapsulesList(){
           <strong>Cápsula sin abrir</strong>
           <small>${capsuleSourceLabel(cap.source)}</small>
         </div>
-        <span class="bw-rarity-pill ${rarityPillClass(cap.rarity)}">${cap.rarity}</span>
+        <span class="bw-rarity-pill ${rarityPillClass(cap.rarity)}">${rarityLabel(cap.rarity)}</span>
       `
       item.addEventListener('click', () => {
         closeCapsulesList()
@@ -26555,6 +26696,31 @@ function rarityPillClass(r){
   if (r === 'legendario') return 'bw-rarity-legend'
   return 'bw-rarity-comun'
 }
+function rarityLabel(r){
+  if (r === 'raro') return 'Raro'
+  if (r === 'épico') return 'Épico'
+  if (r === 'legendario') return 'Legendario'
+  return 'Común'
+}
+// Tilt 2.5D de la lámina de espécimen (se enlaza una sola vez, respeta reduced-motion)
+function bwBindSpecTilt(plate){
+  if (!plate || plate._tiltBound) return
+  plate._tiltBound = true
+  if (REDUCED) return
+  plate.addEventListener('pointermove', e => {
+    const r = plate.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width - .5
+    const py = (e.clientY - r.top) / r.height - .5
+    plate.style.setProperty('--rx', (py * -8).toFixed(2) + 'deg')
+    plate.style.setProperty('--ry', (px * 10).toFixed(2) + 'deg')
+    plate.style.setProperty('--mx', ((px + .5) * 100).toFixed(1) + '%')
+    plate.style.setProperty('--my', ((py + .5) * 100).toFixed(1) + '%')
+  })
+  plate.addEventListener('pointerleave', () => {
+    plate.style.setProperty('--rx', '0deg'); plate.style.setProperty('--ry', '0deg')
+    plate.style.setProperty('--mx', '50%'); plate.style.setProperty('--my', '28%')
+  })
+}
 
 /* ────────────────────────────────────────────────
    Modal de APERTURA de cápsula
@@ -26577,7 +26743,7 @@ function openCapsuleAnimation(capsuleId){
   // Estilos por rareza
   orb.classList.remove('r-raro','r-epico','r-legend')
   const rcls = rarityClass(cap.rarity); if (rcls) orb.classList.add(rcls)
-  document.getElementById('bwOpenRarity').textContent = cap.rarity
+  document.getElementById('bwOpenRarity').textContent = rarityLabel(cap.rarity)
   document.getElementById('bwOpenSource').textContent = capsuleSourceLabel(cap.source)
   modal.classList.add('show')
   modal.setAttribute('aria-hidden', 'false')
@@ -26612,11 +26778,16 @@ function revealDiscovery(cap){
   document.getElementById('bwDiscName').textContent = item.name
   document.getElementById('bwDiscType').textContent = item.type
   const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
-  document.getElementById('bwDiscRegion').textContent = regionCfg ? (regionCfg.emoji + ' ' + regionCfg.name) : item.region
+  document.getElementById('bwDiscRegion').textContent = regionCfg ? regionCfg.name : item.region
   const rpill = document.getElementById('bwDiscRarity')
-  rpill.textContent = item.rarity
+  rpill.textContent = rarityLabel(item.rarity)
   rpill.className = 'bw-rarity-pill ' + rarityPillClass(item.rarity)
   document.getElementById('bwDiscContext').textContent = item.context
+  // Lámina de espécimen: material y sello según rareza + tilt 2.5D
+  const plate = document.getElementById('bwSpecPlate')
+  if (plate){ plate.className = 'bw-spec ' + rarityClass(item.rarity); bwBindSpecTilt(plate) }
+  const corner = document.getElementById('bwSpecCorner')
+  if (corner) corner.textContent = rarityLabel(item.rarity)
   // Dibujar arte
   drawDiscoveryArt(item)
 }
