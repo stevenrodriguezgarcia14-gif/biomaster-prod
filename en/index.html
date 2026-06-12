@@ -1066,46 +1066,132 @@
    ═══════════════════════════════════════════════════════════ */
 @keyframes bwSpin{ to{ transform:rotate(360deg) } }
 @keyframes bwBrush{ 0%,100%{ transform:translateX(-32%) } 50%{ transform:translateX(32%) } }
+@keyframes bwMotes{ from{ background-position:0 0,0 0,0 0 } to{ background-position:8px -240px,-14px -300px,6px -180px } }
 
+/* —— Specimen card (the reveal moment) ——
+   Language: collectible scientific chrome. The object is NOT an icon:
+   it is a catalogued specimen under glass — reticle, suspended motes,
+   holographic foil with parallax on tilt and an engraved catalog placard. */
 .bw-spec{
   position:relative;
-  width:min(290px,80vw);
+  width:min(300px,82vw);
   margin:0 auto;
-  transform:perspective(950px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
   transform-style:preserve-3d;
   transition:transform .3s cubic-bezier(.2,.7,.3,1);
-  filter:drop-shadow(0 26px 40px rgba(0,0,0,.55));
+  filter:drop-shadow(0 28px 44px rgba(0,0,0,.6));
   will-change:transform;
 }
+/* Material frame (engraved paper by default) */
 .bw-spec-frame{
   position:relative;z-index:0;
-  border-radius:16px;padding:5px;overflow:hidden;
-  background:linear-gradient(135deg,#e9e4d4,#c7bfa6 55%,#ddd6bf);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5), inset 0 -2px 6px rgba(0,0,0,.25);
+  border-radius:18px;padding:9px 9px 0;overflow:hidden;
+  background:
+    linear-gradient(150deg,#efe9d8,#cbc3a8 46%,#e6dfc9 68%,#bdb499),
+    repeating-linear-gradient(118deg,rgba(255,255,255,.05) 0 2px,rgba(0,0,0,.02) 2px 5px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.6),
+    inset 0 -3px 8px rgba(0,0,0,.3),
+    inset 0 0 0 1px rgba(120,100,60,.22);
 }
+/* Display chamber (glass) */
 .bw-spec-window{
   position:relative;z-index:1;
   border-radius:12px;overflow:hidden;aspect-ratio:1/1;
-  background:radial-gradient(circle at 50% 38%, rgba(20,40,28,.5), rgba(4,12,7,.96));
-  box-shadow:inset 0 2px 10px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.06);
+  background:radial-gradient(circle at 50% 36%, rgba(26,52,38,.55), rgba(3,9,6,.98) 80%);
+  box-shadow:
+    inset 0 3px 14px rgba(0,0,0,.7),
+    inset 0 0 0 1px rgba(255,255,255,.07),
+    inset 0 0 26px rgba(0,0,0,.55);
 }
-.bw-spec-window .bw-discovery-art{ width:100%;height:100%;filter:none;animation:none }
+.bw-spec-window .bw-discovery-art{ position:relative;z-index:2;width:100%;height:100%;filter:none;animation:none }
+/* Scientific reticle etched on the glass (microscope scale) */
+.bw-spec-grid{
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background:
+    repeating-linear-gradient(0deg, rgba(150,200,170,.10) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgba(150,200,170,.10) 0 1px, transparent 1px 22px);
+  -webkit-mask:radial-gradient(circle at 50% 45%, #000 52%, transparent 80%);
+          mask:radial-gradient(circle at 50% 45%, #000 52%, transparent 80%);
+}
+.bw-spec-grid::before{
+  content:'';position:absolute;left:50%;top:45%;width:56%;height:56%;
+  transform:translate(-50%,-50%);border-radius:50%;
+  border:1px solid rgba(150,200,170,.22);
+}
+.bw-spec-grid::after{
+  content:'';position:absolute;left:50%;top:45%;width:12px;height:12px;
+  transform:translate(-50%,-50%);
+  background:
+    linear-gradient(rgba(150,200,170,.45),rgba(150,200,170,.45)) 50%/1px 100% no-repeat,
+    linear-gradient(rgba(150,200,170,.45),rgba(150,200,170,.45)) 50%/100% 1px no-repeat;
+}
+/* Suspended motes/particles (density by rarity) */
+.bw-spec-motes{
+  position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;
+  mix-blend-mode:screen;
+  background-image:
+    radial-gradient(circle, rgba(220,255,235,.9) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(200,240,255,.7) 0 1px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.6) 0 1px, transparent 2px);
+  background-size:92px 92px,140px 140px,68px 68px;
+  background-position:12px 20px,60px 84px,40px 8px;
+  animation:bwMotes 16s linear infinite;
+}
+/* Holographic foil — parallax following the tilt (--mx/--my) */
+.bw-spec-holo{
+  position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;
+  mix-blend-mode:screen;filter:saturate(1.25);
+  background:repeating-linear-gradient(112deg,
+    rgba(255,90,120,.55) 0 6%, rgba(255,214,107,.55) 11%,
+    rgba(93,255,160,.55) 18%, rgba(93,214,255,.55) 26%,
+    rgba(176,107,255,.55) 33%, rgba(255,138,61,.55) 40%, rgba(255,90,120,.55) 46%);
+  background-size:240% 240%;
+  background-position:var(--mx,50%) var(--my,50%);
+  transition:background-position .12s linear;
+}
+/* Fixed glass reflection (diagonal gloss) */
+.bw-spec-gloss{
+  position:absolute;inset:0;z-index:5;pointer-events:none;mix-blend-mode:screen;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.17) 0 16%, transparent 33%,
+    transparent 66%, rgba(255,255,255,.05) 84%, transparent);
+}
+/* Cursor-following sheen */
 .bw-spec-sheen{
-  position:absolute;inset:0;pointer-events:none;z-index:2;
+  position:absolute;inset:0;pointer-events:none;z-index:6;
   background:radial-gradient(circle at var(--mx,50%) var(--my,28%),
-            rgba(255,255,255,.22), rgba(255,255,255,.04) 38%, transparent 60%);
+            rgba(255,255,255,.24), rgba(255,255,255,.04) 38%, transparent 60%);
   mix-blend-mode:screen;
 }
+/* Engraved catalog placard */
+.bw-spec-placard{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+  margin:8px 1px;padding:.36rem .62rem;border-radius:8px;
+  background:linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.28));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 -1px 2px rgba(0,0,0,.32);
+  font-family:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace;
+}
+.bw-spec-code{
+  font-size:.62rem;font-weight:700;letter-spacing:.12em;
+  color:#5a4f33;text-shadow:0 1px 0 rgba(255,255,255,.5);
+}
+.bw-spec-class{
+  font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#6a5f40;text-shadow:0 1px 0 rgba(255,255,255,.42);white-space:nowrap;
+}
+/* Rarity seal (corner, engraved plate) */
 .bw-spec-corner{
-  position:absolute;top:-9px;right:12px;z-index:3;
+  position:absolute;top:-9px;right:14px;z-index:7;
   font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
   padding:.28rem .62rem;border-radius:7px;
   color:#3a3320;background:linear-gradient(135deg,#efe9d6,#cbc3aa);
   box-shadow:0 4px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.6);
-  transform:translateZ(30px);
+  transform:translateZ(34px);
 }
-/* RARE — bronze */
-.bw-spec.r-raro{ filter:drop-shadow(0 26px 42px rgba(120,80,20,.45)) }
+/* RARE — brushed bronze */
+.bw-spec.r-raro{ filter:drop-shadow(0 26px 42px rgba(120,80,20,.48)) }
 .bw-spec.r-raro .bw-spec-frame{
   background:linear-gradient(135deg,#6e4a1c,#cda35a 28%,#8a6128 52%,#e8c889 72%,#6e4a1c);
 }
@@ -1114,29 +1200,42 @@
   background:linear-gradient(105deg,transparent 35%,rgba(255,245,210,.5) 50%,transparent 65%);
   animation:bwBrush 5s ease-in-out infinite;
 }
+.bw-spec.r-raro .bw-spec-holo{ opacity:.10 }
+.bw-spec.r-raro .bw-spec-motes{ opacity:.28 }
+.bw-spec.r-raro .bw-spec-placard{ background:linear-gradient(180deg,rgba(40,24,4,.34),rgba(20,12,2,.5)) }
+.bw-spec.r-raro .bw-spec-code{ color:#f4dda8;text-shadow:0 1px 1px rgba(0,0,0,.6) }
+.bw-spec.r-raro .bw-spec-class{ color:#e7c388;text-shadow:0 1px 1px rgba(0,0,0,.6) }
 .bw-spec.r-raro .bw-spec-corner{ color:#3a2708;background:linear-gradient(135deg,#f0d49a,#c9974a) }
 /* EPIC — holographic silver */
-.bw-spec.r-epico{ filter:drop-shadow(0 26px 44px rgba(150,90,200,.4)) }
-.bw-spec.r-epico .bw-spec-frame{ background:#aeb6c8 }
+.bw-spec.r-epico{ filter:drop-shadow(0 26px 44px rgba(150,90,200,.42)) }
+.bw-spec.r-epico .bw-spec-frame{ background:linear-gradient(135deg,#c2c9d8,#9aa3ba 50%,#d6dcea) }
 .bw-spec.r-epico .bw-spec-frame::before{
   content:'';position:absolute;inset:-60%;z-index:-1;
   background:conic-gradient(from 0deg,#c9d2e6,#9aa7c4,#e6d6ff,#a9c4e6,#d6c0ee,#c9d2e6);
   animation:bwSpin 9s linear infinite;
 }
+.bw-spec.r-epico .bw-spec-holo{ opacity:.2 }
+.bw-spec.r-epico .bw-spec-motes{ opacity:.55 }
+.bw-spec.r-epico .bw-spec-placard{ background:linear-gradient(180deg,rgba(20,18,40,.4),rgba(10,9,24,.55)) }
+.bw-spec.r-epico .bw-spec-code{ color:#e9e2ff;text-shadow:0 1px 1px rgba(0,0,0,.6) }
+.bw-spec.r-epico .bw-spec-class{ color:#cdbff0;text-shadow:0 1px 1px rgba(0,0,0,.6) }
 .bw-spec.r-epico .bw-spec-corner{ color:#2b2440;background:linear-gradient(135deg,#e9e2ff,#bcb0e0) }
 /* LEGENDARY — prismatic foil */
-.bw-spec.r-legend{ filter:drop-shadow(0 28px 50px rgba(255,186,18,.5)) }
+.bw-spec.r-legend{ filter:drop-shadow(0 28px 52px rgba(255,186,18,.52)) }
 .bw-spec.r-legend .bw-spec-frame{ background:#3a2f12 }
 .bw-spec.r-legend .bw-spec-frame::before{
   content:'';position:absolute;inset:-60%;z-index:-1;
   background:conic-gradient(from 0deg,#ff5d5d,#ffd86b,#5dffa0,#5dd6ff,#b06bff,#ff8a3d,#ff5d5d);
   animation:bwSpin 5.5s linear infinite;filter:saturate(1.25);
 }
-.bw-spec.r-legend .bw-spec-window::after{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
-  background:linear-gradient(125deg,transparent 30%,rgba(255,216,107,.18) 50%,transparent 70%);
-  mix-blend-mode:screen;
+.bw-spec.r-legend .bw-spec-holo{ opacity:.34 }
+.bw-spec.r-legend .bw-spec-motes{ opacity:.85 }
+.bw-spec.r-legend .bw-spec-window{
+  background:radial-gradient(circle at 50% 34%, rgba(60,46,12,.6), rgba(8,5,1,.98) 80%);
 }
+.bw-spec.r-legend .bw-spec-placard{ background:linear-gradient(180deg,rgba(58,38,2,.42),rgba(30,18,0,.58)) }
+.bw-spec.r-legend .bw-spec-code{ color:#fff0b8;text-shadow:0 1px 2px rgba(0,0,0,.65) }
+.bw-spec.r-legend .bw-spec-class{ color:#ffd98a;text-shadow:0 1px 2px rgba(0,0,0,.65) }
 .bw-spec.r-legend .bw-spec-corner{
   color:#4a2f00;background:linear-gradient(135deg,#fff0b8,#ffc64d);
   box-shadow:0 4px 14px rgba(255,186,18,.5), inset 0 1px 0 rgba(255,255,255,.7);
@@ -1167,9 +1266,10 @@
 
 @media (prefers-reduced-motion: reduce){
   .bw-spec{ transform:none!important;transition:none }
-  .bw-spec-frame::before,.bw-spec-frame::after,
+  .bw-spec-frame::before,.bw-spec-frame::after,.bw-spec-motes,
   .bw-spec.r-epico .bw-spec-frame::before,.bw-spec.r-legend .bw-spec-frame::before,
   .bw-caps-orb-mini,.bw-orb-big.r-epico::after,.bw-orb-big.r-legend::after{ animation:none!important }
+  .bw-spec-holo{ transition:none }
 }
 /* ═══ Fin Biocosmos R2 ═══ */
 
@@ -2826,6 +2926,40 @@ body.lp-open{overflow:hidden}
 .lp-stat-num{font-family:Merriweather,serif;font-size:clamp(1.5rem,1rem+1.2vw,2.2rem);color:var(--green);font-weight:800}
 .lp-stat-lbl{font-size:.75rem;color:var(--muted);font-weight:600;margin-top:.2rem}
 
+/* ═══ Brand identity on the landing — echo of the neon logo ═══ */
+.lp-hero-brand{display:flex;justify-content:center;margin-bottom:1.3rem;animation:eyebrowIn .6s ease both}
+.lp-hero-logo{width:82px;height:82px;object-fit:contain;filter:drop-shadow(0 0 26px rgba(74,222,128,.5)) drop-shadow(0 6px 18px rgba(0,0,0,.45));animation:bioLogoFloat 5s ease-in-out infinite}
+@keyframes bioLogoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@media(max-width:768px){.lp-hero-logo{width:62px;height:62px}}
+.bm-wordmark{font-weight:800;letter-spacing:-.01em}
+.bm-wordmark .bm-bio{background:linear-gradient(120deg,#2f8b4d 0%,#4ade80 55%,#a3e635 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lp-nav .bm-wordmark .bm-master{color:var(--text)}
+.lp-footer .bm-wordmark .bm-master{color:#fff}
+.lp-hero h1 .hl{background:linear-gradient(90deg,#4ade80,#a3e635) bottom left/100% .09em no-repeat!important;-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 0 .04em!important;color:#eafff0;text-shadow:0 0 22px rgba(74,222,128,.4)}
+.lp-hero h1{text-shadow:0 0 46px rgba(74,222,128,.16)}
+.lp-hero .lp-btn-primary{animation:ctaPulse 2.8s ease-in-out infinite}
+@keyframes ctaPulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.42),0 12px 32px rgba(47,139,77,.32)}50%{box-shadow:0 0 0 11px rgba(74,222,128,0),0 12px 32px rgba(47,139,77,.32)}}
+/* Living aurora behind the hero — the brand "breathes" */
+.lp-hero::after{display:block!important;content:'';position:absolute;inset:-25% -10% auto -10%;height:80%;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 50% 60% at 28% 18%,rgba(74,222,128,.18),transparent 60%),radial-gradient(ellipse 45% 55% at 76% 30%,rgba(163,230,53,.11),transparent 60%);
+  filter:blur(22px);animation:auroraDrift 14s ease-in-out infinite alternate}
+@keyframes auroraDrift{from{transform:translate(-3%,0)}to{transform:translate(4%,3%)}}
+/* Product showcase in the hero — visitors SEE the app working in 3 seconds */
+.lp-hero-showcase{max-width:880px;margin:3.2rem auto 0;perspective:1500px;animation:heroH1In .8s .6s ease both}
+.lp-hero-window{position:relative;background:linear-gradient(180deg,rgba(13,42,26,.94),rgba(7,26,15,.96));border:1px solid rgba(74,222,128,.28);border-radius:18px;box-shadow:0 44px 100px rgba(0,0,0,.6),0 0 0 1px rgba(74,222,128,.08),0 0 70px rgba(74,222,128,.13);overflow:hidden;transform:rotateX(5deg);transition:transform .6s ease;animation:showcaseFloat 6.5s ease-in-out infinite}
+.lp-hero-window:hover{transform:rotateX(0deg)}
+@keyframes showcaseFloat{0%,100%{transform:rotateX(5deg) translateY(0)}50%{transform:rotateX(5deg) translateY(-9px)}}
+.lp-hero-bar{display:flex;align-items:center;padding:.7rem .95rem;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.lp-hero-bar i{width:11px;height:11px;border-radius:50%;display:block;margin-right:.45rem}
+.lp-hero-bar .d1{background:#ff5f57}.lp-hero-bar .d2{background:#febc2e}.lp-hero-bar .d3{background:#28c840}
+.lp-hero-bar span{margin-left:.6rem;font-size:.72rem;color:rgba(255,255,255,.42);font-weight:600}
+.lp-hero-board{display:grid;grid-template-columns:1.15fr 1fr;gap:1.1rem;padding:1.3rem}
+.lp-hero-board>div{text-align:left}
+.lp-hero-board h4{font-size:.72rem;color:rgba(255,255,255,.5);margin:0 0 .7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px}
+.lp-hero-glints{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.06) 48%,transparent 56%)}
+@media(max-width:640px){.lp-hero-board{grid-template-columns:1fr}.lp-hero-window{transform:none}.lp-hero-showcase{margin-top:2.2rem}}
+@media(prefers-reduced-motion:reduce){.lp-hero-logo,.lp-hero .lp-btn-primary,.lp-hero::after,.lp-hero-window{animation:none}.lp-hero-window{transform:none}}
+
 .lp-section{padding:3rem 0}
 /* ── Pagos LATAM ── */
 .lp-pago-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem;max-width:1100px;margin-left:auto;margin-right:auto}
@@ -4456,7 +4590,7 @@ window.Analytics = (function(){
     <div class="container lp-nav-inner">
       <div class="brand">
         <div class="logo"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:36px;height:36px;object-fit:contain;border-radius:8px"></div>
-        <div><strong style="font-size:1rem">BioMaster</strong><br><small style="color:var(--muted);font-size:.72rem">General Biology</small></div>
+        <div><strong class="bm-wordmark" style="font-size:1.05rem"><span class="bm-bio">Bio</span><span class="bm-master">Master</span></strong><br><small style="color:var(--muted);font-size:.72rem">General Biology</small></div>
       </div>
       <div class="lp-nav-links">
         <a onclick="document.getElementById('lp-preview').scrollIntoView({behavior:'smooth'})">The platform</a>
@@ -4474,6 +4608,7 @@ window.Analytics = (function(){
   <section class="lp-hero">
     <canvas id="bioCanvas" aria-hidden="true"></canvas>
     <div class="container lp-hero-inner">
+      <div class="lp-hero-brand"><img class="lp-hero-logo" src="/img/icon-256x256.png" alt="BioMaster" width="82" height="82"></div>
       <span class="lp-eyebrow">🧬 Gamified platform for university General Biology</span>
       <h1>Pass your General Biology exam. <span class="hl">With diagnostics, a daily plan and gamified practice.</span></h1>
       <p class="lp-sub">With a 5–7 minute diagnostic you'll know exactly which topic you're weak in, what to study today and how far you are from being ready for the exam. Earn XP, level up and master every topic while you study.</p>
@@ -4492,6 +4627,39 @@ window.Analytics = (function(){
         <div class="lp-stat"><div class="lp-stat-num">∞</div><div class="lp-stat-lbl">unlimited mock exams</div></div>
         <div class="lp-stat"><div class="lp-stat-num">3</div><div class="lp-stat-lbl">university units (P1, P2, P3)</div></div>
         <div class="lp-stat"><div class="lp-stat-num">⚡</div><div class="lp-stat-lbl">XP, ranking and topic mastery</div></div>
+      </div>
+      <!-- Product showcase: visitors see the real app working inside the hero -->
+      <div class="lp-hero-showcase" aria-hidden="true">
+        <div class="lp-hero-window">
+          <div class="lp-hero-bar"><i class="d1"></i><i class="d2"></i><i class="d3"></i><span>BioMaster · Your panel for today</span></div>
+          <div class="lp-hero-board">
+            <div>
+              <h4>📅 What to study today</h4>
+              <div class="mock-plan-header">
+                <span class="mock-badge-green">Today · 3 tasks</span>
+                <span class="mock-countdown">Exam in 12 days</span>
+              </div>
+              <div class="mock-task done">✓ Review Photosynthesis (3.2)</div>
+              <div class="mock-task active">→ Mock exam: Metabolism (10 questions)</div>
+              <div class="mock-task">○ Review common mistakes</div>
+              <div class="mock-approval-wrap">
+                <span class="mock-approval-lbl">Pass prediction</span>
+                <div class="mock-approval-row">
+                  <div class="mock-bar"><div class="mock-bar-fill" style="width:67%"></div></div>
+                  <span class="mock-approval-val">67%</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h4>📊 Mastery map</h4>
+              <div class="mock-map-item"><span class="mock-map-name">Biomolecules</span><div class="mock-map-bar"><div class="mock-map-fill green" style="width:82%"></div></div><span class="mock-map-pct">82%</span></div>
+              <div class="mock-map-item"><span class="mock-map-name">Cell</span><div class="mock-map-bar"><div class="mock-map-fill green" style="width:75%"></div></div><span class="mock-map-pct">75%</span></div>
+              <div class="mock-map-item"><span class="mock-map-name">Metabolism</span><div class="mock-map-bar"><div class="mock-map-fill yellow" style="width:48%"></div></div><span class="mock-map-pct">48%</span></div>
+              <div class="mock-map-item"><span class="mock-map-name">Photosynthesis</span><div class="mock-map-bar"><div class="mock-map-fill red" style="width:31%"></div></div><span class="mock-map-pct">31%</span></div>
+            </div>
+          </div>
+          <div class="lp-hero-glints"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -4965,7 +5133,7 @@ window.Analytics = (function(){
         <details><summary>If I buy the P1 Pass, can I buy P2 separately later?</summary><div class="lp-faq-body">Yes, you can buy it later. But buying the three passes separately ($11.99 each) would total $35.97; the Full Semester costs $24.99 (you save $10.98). If you're still within the semester, it's best to switch to the Semester from the start or ask us for a prorated upgrade. Write to us from the feedback panel.</div></details>
         <details><summary>Why doesn't the free plan include more?</summary><div class="lp-faq-body">Because the real value is in the features that save you time and improve your odds of passing: the diagnostic that tells you exactly what you're missing, the plan personalized to your exam date, the "What to study today" panel, the pass prediction, the unlimited mock exams and the full summary. Those features are what justify paying. If we gave them away, the platform couldn't sustain itself.</div></details>
         <details><summary>Does this work for any General Biology course?</summary><div class="lp-faq-body">The content is built from the standard university General Biology syllabus (introduction, biomolecules, the cell, metabolism, photosynthesis and respiration for the first unit; genetic foundations, evolution and biotechnology for the second; origin of life, biological diversity and ecology for the third). These topics are the same across most university General Biology programs. The platform is independent and reusable for students from different universities.</div></details>
-        <details><summary>Is there a refund if it doesn't work for me?</summary><div class="lp-faq-body">Yes, on any plan. If within the first 7 days you feel it's not for you and you haven't used more than 20% of the content, we refund 100% with no questions asked. Write to the official email <strong>Biomaster.oficial@gmail.com</strong> or use the feedback panel inside the app. Resetting your game progress does NOT void your right to a refund, but it also doesn't reset the administrative progress record: if you went past 20%, that data stays logged.</div></details>
+        <details><summary>Is there a refund if it doesn't work for me?</summary><div class="lp-faq-body">Yes, on any plan. If within the first 7 days you feel it's not for you and you haven't used more than 20% of the content, we refund 100%, no hassle. Write to the official email <strong>Biomaster.oficial@gmail.com</strong> or use the feedback panel inside the app and we'll sort it out fast.</div></details>
         <details><summary>How is my progress saved?</summary><div class="lp-faq-body">If you register with your email, your progress (diagnostic, study plan, common mistakes, mock exams) is saved in the cloud and synced across devices. If you enter as a guest, progress is saved only in this browser. Each unit's progress is kept separate (what you do in P1 doesn't affect your P2 map).</div></details>
         <details><summary>Does it work on a phone?</summary><div class="lp-faq-body">Yes. The platform is optimized for phone, tablet and computer. The mock exams, games and study plan work the same on any device.</div></details>
         <details><summary>When is the content updated?</summary><div class="lp-faq-body">The theory summary is updated whenever there are changes to the course syllabus. Mock exams are refreshed periodically with new questions. Official exams (2024, 2025…) are added as they are released, and subscribers with an active plan access them at no extra cost during their period.</div></details>
@@ -4977,7 +5145,7 @@ window.Analytics = (function(){
   <section class="container">
     <div class="lp-final-cta">
       <h2>The General Biology exam won't postpone itself.</h2>
-      <p>Start free today. In 15 minutes you have your diagnostic, your personalized plan and you know exactly what to study tomorrow. You study with XP and gamification — without it feeling like punishment.</p>
+      <p>Start free today. In your first session you have your diagnostic, your personalized plan and you know exactly what to study tomorrow. You study with XP and gamification — without it feeling like punishment.</p>
       <button class="lp-btn-primary" onclick="window.openAuthFromLanding('register')">Create my free account →</button>
     </div>
   </section>
@@ -4987,7 +5155,7 @@ window.Analytics = (function(){
     <div class="container">
       <div class="lp-footer-grid" style="grid-template-columns:1.5fr 1fr 1fr 1fr">
         <div>
-          <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:28px;height:28px;object-fit:contain;border-radius:6px"></div><div><strong style="font-size:.95rem">BioMaster</strong><br><small style="font-size:.72rem">General Biology</small></div></div>
+          <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:28px;height:28px;object-fit:contain;border-radius:6px"></div><div><strong class="bm-wordmark" style="font-size:.95rem"><span class="bm-bio">Bio</span><span class="bm-master">Master</span></strong><br><small style="font-size:.72rem">General Biology</small></div></div>
           <p style="max-width:320px;line-height:1.6">Diagnostics, a personalized plan and real practice to pass university General Biology. For students everywhere. <strong>Independent educational product.</strong></p>
           <div style="display:flex;gap:.7rem;margin-top:.9rem;flex-wrap:wrap">
             <a href="https://www.instagram.com/biomasterapp?igsh=NG41d2huNGtqNzFi" target="_blank" rel="noopener noreferrer" title="BioMaster on Instagram" style="display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .7rem;border-radius:9px;border:1px solid rgba(74,222,128,.2);color:rgba(255,255,255,.55);font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s" onmouseover="this.style.borderColor='rgba(74,222,128,.6)';this.style.color='#7dd3a3'" onmouseout="this.style.borderColor='rgba(74,222,128,.2)';this.style.color='rgba(255,255,255,.55)'"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>Instagram</a>
@@ -5777,8 +5945,16 @@ window.Analytics = (function(){
     <div class="bw-spec" id="bwSpecPlate">
       <div class="bw-spec-frame">
         <div class="bw-spec-window">
+          <span class="bw-spec-grid" aria-hidden="true"></span>
           <canvas id="bwDiscoveryArt" class="bw-discovery-art" aria-hidden="true"></canvas>
+          <span class="bw-spec-motes" aria-hidden="true"></span>
+          <span class="bw-spec-holo" aria-hidden="true"></span>
+          <span class="bw-spec-gloss" aria-hidden="true"></span>
           <span class="bw-spec-sheen" aria-hidden="true"></span>
+        </div>
+        <div class="bw-spec-placard" aria-hidden="true">
+          <span class="bw-spec-code" id="bwSpecCode">SPEC-000</span>
+          <span class="bw-spec-class" id="bwSpecClass">CLASS I</span>
         </div>
       </div>
       <span class="bw-spec-corner" id="bwSpecCorner">Common</span>
@@ -25774,8 +25950,12 @@ function revealDiscovery(cap){
   if (plate){ plate.className = 'bw-spec ' + rarityClass(item.rarity); bwBindSpecTilt(plate) }
   const corner = document.getElementById('bwSpecCorner')
   if (corner) corner.textContent = rarityLabel(item.rarity)
-  // Dibujar arte
-  drawDiscoveryArt(item)
+  // Engraved catalog placard (stable code + taxonomic class)
+  const meta = bwSpecMeta(cap.catalogId, item)
+  const codeEl = document.getElementById('bwSpecCode');   if (codeEl)  codeEl.textContent  = meta.code
+  const classEl = document.getElementById('bwSpecClass'); if (classEl) classEl.textContent = meta.cls
+  // Draw art (seeded by the catalog id → unique shape)
+  drawDiscoveryArt(item, cap.catalogId)
 }
 
 async function collectDiscovery(){
@@ -25810,6 +25990,30 @@ async function collectDiscovery(){
    Renders del arte de descubrimiento (canvas)
    Geometrías simples por categoría — sin sprites externos
    ──────────────────────────────────────────────── */
+/* Per-specimen procedural variation — each id yields a distinct shape,
+   not "the same silhouette recoloured". _BWS is the current specimen's
+   seeded RNG; art functions read it through _sv/_si/_spick. */
+let _BWS = null
+function _bwHash(str){ let h=2166136261>>>0; const s=String(str); for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619) } return h>>>0 }
+function _bwRng(seed){ let a=(seed>>>0)||1; return function(){ a^=a<<13; a>>>=0; a^=a>>>17; a^=a<<5; a>>>=0; return a/4294967296 } }
+function _sv(min,max){ return _BWS ? min+_BWS()*(max-min) : (min+max)/2 }
+function _si(min,max){ return Math.floor(_sv(min,max+0.999)) }
+function _spick(arr){ return arr[Math.min(arr.length-1, Math.floor(_sv(0,arr.length)))] }
+function _bwAccentFrom(tint,k){
+  const rot=Math.floor(k*3)%3
+  if(rot===0) return [tint[2],tint[0],tint[1]]
+  if(rot===1) return [tint[1],tint[2],tint[0]]
+  return [(tint[0]+255)>>1,(tint[1]+255)>>1,(tint[2]+255)>>1]
+}
+function drawSeedMarks(ctx, sz, col, style, n, rnd){
+  ctx.fillStyle=`rgba(${col[0]},${col[1]},${col[2]},0.5)`
+  ctx.strokeStyle=`rgba(${col[0]},${col[1]},${col[2]},0.45)`
+  if(style===0){ for(let i=0;i<n;i++){ const x=(rnd()-.5)*sz*0.4,y=(rnd()-.5)*sz*0.4,r=sz*(0.02+rnd()*0.035); ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill() } }
+  else if(style===1){ ctx.lineWidth=sz*0.028; for(let i=0;i<n;i++){ const y=((i+1)/(n+1)-.5)*sz*0.55; ctx.beginPath(); ctx.moveTo(-sz*0.42,y); ctx.lineTo(sz*0.42,y+(rnd()-.5)*sz*0.1); ctx.stroke() } }
+  else if(style===2){ const R=sz*0.15; for(let i=0;i<n+3;i++){ const a=i/(n+3)*Math.PI*2; ctx.beginPath(); ctx.arc(Math.cos(a)*R,Math.sin(a)*R,sz*0.018,0,7); ctx.fill() } }
+  else { for(let i=0;i<n+4;i++){ const x=(rnd()-.5)*sz*0.32,y=(rnd()-.5)*sz*0.32; ctx.beginPath(); ctx.arc(x,y,sz*0.013,0,7); ctx.fill() } }
+}
+
 function _bwArtDispatch(ctx, art, sz, tint, t){
   if      (art === 'molHex')        artMolHex(ctx, sz, tint, t)
   else if (art === 'molChain')      artMolChain(ctx, sz, tint, t)
@@ -25849,9 +26053,21 @@ const BW_RARITY_FX = {
   'legendario': { halo:[255,186,18],  foil:['#ff5d5d','#ffd86b','#5dffa0','#5dd6ff','#b06bff','#ff8a3d'],  foilA:0.58, spec:0.62 }
 }
 
+// Engraved catalog placard metadata (stable code + taxonomic class)
+const BW_REGION_CODE = { celular:'CEL', genetica:'GEN', botanica:'BOT', microbiologica:'MIC', zoologica:'ZOO', ecologica:'ECO', cientifica:'CIE' }
+const BW_RARITY_TIER = { 'común':'I', 'raro':'II', 'épico':'III', 'legendario':'IV' }
+function bwSpecMeta(id, item){
+  const s = String(id || (item && item.art) || 'x')
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0
+  const code = 'SPEC-' + String(100 + (h % 900))
+  const tier = BW_RARITY_TIER[item.rarity] || 'I'
+  const reg  = BW_REGION_CODE[item.region] || '—'
+  return { code, cls: 'CLASS ' + tier + ' · ' + reg }
+}
+
 // 3D compositor: silhouette → rarity material → specular light →
 // display scene (back halo + pedestal + contact shadow + cast shadow).
-function drawDiscoveryArt(item){
+function drawDiscoveryArt(item, seedId){
   const canvas = document.getElementById('bwDiscoveryArt')
   if (!canvas) return
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
@@ -25868,30 +26084,75 @@ function drawDiscoveryArt(item){
   const art = item.art || 'orgMicrobe'
   const t = performance.now() / 1000
 
-  // 1) Object sprite in offscreen (silhouette + material foil + specular)
-  const off = document.createElement('canvas')
-  off.width = sz * dpr; off.height = sz * dpr
-  const octx = off.getContext('2d')
-  octx.setTransform(dpr, 0, 0, dpr, 0, 0)
-  octx.save(); octx.translate(sz/2, sz/2)
-  _bwArtDispatch(octx, art, sz, tint, t)
-  octx.restore()
-  if (fx.foil){
-    octx.globalCompositeOperation = 'source-atop'
-    const fg = octx.createLinearGradient(0, 0, sz, sz)
-    fx.foil.forEach((c, i) => fg.addColorStop(i / (fx.foil.length - 1), c))
-    octx.globalAlpha = fx.foilA
-    octx.fillStyle = fg; octx.fillRect(0, 0, sz, sz)
-    octx.globalAlpha = 1
+  // 1) Object silhouette in offscreen (we only care about its shape/alpha)
+  //    + per-id procedural variation: orientation, proportion and unique
+  //    surface markings so two specimens are never identical.
+  const sil = document.createElement('canvas')
+  sil.width = sz * dpr; sil.height = sz * dpr
+  const sctx = sil.getContext('2d')
+  sctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const seedNum = _bwHash(seedId || item.id || art)
+  const rnd = _bwRng(seedNum)
+  const jr = (rnd()-.5)*0.40, jsx = 0.86+rnd()*0.26, jsy = 0.86+rnd()*0.26
+  const markStyle = Math.floor(rnd()*4), markN = 2+Math.floor(rnd()*4)
+  const markCol = _bwAccentFrom(tint, rnd())
+  const organic = /^org/.test(art)
+  _BWS = _bwRng(seedNum)
+  sctx.save(); sctx.translate(sz/2, sz/2); sctx.rotate(jr); sctx.scale(jsx, jsy)
+  _bwArtDispatch(sctx, art, sz, tint, t)
+  if (organic){
+    sctx.globalCompositeOperation = 'source-atop'
+    drawSeedMarks(sctx, sz, markCol, markStyle, markN, rnd)
+    sctx.globalCompositeOperation = 'source-over'
   }
-  octx.globalCompositeOperation = 'source-atop'
-  const lg = octx.createLinearGradient(0, 0, sz*0.7, sz*0.7)
-  lg.addColorStop(0, `rgba(255,255,255,${fx.spec})`)
-  lg.addColorStop(0.45, 'rgba(255,255,255,0)')
-  octx.fillStyle = lg; octx.fillRect(0, 0, sz, sz)
-  octx.globalCompositeOperation = 'source-over'
+  sctx.restore()
+  _BWS = null
 
-  // 2) Studio background + rarity back halo
+  // 2) Volumetric relight: the specimen stops being a flat silhouette.
+  //    Keeps its own colour and adds mass (shading), occlusion,
+  //    rim light, specular and the rarity material foil.
+  const lit = document.createElement('canvas')
+  lit.width = sz * dpr; lit.height = sz * dpr
+  const lctx = lit.getContext('2d')
+  lctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  lctx.drawImage(sil, 0, 0, sz, sz)
+  // Volume shading (multiply clipped to the shape — preserves hue)
+  const shade = document.createElement('canvas')
+  shade.width = sz * dpr; shade.height = sz * dpr
+  const shctx = shade.getContext('2d')
+  shctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const vol = shctx.createLinearGradient(0, sz*0.08, 0, sz*0.94)
+  vol.addColorStop(0, '#ffffff'); vol.addColorStop(0.44, '#d2d2d2'); vol.addColorStop(1, '#4a4a4a')
+  shctx.fillStyle = vol; shctx.fillRect(0, 0, sz, sz)
+  shctx.globalCompositeOperation = 'destination-in'
+  shctx.drawImage(sil, 0, 0, sz, sz)
+  lctx.globalCompositeOperation = 'multiply'; lctx.drawImage(shade, 0, 0, sz, sz)
+  // From here on we only paint INSIDE the shape (source-atop)
+  lctx.globalCompositeOperation = 'source-atop'
+  // Lower ambient occlusion (adds mass)
+  const ao = lctx.createRadialGradient(sz*0.5, sz*0.66, sz*0.05, sz*0.5, sz*0.66, sz*0.5)
+  ao.addColorStop(0, 'rgba(0,0,0,0.30)'); ao.addColorStop(0.75, 'rgba(0,0,0,0)')
+  lctx.fillStyle = ao; lctx.fillRect(0, 0, sz, sz)
+  // Rim light bottom-right
+  const rim = lctx.createLinearGradient(sz*0.96, sz*0.96, sz*0.5, sz*0.5)
+  rim.addColorStop(0, 'rgba(255,255,255,0.34)'); rim.addColorStop(0.45, 'rgba(255,255,255,0)')
+  lctx.fillStyle = rim; lctx.fillRect(0, 0, sz, sz)
+  // Top-left specular (finish by rarity)
+  const sp = lctx.createRadialGradient(sz*0.40, sz*0.33, 0, sz*0.40, sz*0.33, sz*0.33)
+  sp.addColorStop(0, `rgba(255,255,255,${fx.spec})`); sp.addColorStop(0.55, 'rgba(255,255,255,0)')
+  lctx.fillStyle = sp; lctx.fillRect(0, 0, sz, sz)
+  // Rarity material foil
+  if (fx.foil){
+    const fg = lctx.createLinearGradient(0, 0, sz, sz)
+    fx.foil.forEach((c, i) => fg.addColorStop(i / (fx.foil.length - 1), c))
+    lctx.globalAlpha = fx.foilA
+    lctx.fillStyle = fg; lctx.fillRect(0, 0, sz, sz)
+    lctx.globalAlpha = 1
+  }
+  lctx.globalCompositeOperation = 'source-over'
+  const off = lit
+
+  // 3) Studio background + rarity back halo
   const bg = ctx.createRadialGradient(sz/2, sz*0.42, 0, sz/2, sz*0.42, sz*0.78)
   bg.addColorStop(0, `rgba(${tint[0]},${tint[1]},${tint[2]},0.18)`)
   bg.addColorStop(1, 'rgba(0,0,0,0)')
@@ -25953,45 +26214,58 @@ function artMolHex(ctx, sz, tint, t){
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
   }
   ctx.closePath(); ctx.fill(); ctx.stroke()
-  ctx.fillStyle = '#fff'
-  ctx.font = `bold ${sz*0.08}px Inter,sans-serif`
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-  ctx.fillText('C₆', 0, 0)
+  // Inner ring (bonds) instead of text
+  ctx.strokeStyle = tintCol(tint, 0.5); ctx.lineWidth = 2
+  ctx.beginPath()
+  for (let i = 0; i < 6; i++){
+    const a = i * Math.PI/3
+    const x = Math.cos(a) * r*0.58, y = Math.sin(a) * r*0.58
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
+  }
+  ctx.closePath(); ctx.stroke()
 }
 function artMolChain(ctx, sz, tint, t){
-  const r = sz * 0.06
-  for (let i = 0; i < 5; i++){
-    const x = (i - 2) * r * 2.2
-    const y = Math.sin(i * 0.9) * sz * 0.08
-    ctx.fillStyle = tintCol(tint, 0.85 - i * 0.06)
+  const r = sz * 0.055, n = _si(4,7), amp = _sv(0.04,0.11), freq = _sv(0.7,1.2)
+  const acc = _bwAccentFrom(tint, _sv(0,1))
+  let prev = null
+  for (let i = 0; i < n; i++){
+    const x = (i - (n-1)/2) * r * 2.3
+    const y = Math.sin(i * freq) * sz * amp
+    if (prev){ ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(x, y); ctx.stroke() }
+    ctx.fillStyle = (i % 3 === 1) ? `rgba(${acc[0]},${acc[1]},${acc[2]},0.9)` : tintCol(tint, 0.88 - i*0.04)
     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.fill()
-    if (i > 0){
-      const px = (i - 3) * r * 2.2, py = Math.sin((i-1) * 0.9) * sz * 0.08
-      ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2
-      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke()
+    if (_BWS && i > 0 && i < n-1 && _BWS() < 0.4){
+      const by = y + (_BWS() < .5 ? -1 : 1) * sz * 0.09
+      ctx.strokeStyle = tintCol(tint, 0.5); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, by); ctx.stroke()
+      ctx.fillStyle = tintCol(tint, 0.7); ctx.beginPath(); ctx.arc(x, by, r*0.8, 0, Math.PI*2); ctx.fill()
     }
+    prev = [x, y]
   }
 }
 function artMolRing(ctx, sz, tint, t){
-  const r = sz * 0.22
+  const rings = _si(1,3), r = sz * 0.16
   ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 4
-  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.stroke()
-  for (let i = 0; i < 4; i++){
-    const a = i * Math.PI/2
-    ctx.fillStyle = tintCol(tint, 0.95)
-    ctx.beginPath(); ctx.arc(Math.cos(a)*r, Math.sin(a)*r, sz*0.04, 0, Math.PI*2); ctx.fill()
+  for (let k = 0; k < rings; k++){
+    const cx = (k - (rings-1)/2) * r * 1.4
+    ctx.beginPath(); ctx.arc(cx, 0, r, 0, Math.PI*2); ctx.stroke()
+    for (let i = 0; i < 4; i++){
+      const a = i * Math.PI/2
+      ctx.fillStyle = tintCol(tint, 0.95)
+      ctx.beginPath(); ctx.arc(cx + Math.cos(a)*r, Math.sin(a)*r, sz*0.03, 0, Math.PI*2); ctx.fill()
+    }
   }
 }
 function artMolHelix(ctx, sz, tint, t){
+  const steps = _si(18,28), wid = _sv(0.13,0.2), sp = _sv(0.4,0.6)
+  const acc = _bwAccentFrom(tint, _sv(0,1))
   ctx.lineWidth = 3
-  for (let i = 0; i < 24; i++){
-    const y = (i - 12) * sz * 0.03
-    const phase = i * 0.5 + t
-    const x1 = Math.cos(phase) * sz * 0.18
-    const x2 = -x1
+  for (let i = 0; i < steps; i++){
+    const y = (i - steps/2) * sz * 0.03
+    const phase = i * sp + t
+    const x1 = Math.cos(phase) * sz * wid, x2 = -x1
     ctx.fillStyle = tintCol(tint, 0.85)
     ctx.beginPath(); ctx.arc(x1, y, 3, 0, Math.PI*2); ctx.fill()
-    ctx.fillStyle = tintCol(tint, 0.7)
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.8)`
     ctx.beginPath(); ctx.arc(x2, y, 3, 0, Math.PI*2); ctx.fill()
     if (i % 3 === 0){
       ctx.strokeStyle = tintCol(tint, 0.4); ctx.lineWidth = 1.5
@@ -26000,12 +26274,13 @@ function artMolHelix(ctx, sz, tint, t){
   }
 }
 function artMolProtein(ctx, sz, tint, t){
-  // Ovillo de proteína plegada
+  // Folded protein coil — variable fold per specimen
+  const turns = _sv(6,10), amp = _sv(0.03,0.06), base = _sv(0.15,0.2)
   ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 4
   ctx.beginPath()
-  for (let i = 0; i <= 100; i++){
-    const tt = i / 100 * Math.PI * 8
-    const r = sz * 0.18 + Math.sin(tt * 1.4) * sz * 0.04
+  for (let i = 0; i <= 110; i++){
+    const tt = i / 110 * Math.PI * turns
+    const r = sz * base + Math.sin(tt * 1.4) * sz * amp
     const x = Math.cos(tt) * r * (1 + Math.sin(tt * 0.5) * 0.3)
     const y = Math.sin(tt) * r * 0.6
     if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
@@ -26015,12 +26290,19 @@ function artMolProtein(ctx, sz, tint, t){
 function artOrganSphere(ctx, sz, tint, t){
   const r = sz * 0.26
   const g = ctx.createRadialGradient(-r*0.3, -r*0.3, 0, 0, 0, r)
-  g.addColorStop(0, tintCol(tint, 0.9))
-  g.addColorStop(1, tintCol(tint, 0.4))
+  g.addColorStop(0, tintCol(tint, 0.9)); g.addColorStop(1, tintCol(tint, 0.42))
   ctx.fillStyle = g
   ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill()
+  // Offset nucleus + internal vesicles (variable count)
+  const nx = _sv(-1,1)*r*0.2, ny = _sv(-1,1)*r*0.2
   ctx.fillStyle = 'rgba(0,0,0,0.4)'
-  ctx.beginPath(); ctx.arc(0, 0, r*0.45, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.arc(nx, ny, r*_sv(0.32,0.5), 0, Math.PI*2); ctx.fill()
+  const ves = _si(2,6), acc = _bwAccentFrom(tint, _sv(0,1))
+  for (let i = 0; i < ves; i++){
+    const a = _sv(0,6.28), rr = _sv(0.3,0.8)*r
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.7)`
+    ctx.beginPath(); ctx.arc(Math.cos(a)*rr, Math.sin(a)*rr, r*_sv(0.07,0.12), 0, Math.PI*2); ctx.fill()
+  }
   ctx.fillStyle = 'rgba(255,255,255,0.5)'
   ctx.beginPath(); ctx.arc(-r*0.15, -r*0.15, r*0.18, 0, Math.PI*2); ctx.fill()
 }
@@ -26096,18 +26378,23 @@ function artCycleRing(ctx, sz, tint, t){
   }
 }
 function artCycleArrow(ctx, sz, tint, t){
-  ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 5
-  ctx.lineCap = 'round'
-  const r = sz * 0.22
-  ctx.beginPath(); ctx.arc(0, 0, r, -Math.PI*0.4, Math.PI*1.4); ctx.stroke()
-  // punta de flecha
-  const ax = Math.cos(Math.PI*1.4) * r, ay = Math.sin(Math.PI*1.4) * r
-  ctx.fillStyle = tintCol(tint, 0.95)
-  ctx.beginPath()
-  ctx.moveTo(ax, ay)
-  ctx.lineTo(ax - 14, ay - 6)
-  ctx.lineTo(ax - 6, ay + 12)
-  ctx.closePath(); ctx.fill()
+  // Process cycle: number of arrows and nodes varies per specimen
+  const r = sz * 0.22, arrows = _si(2,3), seg = (Math.PI*2)/arrows
+  ctx.lineCap = 'round'; ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 5
+  for (let k = 0; k < arrows; k++){
+    const a0 = k*seg + 0.2, a1 = (k+1)*seg - 0.35
+    ctx.beginPath(); ctx.arc(0, 0, r, a0, a1); ctx.stroke()
+    const ex = Math.cos(a1)*r, ey = Math.sin(a1)*r, dx = -Math.sin(a1), dy = Math.cos(a1)
+    ctx.fillStyle = tintCol(tint, 0.95)
+    ctx.beginPath(); ctx.moveTo(ex+dx*9, ey+dy*9); ctx.lineTo(ex-dx*9, ey-dy*9)
+    ctx.lineTo(ex+Math.cos(a1)*13, ey+Math.sin(a1)*13); ctx.closePath(); ctx.fill()
+  }
+  const nodes = _si(0,3), acc = _bwAccentFrom(tint, _sv(0,1))
+  for (let i = 0; i < nodes; i++){
+    const a = _sv(0,6.28)
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.9)`
+    ctx.beginPath(); ctx.arc(Math.cos(a)*r, Math.sin(a)*r, sz*0.028, 0, Math.PI*2); ctx.fill()
+  }
 }
 function artLawShield(ctx, sz, tint, t){
   const w = sz * 0.18, h = sz * 0.25
@@ -26118,20 +26405,36 @@ function artLawShield(ctx, sz, tint, t){
   ctx.bezierCurveTo(w, -h*0.8, w, h*0.4, 0, h)
   ctx.bezierCurveTo(-w, h*0.4, -w, -h*0.8, 0, -h)
   ctx.closePath(); ctx.fill(); ctx.stroke()
-  ctx.fillStyle = 'rgba(255,255,255,0.5)'
-  ctx.font = `bold ${sz*0.12}px Inter,sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
-  ctx.fillText('§', 0, 0)
+  // Inner emblem (chevrons) instead of glyph
+  ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'
+  ctx.beginPath(); ctx.moveTo(-w*0.42, -h*0.06); ctx.lineTo(0, h*0.34); ctx.lineTo(w*0.42, -h*0.06); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(-w*0.42, -h*0.42); ctx.lineTo(0, h*0.02); ctx.lineTo(w*0.42, -h*0.42); ctx.stroke()
 }
 function artLawScroll(ctx, sz, tint, t){
-  const w = sz * 0.34, h = sz * 0.24
-  ctx.fillStyle = '#f0e8d4'
-  ctx.fillRect(-w/2, -h/2, w, h)
-  ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2
-  ctx.strokeRect(-w/2, -h/2, w, h)
-  ctx.strokeStyle = tintCol(tint, 0.55); ctx.lineWidth = 1.5
-  for (let i = 0; i < 4; i++){
-    const y = -h/2 + (i + 1) * h/5
-    ctx.beginPath(); ctx.moveTo(-w/2 + 6, y); ctx.lineTo(w/2 - 6, y); ctx.stroke()
+  // Subtype: lined scroll / diagram tablet / sealed certificate
+  const sub = _si(0,2), w = sz * 0.34, h = sz * 0.24
+  if (sub === 0){
+    ctx.fillStyle = '#f0e8d4'; ctx.fillRect(-w/2, -h/2, w, h)
+    ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2; ctx.strokeRect(-w/2, -h/2, w, h)
+    const lines = _si(3,5); ctx.strokeStyle = tintCol(tint, 0.55); ctx.lineWidth = 1.5
+    for (let i = 0; i < lines; i++){ const y = -h/2 + (i+1)*h/(lines+1)
+      ctx.beginPath(); ctx.moveTo(-w/2+6, y); ctx.lineTo(w/2-6-(i===lines-1?w*0.3:0), y); ctx.stroke() }
+  } else if (sub === 1){
+    ctx.fillStyle = tintCol(tint, 0.2); ctx.strokeStyle = tintCol(tint, 0.8); ctx.lineWidth = 2
+    ctx.fillRect(-w/2, -h/2, w, h); ctx.strokeRect(-w/2, -h/2, w, h)
+    const acc = _bwAccentFrom(tint, _sv(0,1)), dots = _si(3,5)
+    let px = null
+    for (let i = 0; i < dots; i++){ const x = -w/2 + (i+1)*w/(dots+1), y = _sv(-1,1)*h*0.25
+      if (px){ ctx.strokeStyle = tintCol(tint, 0.5); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(px[0], px[1]); ctx.lineTo(x, y); ctx.stroke() }
+      ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.9)`; ctx.beginPath(); ctx.arc(x, y, sz*0.022, 0, Math.PI*2); ctx.fill()
+      px = [x, y] }
+  } else {
+    ctx.fillStyle = '#f3ecd9'; ctx.fillRect(-w/2, -h/2, w, h)
+    ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2; ctx.strokeRect(-w/2+4, -h/2+4, w-8, h-8)
+    ctx.strokeStyle = tintCol(tint, 0.5); ctx.lineWidth = 1.5
+    for (let i = 0; i < 3; i++){ const y = -h/2 + (i+1)*h/5; ctx.beginPath(); ctx.moveTo(-w/2+8, y); ctx.lineTo(w/4, y); ctx.stroke() }
+    const acc = _bwAccentFrom(tint, _sv(0,1))
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.85)`; ctx.beginPath(); ctx.arc(w*0.28, h*0.18, sz*0.045, 0, Math.PI*2); ctx.fill()
   }
 }
 function artScientist(ctx, sz, tint, t){
@@ -26151,115 +26454,156 @@ function artScientist(ctx, sz, tint, t){
   ctx.beginPath(); ctx.moveTo(sz*0.26, sz*0.12); ctx.lineTo(sz*0.32, sz*0.18); ctx.stroke()
 }
 function artMutGenome(ctx, sz, tint, t){
-  // Cromosomas con un X
-  ctx.fillStyle = tintCol(tint, 0.85)
-  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  // Karyotype: chromosome count and mutation position vary
+  const n = _si(2,4), mut = _si(0,n-1)
+  ctx.fillStyle = tintCol(tint, 0.85); ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
   function chrom(x, y, h){
     ctx.beginPath(); ctx.ellipse(x, y - h*0.15, 6, h*0.4, 0, 0, Math.PI*2); ctx.fill()
     ctx.beginPath(); ctx.ellipse(x, y + h*0.15, 6, h*0.4, 0, 0, Math.PI*2); ctx.fill()
   }
-  chrom(-sz*0.1, 0, sz*0.3)
-  chrom(sz*0.1, 0, sz*0.3)
-  // Marcador X en el del medio
-  ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 3
-  ctx.beginPath()
-  ctx.moveTo(sz*0.06, -sz*0.06); ctx.lineTo(sz*0.14, sz*0.06)
-  ctx.moveTo(sz*0.14, -sz*0.06); ctx.lineTo(sz*0.06, sz*0.06)
-  ctx.stroke()
+  for (let k = 0; k < n; k++){
+    const x = (k - (n-1)/2) * sz*0.12
+    chrom(x, 0, sz*0.3)
+    if (k === mut){
+      const my = _sv(-1,1)*sz*0.08
+      ctx.strokeStyle = '#ff6b6b'; ctx.lineWidth = 3
+      ctx.beginPath()
+      ctx.moveTo(x-sz*0.04, my-sz*0.04); ctx.lineTo(x+sz*0.04, my+sz*0.04)
+      ctx.moveTo(x+sz*0.04, my-sz*0.04); ctx.lineTo(x-sz*0.04, my+sz*0.04)
+      ctx.stroke()
+      ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+    }
+  }
 }
 function artFossil(ctx, sz, tint, t){
-  // Forma fosilizada (espiral o concha)
-  ctx.fillStyle = '#c8a978'
-  ctx.strokeStyle = '#5a4422'; ctx.lineWidth = 2
-  ctx.beginPath()
-  const r = sz * 0.2
-  ctx.arc(0, 0, r, 0, Math.PI*2)
-  ctx.fill(); ctx.stroke()
-  ctx.strokeStyle = '#5a4422'; ctx.lineWidth = 1.5
-  for (let i = 0; i < 6; i++){
-    const rr = r * (i / 6)
-    ctx.beginPath(); ctx.arc(0, 0, rr, 0, Math.PI*1.8); ctx.stroke()
+  // Subtype: ammonite (spiral) / trilobite (segments) / bone / leaf imprint
+  const sub = _si(0,3)
+  ctx.fillStyle = '#c8a978'; ctx.strokeStyle = '#5a4422'; ctx.lineWidth = 2
+  if (sub === 0){
+    const r = sz * 0.2; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2); ctx.fill(); ctx.stroke()
+    ctx.lineWidth = 1.5; const turns = _si(4,7)
+    for (let i = 0; i < turns; i++){ ctx.beginPath(); ctx.arc(0, 0, r*(i/turns), 0, Math.PI*1.8); ctx.stroke() }
+  } else if (sub === 1){
+    const w = sz*0.16, h = sz*0.24; ctx.beginPath(); ctx.ellipse(0, 0, w, h, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke()
+    ctx.lineWidth = 1.5; const seg = _si(4,7)
+    for (let i = 0; i < seg; i++){ const y = -h + (i+1)*2*h/(seg+1); ctx.beginPath(); ctx.moveTo(-w*0.9, y); ctx.lineTo(w*0.9, y); ctx.stroke() }
+  } else if (sub === 2){
+    const L = sz*0.22, k = sz*0.05
+    ctx.beginPath(); ctx.arc(-L,-k,k,0,Math.PI*2); ctx.arc(-L,k,k,0,Math.PI*2); ctx.arc(L,-k,k,0,Math.PI*2); ctx.arc(L,k,k,0,Math.PI*2); ctx.fill()
+    ctx.fillRect(-L, -k*0.8, 2*L, k*1.6)
+    ctx.strokeRect(-L, -k*0.8, 2*L, k*1.6)
+  } else {
+    const h = sz*0.26; ctx.beginPath(); ctx.moveTo(0,-h)
+    ctx.bezierCurveTo(sz*0.16,-h*0.4,sz*0.16,h*0.4,0,h); ctx.bezierCurveTo(-sz*0.16,h*0.4,-sz*0.16,-h*0.4,0,-h)
+    ctx.closePath(); ctx.fill(); ctx.stroke()
+    ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(0,-h); ctx.lineTo(0,h); ctx.stroke()
+    const vn = _si(3,5)
+    for (let i = 0; i < vn; i++){ const y = -h + (i+1)*2*h/(vn+1)
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(sz*0.12,y-sz*0.04); ctx.moveTo(0,y); ctx.lineTo(-sz*0.12,y-sz*0.04); ctx.stroke() }
   }
 }
 function artBiome(ctx, sz, tint, t){
-  // Paisaje estilizado
-  const w = sz * 0.4, h = sz * 0.05
-  // suelo
+  // Landscape: mountain, tree and celestial-body (sun/moon) counts vary
+  const w = sz * 0.42, h = sz * 0.05
   ctx.fillStyle = tintCol(tint, 0.7)
-  ctx.beginPath()
-  ctx.moveTo(-w, h*4); ctx.lineTo(w, h*4); ctx.lineTo(w, h*8); ctx.lineTo(-w, h*8); ctx.closePath()
-  ctx.fill()
-  // montañas
-  ctx.fillStyle = tintCol(tint, 0.5)
-  ctx.beginPath()
-  ctx.moveTo(-w, h*4); ctx.lineTo(-w*0.4, -h*3); ctx.lineTo(0, h*4); ctx.closePath()
-  ctx.fill()
-  ctx.beginPath()
-  ctx.moveTo(0, h*4); ctx.lineTo(w*0.5, -h*4); ctx.lineTo(w, h*4); ctx.closePath()
-  ctx.fill()
-  // sol
-  ctx.fillStyle = tintCol(tint, 0.95)
-  ctx.beginPath(); ctx.arc(w*0.65, -h*5, sz*0.07, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.moveTo(-w, h*4); ctx.lineTo(w, h*4); ctx.lineTo(w, h*8); ctx.lineTo(-w, h*8); ctx.closePath(); ctx.fill()
+  const mts = _si(1,3); ctx.fillStyle = tintCol(tint, 0.5)
+  for (let i = 0; i < mts; i++){
+    const cx = -w*0.6 + (mts>1 ? i*(1.2*w)/(mts-1) : 0), pk = -h*_sv(3,6)
+    ctx.beginPath(); ctx.moveTo(cx-w*0.35, h*4); ctx.lineTo(cx, pk); ctx.lineTo(cx+w*0.35, h*4); ctx.closePath(); ctx.fill()
+  }
+  const trees = _si(0,3), acc = _bwAccentFrom(tint, _sv(0,1))
+  for (let i = 0; i < trees; i++){
+    const x = _sv(-1,1)*w*0.7
+    ctx.fillStyle = '#6b4226'; ctx.fillRect(x-1, h*2, 2, h*2)
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.85)`; ctx.beginPath(); ctx.arc(x, h*1.5, sz*0.035, 0, Math.PI*2); ctx.fill()
+  }
+  const moon = _BWS ? _BWS() < 0.4 : false
+  ctx.fillStyle = moon ? 'rgba(230,235,255,0.92)' : tintCol(tint, 0.95)
+  ctx.beginPath(); ctx.arc(w*0.6, -h*5, sz*0.06, 0, Math.PI*2); ctx.fill()
 }
 function artOrgMicrobe(ctx, sz, tint, t){
-  // Blob con flagelos
-  const r = sz * 0.18
-  const path = new Path2D()
-  for (let i = 0; i <= 24; i++){
-    const a = i / 24 * Math.PI * 2
-    const wob = REDUCED ? 0 : Math.sin(a * 4 + t * 1.6) * r * 0.1
-    const rr = r + wob
-    const x = Math.cos(a) * rr, y = Math.sin(a) * rr
-    if (i === 0) path.moveTo(x, y); else path.lineTo(x, y)
-  }
-  path.closePath()
-  const g = ctx.createRadialGradient(-r*0.3, -r*0.3, 0, 0, 0, r*1.2)
+  // Subtype: flagellate / ciliate / coccus cluster / spirillum
+  const sub = _si(0,3), r = sz*(0.14 + _sv(0,0.06))
+  const g = ctx.createRadialGradient(-r*0.3, -r*0.3, 0, 0, 0, r*1.3)
   g.addColorStop(0, tintCol(tint, 0.95)); g.addColorStop(1, tintCol(tint, 0.5))
-  ctx.fillStyle = g; ctx.fill(path)
-  // Flagelo
-  ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2.5
-  ctx.beginPath(); ctx.moveTo(r, 0)
-  for (let i = 0; i < 10; i++){
-    const tt = i / 9
-    ctx.lineTo(r + tt * sz * 0.18, Math.sin(t*6 + tt*8) * sz * 0.04)
+  function blob(cx, cy, rad, lobes){
+    const p = new Path2D()
+    for (let i = 0; i <= 24; i++){ const a = i/24*Math.PI*2
+      const wob = REDUCED ? 0 : Math.sin(a*lobes + t*1.6)*rad*0.1
+      const rr = rad + wob, x = cx+Math.cos(a)*rr, y = cy+Math.sin(a)*rr
+      if (i === 0) p.moveTo(x, y); else p.lineTo(x, y) }
+    p.closePath(); return p
   }
-  ctx.stroke()
+  if (sub === 0){
+    ctx.fillStyle = g; ctx.fill(blob(0, 0, r, _si(3,6)))
+    ctx.strokeStyle = tintCol(tint, 0.6); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(r, 0)
+    for (let i = 0; i < 10; i++){ const tt = i/9; ctx.lineTo(r + tt*sz*0.2, Math.sin(t*6 + tt*8)*sz*0.04) }
+    ctx.stroke()
+  } else if (sub === 1){
+    ctx.fillStyle = g; ctx.fill(blob(0, 0, r, 4))
+    ctx.strokeStyle = tintCol(tint, 0.55); ctx.lineWidth = 2
+    const cil = _si(12,20)
+    for (let i = 0; i < cil; i++){ const a = i/cil*Math.PI*2; ctx.beginPath(); ctx.moveTo(Math.cos(a)*r, Math.sin(a)*r); ctx.lineTo(Math.cos(a)*r*1.28, Math.sin(a)*r*1.28); ctx.stroke() }
+  } else if (sub === 2){
+    const n = _si(3,5)
+    for (let i = 0; i < n; i++){ const a = i/n*Math.PI*2; ctx.fillStyle = g; ctx.fill(blob(Math.cos(a)*r*0.7, Math.sin(a)*r*0.7, r*0.55, 3)) }
+  } else {
+    ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = sz*0.05; ctx.lineCap = 'round'; ctx.beginPath()
+    const turns = _sv(2.5,4)
+    for (let i = 0; i <= 60; i++){ const tt = i/60, x = (tt-0.5)*sz*0.5, y = Math.sin(tt*Math.PI*turns)*sz*0.12; if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y) }
+    ctx.stroke()
+  }
+  if (sub !== 3){
+    const acc = _bwAccentFrom(tint, _sv(0,1))
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.6)`
+    ctx.beginPath(); ctx.arc(_sv(-1,1)*r*0.3, _sv(-1,1)*r*0.3, r*0.22, 0, Math.PI*2); ctx.fill()
+  }
 }
 function artOrgVirus(ctx, sz, tint, t){
-  // Icosaédrico con patas (bacteriófago)
-  const r = sz * 0.13
-  ctx.fillStyle = tintCol(tint, 0.85)
-  ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
-  ctx.beginPath()
-  for (let i = 0; i < 6; i++){
-    const a = i * Math.PI/3 - Math.PI/2
-    if (i === 0) ctx.moveTo(Math.cos(a)*r, Math.sin(a)*r - sz*0.08)
-    else ctx.lineTo(Math.cos(a)*r, Math.sin(a)*r - sz*0.08)
-  }
-  ctx.closePath(); ctx.fill(); ctx.stroke()
-  // Cuerpo
-  ctx.fillRect(-sz*0.025, -sz*0.04, sz*0.05, sz*0.12)
-  // Patas
-  for (let i = -2; i <= 2; i++){
-    ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.moveTo(i * sz*0.025, sz*0.08)
-    ctx.lineTo(i * sz*0.05, sz*0.22)
-    ctx.stroke()
+  // Subtype: bacteriophage / corona (spikes) / icosahedral capsid
+  const sub = _si(0,2)
+  ctx.fillStyle = tintCol(tint, 0.85); ctx.strokeStyle = '#0a1f12'; ctx.lineWidth = 2
+  if (sub === 0){
+    const r = sz * 0.13; ctx.beginPath()
+    for (let i = 0; i < 6; i++){ const a = i*Math.PI/3 - Math.PI/2, x = Math.cos(a)*r, y = Math.sin(a)*r - sz*0.08; if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y) }
+    ctx.closePath(); ctx.fill(); ctx.stroke()
+    ctx.fillRect(-sz*0.025, -sz*0.04, sz*0.05, sz*0.12)
+    const legs = _si(3,5)
+    for (let i = 0; i < legs; i++){ const o = i-(legs-1)/2; ctx.strokeStyle = tintCol(tint, 0.85); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(o*sz*0.025, sz*0.08); ctx.lineTo(o*sz*0.05, sz*0.22); ctx.stroke() }
+  } else if (sub === 1){
+    const r = sz * 0.15
+    const g = ctx.createRadialGradient(-r*0.3,-r*0.3,0,0,0,r); g.addColorStop(0, tintCol(tint,0.95)); g.addColorStop(1, tintCol(tint,0.55))
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill()
+    const sp = _si(8,14)
+    for (let i = 0; i < sp; i++){ const a = i/sp*Math.PI*2
+      ctx.strokeStyle = tintCol(tint,0.8); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(Math.cos(a)*r,Math.sin(a)*r); ctx.lineTo(Math.cos(a)*r*1.35,Math.sin(a)*r*1.35); ctx.stroke()
+      ctx.fillStyle = tintCol(tint,0.9); ctx.beginPath(); ctx.arc(Math.cos(a)*r*1.4,Math.sin(a)*r*1.4,sz*0.018,0,Math.PI*2); ctx.fill() }
+  } else {
+    const r = sz * 0.17; ctx.beginPath()
+    for (let i = 0; i < 6; i++){ const a = i*Math.PI/3 - Math.PI/2, x = Math.cos(a)*r, y = Math.sin(a)*r; if (i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y) }
+    ctx.closePath(); ctx.fill(); ctx.stroke()
+    ctx.strokeStyle = tintCol(tint, 0.4); ctx.lineWidth = 1.5
+    for (let i = 0; i < 6; i++){ const a = i*Math.PI/3 - Math.PI/2; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r); ctx.stroke() }
   }
 }
 function artOrgPlant(ctx, sz, tint, t){
-  // Hojas brotando
+  // Sprouting leaves — count, height and bud vary
+  const leaves = _si(3,6), hgt = sz*_sv(0.22,0.3)
   ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 4
-  ctx.beginPath(); ctx.moveTo(0, sz*0.2); ctx.lineTo(0, -sz*0.05); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(0, sz*0.2); ctx.lineTo(0, sz*0.2 - hgt); ctx.stroke()
   ctx.fillStyle = tintCol(tint, 0.85)
-  for (let i = 0; i < 4; i++){
-    const a = (i % 2 === 0 ? 1 : -1) * (Math.PI/4 + i * 0.1)
-    const y = sz*0.1 - i * sz*0.07
-    ctx.save()
-    ctx.translate(0, y); ctx.rotate(a)
+  for (let i = 0; i < leaves; i++){
+    const a = (i % 2 === 0 ? 1 : -1) * (Math.PI/4 + i * 0.08)
+    const y = sz*0.12 - i * (hgt/leaves)
+    ctx.save(); ctx.translate(0, y); ctx.rotate(a)
     ctx.beginPath(); ctx.ellipse(sz*0.07, 0, sz*0.08, sz*0.03, 0, 0, Math.PI*2); ctx.fill()
     ctx.restore()
+  }
+  if (_BWS && _BWS() < 0.5){
+    const acc = _bwAccentFrom(tint, _sv(0,1))
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.9)`
+    ctx.beginPath(); ctx.arc(0, sz*0.2 - hgt, sz*0.04, 0, Math.PI*2); ctx.fill()
   }
 }
 function artOrgTree(ctx, sz, tint, t){
@@ -26273,75 +26617,75 @@ function artOrgTree(ctx, sz, tint, t){
   ctx.beginPath(); ctx.arc(sz*0.09, -sz*0.08, sz*0.09, 0, Math.PI*2); ctx.fill()
 }
 function artOrgFlower(ctx, sz, tint, t){
+  // Petal count and layers vary
+  const petals = _si(5,8), layers = _si(1,2)
   ctx.strokeStyle = tintCol(tint, 0.5); ctx.lineWidth = 3
   ctx.beginPath(); ctx.moveTo(0, sz*0.22); ctx.lineTo(0, 0); ctx.stroke()
-  // Pétalos
-  for (let i = 0; i < 6; i++){
-    const a = i * Math.PI/3
-    ctx.fillStyle = tintCol(tint, 0.85)
-    ctx.beginPath()
-    ctx.ellipse(Math.cos(a)*sz*0.07, Math.sin(a)*sz*0.07, sz*0.08, sz*0.04, a, 0, Math.PI*2)
-    ctx.fill()
+  for (let L = layers; L >= 1; L--){
+    const pr = sz*0.07*L*0.9
+    for (let i = 0; i < petals; i++){
+      const a = i*Math.PI*2/petals + (L%2)*Math.PI/petals
+      ctx.fillStyle = tintCol(tint, L === 1 ? 0.85 : 0.6)
+      ctx.beginPath(); ctx.ellipse(Math.cos(a)*pr, Math.sin(a)*pr, sz*0.08, sz*0.04, a, 0, Math.PI*2); ctx.fill()
+    }
   }
-  // Centro
   ctx.fillStyle = '#ffd86b'
   ctx.beginPath(); ctx.arc(0, 0, sz*0.05, 0, Math.PI*2); ctx.fill()
 }
 function artOrgMushroom(ctx, sz, tint, t){
-  // Tallo
-  ctx.fillStyle = '#e8d5b0'
-  ctx.fillRect(-sz*0.04, 0, sz*0.08, sz*0.22)
-  // Sombrero
+  const capW = sz*_sv(0.14,0.2), capH = sz*_sv(0.08,0.13)
+  ctx.fillStyle = '#e8d5b0'; ctx.fillRect(-sz*0.04, 0, sz*0.08, sz*0.22)
   ctx.fillStyle = tintCol(tint, 0.85)
-  ctx.beginPath()
-  ctx.ellipse(0, 0, sz*0.18, sz*0.1, 0, Math.PI, 0)
-  ctx.closePath(); ctx.fill()
-  // Puntos
-  ctx.fillStyle = '#fff'
-  for (let i = -2; i <= 2; i++){
-    ctx.beginPath(); ctx.arc(i*sz*0.06, -sz*0.04, sz*0.018, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.ellipse(0, 0, capW, capH, 0, Math.PI, 0); ctx.closePath(); ctx.fill()
+  if (_BWS && _BWS() < 0.5){
+    ctx.fillStyle = '#fff'; const dots = _si(3,6)
+    for (let i = 0; i < dots; i++){ ctx.beginPath(); ctx.arc((i-(dots-1)/2)*capW*0.5, -capH*0.4, sz*0.016, 0, Math.PI*2); ctx.fill() }
+  } else {
+    ctx.strokeStyle = tintCol(tint, 0.4); ctx.lineWidth = 1.2
+    for (let i = -3; i <= 3; i++){ ctx.beginPath(); ctx.moveTo(i*capW*0.28, 0); ctx.lineTo(i*capW*0.2, capH*0.5); ctx.stroke() }
   }
 }
 function artOrgFish(ctx, sz, tint, t){
-  // Pez estilizado
-  const len = sz * 0.3
+  // Body proportion, tail and dorsal fin vary
+  const len = sz*_sv(0.26,0.34), bh = sz*_sv(0.09,0.15)
   ctx.fillStyle = tintCol(tint, 0.85)
-  ctx.beginPath()
-  ctx.moveTo(-len, 0)
-  ctx.bezierCurveTo(-len*0.5, -sz*0.12, len*0.5, -sz*0.12, len*0.7, 0)
-  ctx.bezierCurveTo(len*0.5, sz*0.12, -len*0.5, sz*0.12, -len, 0)
+  ctx.beginPath(); ctx.moveTo(-len, 0)
+  ctx.bezierCurveTo(-len*0.5, -bh, len*0.5, -bh, len*0.7, 0)
+  ctx.bezierCurveTo(len*0.5, bh, -len*0.5, bh, -len, 0); ctx.closePath(); ctx.fill()
+  const fork = _BWS ? _BWS() < 0.5 : true
+  ctx.beginPath(); ctx.moveTo(-len, 0)
+  if (fork){ ctx.lineTo(-len*1.4, -bh*0.9); ctx.lineTo(-len*1.15, 0); ctx.lineTo(-len*1.4, bh*0.9) }
+  else { ctx.lineTo(-len*1.35, -bh*0.8); ctx.lineTo(-len*1.35, bh*0.8) }
   ctx.closePath(); ctx.fill()
-  // Cola
-  ctx.beginPath()
-  ctx.moveTo(-len, 0); ctx.lineTo(-len*1.4, -sz*0.1); ctx.lineTo(-len*1.4, sz*0.1)
-  ctx.closePath(); ctx.fill()
-  // Ojo
+  if (_BWS && _BWS() < 0.6){
+    ctx.beginPath(); ctx.moveTo(-len*0.1, -bh*0.9); ctx.lineTo(len*0.1, -bh*1.7); ctx.lineTo(len*0.25, -bh*0.8); ctx.closePath(); ctx.fill()
+  }
   ctx.fillStyle = '#0a1f12'
-  ctx.beginPath(); ctx.arc(len*0.4, -sz*0.02, sz*0.018, 0, Math.PI*2); ctx.fill()
+  ctx.beginPath(); ctx.arc(len*0.42, -sz*0.02, sz*0.018, 0, Math.PI*2); ctx.fill()
 }
 function artOrgBug(ctx, sz, tint, t){
-  // Cuerpo segmentado
-  const r = sz * 0.06
-  for (let i = 0; i < 3; i++){
-    const x = (i - 1) * r * 2.2
+  // Segments, legs and wings vary
+  const r = sz * 0.06, segs = _si(3,5)
+  for (let i = 0; i < segs; i++){
+    const x = (i - (segs-1)/2) * r * 2.2
     ctx.fillStyle = tintCol(tint, 0.85)
-    ctx.beginPath(); ctx.arc(x, 0, r, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.arc(x, 0, r*(i===segs-1?1.15:1), 0, Math.PI*2); ctx.fill()
   }
-  // Patas
+  const head = (segs-1)/2 * r * 2.2
+  if (_BWS && _BWS() < 0.5){
+    const acc = _bwAccentFrom(tint, _sv(0,1))
+    ctx.fillStyle = `rgba(${acc[0]},${acc[1]},${acc[2]},0.45)`
+    ctx.beginPath(); ctx.ellipse(0, -r*1.6, r*2, r*1.1, -0.3, 0, Math.PI*2); ctx.fill()
+    ctx.beginPath(); ctx.ellipse(0, r*1.6, r*2, r*1.1, 0.3, 0, Math.PI*2); ctx.fill()
+  }
   ctx.strokeStyle = tintCol(tint, 0.7); ctx.lineWidth = 2
   for (let s = -1; s <= 1; s += 2){
     for (let i = -1; i <= 1; i++){
-      ctx.beginPath()
-      ctx.moveTo(i * r * 2.2, s * r * 0.5)
-      ctx.lineTo(i * r * 2.2 + s * sz * 0.04, s * sz * 0.15)
-      ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(i * r * 2.2, s * r * 0.5); ctx.lineTo(i * r * 2.2 + s * sz * 0.04, s * sz * 0.15); ctx.stroke()
     }
   }
-  // Antenas
-  ctx.beginPath()
-  ctx.moveTo(r*2.2 + r, 0); ctx.lineTo(r*2.2 + sz*0.1, -sz*0.06); ctx.stroke()
-  ctx.beginPath()
-  ctx.moveTo(r*2.2 + r, 0); ctx.lineTo(r*2.2 + sz*0.1, sz*0.06); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(head + r, 0); ctx.lineTo(head + sz*0.1, -sz*0.06); ctx.stroke()
+  ctx.beginPath(); ctx.moveTo(head + r, 0); ctx.lineTo(head + sz*0.1, sz*0.06); ctx.stroke()
 }
 function artOrgBird(ctx, sz, tint, t){
   // Silueta de ave volando
@@ -26960,7 +27304,7 @@ function drawItemArt(canvas, item){
   const ctx = canvas.getContext('2d')
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
   ctx.clearRect(0, 0, sz, sz)
-  // Background sutil con tinte de región
+  // Subtle region-tinted background
   const regionCfg = (BW.REGIONS || []).find(r => r.id === item.region)
   const tint = regionCfg ? regionCfg.tint : [120,200,150]
   let bg = ctx.createRadialGradient(sz/2, sz/2, 0, sz/2, sz/2, sz/1.8)
@@ -26968,20 +27312,37 @@ function drawItemArt(canvas, item){
   bg.addColorStop(1, `rgba(${tint[0]},${tint[1]},${tint[2]},0)`)
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, sz, sz)
-  // Dispatch a renderers de F3 (reutiliza el sistema de art)
-  ctx.save()
-  ctx.translate(sz/2, sz/2)
-  // Necesitamos las funciones art* de F3 — están en su closure.
-  // Solución: re-dibujamos un placeholder simple aquí (forma + emoji del tipo)
-  // Para mantener identidad visual usamos el emoji del tipo o región
-  const emoji = pickItemEmoji(item)
-  ctx.font = `${sz * 0.55}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.globalAlpha = item.owned ? 1 : 0.4
-  ctx.fillText(emoji, 0, 2)
-  ctx.globalAlpha = 1
-  ctx.restore()
+  // Real specimen (same system as the reveal): id-seeded silhouette +
+  // procedural variation + volumetric shading. No emojis. The .silhouette /
+  // .owned CSS applies the grayscale/opacity per state.
+  const cat = (typeof CATALOG !== 'undefined' && CATALOG[item.id]) || {}
+  const art = item.art || cat.art || 'orgMicrobe'
+  const t = performance.now() / 1000
+  const sil = document.createElement('canvas'); sil.width = sz*dpr; sil.height = sz*dpr
+  const sctx = sil.getContext('2d'); sctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const seedNum = _bwHash(item.id || art), rnd = _bwRng(seedNum)
+  const jr = (rnd()-.5)*0.40, jsx = 0.86+rnd()*0.26, jsy = 0.86+rnd()*0.26
+  const markStyle = Math.floor(rnd()*4), markN = 2+Math.floor(rnd()*4), markCol = _bwAccentFrom(tint, rnd())
+  const organic = /^org/.test(art)
+  _BWS = _bwRng(seedNum)
+  sctx.save(); sctx.translate(sz/2, sz/2); sctx.scale(0.82, 0.82); sctx.rotate(jr); sctx.scale(jsx, jsy)
+  _bwArtDispatch(sctx, art, sz, tint, t)
+  if (organic){ sctx.globalCompositeOperation = 'source-atop'; drawSeedMarks(sctx, sz, markCol, markStyle, markN, rnd); sctx.globalCompositeOperation = 'source-over' }
+  sctx.restore(); _BWS = null
+  const lit = document.createElement('canvas'); lit.width = sz*dpr; lit.height = sz*dpr
+  const lctx = lit.getContext('2d'); lctx.setTransform(dpr, 0, 0, dpr, 0, 0); lctx.drawImage(sil, 0, 0, sz, sz)
+  const shade = document.createElement('canvas'); shade.width = sz*dpr; shade.height = sz*dpr
+  const shctx = shade.getContext('2d'); shctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  const vol = shctx.createLinearGradient(0, sz*0.1, 0, sz*0.92)
+  vol.addColorStop(0, '#ffffff'); vol.addColorStop(0.5, '#cfcfcf'); vol.addColorStop(1, '#5a5a5a')
+  shctx.fillStyle = vol; shctx.fillRect(0, 0, sz, sz)
+  shctx.globalCompositeOperation = 'destination-in'; shctx.drawImage(sil, 0, 0, sz, sz)
+  lctx.globalCompositeOperation = 'multiply'; lctx.drawImage(shade, 0, 0, sz, sz)
+  lctx.globalCompositeOperation = 'source-atop'
+  const sp = lctx.createRadialGradient(sz*0.4, sz*0.34, 0, sz*0.4, sz*0.34, sz*0.3)
+  sp.addColorStop(0, 'rgba(255,255,255,0.4)'); sp.addColorStop(0.6, 'rgba(255,255,255,0)')
+  lctx.fillStyle = sp; lctx.fillRect(0, 0, sz, sz); lctx.globalCompositeOperation = 'source-over'
+  ctx.drawImage(lit, 0, 0, sz, sz)
 }
 
 /* ──── Emoji representativo según tipo o región ──── */
