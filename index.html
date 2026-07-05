@@ -625,7 +625,7 @@ body.lp-open{overflow:hidden}
 .lp-final-cta .lp-btn-primary{background:#fff;color:var(--green);box-shadow:0 12px 32px rgba(0,0,0,.18)}
 
 .lp-footer{padding:2.5rem 0 2rem;border-top:1px solid var(--border);margin-top:2rem;color:var(--muted);font-size:.85rem}
-.lp-footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.lp-footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
 .lp-footer h4{color:var(--text);font-size:.85rem;margin-bottom:.7rem;font-weight:800}
 .lp-footer ul{list-style:none;padding:0;display:grid;gap:.4rem}
 .lp-footer ul a{cursor:pointer;transition:color .2s}
@@ -636,7 +636,8 @@ body.lp-open{overflow:hidden}
   .lp-features,.lp-howit,.lp-testimonials{grid-template-columns:1fr}
   .lp-pricing{grid-template-columns:1fr}
   .lp-hero-stats{grid-template-columns:repeat(2,1fr)}
-  .lp-footer-grid{grid-template-columns:1fr}
+  .lp-footer-grid{grid-template-columns:1fr 1fr;gap:1.6rem 1.2rem}
+  .lp-footer-grid>div:first-child{grid-column:1/-1}
   .lp-hero{padding:2.5rem 0 1.5rem}
 }
 
@@ -5278,7 +5279,7 @@ window.Analytics = (function(){
   <!-- Footer -->
   <footer class="lp-footer">
     <div class="container">
-      <div class="lp-footer-grid" style="grid-template-columns:1.5fr 1fr 1fr 1fr">
+      <div class="lp-footer-grid">
         <div>
           <div class="brand" style="margin-bottom:.7rem"><div class="logo" style="width:36px;height:36px;font-size:1rem"><img src="/img/icon-192x192.png" alt="BioMaster" style="width:28px;height:28px;object-fit:contain;border-radius:6px"></div><div><strong class="bm-wordmark" style="font-size:.95rem"><span class="bm-bio">Bio</span><span class="bm-master">Master</span></strong><br><small style="font-size:.72rem">Biología General</small></div></div>
           <p style="max-width:320px;line-height:1.6">Diagnóstico, plan personalizado y práctica real para aprobar Biología General universitaria. Para estudiantes en toda LATAM. <strong>Producto educativo independiente.</strong></p>
