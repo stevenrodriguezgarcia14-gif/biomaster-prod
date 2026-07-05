@@ -22641,6 +22641,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear()
 
 // ── Partículas biológicas en hero ────────────────────────────
 ;(function(){
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return
   const canvas = document.getElementById('bioCanvas')
   if (!canvas || !canvas.getContext) return
   const ctx = canvas.getContext('2d')
