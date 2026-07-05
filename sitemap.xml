@@ -45,148 +45,162 @@
     </image:image>
   </url>
 
-  <!-- ── CONTENIDO SEO · Biología (ES) ─────────────────────────── -->
+  <!-- ── CONTENIDO SEO · Biología (hub + guías) ────────────────── -->
   <url>
     <loc>https://biomaster.app/biologia</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
-  </url>
-  <url>
-    <loc>https://biomaster.app/biologia/diferencia-mitosis-meiosis</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/diferencia-mitosis-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/diferencia-mitosis-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/mitosis-vs-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/diferencia-mitosis-meiosis"/>
-  </url>
-  <url>
-    <loc>https://biomaster.app/biologia/celula-procariota-vs-eucariota</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/celula-procariota-vs-eucariota"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/celula-procariota-vs-eucariota"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/prokaryotic-vs-eukaryotic-cell"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/celula-procariota-vs-eucariota"/>
-  </url>
-  <url>
-    <loc>https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/photosynthesis-vs-cellular-respiration"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular"/>
-  </url>
-  <url>
-    <loc>https://biomaster.app/biologia/diferencia-adn-arn</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/diferencia-adn-arn"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/diferencia-adn-arn"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/dna-vs-rna"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/diferencia-adn-arn"/>
-  </url>
-  <url>
-    <loc>https://biomaster.app/biologia/transporte-membrana-celular</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/transporte-membrana-celular"/>
-    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/transporte-membrana-celular"/>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cell-membrane-transport"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/transporte-membrana-celular"/>
-  </url>
-
-  <!-- ── SEO CONTENT · Biology (EN) ────────────────────────────── -->
-  <url>
-    <loc>https://biomaster.app/en/biology</loc>
-    <lastmod>2026-07-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia"/>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/diferencia-mitosis-meiosis</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/mitosis-vs-meiosis</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/mitosis-vs-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/mitosis-vs-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/diferencia-mitosis-meiosis"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/diferencia-mitosis-meiosis"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/celula-procariota-vs-eucariota</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/prokaryotic-vs-eukaryotic-cell</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/prokaryotic-vs-eukaryotic-cell"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/prokaryotic-vs-eukaryotic-cell"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/celula-procariota-vs-eucariota"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/celula-procariota-vs-eucariota"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/photosynthesis-vs-cellular-respiration</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/photosynthesis-vs-cellular-respiration"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/photosynthesis-vs-cellular-respiration"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/fotosintesis-vs-respiracion-celular"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/diferencia-adn-arn</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/dna-vs-rna</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/dna-vs-rna"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/dna-vs-rna"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/diferencia-adn-arn"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/diferencia-adn-arn"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/transporte-membrana-celular</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://biomaster.app/en/biology/cell-membrane-transport</loc>
     <lastmod>2026-07-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cell-membrane-transport"/>
-    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/cell-membrane-transport"/>
-    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/transporte-membrana-celular"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/transporte-membrana-celular"/>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/enzimas-funcion-y-factores</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/enzymes-function-and-factors</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/biomoleculas-carbohidratos-lipidos-proteinas</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/biomolecules-carbohydrates-lipids-proteins</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/membrana-plasmatica-mosaico-fluido</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/plasma-membrane-fluid-mosaic</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/ciclo-celular-e-interfase</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/cell-cycle-and-interphase</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/replicacion-del-adn</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/dna-replication</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/biologia/sintesis-de-proteinas-transcripcion-traduccion</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://biomaster.app/en/biology/protein-synthesis-transcription-translation</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
 </urlset>
