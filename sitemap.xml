@@ -45,4 +45,28 @@
     </image:image>
   </url>
 
+  <!-- ── CONTENIDO SEO · Biología celular (ES) ─────────────────── -->
+  <url>
+    <loc>https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+    <xhtml:link rel="alternate" hreflang="es-419"    href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+  </url>
+
+  <!-- ── SEO CONTENT · Cell biology (EN) ───────────────────────── -->
+  <url>
+    <loc>https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures</loc>
+    <lastmod>2026-07-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en"        href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
+    <xhtml:link rel="alternate" hreflang="en-US"     href="https://biomaster.app/en/biology/cilia-flagella-cell-surface-structures"/>
+    <xhtml:link rel="alternate" hreflang="es"        href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://biomaster.app/biologia/cilios-flagelos-estructuras-superficie-celular"/>
+  </url>
+
 </urlset>
