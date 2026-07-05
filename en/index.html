@@ -29767,5 +29767,29 @@ BW.lab = {
   })();
   </script>
 
+<script>
+/* A11y (WCAG 2.1.1 Keyboard): landing links using onclick without href were not
+   keyboard-operable. This adds focus + Enter/Space activation WITHOUT changing the
+   existing onclick behavior. Scoped to the landing. */
+(function(){
+  function enhance(){
+    var lp = document.getElementById('landingPage');
+    if(!lp) return;
+    var els = lp.querySelectorAll('a[onclick]:not([href]):not([tabindex])');
+    for(var i=0;i<els.length;i++){
+      (function(el){
+        el.setAttribute('tabindex','0');
+        el.setAttribute('role','button');
+        el.addEventListener('keydown', function(e){
+          if(e.key==='Enter' || e.key===' ' || e.key==='Spacebar'){ e.preventDefault(); el.click(); }
+        });
+      })(els[i]);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', enhance);
+  else enhance();
+})();
+</script>
+
 </body>
 </html>
