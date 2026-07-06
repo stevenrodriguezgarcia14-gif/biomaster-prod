@@ -7204,6 +7204,17 @@ window.Analytics = (function(){
         <button class="btn" onclick="A.resetP1Exam()">↺ Reiniciar</button>
         <span class="badge" id="examP1Score">Puntaje: 0 / 30</span>
       </div>
+      <!-- RESULTADO GLOBAL P1 (mismo modo de calificación que P2) -->
+      <div class="fullbox" style="margin-top:1rem;background:var(--surface);display:none" id="globalResultP1">
+        <strong>📊 Resultado global del examen</strong>
+        <p class="muted" style="font-size:.83rem">Desglose por sección temática del primer parcial.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
+          <div class="stat-card"><div class="sv" id="globP1_earned">—</div><div class="sl">Pts obtenidos</div></div>
+          <div class="stat-card"><div class="sv" id="globP1_possible">—</div><div class="sl">Pts totales</div></div>
+          <div class="stat-card"><div class="sv" id="globP1_pct">—</div><div class="sl">Porcentaje</div></div>
+        </div>
+        <div id="globalDiagP1" style="font-size:.83rem;line-height:1.8;margin-top:.5rem"></div>
+      </div>
     </section>
 
     <!-- ═══ FIN BLOQUE P1 ═══ -->
@@ -16853,17 +16864,26 @@ function onExamP1Pick(i, j){
   })
 }
 
+// Secciones temáticas del examen P1 (mismo modo de calificación por sección que P2)
+const P1_SECTIONS = ['int','bio','cel','met','ene']
+const P1_SECTION_LABELS = { int:'📖 Introducción', bio:'🧪 Biomoléculas', cel:'🔬 Célula', met:'⚗️ Metabolismo', ene:'⚡ Fotosíntesis/Respiración' }
+
 function reviewP1Exam(){
   let earned = 0
+  const secStats = {}
+  P1_SECTIONS.forEach(t => secStats[t] = { e:0, p:0 })
   E1Q.forEach((q, i) => {
     const sel = document.querySelector(`input[name="e1_${i}"]:checked`)
     const fb  = document.getElementById('fbP1_' + i)
+    const th = (q.theme && secStats[q.theme]) ? q.theme : null
+    if (th) secStats[th].p++
     if (!fb) return
     if (!sel){
       fb.className = 'feedback show bad'
       fb.textContent = `⚠ Sin respuesta. Correcta: ${q.ops[q.a]} — ${q.exp}`
     } else if (parseInt(sel.value) === q.a){
       earned++
+      if (th) secStats[th].e++
       fb.className = 'feedback show good'
       fb.textContent = '✔ Correcto. ' + q.exp
       document.querySelectorAll(`#mcqP1_${i} .option`)[q.a]?.classList.add('correct')
@@ -16878,6 +16898,20 @@ function reviewP1Exam(){
   })
   const score = document.getElementById('examP1Score')
   if (score) score.textContent = `Puntaje: ${earned} / ${E1Q.length}`
+  // Resultado global por sección (mismo modo de calificación que P2)
+  const lines = ['<strong>📊 Diagnóstico por sección:</strong>','']
+  P1_SECTIONS.forEach(t => {
+    const s = secStats[t]
+    if (s.p > 0) lines.push(`✔ ${P1_SECTION_LABELS[t]}: ${s.e}/${s.p} pts = ${Math.round(s.e/s.p*100)}%`)
+  })
+  lines.push('', `<strong>TOTAL: ${earned}/${E1Q.length} pts = ${E1Q.length ? (earned/E1Q.length*100).toFixed(2) : 0}%</strong>`)
+  const box  = document.getElementById('globalResultP1')
+  const diag = document.getElementById('globalDiagP1')
+  if (diag) diag.innerHTML = lines.join('<br>')
+  if (box)  box.style.display = 'block'
+  const ge = document.getElementById('globP1_earned');   if (ge)  ge.textContent  = earned
+  const gp = document.getElementById('globP1_possible'); if (gp)  gp.textContent  = E1Q.length
+  const gc = document.getElementById('globP1_pct');      if (gc)  gc.textContent  = E1Q.length ? (earned/E1Q.length*100).toFixed(2)+'%' : '—'
   // Persistir resultado
   try {
     S.stats.examP1 = { score: earned, total: E1Q.length, ts: new Date().toISOString() }
@@ -16897,6 +16931,7 @@ function resetP1Exam(){
   })
   const score = document.getElementById('examP1Score')
   if (score) score.textContent = `Puntaje: 0 / ${E1Q.length}`
+  const box = document.getElementById('globalResultP1'); if (box) box.style.display = 'none'
 }
 
 // ═══ TIMER DEL EXAMEN P1 (simulación real) ═══
@@ -18905,13 +18940,32 @@ function _renderExamP3(opts){
 
     const pct = Math.round(100 * _examP3State.correct / EXAM_P3_BANK.length)
     const cls = pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad'
+    // Diagnóstico por sección (mismo modo de calificación que P2)
+    const P3_ORDER = ['ori','dom','virpro','euk','ani','eco']
+    const P3_LABELS = { ori:'🌍 Origen y Diversidad', dom:'🌳 Sistemática', virpro:'🦠 Virus/Procariotas', euk:'🌿 Eucariotas', ani:'🐾 Animales', eco:'🌍 Ecología' }
+    const p3Sec = {}
+    P3_ORDER.forEach(t => p3Sec[t] = { e:0, p:0 })
+    _examP3State.answered.forEach(a => {
+      const th = EXAM_P3_BANK[a.q]?.theme
+      if (th && p3Sec[th]){ p3Sec[th].p++; if (a.ok) p3Sec[th].e++ }
+    })
+    const diagLines = P3_ORDER.filter(t => p3Sec[t].p > 0)
+      .map(t => `✔ ${P3_LABELS[t]}: ${p3Sec[t].e}/${p3Sec[t].p} pts = ${Math.round(p3Sec[t].e/p3Sec[t].p*100)}%`)
     c.innerHTML = `
-      <div class="${cls}" style="padding:1.2rem;border-radius:14px;text-align:center">
-        <h3 style="margin-bottom:.4rem">📊 Resultado evaluación P3</h3>
-        <div style="font-size:2.4rem;font-weight:800;margin:.4rem 0">${_examP3State.correct} / ${EXAM_P3_BANK.length}</div>
-        <p>Porcentaje: <strong>${pct}%</strong> · ${pct >= 70 ? '✅ Buen dominio' : pct >= 50 ? '⚠ Refuerzo recomendado' : '🚨 Repasar conceptos'}</p>
-        ${xpEarned > 0 ? `<p style="color:var(--green);font-weight:700;margin:.3rem 0">+${xpEarned} XP</p>` : ''}
-        <button class="btn primary" style="margin-top:.6rem" onclick="window.startExamP3()">↻ Volver a empezar</button>
+      <div class="${cls}" style="padding:1.2rem;border-radius:14px">
+        <h3 style="margin-bottom:.4rem;text-align:center">📊 Resultado global del examen</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
+          <div class="stat-card"><div class="sv">${_examP3State.correct}</div><div class="sl">Pts obtenidos</div></div>
+          <div class="stat-card"><div class="sv">${EXAM_P3_BANK.length}</div><div class="sl">Pts totales</div></div>
+          <div class="stat-card"><div class="sv">${pct}%</div><div class="sl">Porcentaje</div></div>
+        </div>
+        <p style="text-align:center">${pct >= 70 ? '✅ Buen dominio' : pct >= 50 ? '⚠ Refuerzo recomendado' : '🚨 Repasar conceptos'}</p>
+        <div style="font-size:.83rem;line-height:1.8;margin-top:.6rem">
+          <strong>📊 Diagnóstico por sección:</strong><br>${diagLines.join('<br>')}<br><br>
+          <strong>TOTAL: ${_examP3State.correct}/${EXAM_P3_BANK.length} pts = ${pct}%</strong>
+        </div>
+        ${xpEarned > 0 ? `<p style="color:var(--green);font-weight:700;margin:.5rem 0 0;text-align:center">+${xpEarned} XP</p>` : ''}
+        <div style="text-align:center"><button class="btn primary" style="margin-top:.6rem" onclick="window.startExamP3()">↻ Volver a empezar</button></div>
       </div>
     `
     return
