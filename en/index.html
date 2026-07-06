@@ -9000,7 +9000,7 @@ window.Analytics = (function(){
       <div class="section-head">
         <div>
           <h2>📕 Unit exam assessment — P3</h2>
-          <p class="module-desc">10 multiple-choice questions · Topics 6 and 7 complete · Domains, virology, plants, animals, ecology · Immediate feedback + review mode</p>
+          <p class="module-desc">Multiple choice · Topics 6 and 7 complete · Domains, virology, plants, animals, ecology · Answer it all and grade at the end: overall result + section breakdown</p>
         </div>
         <div class="toolbar">
           <button class="btn primary" onclick="window.startExamP3()">▶️ Start P3 assessment</button>
@@ -17905,106 +17905,98 @@ const EXAM_P3_BANK = [
 let _examP3State = null
 
 window.startExamP3 = function(){
-  _examP3State = { idx: 0, correct: 0, answered: [] }
-  _renderExamP3()
+  _examP3State = { correct: 0, answered: [], graded: false }
+  const c = document.getElementById('examP3Container')
+  if (!c) return
+  c.innerHTML =
+    `<div class="exam-banner" style="margin-bottom:.8rem">📝 <strong>Exam mode:</strong> answer every question and press <strong>"Calculate result"</strong> at the end. Nothing is revealed as right/wrong until you calculate.</div>` +
+    EXAM_P3_BANK.map((q, i) => `
+      <div class="sim-question" data-qp3="${i}" style="margin-bottom:.9rem">
+        <strong>${i + 1}. ${escapeHtml(q.q)}</strong>
+        <div class="mcq" id="mcqP3_${i}" style="margin-top:.5rem">
+          ${q.o.map((opt, j) => `
+            <label class="option" data-i="${i}" data-j="${j}">
+              <input type="radio" name="ep3_${i}" value="${j}">
+              <span><strong style="margin-right:.4rem">${String.fromCharCode(65 + j)}.</strong>${escapeHtml(opt)}</span>
+            </label>`).join('')}
+        </div>
+        <div class="feedback" id="fbP3_${i}"></div>
+      </div>`).join('') +
+    `<div class="toolbar" style="margin-top:1rem">
+       <button class="btn primary" onclick="window.reviewExamP3()">🧮 Calculate result</button>
+       <button class="btn" onclick="window.resetExamP3()">↺ Reset</button>
+     </div>
+     <div class="fullbox" style="margin-top:1rem;background:var(--surface);display:none" id="globalResultP3"></div>`
 }
+
 window.resetExamP3 = function(){
   _examP3State = null
   const c = document.getElementById('examP3Container')
   if (c) c.innerHTML = '<p class="muted">Press <strong>"Start Unit 3 evaluation"</strong> to load the questions.</p>'
 }
-window.answerExamP3 = function(idx){
+
+window.reviewExamP3 = function(){
   if (!_examP3State) return
-  const q = EXAM_P3_BANK[_examP3State.idx]
-  _examP3State.answered.push({ q: _examP3State.idx, picked: idx, ok: idx === q.a })
-  if (idx === q.a) _examP3State.correct++
-  _renderExamP3({ showFeedback: true, picked: idx })
-}
-window.nextExamP3 = function(){
-  if (!_examP3State) return
-  _examP3State.idx++
-  if (_examP3State.idx >= EXAM_P3_BANK.length){
-    _renderExamP3({ done: true })
-  } else {
-    _renderExamP3()
-  }
-}
-function _renderExamP3(opts){
-  opts = opts || {}
-  const c = document.getElementById('examP3Container')
-  if (!c || !_examP3State) return
-  if (opts.done){
-    // Registrar cada pregunta en el historial global de práctica
-    _examP3State.answered.forEach(a => {
-      try { recordAnswer(a.ok, EXAM_P3_BANK[a.q]?.theme || null) } catch(e){}
+  let correct = 0
+  const answered = []
+  const p3Sec = {}
+  P3_ORDER.forEach(t => p3Sec[t] = { e:0, p:0 })
+  EXAM_P3_BANK.forEach((q, i) => {
+    const sel = document.querySelector(`input[name="ep3_${i}"]:checked`)
+    const fb  = document.getElementById('fbP3_' + i)
+    const picked = sel ? parseInt(sel.value) : -1
+    const ok = picked === q.a
+    const th = (q.theme && p3Sec[q.theme]) ? q.theme : null
+    if (th) p3Sec[th].p++
+    if (ok){ correct++; if (th) p3Sec[th].e++ }
+    answered.push({ q: i, picked, ok })
+    document.querySelectorAll(`#mcqP3_${i} .option`).forEach((lbl, idx) => {
+      lbl.classList.remove('correct','wrong')
+      if (idx === q.a) lbl.classList.add('correct')
+      else if (idx === picked && !ok) lbl.classList.add('wrong')
     })
-    const xpEarned = _examP3State.correct * 5
+    if (fb){
+      fb.className = 'feedback show ' + (ok ? 'good' : 'bad')
+      fb.innerHTML = (!sel ? '⚠ <strong>No answer.</strong> ' : ok ? '✅ <strong>Correct.</strong> ' : '❌ <strong>Incorrect.</strong> ') + escapeHtml(q.f)
+    }
+  })
+  _examP3State.answered = answered
+  _examP3State.correct  = correct
+  // Log to history + XP only once per evaluation
+  if (!_examP3State.graded){
+    answered.forEach(a => { try { recordAnswer(a.ok, EXAM_P3_BANK[a.q]?.theme || null) } catch(e){} })
+    const xpEarned = correct * 5
     if (xpEarned > 0) S.stats.xp = (S.stats.xp || 0) + xpEarned
+    _examP3State.xp = xpEarned
     persistState().catch(e => console.warn('[examP3]', e))
     try { renderHero(); checkAchievements() } catch(e){}
-
-    const pct = Math.round(100 * _examP3State.correct / EXAM_P3_BANK.length)
-    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad'
-    // Section breakdown (same grading mode as P2)
-    const P3_ORDER = ['ori','dom','virpro','euk','ani','eco']
-    const P3_LABELS = { ori:'🌍 Origin & Diversity', dom:'🌳 Systematics', virpro:'🦠 Viruses/Prokaryotes', euk:'🌿 Eukaryotes', ani:'🐾 Animals', eco:'🌍 Ecology' }
-    const p3Sec = {}
-    P3_ORDER.forEach(t => p3Sec[t] = { e:0, p:0 })
-    _examP3State.answered.forEach(a => {
-      const th = EXAM_P3_BANK[a.q]?.theme
-      if (th && p3Sec[th]){ p3Sec[th].p++; if (a.ok) p3Sec[th].e++ }
-    })
-    const diagLines = P3_ORDER.filter(t => p3Sec[t].p > 0)
-      .map(t => `✔ ${P3_LABELS[t]}: ${p3Sec[t].e}/${p3Sec[t].p} pts = ${Math.round(p3Sec[t].e/p3Sec[t].p*100)}%`)
-    c.innerHTML = `
+    _examP3State.graded = true
+  }
+  const pct = Math.round(100 * correct / EXAM_P3_BANK.length)
+  const cls = pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad'
+  const diagLines = P3_ORDER.filter(t => p3Sec[t].p > 0)
+    .map(t => `✔ ${P3_LABELS[t]}: ${p3Sec[t].e}/${p3Sec[t].p} pts = ${Math.round(p3Sec[t].e/p3Sec[t].p*100)}%`)
+  const box = document.getElementById('globalResultP3')
+  if (box){
+    box.style.display = 'block'
+    box.innerHTML = `
       <div class="${cls}" style="padding:1.2rem;border-radius:14px">
         <h3 style="margin-bottom:.4rem;text-align:center">📊 Overall exam result</h3>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
-          <div class="stat-card"><div class="sv">${_examP3State.correct}</div><div class="sl">Points earned</div></div>
+          <div class="stat-card"><div class="sv">${correct}</div><div class="sl">Points earned</div></div>
           <div class="stat-card"><div class="sv">${EXAM_P3_BANK.length}</div><div class="sl">Total points</div></div>
           <div class="stat-card"><div class="sv">${pct}%</div><div class="sl">Percentage</div></div>
         </div>
         <p style="text-align:center">${pct >= 70 ? '✅ Good mastery' : pct >= 50 ? '⚠ Review recommended' : '🚨 Review concepts'}</p>
         <div style="font-size:.83rem;line-height:1.8;margin-top:.6rem">
           <strong>📊 Section breakdown:</strong><br>${diagLines.join('<br>')}<br><br>
-          <strong>TOTAL: ${_examP3State.correct}/${EXAM_P3_BANK.length} pts = ${pct}%</strong>
+          <strong>TOTAL: ${correct}/${EXAM_P3_BANK.length} pts = ${pct}%</strong>
         </div>
-        ${xpEarned > 0 ? `<p style="color:var(--green);font-weight:700;margin:.5rem 0 0;text-align:center">+${xpEarned} XP</p>` : ''}
+        ${_examP3State.xp > 0 ? `<p style="color:var(--green);font-weight:700;margin:.5rem 0 0;text-align:center">+${_examP3State.xp} XP</p>` : ''}
         <div style="text-align:center"><button class="btn primary" style="margin-top:.6rem" onclick="window.startExamP3()">↻ Start over</button></div>
-      </div>
-    `
-    return
+      </div>`
+    box.scrollIntoView({ behavior:'smooth', block:'nearest' })
   }
-  const q = EXAM_P3_BANK[_examP3State.idx]
-  if (!q) return
-  const opts_html = q.o.map((opt, i) => {
-    let cls = 'option'
-    if (opts.showFeedback){
-      if (i === q.a) cls += ' correct'
-      else if (i === opts.picked) cls += ' wrong'
-    }
-    const onclick = opts.showFeedback ? '' : `onclick="window.answerExamP3(${i})"`
-    return `<div class="${cls}" ${onclick}><strong style="margin-right:.4rem">${String.fromCharCode(65+i)}.</strong>${escapeHtml(opt)}</div>`
-  }).join('')
-  const fb = opts.showFeedback ? `
-    <div class="feedback show ${opts.picked === q.a ? 'good' : 'bad'}" style="margin-top:.7rem">
-      ${opts.picked === q.a ? '✅ <strong>Correct.</strong> ' : '❌ <strong>Incorrect.</strong> '}${escapeHtml(q.f)}
-    </div>
-    <div class="toolbar" style="margin-top:.7rem">
-      <button class="btn primary" onclick="window.nextExamP3()">${_examP3State.idx + 1 >= EXAM_P3_BANK.length ? 'See result →' : 'Next →'}</button>
-    </div>
-  ` : ''
-  c.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
-      <strong>Question ${_examP3State.idx + 1} of ${EXAM_P3_BANK.length}</strong>
-      <span class="badge badge-blue">P3 · Evaluation</span>
-    </div>
-    <div class="sim-question">
-      <strong>${escapeHtml(q.q)}</strong>
-      <div class="mcq" style="margin-top:.5rem">${opts_html}</div>
-      ${fb}
-    </div>
-  `
 }
 
 // ═══════════════════════════════════════════════════════════
