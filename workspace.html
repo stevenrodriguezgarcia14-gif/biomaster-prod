@@ -426,12 +426,210 @@ select option{background:var(--bg1)}
 .notif-dot{width:7px;height:7px;border-radius:50%;background:var(--green-b);flex-shrink:0;margin-top:.4rem}
 .notif-empty{padding:1.8rem 1rem;text-align:center;color:var(--dim);font-size:.78rem}
 
+/* ─── FOCUS VISIBLE (accesibilidad teclado) ─── */
+:focus-visible{outline:2px solid var(--green-b);outline-offset:2px;border-radius:4px}
+
+/* ─── MI DÍA ─── */
+.md-hero{display:flex;align-items:center;gap:1.3rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.md-greet h2{font-size:1.45rem;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.md-greet .md-date{font-size:.8rem;color:var(--muted);margin-top:.25rem;text-transform:capitalize}
+.md-greet .md-role{display:inline-flex;align-items:center;gap:.35rem;margin-top:.5rem;
+  font-size:.68rem;font-weight:700;color:var(--green-b);background:var(--green-s);
+  padding:3px 10px;border-radius:20px;letter-spacing:.03em}
+.md-ring{margin-left:auto;display:flex;align-items:center;gap:.9rem}
+.md-ring svg{transform:rotate(-90deg);display:block}
+.md-ring .ring-bg{stroke:var(--bg3);fill:none}
+.md-ring .ring-fill{stroke:var(--green-b);fill:none;stroke-linecap:round;transition:stroke-dashoffset .6s ease}
+.md-ring-wrap{position:relative;width:64px;height:64px}
+.md-ring-txt{position:absolute;inset:0;display:grid;place-items:center;font-size:.85rem;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.md-ring-lbl{font-size:.7rem;color:var(--muted);max-width:110px;line-height:1.35}
+.md-chips{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.md-chip{display:flex;align-items:center;gap:.5rem;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:.5rem .8rem;font-size:.76rem;color:var(--muted)}
+.md-chip strong{font-size:1rem;color:var(--text);font-variant-numeric:tabular-nums}
+.md-chip.warn strong{color:var(--red)}
+.md-chip.ok strong{color:var(--green-b)}
+.md-cols{display:grid;grid-template-columns:1.4fr 1fr;gap:1.4rem;align-items:start}
+.md-sec{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1.1rem}
+.md-sec-hd{display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem}
+.md-sec-hd h3{font-size:.82rem;font-weight:700;color:var(--text)}
+.md-sec-hd svg{width:15px;height:15px;stroke:var(--green-b);fill:none;stroke-width:2;flex-shrink:0}
+.md-sec-hd .sec-cnt{margin-left:auto}
+.md-task{display:flex;align-items:center;gap:.6rem;padding:.5rem .55rem;border-radius:var(--rs);
+  cursor:pointer;transition:background var(--t)}
+.md-task:hover{background:var(--bg3)}
+.md-task .t-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.md-task .t-title{flex:1;font-size:.8rem;color:var(--text);line-height:1.35;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.md-task .t-when{font-size:.67rem;color:var(--dim);flex-shrink:0;font-variant-numeric:tabular-nums}
+.md-task.overdue .t-when{color:var(--red);font-weight:700}
+.md-empty{font-size:.76rem;color:var(--dim);padding:.4rem .55rem}
+.md-done{opacity:.55}
+.md-done .t-title{text-decoration:line-through}
+
+/* ─── PULSO DEL PROYECTO ─── */
+.pulse-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:.9rem}
+.pulse-cell{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:.6rem .7rem}
+.pulse-cell .pv{font-size:1.3rem;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.1}
+.pulse-cell .pl{font-size:.64rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:.15rem}
+.pulse-cell.bad .pv{color:var(--red)}
+.pulse-cell.warn .pv{color:var(--yellow)}
+.quick-links{display:flex;gap:.5rem;flex-wrap:wrap}
+.quick-link{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);font-size:.74rem;font-weight:600;padding:.4rem .7rem;border-radius:var(--rs);
+  cursor:pointer;text-decoration:none;transition:all var(--t)}
+.quick-link:hover{background:var(--bg4);color:var(--text);border-color:var(--border-b)}
+.quick-link svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ─── PLAYBOOK DEL ROL ─── */
+.pb-item{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .55rem;border-radius:var(--rs);transition:background var(--t)}
+.pb-item:hover{background:var(--bg3)}
+.pb-item .pb-txt{flex:1;font-size:.78rem;color:var(--muted);line-height:1.45}
+.pb-item .pb-txt strong{color:var(--text);font-weight:600}
+.pb-add{flex-shrink:0;width:26px;height:26px;border-radius:6px;background:var(--bg3);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all var(--t)}
+.pb-add:hover{background:var(--green-s)}
+.pb-add svg{width:13px;height:13px;stroke:var(--green-b);fill:none;stroke-width:2.5}
+
+/* ─── CALENDARIO ─── */
+.cal-bar{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap}
+.cal-title{font-size:1rem;font-weight:800;color:var(--text);min-width:180px;text-transform:capitalize}
+.cal-nav{display:flex;gap:.3rem}
+.cal-nav button,.cal-views button{background:var(--bg2);border:1px solid var(--border);color:var(--muted);
+  font-size:.76rem;font-weight:600;padding:.4rem .7rem;border-radius:var(--rs);cursor:pointer;
+  font-family:inherit;transition:all var(--t)}
+.cal-nav button:hover,.cal-views button:hover{background:var(--bg3);color:var(--text)}
+.cal-views{display:flex;gap:.3rem;margin-left:auto}
+.cal-views button.on{background:var(--green-s);color:var(--green-b);border-color:var(--green)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;background:var(--bg1)}
+.cal-dow{padding:.5rem;font-size:.65rem;font-weight:700;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.06em;text-align:center;border-bottom:1px solid var(--border);background:var(--bg2)}
+.cal-cell{min-height:96px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:.35rem;display:flex;flex-direction:column;gap:.25rem;cursor:pointer;transition:background var(--t)}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-cell:hover{background:var(--bg2)}
+.cal-cell.other{opacity:.38}
+.cal-cell.today{background:var(--green-s2)}
+.cal-cell .cd{font-size:.7rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;
+  width:22px;height:22px;display:grid;place-items:center;border-radius:50%}
+.cal-cell.today .cd{background:var(--green);color:#fff}
+.cal-ev{font-size:.66rem;font-weight:600;color:var(--text);padding:2px 6px;border-radius:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.cal-ev:hover{filter:brightness(1.15)}
+.cal-ev.p-critical{background:var(--red-s);color:var(--red)}
+.cal-ev.p-high{background:var(--orange-s);color:var(--orange)}
+.cal-ev.p-normal{background:var(--blue-s);color:var(--blue)}
+.cal-ev.p-low{background:var(--bg3);color:var(--muted)}
+.cal-ev.done{opacity:.5;text-decoration:line-through}
+.cal-more{font-size:.63rem;color:var(--dim);padding:1px 6px;cursor:pointer}
+.cal-more:hover{color:var(--green-b)}
+.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:.6rem}
+.cal-wday{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:.55rem;min-height:150px}
+.cal-wday.today{border-color:var(--green)}
+.cal-wday .wd-hd{font-size:.68rem;font-weight:700;color:var(--muted);margin-bottom:.5rem;text-transform:capitalize}
+.cal-wday.today .wd-hd{color:var(--green-b)}
+.cal-wday .cal-ev{white-space:normal;margin-bottom:.3rem;line-height:1.3}
+.cal-day-list{max-width:640px}
+.cal-nodate{margin-top:.9rem;font-size:.72rem;color:var(--dim)}
+
+/* ─── FILTROS DE TAREAS ─── */
+.filters-bar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filters-bar input[type=search]{flex:1;min-width:150px;max-width:260px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:var(--rs);padding:.42rem .7rem;color:var(--text);
+  font-size:.78rem;font-family:inherit;outline:none;transition:border-color var(--t)}
+.filters-bar input[type=search]:focus{border-color:var(--green)}
+.filters-bar select{width:auto;padding:.42rem .6rem;font-size:.76rem;background:var(--bg2)}
+.filters-clear{background:none;border:none;color:var(--dim);font-size:.72rem;cursor:pointer;font-family:inherit;font-weight:600}
+.filters-clear:hover{color:var(--red)}
+
+/* ─── TASK CARD EXTRAS ─── */
+.t-tags{display:flex;gap:.25rem;flex-wrap:wrap}
+.tag{font-size:.62rem;font-weight:700;color:var(--muted);background:var(--bg3);
+  padding:1px 7px;border-radius:10px;letter-spacing:.02em}
+.t-ind{display:inline-flex;align-items:center;gap:.22rem;font-size:.65rem;color:var(--dim)}
+.t-ind svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.chip.ch-overdue{background:var(--red-s);color:var(--red)}
+.cl-progress{height:3px;border-radius:99px;background:var(--bg4);overflow:hidden;margin-top:.1rem}
+.cl-progress i{display:block;height:100%;background:var(--green-b);border-radius:99px;transition:width .3s}
+.k-collapsed{font-size:.7rem;color:var(--dim);text-align:center;padding:.45rem;cursor:pointer;border-radius:var(--rs)}
+.k-collapsed:hover{background:var(--bg3);color:var(--muted)}
+
+/* ─── COMENTARIOS E HISTORIAL ─── */
+.cmt{display:flex;gap:.55rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.cmt:last-child{border-bottom:none}
+.cmt .act-av{width:26px;height:26px;font-size:.68rem}
+.cmt-body{flex:1;min-width:0}
+.cmt-meta{display:flex;align-items:center;gap:.45rem;margin-bottom:.15rem}
+.cmt-meta strong{font-size:.73rem;color:var(--text)}
+.cmt-meta time{font-size:.63rem;color:var(--dim)}
+.cmt-txt{font-size:.77rem;color:var(--muted);line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.cmt-del{margin-left:auto;background:none;border:none;color:var(--dim);cursor:pointer;font-size:.68rem;padding:2px}
+.cmt-del:hover{color:var(--red)}
+.cmt-form{display:flex;gap:.45rem;margin-top:.6rem}
+.cmt-form input{flex:1;background:var(--bg1);border:1px solid var(--border-b);border-radius:var(--rs);
+  padding:.5rem .7rem;color:var(--text);font-size:.78rem;font-family:inherit;outline:none}
+.cmt-form input:focus{border-color:var(--green)}
+.hist-item{display:flex;gap:.5rem;font-size:.71rem;color:var(--dim);padding:.28rem 0;line-height:1.4}
+.hist-item strong{color:var(--muted);font-weight:600}
+.t-links a{display:inline-flex;align-items:center;gap:.35rem;font-size:.75rem;color:var(--green-b);
+  text-decoration:none;background:var(--bg1);border:1px solid var(--border);border-radius:var(--rs);
+  padding:.3rem .6rem;margin:0 .3rem .3rem 0;transition:all var(--t)}
+.t-links a:hover{border-color:var(--green);background:var(--green-s2)}
+.t-links svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ─── IDEAS ─── */
+.idea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:1rem}
+.idea-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:.9rem 1rem;display:flex;flex-direction:column;gap:.5rem;transition:all var(--t)}
+.idea-card:hover{border-color:var(--border-b);transform:translateY(-2px);box-shadow:var(--shadow-s)}
+.idea-top{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.idea-title{font-size:.85rem;font-weight:700;color:var(--text);line-height:1.35;cursor:pointer}
+.idea-title:hover{color:var(--green-b)}
+.idea-body{font-size:.75rem;color:var(--muted);line-height:1.5;display:-webkit-box;
+  -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.idea-foot{display:flex;align-items:center;gap:.5rem;margin-top:auto;padding-top:.35rem}
+.idea-author{font-size:.65rem;color:var(--dim)}
+.vote-btn{margin-left:auto;display:inline-flex;align-items:center;gap:.35rem;background:var(--bg3);
+  border:1px solid var(--border);color:var(--muted);font-size:.72rem;font-weight:700;
+  padding:.28rem .6rem;border-radius:20px;cursor:pointer;font-family:inherit;transition:all var(--t)}
+.vote-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+.vote-btn:hover{border-color:var(--green)}
+.vote-btn.voted{background:var(--green-s);color:var(--green-b);border-color:var(--green)}
+.st-pill{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:10px;cursor:pointer;
+  border:none;font-family:inherit;letter-spacing:.02em}
+.st-nueva{background:var(--bg3);color:var(--muted)}
+.st-explorando{background:var(--blue-s);color:var(--blue)}
+.st-planeada{background:var(--yellow-s);color:var(--yellow)}
+.st-hecha{background:var(--green-s);color:var(--green-b)}
+.st-descartada{background:var(--bg3);color:var(--dim);text-decoration:line-through}
+
+/* ─── RECURSOS ─── */
+.res-sec{margin-bottom:1.6rem}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.8rem}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:.8rem .9rem;display:flex;flex-direction:column;gap:.4rem;transition:all var(--t);position:relative}
+.res-card:hover{border-color:var(--border-b);background:var(--bg3)}
+.res-icn{width:30px;height:30px;border-radius:8px;background:var(--green-s);display:grid;place-items:center;margin-bottom:.15rem}
+.res-icn svg{width:15px;height:15px;stroke:var(--green-b);fill:none;stroke-width:2}
+.res-title{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.3}
+.res-desc{font-size:.71rem;color:var(--muted);line-height:1.45;flex:1}
+.res-open{display:inline-flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:700;
+  color:var(--green-b);text-decoration:none;margin-top:.2rem}
+.res-open:hover{text-decoration:underline}
+.res-open svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5}
+.res-acts{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.25rem;opacity:0;transition:opacity var(--t)}
+.res-card:hover .res-acts{opacity:1}
+
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
 @keyframes slideIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 .fu{animation:fadeUp .22s ease}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:820px){
@@ -448,6 +646,15 @@ select option{background:var(--bg1)}
   .k-col{min-width:unset;max-width:unset;width:100%}
   .notes-grid{grid-template-columns:1fr}
   .detail-panel{width:100%}
+  .md-cols{grid-template-columns:1fr}
+  .md-ring{margin-left:0}
+  .pulse-grid{grid-template-columns:1fr 1fr}
+  .cal-cell{min-height:64px}
+  .cal-ev{font-size:.58rem;padding:1px 3px}
+  .cal-week{grid-template-columns:1fr;gap:.5rem}
+  .cal-wday{min-height:unset}
+  .cal-views{margin-left:0;width:100%}
+  .idea-grid,.res-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -480,24 +687,38 @@ select option{background:var(--bg1)}
 
     <nav class="sb-nav">
       <div class="nav-label">Principal</div>
-      <div class="nav-item active" data-view="overview">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        <span>Overview</span>
+      <div class="nav-item active" data-view="myday" tabindex="0">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
+        <span>Mi Día</span>
       </div>
-      <div class="nav-item" data-view="tasks">
+      <div class="nav-item" data-view="tasks" tabindex="0">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 11l3 3L22 4"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         <span>Tareas</span>
         <span class="nav-badge" id="urgBadge" hidden>0</span>
       </div>
-      <div class="nav-item" data-view="notes">
+      <div class="nav-item" data-view="calendar" tabindex="0">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke-linecap="round"/><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round"/></svg>
+        <span>Calendario</span>
+      </div>
+      <div class="nav-label">Organización</div>
+      <div class="nav-item" data-view="ideas" tabindex="0">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.674M12 3a6 6 0 00-3.7 10.73c.6.5 1.05 1.17 1.2 1.94l.15.83h4.7l.15-.83c.15-.77.6-1.44 1.2-1.94A6 6 0 0012 3z"/><path stroke-linecap="round" d="M10 21h4"/></svg>
+        <span>Ideas</span>
+      </div>
+      <div class="nav-item" data-view="resources" tabindex="0">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+        <span>Recursos</span>
+      </div>
+      <div class="nav-item" data-view="notes" tabindex="0">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M5 8h14M5 8a2 2 0 01-2-2V4h18v2a2 2 0 01-2 2M5 8v12a2 2 0 002 2h10a2 2 0 002-2V8"/></svg>
         <span>Notas</span>
       </div>
-      <div class="nav-item" data-view="activity">
+      <div class="nav-label">Equipo</div>
+      <div class="nav-item" data-view="activity" tabindex="0">
         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Actividad</span>
       </div>
-      <div class="nav-item" data-view="roadmap">
+      <div class="nav-item" data-view="roadmap" tabindex="0">
         <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12" stroke-linecap="round"/><line x1="3" y1="6" x2="15" y2="6" stroke-linecap="round"/><line x1="3" y1="18" x2="18" y2="18" stroke-linecap="round"/></svg>
         <span>Roadmap</span>
       </div>
@@ -544,24 +765,68 @@ select option{background:var(--bg1)}
       </div>
     </div>
 
-    <!-- OVERVIEW -->
-    <div id="view-overview" class="view-body">
-      <div class="stats-row" id="statsRow"></div>
-      <div class="grid-2">
-        <div>
-          <div class="sec-head"><h3>Urgentes / Bloqueadas</h3></div>
-          <div id="urgList"></div>
+    <!-- MI DÍA -->
+    <div id="view-myday" class="view-body">
+      <div class="md-hero">
+        <div class="md-greet">
+          <h2 id="mdGreet">Hola</h2>
+          <div class="md-date" id="mdDate"></div>
+          <span class="md-role" id="mdRole" hidden></span>
         </div>
-        <div>
-          <div class="sec-head"><h3>Actividad Reciente</h3></div>
-          <div class="act-feed" id="recentAct"></div>
+        <div class="md-ring">
+          <div class="md-ring-wrap">
+            <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+              <circle class="ring-bg" cx="32" cy="32" r="27" stroke-width="6"/>
+              <circle class="ring-fill" id="mdRingFill" cx="32" cy="32" r="27" stroke-width="6"
+                stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+            </svg>
+            <div class="md-ring-txt" id="mdRingTxt">0%</div>
+          </div>
+          <div class="md-ring-lbl" id="mdRingLbl">Progreso de tus tareas activas</div>
         </div>
+      </div>
+      <div class="md-chips" id="mdChips"></div>
+      <div class="md-cols">
+        <div id="mdMain"></div>
+        <div id="mdSide"></div>
       </div>
     </div>
 
     <!-- TASKS -->
     <div id="view-tasks" class="view-body" hidden>
+      <div class="filters-bar" id="taskFilters"></div>
       <div class="kanban" id="kanban"></div>
+    </div>
+
+    <!-- CALENDARIO -->
+    <div id="view-calendar" class="view-body" hidden>
+      <div class="cal-bar">
+        <div class="cal-nav">
+          <button onclick="calShift(-1)" aria-label="Anterior">←</button>
+          <button onclick="calToday()">Hoy</button>
+          <button onclick="calShift(1)" aria-label="Siguiente">→</button>
+        </div>
+        <span class="cal-title" id="calTitle"></span>
+        <div class="cal-views" id="calViews">
+          <button data-cv="month" class="on" onclick="calSetView('month')">Mes</button>
+          <button data-cv="week" onclick="calSetView('week')">Semana</button>
+          <button data-cv="day" onclick="calSetView('day')">Día</button>
+        </div>
+      </div>
+      <div class="filters-bar" id="calFilters"></div>
+      <div id="calBody"></div>
+      <div class="cal-nodate" id="calNoDate"></div>
+    </div>
+
+    <!-- IDEAS -->
+    <div id="view-ideas" class="view-body" hidden>
+      <div class="notes-filters" id="ideaFilters"></div>
+      <div class="idea-grid" id="ideaGrid"></div>
+    </div>
+
+    <!-- RECURSOS -->
+    <div id="view-resources" class="view-body" hidden>
+      <div id="resContent"></div>
     </div>
 
     <!-- NOTES -->
@@ -644,13 +909,120 @@ select option{background:var(--bg1)}
           </select>
         </div>
       </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Fecha límite</label>
+          <input name="due_date" type="date">
+        </div>
+        <div class="fg">
+          <label>Etiquetas (separadas por coma)</label>
+          <input name="tags" placeholder="parcial-2, urgente-cliente" autocomplete="off">
+        </div>
+      </div>
       <div class="fg">
-        <label>Fecha límite</label>
-        <input name="due_date" type="date">
+        <label>Enlaces (uno por línea: nombre | https://url)</label>
+        <textarea name="links" placeholder="Doc de referencia | https://...&#10;Figma | https://..." style="min-height:52px"></textarea>
       </div>
       <div class="form-acts">
         <button type="button" class="btn btn-ghost" onclick="closeModal('taskModal')">Cancelar</button>
         <button type="submit" class="btn btn-primary" id="taskSubmitBtn">Crear Tarea</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- IDEA MODAL -->
+<div class="modal" id="ideaModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title" id="ideaModalTitle">Nueva Idea</span>
+      <button class="modal-close" onclick="closeModal('ideaModal')" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <form id="ideaForm" onsubmit="submitIdea(event)">
+      <div class="fg">
+        <label>Idea *</label>
+        <input name="title" placeholder="¿Qué se te ocurrió?" required autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Categoría</label>
+        <select name="category">
+          <option value="marketing">Marketing</option>
+          <option value="social">Redes sociales</option>
+          <option value="diseno">Diseño</option>
+          <option value="producto">Producto</option>
+          <option value="features">Funcionalidades</option>
+          <option value="contenido">Contenido</option>
+          <option value="mejoras">Mejoras</option>
+          <option value="seo">SEO</option>
+          <option value="comunidad">Comunidad</option>
+          <option value="otros" selected>Otros</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Detalle</label>
+        <textarea name="body" placeholder="Contexto, por qué vale la pena, cómo se podría hacer..." style="min-height:100px"></textarea>
+      </div>
+      <div class="form-acts">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('ideaModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="ideaSubmitBtn">Guardar Idea</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- RESOURCE MODAL -->
+<div class="modal" id="resModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title" id="resModalTitle">Nuevo Recurso</span>
+      <button class="modal-close" onclick="closeModal('resModal')" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <form id="resForm" onsubmit="submitResource(event)">
+      <div class="fg">
+        <label>Título *</label>
+        <input name="title" placeholder="Nombre del recurso" required autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>URL *</label>
+        <input name="url" type="url" placeholder="https://..." required autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Descripción</label>
+        <textarea name="description" placeholder="Para qué sirve y cuándo usarlo" style="min-height:60px"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Categoría</label>
+          <select name="category">
+            <option value="doc">Documento</option>
+            <option value="manual">Manual</option>
+            <option value="link" selected>Enlace</option>
+            <option value="tool">Herramienta</option>
+            <option value="drive">OneDrive / Drive</option>
+            <option value="brand">Marca</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Visible para</label>
+          <select name="perm">
+            <option value="" selected>Todo el equipo</option>
+            <option value="plans.manage">Quien gestiona pagos</option>
+            <option value="stats.view">Quien ve estadísticas</option>
+            <option value="content.manage">Quien gestiona contenido</option>
+            <option value="system.config">Solo configuración (superadmin)</option>
+          </select>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:.45rem;font-size:.78rem;color:var(--muted);cursor:pointer;margin-bottom:.4rem">
+        <input type="checkbox" name="pinned" style="width:auto"> Fijar arriba (recurso clave)
+      </label>
+      <div class="form-acts">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('resModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="resSubmitBtn">Guardar Recurso</button>
       </div>
     </form>
   </div>
@@ -715,9 +1087,70 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 let profile = null
 let tasks = [], notes = [], activity = [], notifications = [], admins = []
-let currentView = 'overview'
-let noteFilter = 'all'
-let editTaskId = null, editNoteId = null
+let ideas = [], resources = []
+let access = { admin_role: null, permissions: null }   // permissions null = legacy (sin migración)
+let currentView = 'myday'
+let noteFilter = 'all', ideaFilter = 'all'
+let editTaskId = null, editNoteId = null, editIdeaId = null, editResId = null
+// Filtros de tareas/calendario (persisten en localStorage)
+let tf = { q: '', assignee: '', category: '', priority: '' }
+try { tf = { ...tf, ...(JSON.parse(localStorage.getItem('ws_tf') || '{}')) } } catch (_) {}
+// Estado del calendario
+let calView = 'month'          // month | week | day
+let calCursor = new Date()     // fecha de referencia
+
+// ─── Roles y permisos (sistema admin_role; ver docs/ADMIN_ROLES.md) ───
+const ROLE_LABELS = {
+  superadmin: 'Súper Admin ✦', admin: 'Admin', editor: 'Editor',
+  moderator: 'Moderación', support: 'Soporte'
+}
+function can(perm) {
+  if (!Array.isArray(access.permissions)) return true  // legacy: acceso completo
+  return access.permissions.includes(perm)
+}
+
+// ─── Playbooks por rol: listas de trabajo curadas ───
+// Basadas en prácticas estándar de equipos de producto/startups
+// (weekly review, triage de feedback, auditorías de contenido, QA visual).
+// Cada item se puede convertir en tarea con un clic.
+const PLAYBOOKS = {
+  superadmin: { label: 'Operación y producto', items: [
+    { t: '<strong>Revisar métricas de la semana</strong>: usuarios nuevos, activación y uso por sección', cat: 'ops' },
+    { t: '<strong>Triage del feedback pendiente</strong>: clasificar, responder y convertir bugs en tareas', cat: 'ops' },
+    { t: '<strong>Revisar planes por vencer</strong> (próximos 7 días) y preparar recordatorios', cat: 'ops' },
+    { t: '<strong>Revisar el funnel de pago</strong>: visitas a precios → pagos completados', cat: 'ops' },
+    { t: '<strong>Planificar la semana</strong>: elegir 3 prioridades máximas y asignar responsables', cat: 'general' },
+    { t: '<strong>Auditoría mensual de accesos</strong>: roles del equipo y permisos al mínimo necesario', cat: 'ops' },
+  ]},
+  admin: { label: 'Operación diaria', items: [
+    { t: '<strong>Verificar pagos reportados</strong> y activar planes pendientes', cat: 'ops' },
+    { t: '<strong>Triage del feedback nuevo</strong>: responder y escalar lo crítico', cat: 'ops' },
+    { t: '<strong>Revisar tareas bloqueadas</strong> del tablero y destrabarlas', cat: 'general' },
+    { t: '<strong>Revisar misiones y eventos activos</strong>: expirar viejos, crear nuevos', cat: 'ops' },
+    { t: '<strong>Revisar vencimientos</strong> de planes de los próximos 7 días', cat: 'ops' },
+  ]},
+  editor: { label: 'Contenido y marketing', items: [
+    { t: '<strong>Auditar un resumen por semana</strong>: exactitud, markup pedagógico y paridad ES/EN', cat: 'content' },
+    { t: '<strong>Preparar 3 publicaciones</strong> para redes sociales de la semana', cat: 'content' },
+    { t: '<strong>Revisar métricas de búsqueda</strong> (GSC) y detectar queries sin contenido', cat: 'content' },
+    { t: '<strong>Analizar 1 competidor</strong>: qué contenido publica y qué le funciona', cat: 'content' },
+    { t: '<strong>Actualizar el banco de preguntas</strong>: agregar o corregir preguntas de simulacro', cat: 'content' },
+    { t: '<strong>QA visual</strong>: revisar consistencia y accesibilidad de una sección de la app', cat: 'content' },
+  ]},
+  moderator: { label: 'Comunidad', items: [
+    { t: '<strong>Revisar feedback nuevo</strong> y clasificarlo (bug / sugerencia / testimonio)', cat: 'ops' },
+    { t: '<strong>Moderar testimonios</strong>: aprobar los públicos que representen bien la marca', cat: 'ops' },
+    { t: '<strong>Revisar misiones activas</strong>: progreso, participación y expirar las viejas', cat: 'ops' },
+    { t: '<strong>Detectar bugs repetidos</strong> en reportes y convertirlos en una sola tarea', cat: 'bug' },
+  ]},
+  support: { label: 'Soporte a estudiantes', items: [
+    { t: '<strong>Responder correos de soporte</strong> con menos de 24 h de espera', cat: 'ops' },
+    { t: '<strong>Verificar activaciones pendientes</strong>: usuarios que pagaron y no ven su plan', cat: 'ops' },
+    { t: '<strong>Resolver problemas de acceso</strong>: contraseñas, correos no verificados', cat: 'ops' },
+    { t: '<strong>Documentar preguntas frecuentes</strong> nuevas en una nota del Workspace', cat: 'general' },
+    { t: '<strong>Escalar bugs</strong> que no puedas resolver como tarea con prioridad', cat: 'bug' },
+  ]},
+}
 
 const COLS = [
   { status:'todo',        label:'Por Hacer',   color:'#6fa07a' },
@@ -738,11 +1171,14 @@ const NOTE_TYPES = [
 ]
 const CAT_ICON = {feature:'🧩',bug:'🐛',content:'📚',ops:'⚙️',general:'📌'}
 const VIEW_CFG = {
-  overview:  {title:'Overview',    sub:'Centro de operaciones BioMaster', action:null},
+  myday:     {title:'Mi Día',      sub:'Qué hacer hoy, sin buscar',        action:'Nueva Tarea'},
   tasks:     {title:'Tareas',      sub:'Tablero Kanban',                   action:'Nueva Tarea'},
+  calendar:  {title:'Calendario',  sub:'Fechas límite del equipo',         action:'Nueva Tarea'},
+  ideas:     {title:'Ideas',       sub:'Lluvia de ideas del proyecto',     action:'Nueva Idea'},
+  resources: {title:'Recursos',    sub:'Documentos y enlaces del equipo',  action:null}, // se ajusta por permiso
   notes:     {title:'Notas',       sub:'Notas internas del equipo',        action:'Nueva Nota'},
   activity:  {title:'Actividad',   sub:'Historial en tiempo real',         action:null},
-  roadmap:   {title:'Roadmap',     sub:'Planificación del proyecto',        action:'Nueva Tarea'},
+  roadmap:   {title:'Roadmap',     sub:'Planificación del proyecto',       action:'Nueva Tarea'},
 }
 
 // ─── AUTH ───
@@ -757,16 +1193,23 @@ async function init() {
     profile = p
     document.getElementById('sbAv').textContent = (p.name||'A').charAt(0).toUpperCase()
     document.getElementById('sbName').textContent = p.name || 'Admin'
-    // Rol de equipo (sistema de roles): superadmin | admin | editor | moderator | support.
-    // Todo el staff (role='admin') accede al Workspace; acá solo se muestra el rol.
-    const ROLE_LABELS = { superadmin:'Súper Admin 🜲', admin:'Admin ✦', editor:'Editor ✏️', moderator:'Moderador 🛡️', support:'Soporte 🎧' }
-    document.getElementById('sbRole').textContent = ROLE_LABELS[p.admin_role] || 'Admin ✦'
+    // Rol de equipo + permisos en una sola RPC (sistema de roles).
+    // Todo el staff (role='admin') accede al Workspace; los permisos
+    // adaptan lo que cada rol ve. Sin migración de roles → modo legacy
+    // (acceso completo), igual que el panel admin de index.html.
+    try {
+      const { data: acc, error: accErr } = await sb.rpc('get_my_admin_access')
+      if (!accErr && acc && Array.isArray(acc.permissions)) access = acc
+    } catch (_) {}
+    if (!access.admin_role && p.admin_role) access.admin_role = p.admin_role
+    document.getElementById('sbRole').textContent = ROLE_LABELS[access.admin_role] || 'Admin ✦'
 
-    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins()])
+    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins(), loadIdeas(), loadResources(), loadCommentCounts()])
     initNav()
     populateAssigneeSelect()
-    renderView('overview')
+    renderView('myday')
     renderNotifBadge()
+    updateUrgBadge()
     showApp()
     initRealtime()
     openTaskFromUrl()
@@ -810,6 +1253,55 @@ async function loadAdmins() {
   const { data } = await sb.from('profiles').select('id, name').eq('role', 'admin').order('name')
   admins = (data || []).filter(a => a.name)
 }
+let commentCounts = {}
+async function loadCommentCounts() {
+  try {
+    const { data, error } = await sb.from('workspace_task_comments').select('task_id')
+    commentCounts = {}
+    if (!error) for (const c of (data || [])) commentCounts[c.task_id] = (commentCounts[c.task_id] || 0) + 1
+  } catch (_) { commentCounts = {} }
+}
+async function loadIdeas() {
+  // Tolerante: si la migración del Centro de Operaciones no corrió, queda vacío.
+  try {
+    const { data, error } = await sb.from('workspace_ideas').select('*').order('created_at', {ascending:false})
+    ideas = error ? [] : (data || [])
+  } catch (_) { ideas = [] }
+}
+async function loadResources() {
+  try {
+    const { data, error } = await sb.from('workspace_resources').select('*')
+      .order('pinned', {ascending:false}).order('title')
+    resources = error ? [] : (data || [])
+  } catch (_) { resources = [] }
+}
+function updateUrgBadge() {
+  setBadge(tasks.filter(t => t.status==='urgent' || t.status==='blocked' || isOverdue(t)).length)
+}
+
+// ─── Automatización: helpers de fechas y orden inteligente ───
+function todayStr() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+}
+function isOverdue(t) { return !!t.due_date && t.status !== 'done' && t.due_date < todayStr() }
+function isDueToday(t) { return t.due_date === todayStr() && t.status !== 'done' }
+function isMine(t) {
+  const n = (t.assignee_name || '').toLowerCase()
+  return n && (n === (profile.name||'').toLowerCase() || n === 'ambos' || n === 'todos')
+}
+// Puntaje de urgencia: prioridad + cercanía del vencimiento. Ordena colas
+// automáticamente sin que nadie tenga que arrastrar tarjetas.
+function taskScore(t) {
+  const pw = { critical: 40, high: 25, normal: 10, low: 0 }[t.priority] ?? 10
+  let dw = 0
+  if (t.due_date) {
+    const days = Math.round((new Date(t.due_date + 'T12:00') - new Date()) / 86400000)
+    dw = days < 0 ? 50 : days === 0 ? 35 : days <= 2 ? 22 : days <= 7 ? 10 : 2
+  }
+  return pw + dw
+}
+function sortByScore(list) { return [...list].sort((a, b) => taskScore(b) - taskScore(a)) }
 function populateAssigneeSelect() {
   const sel = document.getElementById('assigneeSelect')
   if (!sel) return
@@ -909,79 +1401,359 @@ function renderView(name) {
   const cfg = VIEW_CFG[name] || {}
   document.getElementById('vTitle').textContent = cfg.title || name
   document.getElementById('vSub').textContent = cfg.sub || ''
+  // Acción primaria por vista; "Nuevo Recurso" solo con permiso de contenido
+  let action = cfg.action
+  if (name === 'resources') action = can('content.manage') ? 'Nuevo Recurso' : null
   const mb = document.getElementById('mainBtn')
-  mb.hidden = !cfg.action
-  if (cfg.action) document.getElementById('mainBtnLbl').textContent = cfg.action
+  mb.hidden = !action
+  if (action) document.getElementById('mainBtnLbl').textContent = action
 
   renderCurrent()
 }
 
 function renderCurrent() {
-  if (currentView === 'overview') renderOverview()
+  if (currentView === 'myday') renderMyDay()
   else if (currentView === 'tasks') renderKanban()
+  else if (currentView === 'calendar') renderCalendar()
+  else if (currentView === 'ideas') renderIdeas()
+  else if (currentView === 'resources') renderResources()
   else if (currentView === 'notes') renderNotes()
   else if (currentView === 'activity') renderActivity()
   else if (currentView === 'roadmap') renderRoadmap()
+  updateUrgBadge()
 }
 
-// ─── OVERVIEW ───
-function renderOverview() {
-  const urg  = tasks.filter(t => t.status === 'urgent' || t.status === 'blocked')
-  const inPr = tasks.filter(t => t.status === 'in_progress')
-  const done = tasks.filter(t => t.status === 'done')
-  const today = new Date().toISOString().slice(0,10)
-  const doneToday = done.filter(t => (t.updated_at||'').slice(0,10) === today)
+// ─── MI DÍA ───
+// La vista de entrada: qué hacer hoy sin buscar. Personalizada por rol:
+// todos ven su cola personal; solo quien tiene stats.view ve el Pulso
+// del Proyecto (estado global del equipo).
+const PRIO_DOT = { critical:'#c45252', high:'#c46a2f', normal:'#2b6ea3', low:'#4a7a58' }
 
-  document.getElementById('statsRow').innerHTML = `
-    <div class="stat-card hl">
-      <div class="stat-lbl">Total Tareas</div>
-      <div class="stat-val">${tasks.length}</div>
-      <div class="stat-sub">${inPr.length} en progreso</div>
-    </div>
-    <div class="stat-card urg">
-      <div class="stat-lbl">Urgentes / Bloqueadas</div>
-      <div class="stat-val">${urg.length}</div>
-      <div class="stat-sub">requieren atención</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-lbl">Completadas Hoy</div>
-      <div class="stat-val">${doneToday.length}</div>
-      <div class="stat-sub">de ${done.length} totales</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-lbl">Notas Activas</div>
-      <div class="stat-val">${notes.length}</div>
-      <div class="stat-sub">${notes.filter(n=>n.pinned).length} fijadas</div>
+function mdTaskRow(t) {
+  const overdue = isOverdue(t)
+  const when = overdue ? venceLbl(t.due_date)
+    : isDueToday(t) ? 'hoy'
+    : t.due_date ? venceLbl(t.due_date)
+    : (t.status === 'urgent' ? 'urgente' : '')
+  return `
+    <div class="md-task ${overdue?'overdue':''} ${t.status==='done'?'md-done':''}" onclick="openDetail('${t.id}')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter')openDetail('${t.id}')">
+      <span class="t-dot" style="background:${PRIO_DOT[t.priority]||PRIO_DOT.normal}"></span>
+      <span class="t-title">${esc(t.title)}</span>
+      <span class="t-when">${when}</span>
     </div>`
+}
+function venceLbl(d) {
+  const days = Math.round((new Date(d + 'T12:00') - new Date()) / 86400000)
+  if (days < -1) return `hace ${-days}d`
+  if (days === -1) return 'ayer'
+  if (days === 0) return 'hoy'
+  if (days === 1) return 'mañana'
+  return `en ${days}d`
+}
+function mdSection(title, icon, rows, emptyMsg, cnt) {
+  return `
+    <div class="md-sec">
+      <div class="md-sec-hd">${icon}<h3>${title}</h3><span class="sec-cnt">${cnt}</span></div>
+      ${rows || `<div class="md-empty">${emptyMsg}</div>`}
+    </div>`
+}
+const I = {
+  sun: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>',
+  alert: '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13" stroke-linecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round"/></svg>',
+  queue: '<svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke-linecap="round"/><line x1="3" y1="6" x2="3.01" y2="6" stroke-linecap="round"/><line x1="3" y1="12" x2="3.01" y2="12" stroke-linecap="round"/><line x1="3" y1="18" x2="3.01" y2="18" stroke-linecap="round"/></svg>',
+  pulse: '<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  book: '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.25c-2-1.5-4.5-2-8-2v13.5c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.25c-3.5 0-6 .5-8 2z"/><path stroke-linecap="round" d="M12 6.25v13.5"/></svg>',
+  cal: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  plus: '<svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round"/></svg>',
+  ext: '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round"/></svg>',
+}
 
-  document.getElementById('urgList').innerHTML = urg.length
-    ? urg.map(t => `
-      <div class="alert-strip" onclick="openDetail('${t.id}')">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span style="flex:1">${esc(t.title)}</span>
-        <span class="chip ${t.status==='blocked'?'ch-blocked':'ch-urgent'}">${t.status==='blocked'?'BLOQUEADA':'URGENTE'}</span>
-      </div>`).join('')
-    : '<p style="font-size:.78rem;color:var(--dim)">Sin tareas urgentes ✓</p>'
+function renderMyDay() {
+  const h = new Date().getHours()
+  const saludo = h < 12 ? 'Buenos días' : h < 18 ? 'Buenas tardes' : 'Buenas noches'
+  document.getElementById('mdGreet').textContent = `${saludo}, ${(profile.name||'Admin').split(' ')[0]}`
+  document.getElementById('mdDate').textContent = new Date().toLocaleDateString('es-CR',
+    { weekday:'long', day:'numeric', month:'long' })
+  const roleEl = document.getElementById('mdRole')
+  const pb = PLAYBOOKS[access.admin_role]
+  roleEl.hidden = !access.admin_role
+  if (access.admin_role) roleEl.textContent = `${ROLE_LABELS[access.admin_role]||''} · ${pb ? pb.label : 'Equipo BioMaster'}`
 
-  document.getElementById('recentAct').innerHTML = activity.slice(0,6).map(actHtml).join('')
-    || '<p style="font-size:.78rem;color:var(--dim)">Sin actividad aún</p>'
+  // Mi cola: lo mío + lo sin asignar que arde
+  const active   = tasks.filter(t => t.status !== 'done')
+  const mine     = active.filter(isMine)
+  const pool     = mine.length ? mine : active           // si nada está asignado a mí, mostrar todo
+  const hoy      = sortByScore(pool.filter(t => isDueToday(t) || (t.status === 'urgent' && !isOverdue(t))))
+  const atras    = sortByScore(pool.filter(isOverdue))
+  const cola     = sortByScore(pool.filter(t => !isDueToday(t) && !isOverdue(t) && t.status !== 'urgent')).slice(0, 5)
+  const doneHoy  = tasks.filter(t => t.status === 'done' && (t.updated_at||'').slice(0,10) === todayStr() && (mine.length ? isMine(t) : true))
 
-  setBadge(urg.length)
+  // Anillo: % completado de (activas mías + hechas hoy)
+  const totalDia = hoy.length + atras.length + doneHoy.length
+  const pct = totalDia ? Math.round(doneHoy.length / totalDia * 100) : 0
+  const C = 169.6
+  document.getElementById('mdRingFill').style.strokeDashoffset = String(C - C * pct / 100)
+  document.getElementById('mdRingTxt').textContent = pct + '%'
+  document.getElementById('mdRingLbl').textContent = totalDia
+    ? `${doneHoy.length} de ${totalDia} tareas del día completadas`
+    : 'Sin tareas para hoy. Elegí de la cola o del playbook.'
+
+  // Chips de resumen personal
+  document.getElementById('mdChips').innerHTML = `
+    <div class="md-chip ${atras.length?'warn':''}"><strong>${atras.length}</strong> atrasadas</div>
+    <div class="md-chip"><strong>${hoy.length}</strong> para hoy</div>
+    <div class="md-chip"><strong>${pool.filter(t=>t.status==='in_progress').length}</strong> en progreso</div>
+    <div class="md-chip ok"><strong>${doneHoy.length}</strong> hechas hoy</div>`
+
+  // Columna principal: atrasadas → hoy → siguiente en cola
+  let main = ''
+  if (atras.length) main += mdSection('Atrasadas — resolver primero', I.alert, atras.map(mdTaskRow).join(''), '', atras.length)
+  main += mdSection('Para hoy', I.sun, hoy.map(mdTaskRow).join(''), 'Nada vence hoy. Respirá y tomá algo de la cola.', hoy.length)
+  main += mdSection('Siguiente en la cola', I.queue, cola.map(mdTaskRow).join(''),
+    'Cola vacía. Creá una tarea o tomá una sugerencia del playbook.', cola.length)
+  if (doneHoy.length) main += mdSection('Completadas hoy', I.pulse, doneHoy.map(mdTaskRow).join(''), '', doneHoy.length)
+  document.getElementById('mdMain').innerHTML = main
+
+  // Columna lateral: pulso (solo stats.view) + playbook del rol
+  let side = ''
+  if (can('stats.view')) {
+    const urg = tasks.filter(t => t.status === 'urgent' || t.status === 'blocked')
+    const in7 = active.filter(t => t.due_date && !isOverdue(t) &&
+      (new Date(t.due_date + 'T12:00') - new Date()) / 86400000 <= 7)
+    side += `
+      <div class="md-sec">
+        <div class="md-sec-hd">${I.pulse}<h3>Pulso del proyecto</h3></div>
+        <div class="pulse-grid">
+          <div class="pulse-cell"><div class="pv">${active.length}</div><div class="pl">Abiertas</div></div>
+          <div class="pulse-cell ${urg.length?'bad':''}"><div class="pv">${urg.length}</div><div class="pl">Urg./Bloq.</div></div>
+          <div class="pulse-cell ${in7.length?'warn':''}"><div class="pv">${in7.length}</div><div class="pl">Vencen ≤7d</div></div>
+          <div class="pulse-cell"><div class="pv">${ideas.filter(i=>i.status==='nueva'||i.status==='explorando').length}</div><div class="pl">Ideas vivas</div></div>
+        </div>
+        <div class="quick-links">
+          <a class="quick-link" href="/" target="_blank" rel="noopener">${I.ext} Panel admin</a>
+          <button class="quick-link" onclick="renderView('calendar')">${I.cal} Calendario</button>
+          <button class="quick-link" onclick="renderView('activity')">${I.pulse} Actividad</button>
+        </div>
+      </div>`
+    side += `
+      <div class="md-sec">
+        <div class="md-sec-hd">${I.pulse}<h3>Actividad reciente</h3></div>
+        <div class="act-feed">${activity.slice(0,5).map(actHtml).join('') || '<div class="md-empty">Sin actividad aún</div>'}</div>
+      </div>`
+  }
+  if (pb) {
+    side += `
+      <div class="md-sec">
+        <div class="md-sec-hd">${I.book}<h3>Playbook · ${pb.label}</h3></div>
+        <p style="font-size:.7rem;color:var(--dim);margin:0 0 .5rem;line-height:1.45">
+          Trabajo que siempre suma. Tocá + para convertirlo en tarea tuya.</p>
+        ${pb.items.map((it, i) => `
+          <div class="pb-item">
+            <span class="pb-txt">${it.t}</span>
+            <button class="pb-add" title="Crear tarea" aria-label="Crear tarea a partir de esta sugerencia"
+              onclick="adoptSuggestion('${access.admin_role}', ${i})">${I.plus}</button>
+          </div>`).join('')}
+      </div>`
+  }
+  document.getElementById('mdSide').innerHTML = side || `
+    <div class="md-sec"><div class="md-empty">Usá el tablero de Tareas y el Calendario desde el menú.</div></div>`
+}
+
+// Convierte una sugerencia del playbook en tarea asignada a mí (hoy + 3 días)
+async function adoptSuggestion(role, idx) {
+  const it = PLAYBOOKS[role]?.items[idx]
+  if (!it) return
+  const title = it.t.replace(/<[^>]+>/g, '')
+  const due = new Date(Date.now() + 3 * 86400000)
+  const dueStr = `${due.getFullYear()}-${String(due.getMonth()+1).padStart(2,'0')}-${String(due.getDate()).padStart(2,'0')}`
+  const { error } = await sb.from('workspace_tasks').insert({
+    title, description: 'Creada desde el playbook del rol.', checklist: [],
+    status: 'todo', priority: 'normal', category: it.cat || 'general',
+    assignee_name: profile.name, due_date: dueStr,
+    created_by: profile.id, created_by_name: profile.name,
+    updated_at: new Date().toISOString()
+  })
+  if (error) return toast('Error: ' + error.message, true)
+  await log('adoptó una sugerencia del playbook', 'task', title)
+  toast('Tarea creada y asignada a vos ✓')
+  await loadTasks(); renderCurrent()
+}
+
+// ─── CALENDARIO ───
+// Mes / semana / día sobre due_date de las tareas. Color = prioridad.
+// Comparte los filtros del tablero (responsable, categoría, prioridad).
+function calSetView(v) {
+  calView = v
+  document.querySelectorAll('#calViews button').forEach(b => b.classList.toggle('on', b.dataset.cv === v))
+  renderCalendar()
+}
+function calShift(dir) {
+  const d = new Date(calCursor)
+  if (calView === 'month') d.setMonth(d.getMonth() + dir)
+  else if (calView === 'week') d.setDate(d.getDate() + 7 * dir)
+  else d.setDate(d.getDate() + dir)
+  calCursor = d
+  renderCalendar()
+}
+function calToday() { calCursor = new Date(); renderCalendar() }
+function calGoDay(iso) { calCursor = new Date(iso + 'T12:00'); calSetView('day') }
+
+function dstr(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` }
+function calEvHtml(t, full) {
+  const who = t.assignee_name ? ` · ${t.assignee_name.split(' ')[0]}` : ''
+  return `<div class="cal-ev p-${t.priority||'normal'} ${t.status==='done'?'done':''}"
+    onclick="event.stopPropagation();openDetail('${t.id}')" title="${esc(t.title)}${who}"
+    role="button" tabindex="0" onkeydown="if(event.key==='Enter'){event.stopPropagation();openDetail('${t.id}')}">
+    ${esc(t.title)}${full ? `<span style="opacity:.7">${who}</span>` : ''}</div>`
+}
+
+function renderCalendar() {
+  renderFiltersBar('calFilters')
+  const list = filteredTasks()
+  const byDate = {}
+  for (const t of list) if (t.due_date) (byDate[t.due_date] = byDate[t.due_date] || []).push(t)
+  for (const k in byDate) byDate[k] = sortByScore(byDate[k])
+  const body = document.getElementById('calBody')
+  const titleEl = document.getElementById('calTitle')
+  const today = todayStr()
+  const DOW = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom']
+
+  if (calView === 'month') {
+    const y = calCursor.getFullYear(), m = calCursor.getMonth()
+    titleEl.textContent = calCursor.toLocaleDateString('es-CR', { month:'long', year:'numeric' })
+    const first = new Date(y, m, 1)
+    const startOffset = (first.getDay() + 6) % 7   // lunes = 0
+    const start = new Date(y, m, 1 - startOffset)
+    let cells = DOW.map(d => `<div class="cal-dow">${d}</div>`).join('')
+    for (let i = 0; i < 42; i++) {
+      const d = new Date(start); d.setDate(start.getDate() + i)
+      const iso = dstr(d)
+      const evs = byDate[iso] || []
+      const shown = evs.slice(0, 3)
+      cells += `
+        <div class="cal-cell ${d.getMonth() !== m ? 'other' : ''} ${iso === today ? 'today' : ''}"
+             onclick="calGoDay('${iso}')" title="${d.toLocaleDateString('es-CR')}">
+          <span class="cd">${d.getDate()}</span>
+          ${shown.map(t => calEvHtml(t)).join('')}
+          ${evs.length > 3 ? `<span class="cal-more" onclick="event.stopPropagation();calGoDay('${iso}')">+${evs.length - 3} más</span>` : ''}
+        </div>`
+    }
+    body.innerHTML = `<div class="cal-grid">${cells}</div>`
+  } else if (calView === 'week') {
+    const ref = new Date(calCursor)
+    const monday = new Date(ref); monday.setDate(ref.getDate() - ((ref.getDay() + 6) % 7))
+    const sunday = new Date(monday); sunday.setDate(monday.getDate() + 6)
+    titleEl.textContent = `${monday.getDate()} ${monday.toLocaleDateString('es-CR',{month:'short'})} – ${sunday.getDate()} ${sunday.toLocaleDateString('es-CR',{month:'short'})} ${sunday.getFullYear()}`
+    let cols = ''
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday); d.setDate(monday.getDate() + i)
+      const iso = dstr(d)
+      const evs = byDate[iso] || []
+      cols += `
+        <div class="cal-wday ${iso === today ? 'today' : ''}">
+          <div class="wd-hd">${DOW[i]} ${d.getDate()}</div>
+          ${evs.map(t => calEvHtml(t, true)).join('') || '<div class="md-empty" style="padding:.2rem 0">—</div>'}
+        </div>`
+    }
+    body.innerHTML = `<div class="cal-week">${cols}</div>`
+  } else {
+    const iso = dstr(calCursor)
+    titleEl.textContent = calCursor.toLocaleDateString('es-CR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
+    const evs = byDate[iso] || []
+    body.innerHTML = `
+      <div class="cal-day-list">
+        ${evs.length
+          ? evs.map(t => mdTaskRow(t)).join('')
+          : `<div class="empty"><p>Nada vence este día.</p></div>`}
+      </div>`
+  }
+
+  const noDate = list.filter(t => !t.due_date && t.status !== 'done')
+  document.getElementById('calNoDate').innerHTML = noDate.length
+    ? `${noDate.length} tarea(s) activas sin fecha límite — asignales fecha desde el tablero para verlas acá.`
+    : ''
+}
+
+// ─── FILTROS COMPARTIDOS (tablero + calendario) ───
+function filteredTasks() {
+  return tasks.filter(t =>
+    (!tf.q || (t.title + ' ' + (t.description||'') + ' ' + (t.tags||[]).join(' ')).toLowerCase().includes(tf.q.toLowerCase())) &&
+    (!tf.assignee || (t.assignee_name||'') === tf.assignee) &&
+    (!tf.category || t.category === tf.category) &&
+    (!tf.priority || t.priority === tf.priority)
+  )
+}
+function setTf(k, v) {
+  tf[k] = v
+  try { localStorage.setItem('ws_tf', JSON.stringify(tf)) } catch (_) {}
+  renderCurrent()
+}
+function clearTf() {
+  tf = { q:'', assignee:'', category:'', priority:'' }
+  try { localStorage.setItem('ws_tf', JSON.stringify(tf)) } catch (_) {}
+  renderCurrent()
+}
+function renderFiltersBar(elId) {
+  const el = document.getElementById(elId)
+  if (!el) return
+  // Si el usuario está escribiendo en el buscador, no reconstruir la barra
+  // (perdería el foco a mitad de palabra); solo se refresca el contenido.
+  if (el.querySelector('input[type=search]') === document.activeElement) return
+  const names = [...new Set(tasks.map(t => t.assignee_name).filter(Boolean))].sort()
+  const hasF = tf.q || tf.assignee || tf.category || tf.priority
+  el.innerHTML = `
+    <input type="search" placeholder="Buscar tareas…" value="${esc(tf.q)}" aria-label="Buscar tareas"
+      oninput="setTfDebounced('q', this.value)">
+    <select onchange="setTf('assignee', this.value)" aria-label="Filtrar por responsable">
+      <option value="">Responsable</option>
+      ${names.map(n => `<option value="${esc(n)}" ${tf.assignee===n?'selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+    <select onchange="setTf('category', this.value)" aria-label="Filtrar por categoría">
+      <option value="">Categoría</option>
+      ${['general','feature','bug','content','ops'].map(c => `<option value="${c}" ${tf.category===c?'selected':''}>${c}</option>`).join('')}
+    </select>
+    <select onchange="setTf('priority', this.value)" aria-label="Filtrar por prioridad">
+      <option value="">Prioridad</option>
+      ${['critical','high','normal','low'].map(p => `<option value="${p}" ${tf.priority===p?'selected':''}>${(PRIO[p]||[])[1]||p}</option>`).join('')}
+    </select>
+    ${hasF ? `<button class="filters-clear" onclick="clearTf()">Limpiar filtros ✕</button>` : ''}`
+}
+let _tfTimer = null
+function setTfDebounced(k, v) {
+  clearTimeout(_tfTimer)
+  _tfTimer = setTimeout(() => setTf(k, v), 250)
 }
 
 // ─── KANBAN ───
+// Automatizaciones del tablero:
+//  · Orden por urgencia (prioridad + vencimiento) dentro de cada columna.
+//  · Chip ATRASADA automático cuando pasó la fecha.
+//  · "Hecho" colapsa lo de hace más de 14 días para mantener el foco.
+let showOldDone = false
 function renderKanban() {
+  renderFiltersBar('taskFilters')
+  const list = filteredTasks()
+  const cutoff = new Date(Date.now() - 14 * 86400000).toISOString()
   document.getElementById('kanban').innerHTML = COLS.map(col => {
-    const ct = tasks.filter(t => t.status === col.status)
+    let ct = sortByScore(list.filter(t => t.status === col.status))
+    let hiddenOld = 0
+    if (col.status === 'done' && !showOldDone) {
+      const recent = ct.filter(t => (t.updated_at || t.created_at || '') >= cutoff)
+      hiddenOld = ct.length - recent.length
+      ct = recent
+    }
     return `
       <div class="k-col">
         <div class="k-col-hd">
           <div class="k-dot" style="background:${col.color}"></div>
           <span class="k-col-title">${col.label}</span>
-          <span class="k-cnt">${ct.length}</span>
+          <span class="k-cnt">${ct.length + hiddenOld}</span>
         </div>
         <div class="k-cards">
           ${ct.map(t => taskCardHtml(t)).join('') || '<div style="padding:.4rem .3rem;font-size:.73rem;color:var(--dim);text-align:center">Vacío</div>'}
+          ${hiddenOld ? `<div class="k-collapsed" onclick="showOldDone=true;renderKanban()">Ver ${hiddenOld} completadas antiguas</div>` : ''}
+          ${col.status === 'done' && showOldDone ? `<div class="k-collapsed" onclick="showOldDone=false;renderKanban()">Ocultar antiguas</div>` : ''}
         </div>
         <div class="k-add">
           <button class="k-add-btn" onclick="openNewTask('${col.status}')">
@@ -998,13 +1770,25 @@ function taskCardHtml(t) {
   const moves = COLS.filter(c => c.status !== t.status)
     .map(c => `<button class="move-btn" onclick="moveTask(event,'${t.id}','${c.status}')">→ ${c.label}</button>`).join('')
   const av = t.assignee_name ? `<span class="av-chip"><span class="av-dot">${t.assignee_name.charAt(0).toUpperCase()}</span>${esc(t.assignee_name)}</span>` : ''
-  const due = t.due_date ? `<span class="due-chip ${new Date(t.due_date)<new Date()&&t.status!=='done'?'late':''}"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-width="2" stroke-linecap="round"/></svg>${t.due_date}</span>` : ''
+  const due = t.due_date ? `<span class="due-chip ${isOverdue(t)?'late':''}"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-width="2" stroke-linecap="round"/></svg>${venceLbl(t.due_date)}</span>` : ''
+  const overdueChip = isOverdue(t) ? `<span class="chip ch-overdue">ATRASADA</span>` : ''
+  const tags = (t.tags || []).length ? `<div class="t-tags">${t.tags.slice(0,4).map(x => `<span class="tag">${esc(x)}</span>`).join('')}</div>` : ''
+  const cl = t.checklist || []
+  const clDone = cl.filter(c => c.done).length
+  const inds = []
+  if (cl.length) inds.push(`<span class="t-ind" title="Checklist"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 11l3 3L22 4"/></svg>${clDone}/${cl.length}</span>`)
+  if (commentCounts[t.id]) inds.push(`<span class="t-ind" title="Comentarios"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>${commentCounts[t.id]}</span>`)
+  if ((t.links || []).length) inds.push(`<span class="t-ind" title="Enlaces"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>${t.links.length}</span>`)
+  const clBar = cl.length ? `<div class="cl-progress"><i style="width:${Math.round(clDone / cl.length * 100)}%"></i></div>` : ''
   return `
-    <div class="task-card" onclick="openDetail('${t.id}')">
+    <div class="task-card" onclick="openDetail('${t.id}')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter')openDetail('${t.id}')">
       <div class="task-title">${esc(t.title)}</div>
+      ${tags}
       <div class="task-meta">
-        <span class="chip ${pc}">${pl}</span>${av}${due}
+        <span class="chip ${pc}">${pl}</span>${overdueChip}${av}${due}${inds.join('')}
       </div>
+      ${clBar}
       <div class="task-acts">${moves}</div>
     </div>`
 }
@@ -1108,20 +1892,30 @@ async function submitTask(e) {
   e.preventDefault()
   const f = e.target
   const clRaw = (f.checklist.value||'').split('\n').map(s=>s.trim()).filter(Boolean)
+  // Checklist: conservar el estado done de items que ya existían (misma posición)
+  const prev = editTaskId ? (tasks.find(x => x.id === editTaskId)?.checklist || []) : []
   const payload = {
     title: f.title.value.trim(),
     description: f.description.value.trim() || null,
-    checklist: clRaw.map(text=>({text,done:false})),
+    checklist: clRaw.map((text, i) => ({ text, done: prev[i]?.text === text ? !!prev[i].done : false })),
     status: f.status.value,
     priority: f.priority.value,
     category: f.category.value,
     assignee_name: f.assignee_name.value.trim() || null,
     due_date: f.due_date.value || null,
+    tags: (f.tags.value||'').split(',').map(s => s.trim().toLowerCase()).filter(Boolean).slice(0, 8),
+    links: (f.links.value||'').split('\n').map(s => s.trim()).filter(Boolean).map(line => {
+      const [a, b] = line.split('|').map(x => x.trim())
+      return b ? { label: a, url: b } : { label: a.replace(/^https?:\/\//,'').slice(0, 40), url: a }
+    }).filter(l => /^https?:\/\//.test(l.url)).slice(0, 10),
     created_by: profile.id,
     created_by_name: profile.name,
     updated_at: new Date().toISOString()
   }
   if (!payload.title) return toast('El título es requerido', true)
+  // Automatización: crítica sin responsable → avisar (no bloquear)
+  if (payload.priority === 'critical' && !payload.assignee_name)
+    toast('Sugerencia: asigná un responsable a las tareas críticas', true)
 
   const btn = document.getElementById('taskSubmitBtn')
   btn.disabled = true; btn.textContent = 'Guardando...'
@@ -1129,10 +1923,11 @@ async function submitTask(e) {
   let err
   if (editTaskId) {
     ;({ error:err } = await sb.from('workspace_tasks').update(payload).eq('id', editTaskId))
-    if (!err) { await log('actualizó la tarea', 'task', payload.title); toast('Tarea actualizada') }
+    if (!err) { await log('actualizó la tarea', 'task', payload.title, editTaskId); toast('Tarea actualizada') }
   } else {
-    ;({ error:err } = await sb.from('workspace_tasks').insert(payload))
-    if (!err) { await log('creó una nueva tarea', 'task', payload.title); toast('Tarea creada ✓') }
+    const { data: created, error: insErr } = await sb.from('workspace_tasks').insert(payload).select('id').single()
+    err = insErr
+    if (!err) { await log('creó una nueva tarea', 'task', payload.title, created?.id); toast('Tarea creada ✓') }
   }
 
   btn.disabled = false; btn.textContent = editTaskId ? 'Guardar Cambios' : 'Crear Tarea'
@@ -1147,9 +1942,15 @@ async function moveTask(e, id, status) {
   if (!t) return
   const lbl = COLS.find(c => c.status === status)?.label || status
   const acts = {done:'completó la tarea',urgent:'marcó como urgente',blocked:'marcó como bloqueada',in_progress:'inició la tarea',todo:'movió la tarea a Por Hacer'}
+  // Automatización: al completar con checklist incompleta, confirmar
+  if (status === 'done') {
+    const cl = t.checklist || []
+    const left = cl.filter(c => !c.done).length
+    if (left && !confirm(`Esta tarea tiene ${left} punto(s) de checklist sin marcar. ¿Completarla igual?`)) return
+  }
   const { error } = await sb.from('workspace_tasks').update({status, updated_at:new Date().toISOString()}).eq('id', id)
   if (error) return toast('Error: ' + error.message, true)
-  await log(acts[status]||`movió a ${lbl}`, 'task', t.title)
+  await log(acts[status]||`movió a ${lbl}`, 'task', t.title, id)
   toast(`→ ${lbl}`)
   await loadTasks(); await loadActivity(); renderCurrent()
 }
@@ -1158,7 +1959,7 @@ async function deleteTask(id) {
   const t = tasks.find(x => x.id === id)
   if (!confirm(`¿Eliminar la tarea "${t?.title}"?`)) return
   await sb.from('workspace_tasks').delete().eq('id', id)
-  await log('eliminó la tarea', 'task', t?.title)
+  await log('eliminó la tarea', 'task', t?.title, id)
   toast('Tarea eliminada')
   closeDetailPanel()
   await loadTasks(); renderCurrent()
@@ -1220,13 +2021,235 @@ async function deleteNote(id) {
   await loadNotes(); renderNotes()
 }
 
+// ─── IDEAS ───
+const IDEA_CATS = [
+  ['all','Todas'], ['marketing','Marketing'], ['social','Redes'], ['diseno','Diseño'],
+  ['producto','Producto'], ['features','Funcionalidades'], ['contenido','Contenido'],
+  ['mejoras','Mejoras'], ['seo','SEO'], ['comunidad','Comunidad'], ['otros','Otros']
+]
+const IDEA_STATUS_FLOW = ['nueva','explorando','planeada','hecha','descartada']
+const IDEA_STATUS_LBL = { nueva:'Nueva', explorando:'Explorando', planeada:'Planeada', hecha:'Hecha', descartada:'Descartada' }
+
+function renderIdeas() {
+  const counts = { all: ideas.length }
+  for (const i of ideas) counts[i.category] = (counts[i.category] || 0) + 1
+  document.getElementById('ideaFilters').innerHTML = IDEA_CATS
+    .filter(([k]) => k === 'all' || counts[k])
+    .map(([k, l]) => `<span class="fchip ${ideaFilter===k?'on':''}" role="button" tabindex="0"
+      onclick="ideaFilter='${k}';renderIdeas()" onkeydown="if(event.key==='Enter'){ideaFilter='${k}';renderIdeas()}">${l}${counts[k]?` · ${counts[k]}`:''}</span>`).join('')
+
+  const list = (ideaFilter === 'all' ? ideas : ideas.filter(i => i.category === ideaFilter))
+  // Orden automático: vivas primero (por votos), hechas/descartadas al final
+  const order = s => s === 'descartada' ? 2 : s === 'hecha' ? 1 : 0
+  const sorted = [...list].sort((a, b) =>
+    order(a.status) - order(b.status) || (b.voted_by?.length||0) - (a.voted_by?.length||0) || (a.created_at < b.created_at ? 1 : -1))
+
+  document.getElementById('ideaGrid').innerHTML = sorted.map(i => {
+    const votes = i.voted_by?.length || 0
+    const voted = (i.voted_by || []).includes(profile.id)
+    const catLbl = (IDEA_CATS.find(([k]) => k === i.category) || [])[1] || i.category
+    const mineIdea = i.created_by === profile.id
+    return `
+      <div class="idea-card fu">
+        <div class="idea-top">
+          <span class="tag">${catLbl}</span>
+          <button class="st-pill st-${i.status}" onclick="cycleIdeaStatus('${i.id}')"
+            title="Cambiar estado">${IDEA_STATUS_LBL[i.status]||i.status}</button>
+        </div>
+        <div class="idea-title" ${mineIdea ? `onclick="openEditIdea('${i.id}')" title="Editar idea"` : ''}>${esc(i.title)}</div>
+        ${i.body ? `<div class="idea-body">${esc(i.body)}</div>` : ''}
+        <div class="idea-foot">
+          <span class="idea-author">${esc(i.created_by_name||'Equipo')} · ${timeAgo(i.created_at)}</span>
+          <button class="vote-btn ${voted?'voted':''}" onclick="voteIdea('${i.id}')"
+            aria-label="${voted?'Quitar voto':'Votar por esta idea'}">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+            ${votes}
+          </button>
+        </div>
+      </div>`
+  }).join('') || `<div class="empty" style="grid-column:1/-1">
+    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.674M12 3a6 6 0 00-3.7 10.73c.6.5 1.05 1.17 1.2 1.94l.15.83h4.7l.15-.83c.15-.77.6-1.44 1.2-1.94A6 6 0 0012 3z"/></svg>
+    <p>Sin ideas en esta categoría. Anotá la primera: ninguna idea es demasiado pequeña.</p></div>`
+}
+
+async function submitIdea(e) {
+  e.preventDefault()
+  const f = e.target
+  const payload = {
+    title: f.title.value.trim(),
+    body: f.body.value.trim() || null,
+    category: f.category.value,
+    created_by: profile.id,
+    created_by_name: profile.name,
+    updated_at: new Date().toISOString()
+  }
+  if (!payload.title) return toast('Escribí la idea', true)
+  const btn = document.getElementById('ideaSubmitBtn')
+  btn.disabled = true
+  let err
+  if (editIdeaId) {
+    ;({ error: err } = await sb.from('workspace_ideas').update(payload).eq('id', editIdeaId))
+  } else {
+    ;({ error: err } = await sb.from('workspace_ideas').insert(payload))
+  }
+  btn.disabled = false
+  if (err) return toast('Error: ' + err.message, true)
+  await log(editIdeaId ? 'actualizó una idea' : 'propuso una idea', 'idea', payload.title)
+  toast(editIdeaId ? 'Idea actualizada' : 'Idea guardada ✓')
+  closeModal('ideaModal')
+  await loadIdeas(); if (currentView === 'ideas') renderIdeas()
+}
+function openNewIdea() {
+  editIdeaId = null
+  document.getElementById('ideaModalTitle').textContent = 'Nueva Idea'
+  document.getElementById('ideaSubmitBtn').textContent = 'Guardar Idea'
+  document.getElementById('ideaForm').reset()
+  openModal('ideaModal')
+}
+function openEditIdea(id) {
+  const i = ideas.find(x => x.id === id); if (!i) return
+  editIdeaId = id
+  document.getElementById('ideaModalTitle').textContent = 'Editar Idea'
+  document.getElementById('ideaSubmitBtn').textContent = 'Guardar Cambios'
+  const f = document.getElementById('ideaForm')
+  f.title.value = i.title || ''; f.body.value = i.body || ''; f.category.value = i.category || 'otros'
+  openModal('ideaModal')
+}
+async function voteIdea(id) {
+  const i = ideas.find(x => x.id === id); if (!i) return
+  const cur = i.voted_by || []
+  const next = cur.includes(profile.id) ? cur.filter(u => u !== profile.id) : [...cur, profile.id]
+  const { error } = await sb.from('workspace_ideas').update({ voted_by: next }).eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  i.voted_by = next
+  renderIdeas()
+}
+async function cycleIdeaStatus(id) {
+  const i = ideas.find(x => x.id === id); if (!i) return
+  const next = IDEA_STATUS_FLOW[(IDEA_STATUS_FLOW.indexOf(i.status) + 1) % IDEA_STATUS_FLOW.length]
+  const { error } = await sb.from('workspace_ideas').update({ status: next, updated_at: new Date().toISOString() }).eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  i.status = next
+  if (next === 'planeada') toast('Idea planeada — convertila en tarea desde el tablero cuando toque')
+  renderIdeas()
+}
+
+// ─── RECURSOS ───
+const RES_CATS = [
+  ['doc','Documentos'], ['manual','Manuales'], ['link','Enlaces'],
+  ['tool','Herramientas'], ['drive','OneDrive / Drive'], ['brand','Marca']
+]
+const RES_ICON = {
+  doc:  '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  manual:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.25c-2-1.5-4.5-2-8-2v13.5c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V4.25c-3.5 0-6 .5-8 2z"/></svg>',
+  link: '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>',
+  tool: '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>',
+  drive:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>',
+  brand:'<svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.68-.75 1.68-1.68 0-.44-.16-.84-.44-1.14-.28-.3-.44-.7-.44-1.14A1.68 1.68 0 0114.48 16H16a6 6 0 006-6c0-4.42-4.5-8-10-8z"/></svg>',
+}
+function renderResources() {
+  const canManage = can('content.manage')
+  const bySec = {}
+  for (const r of resources) (bySec[r.category] = bySec[r.category] || []).push(r)
+  document.getElementById('resContent').innerHTML = RES_CATS
+    .filter(([k]) => bySec[k]?.length)
+    .map(([k, label]) => `
+      <div class="res-sec">
+        <div class="sec-head"><h3>${label}</h3><span class="sec-cnt">${bySec[k].length}</span></div>
+        <div class="res-grid">
+          ${bySec[k].map(r => `
+            <div class="res-card">
+              ${canManage ? `
+                <div class="res-acts">
+                  <button class="note-act-btn" title="Editar" onclick="openEditResource('${r.id}')" aria-label="Editar recurso">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button class="note-act-btn" title="Eliminar" onclick="deleteResource('${r.id}')" aria-label="Eliminar recurso">
+                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                </div>` : ''}
+              <div class="res-icn">${RES_ICON[r.category]||RES_ICON.link}</div>
+              <div class="res-title">${r.pinned ? '📌 ' : ''}${esc(r.title)}</div>
+              ${r.description ? `<div class="res-desc">${esc(r.description)}</div>` : ''}
+              <a class="res-open" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+                Abrir <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round"/></svg>
+              </a>
+            </div>`).join('')}
+        </div>
+      </div>`).join('') || `<div class="empty">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+        <p>Sin recursos todavía.${canManage ? ' Usá "Nuevo Recurso" para agregar documentos y enlaces del equipo.' : ' Quien gestiona contenido puede agregarlos.'}</p></div>`
+}
+async function submitResource(e) {
+  e.preventDefault()
+  const f = e.target
+  const payload = {
+    title: f.title.value.trim(),
+    url: f.url.value.trim(),
+    description: f.description.value.trim() || null,
+    category: f.category.value,
+    perm: f.perm.value || null,
+    pinned: f.pinned.checked,
+    created_by: profile.id,
+    created_by_name: profile.name,
+    updated_at: new Date().toISOString()
+  }
+  if (!payload.title || !payload.url) return toast('Título y URL son requeridos', true)
+  const btn = document.getElementById('resSubmitBtn')
+  btn.disabled = true
+  let err
+  if (editResId) {
+    ;({ error: err } = await sb.from('workspace_resources').update(payload).eq('id', editResId))
+  } else {
+    ;({ error: err } = await sb.from('workspace_resources').insert(payload))
+  }
+  btn.disabled = false
+  if (err) return toast('Error: ' + err.message, true)
+  await log(editResId ? 'actualizó un recurso' : 'agregó un recurso', 'resource', payload.title)
+  toast(editResId ? 'Recurso actualizado' : 'Recurso agregado ✓')
+  closeModal('resModal')
+  await loadResources(); if (currentView === 'resources') renderResources()
+}
+function openNewResource() {
+  editResId = null
+  document.getElementById('resModalTitle').textContent = 'Nuevo Recurso'
+  document.getElementById('resSubmitBtn').textContent = 'Guardar Recurso'
+  document.getElementById('resForm').reset()
+  openModal('resModal')
+}
+function openEditResource(id) {
+  const r = resources.find(x => x.id === id); if (!r) return
+  editResId = id
+  document.getElementById('resModalTitle').textContent = 'Editar Recurso'
+  document.getElementById('resSubmitBtn').textContent = 'Guardar Cambios'
+  const f = document.getElementById('resForm')
+  f.title.value = r.title||''; f.url.value = r.url||''; f.description.value = r.description||''
+  f.category.value = r.category||'link'; f.perm.value = r.perm||''; f.pinned.checked = !!r.pinned
+  openModal('resModal')
+}
+async function deleteResource(id) {
+  const r = resources.find(x => x.id === id)
+  if (!confirm(`¿Eliminar el recurso "${r?.title}"?`)) return
+  await sb.from('workspace_resources').delete().eq('id', id)
+  await log('eliminó un recurso', 'resource', r?.title)
+  toast('Recurso eliminado')
+  await loadResources(); renderResources()
+}
+
 // ─── ACTIVITY LOG ───
-async function log(action, entityType, entityTitle) {
-  await sb.from('workspace_activity').insert({
+// entityId permite reconstruir el historial de una tarea puntual.
+async function log(action, entityType, entityTitle, entityId) {
+  const row = {
     actor_name: profile.name,
     actor_id: profile.id,
     action, entity_type: entityType, entity_title: entityTitle
-  })
+  }
+  if (entityId) row.entity_id = entityId
+  let { error } = await sb.from('workspace_activity').insert(row)
+  if (error && entityId) {
+    // Compat: si la columna entity_id aún no existe, registrar sin ella
+    ;({ error } = await sb.from('workspace_activity').insert({ ...row, entity_id: undefined }))
+  }
 }
 
 // ─── REALTIME ───
@@ -1235,11 +2258,23 @@ function initRealtime() {
     .on('postgres_changes', {event:'*', schema:'public', table:'workspace_tasks'}, async () => {
       await loadTasks()
       renderCurrent()
-      setBadge(tasks.filter(t => t.status==='urgent'||t.status==='blocked').length)
     })
     .on('postgres_changes', {event:'*', schema:'public', table:'workspace_notes'}, async () => {
       await loadNotes()
       if (currentView === 'notes') renderNotes()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_ideas'}, async () => {
+      await loadIdeas()
+      if (currentView === 'ideas') renderIdeas()
+      else if (currentView === 'myday') renderMyDay()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_resources'}, async () => {
+      await loadResources()
+      if (currentView === 'resources') renderResources()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_task_comments'}, async () => {
+      await loadCommentCounts()
+      if (currentView === 'tasks') renderKanban()
     })
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'workspace_notifications', filter:`recipient_id=eq.${profile.id}`}, (payload) => {
       notifications.unshift(payload.new)
@@ -1267,6 +2302,8 @@ function initRealtime() {
 // ─── MODAL HELPERS ───
 function primaryAction() {
   if (currentView === 'notes') openNewNote()
+  else if (currentView === 'ideas') openNewIdea()
+  else if (currentView === 'resources') openNewResource()
   else openNewTask()
 }
 
@@ -1290,6 +2327,8 @@ function openEditTask(id) {
   f.category.value = t.category||'general'
   ensureAssigneeOption(t.assignee_name); f.assignee_name.value = t.assignee_name||''
   f.due_date.value = t.due_date||''
+  f.tags.value = (t.tags||[]).join(', ')
+  f.links.value = (t.links||[]).map(l => `${l.label} | ${l.url}`).join('\n')
   openModal('taskModal')
 }
 
@@ -1342,31 +2381,114 @@ function openDetail(id) {
       </div>
     </div>` : ''
 
+  const tags = (t.tags||[]).length ? `<div class="t-tags" style="margin-top:.4rem">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>` : ''
+  const links = (t.links||[]).length ? `
+    <div class="dsec"><label>Enlaces</label>
+      <div class="t-links">${t.links.map(l => `
+        <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>${esc(l.label)}</a>`).join('')}
+      </div>
+    </div>` : ''
+
   document.getElementById('detailPanel').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;margin-bottom:1rem">
       <span class="chip ${pc}">${pl}</span>
       <div style="display:flex;gap:.35rem;flex-shrink:0">
         <button class="btn btn-ghost btn-sm" onclick="openEditTask('${t.id}');closeDetailPanel()">Editar</button>
         <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">Eliminar</button>
-        <button class="btn btn-ghost btn-sm" onclick="closeDetailPanel()">✕</button>
+        <button class="btn btn-ghost btn-sm" onclick="closeDetailPanel()" aria-label="Cerrar">✕</button>
       </div>
     </div>
     <div class="detail-title">${esc(t.title)}</div>
     <div class="detail-meta">
       <span style="font-size:.76rem;color:var(--muted)">${CAT_ICON[t.category]||'📌'} ${t.category||'general'}</span>
-      ${av}${due}
+      ${av}${due}${isOverdue(t)?'<span class="chip ch-overdue">ATRASADA</span>':''}
     </div>
+    ${tags}
     ${t.description ? `<div class="dsec"><label>Descripción</label><div class="dbody">${esc(t.description)}</div></div>` : ''}
     ${clHtml}
+    ${links}
     <div class="dsec">
       <label>Mover a</label>
       <div class="status-row">${moveOpts}</div>
+    </div>
+    <div class="dsec">
+      <label>Comentarios</label>
+      <div id="cmtList"><div class="md-empty">Cargando…</div></div>
+      <div class="cmt-form">
+        <input id="cmtInput" placeholder="Escribí un comentario…" maxlength="800"
+          onkeydown="if(event.key==='Enter')addComment('${t.id}')" aria-label="Nuevo comentario">
+        <button class="btn btn-primary btn-sm" onclick="addComment('${t.id}')">Enviar</button>
+      </div>
+    </div>
+    <div class="dsec">
+      <label>Historial</label>
+      <div id="histList"><div class="md-empty">Cargando…</div></div>
     </div>
     <div class="dsec">
       <label>Creado por <strong style="color:var(--muted)">${esc(t.created_by_name||'Admin')}</strong> · ${date}</label>
     </div>`
 
   document.getElementById('detailOverlay').classList.add('open')
+  loadTaskComments(t.id)
+  loadTaskHistory(t.id)
+}
+
+// ─── COMENTARIOS E HISTORIAL POR TAREA ───
+async function loadTaskComments(taskId) {
+  const el = document.getElementById('cmtList')
+  if (!el) return
+  try {
+    const { data, error } = await sb.from('workspace_task_comments')
+      .select('*').eq('task_id', taskId).order('created_at')
+    if (error) throw error
+    el.innerHTML = (data || []).map(c => `
+      <div class="cmt">
+        <div class="act-av">${esc((c.author_name||'A').charAt(0).toUpperCase())}</div>
+        <div class="cmt-body">
+          <div class="cmt-meta"><strong>${esc(c.author_name)}</strong><time>${timeAgo(c.created_at)}</time>
+            ${c.author_id === profile.id ? `<button class="cmt-del" onclick="deleteComment('${c.id}','${taskId}')" aria-label="Eliminar comentario">Eliminar</button>` : ''}
+          </div>
+          <div class="cmt-txt">${esc(c.body)}</div>
+        </div>
+      </div>`).join('') || '<div class="md-empty">Sin comentarios. Sé la primera persona en comentar.</div>'
+  } catch (_) {
+    el.innerHTML = '<div class="md-empty">Los comentarios se activan al aplicar la migración del Centro de Operaciones.</div>'
+  }
+}
+async function addComment(taskId) {
+  const input = document.getElementById('cmtInput')
+  const body = (input?.value || '').trim()
+  if (!body) return
+  const { error } = await sb.from('workspace_task_comments').insert({
+    task_id: taskId, author_id: profile.id, author_name: profile.name, body
+  })
+  if (error) return toast('Error: ' + error.message, true)
+  input.value = ''
+  const t = tasks.find(x => x.id === taskId)
+  commentCounts[taskId] = (commentCounts[taskId] || 0) + 1
+  await log('comentó en la tarea', 'task', t?.title, taskId)
+  loadTaskComments(taskId)
+}
+async function deleteComment(id, taskId) {
+  await sb.from('workspace_task_comments').delete().eq('id', id)
+  commentCounts[taskId] = Math.max(0, (commentCounts[taskId] || 1) - 1)
+  loadTaskComments(taskId)
+}
+async function loadTaskHistory(taskId) {
+  const el = document.getElementById('histList')
+  if (!el) return
+  try {
+    const { data, error } = await sb.from('workspace_activity')
+      .select('actor_name, action, created_at').eq('entity_id', taskId)
+      .order('created_at', { ascending: false }).limit(15)
+    if (error) throw error
+    el.innerHTML = (data || []).map(h => `
+      <div class="hist-item"><strong>${esc(h.actor_name)}</strong> ${esc(h.action)} · ${timeAgo(h.created_at)}</div>`
+    ).join('') || '<div class="md-empty">Sin historial registrado para esta tarea.</div>'
+  } catch (_) {
+    el.innerHTML = '<div class="md-empty">El historial por tarea se activa al aplicar la migración.</div>'
+  }
 }
 
 async function moveFromDetail(id, status) {
