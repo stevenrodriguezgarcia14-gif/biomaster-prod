@@ -621,6 +621,142 @@ select option{background:var(--bg1)}
 .res-acts{position:absolute;top:.5rem;right:.5rem;display:flex;gap:.25rem;opacity:0;transition:opacity var(--t)}
 .res-card:hover .res-acts{opacity:1}
 
+/* ─── MICRO-INTERACCIONES (design engineering) ─── */
+.btn:active,.pb-add:active,.vote-btn:active{transform:scale(.97)}
+.btn,.pb-add,.vote-btn{transition:background var(--t),color var(--t),border-color var(--t),transform .08s ease-out}
+
+/* ─── CENTRO DE COMUNICACIONES ─── */
+.comms-wrap{max-width:720px}
+.post-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
+  padding:1rem 1.1rem;margin-bottom:.9rem}
+.post-card.pinned{border-color:rgba(200,154,18,.35)}
+.post-hd{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+.post-hd .act-av{width:30px;height:30px;font-size:.76rem;flex-shrink:0}
+.post-who{flex:1;min-width:0}
+.post-who strong{font-size:.8rem;color:var(--text);display:block}
+.post-who time{font-size:.65rem;color:var(--dim)}
+.post-type{font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 8px;border-radius:10px}
+.pt-anuncio{background:var(--yellow-s);color:var(--yellow)}
+.pt-actualizacion{background:var(--blue-s);color:var(--blue)}
+.pt-encuesta{background:var(--purple-s);color:var(--purple)}
+.post-title{font-size:.92rem;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:.3rem}
+.post-body{font-size:.8rem;color:var(--muted);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.post-acts{display:flex;gap:.4rem;align-items:center;margin-top:.65rem;flex-wrap:wrap}
+.post-acts .spacer{flex:1}
+.post-link-btn{background:none;border:none;color:var(--dim);font-size:.72rem;font-weight:600;
+  cursor:pointer;font-family:inherit;padding:.25rem .4rem;border-radius:6px}
+.post-link-btn:hover{color:var(--green-b);background:var(--bg3)}
+.mention{color:var(--green-b);font-weight:700;background:var(--green-s2);border-radius:4px;padding:0 2px}
+.poll-opt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border-b);
+  border-radius:var(--rs);padding:.5rem .75rem;margin-bottom:.4rem;color:var(--text);
+  font-size:.8rem;font-family:inherit;cursor:pointer;transition:border-color var(--t)}
+.poll-opt:hover{border-color:var(--green)}
+.poll-res{position:relative;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);
+  padding:.5rem .75rem;margin-bottom:.4rem;overflow:hidden}
+.poll-res .bar{position:absolute;inset:0;background:var(--green-s2);transform-origin:left;z-index:0}
+.poll-res .lbl{position:relative;z-index:1;display:flex;justify-content:space-between;gap:.6rem;
+  font-size:.78rem;color:var(--text)}
+.poll-res.win{border-color:var(--green)}
+.poll-res .pct{color:var(--green-b);font-weight:700;font-variant-numeric:tabular-nums}
+.poll-meta{font-size:.68rem;color:var(--dim);margin-top:.3rem}
+.replies{margin-top:.7rem;border-top:1px solid var(--border);padding-top:.6rem}
+.composer{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
+  padding:.9rem 1rem;margin-bottom:1.1rem}
+.composer textarea{min-height:64px;margin-bottom:.5rem}
+.composer-row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.composer-row select{width:auto;font-size:.76rem;padding:.4rem .6rem}
+.composer-hint{font-size:.67rem;color:var(--dim);flex:1}
+.poll-opts-input{display:none}
+.poll-opts-input.show{display:block;margin-top:.4rem}
+
+/* ─── COMENTARIOS: hilos y decisiones ─── */
+.cmt.reply{margin-left:1.9rem}
+.cmt.decision .cmt-txt{color:var(--text)}
+.decision-badge{display:inline-flex;align-items:center;gap:.25rem;font-size:.6rem;font-weight:800;
+  letter-spacing:.04em;text-transform:uppercase;background:var(--green-s);color:var(--green-b);
+  padding:1px 7px;border-radius:10px}
+.cmt-act{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.66rem;
+  font-family:inherit;font-weight:600;padding:2px 4px;border-radius:4px}
+.cmt-act:hover{color:var(--green-b);background:var(--bg3)}
+.attach-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg3);border:1px dashed var(--border-b);
+  color:var(--muted);font-size:.73rem;font-weight:600;padding:.4rem .7rem;border-radius:var(--rs);
+  cursor:pointer;font-family:inherit;transition:all var(--t)}
+.attach-btn:hover{color:var(--green-b);border-color:var(--green)}
+.attach-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* ─── WIKI ─── */
+.wiki-grid{display:grid;grid-template-columns:250px 1fr;gap:1.2rem;align-items:start}
+.wiki-nav{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:.7rem;
+  position:sticky;top:0;max-height:calc(100vh - 130px);overflow-y:auto;scrollbar-width:thin}
+.wiki-nav input[type=search]{width:100%;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--rs);padding:.42rem .6rem;color:var(--text);font-size:.76rem;
+  font-family:inherit;outline:none;margin-bottom:.6rem}
+.wiki-nav input[type=search]:focus{border-color:var(--green)}
+.wiki-cat{font-size:.62rem;font-weight:700;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.08em;padding:.55rem .4rem .25rem}
+.wiki-item{display:block;width:100%;text-align:left;background:none;border:none;color:var(--muted);
+  font-size:.78rem;font-weight:500;padding:.4rem .55rem;border-radius:var(--rs);cursor:pointer;
+  font-family:inherit;transition:background var(--t),color var(--t);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wiki-item:hover{background:var(--bg3);color:var(--text)}
+.wiki-item.on{background:var(--green-s);color:var(--green-b)}
+.wiki-page{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1.6rem;min-height:300px}
+.wiki-page-hd{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.4rem}
+.wiki-page-hd h2{font-size:1.25rem;font-weight:800;color:var(--text);flex:1;line-height:1.3}
+.wiki-meta{font-size:.68rem;color:var(--dim);margin-bottom:1rem}
+.wiki-body{font-size:.83rem;color:var(--muted);line-height:1.65}
+.wiki-body h1{font-size:1.15rem;color:var(--text);margin:.9rem 0 .5rem;font-weight:800}
+.wiki-body h2{font-size:.98rem;color:var(--text);margin:.9rem 0 .4rem;font-weight:700}
+.wiki-body h3{font-size:.87rem;color:var(--text);margin:.8rem 0 .3rem;font-weight:700}
+.wiki-body p{margin:.45rem 0}
+.wiki-body ul,.wiki-body ol{margin:.45rem 0 .45rem 1.3rem}
+.wiki-body li{margin:.22rem 0}
+.wiki-body strong{color:var(--text)}
+.wiki-body code{background:var(--bg3);border-radius:5px;padding:1px 6px;font-family:ui-monospace,Consolas,monospace;font-size:.78rem;color:var(--green-b)}
+.wiki-body a{color:var(--green-b)}
+.wiki-editor textarea{min-height:340px;font-family:ui-monospace,Consolas,monospace;font-size:.8rem;line-height:1.6}
+
+/* ─── ¿QUÉ PUEDO HACER? ─── */
+.guide-tabs{display:flex;gap:.45rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.guide-sec{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
+  padding:1rem 1.1rem;margin-bottom:1rem;max-width:760px}
+.guide-sec h3{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.15rem}
+.guide-sec .g-sub{font-size:.72rem;color:var(--dim);margin-bottom:.55rem;line-height:1.45}
+
+/* ─── RECURSOS: archivos ─── */
+.res-meta{font-size:.64rem;color:var(--dim);display:flex;gap:.5rem;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.res-btns{display:flex;gap:.4rem;margin-top:.25rem}
+.res-btn{display:inline-flex;align-items:center;gap:.3rem;background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);font-size:.7rem;font-weight:700;padding:.3rem .6rem;border-radius:var(--rs);
+  cursor:pointer;font-family:inherit;text-decoration:none;transition:all var(--t)}
+.res-btn:hover{color:var(--green-b);border-color:var(--green)}
+.res-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5}
+.res-toolbar{display:flex;gap:.5rem;margin-bottom:1.1rem;flex-wrap:wrap;align-items:center}
+.res-toolbar input[type=search]{flex:1;min-width:170px;max-width:280px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:var(--rs);padding:.42rem .7rem;color:var(--text);
+  font-size:.78rem;font-family:inherit;outline:none}
+.res-toolbar input[type=search]:focus{border-color:var(--green)}
+/* Preview */
+#previewModal .modal-box{max-width:860px;padding:1rem}
+#previewBody{background:var(--bg0);border-radius:var(--rs);display:grid;place-items:center;min-height:200px}
+#previewBody img{max-width:100%;max-height:70vh;border-radius:6px}
+#previewBody iframe{width:100%;height:70vh;border:0;border-radius:6px;background:#fff}
+
+/* ─── HISTORIAL: filtros ─── */
+.act-filters{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.act-filters select{width:auto;font-size:.76rem;padding:.4rem .6rem;background:var(--bg2)}
+
+/* ─── MI DÍA: banner de anuncio ─── */
+.md-banner{display:flex;align-items:center;gap:.7rem;background:var(--yellow-s);
+  border:1px solid rgba(200,154,18,.3);border-radius:var(--r);padding:.65rem .9rem;
+  margin-bottom:1rem;cursor:pointer;transition:filter var(--t)}
+.md-banner:hover{filter:brightness(1.1)}
+.md-banner svg{width:16px;height:16px;stroke:var(--yellow);fill:none;stroke-width:2;flex-shrink:0}
+.md-banner .b-txt{flex:1;font-size:.78rem;color:var(--text);line-height:1.4;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.md-banner .b-txt strong{color:var(--yellow)}
+
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
@@ -655,6 +791,9 @@ select option{background:var(--bg1)}
   .cal-wday{min-height:unset}
   .cal-views{margin-left:0;width:100%}
   .idea-grid,.res-grid{grid-template-columns:1fr}
+  .wiki-grid{grid-template-columns:1fr}
+  .wiki-nav{position:static;max-height:none}
+  .cmt.reply{margin-left:.9rem}
 }
 </style>
 </head>
@@ -691,6 +830,11 @@ select option{background:var(--bg1)}
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
         <span>Mi Día</span>
       </div>
+      <div class="nav-item" data-view="comms" tabindex="0">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
+        <span>Comunicación</span>
+        <span class="nav-badge" id="commsBadge" hidden>0</span>
+      </div>
       <div class="nav-item" data-view="tasks" tabindex="0">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 11l3 3L22 4"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         <span>Tareas</span>
@@ -709,11 +853,19 @@ select option{background:var(--bg1)}
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
         <span>Recursos</span>
       </div>
+      <div class="nav-item" data-view="wiki" tabindex="0">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg>
+        <span>Wiki</span>
+      </div>
       <div class="nav-item" data-view="notes" tabindex="0">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M5 8h14M5 8a2 2 0 01-2-2V4h18v2a2 2 0 01-2 2M5 8v12a2 2 0 002 2h10a2 2 0 002-2V8"/></svg>
         <span>Notas</span>
       </div>
       <div class="nav-label">Equipo</div>
+      <div class="nav-item" data-view="guide" tabindex="0">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round"/></svg>
+        <span>¿Qué puedo hacer?</span>
+      </div>
       <div class="nav-item" data-view="activity" tabindex="0">
         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Actividad</span>
@@ -811,11 +963,34 @@ select option{background:var(--bg1)}
           <button data-cv="month" class="on" onclick="calSetView('month')">Mes</button>
           <button data-cv="week" onclick="calSetView('week')">Semana</button>
           <button data-cv="day" onclick="calSetView('day')">Día</button>
+          <button data-cv="agenda" onclick="calSetView('agenda')">Agenda</button>
         </div>
       </div>
       <div class="filters-bar" id="calFilters"></div>
       <div id="calBody"></div>
       <div class="cal-nodate" id="calNoDate"></div>
+    </div>
+
+    <!-- COMUNICACIÓN -->
+    <div id="view-comms" class="view-body" hidden>
+      <div class="comms-wrap">
+        <div class="composer">
+          <textarea id="postBody" placeholder="Compartí una actualización con el equipo… Mencioná con @Nombre" maxlength="2000" aria-label="Nueva publicación"></textarea>
+          <div class="poll-opts-input" id="pollOptsWrap">
+            <textarea id="pollOpts" placeholder="Opciones de la votación (una por línea, 2–6)" style="min-height:52px" aria-label="Opciones de la encuesta"></textarea>
+          </div>
+          <div class="composer-row">
+            <select id="postType" onchange="document.getElementById('pollOptsWrap').classList.toggle('show', this.value==='encuesta')" aria-label="Tipo de publicación">
+              <option value="actualizacion">Actualización</option>
+              <option value="anuncio">📣 Anuncio</option>
+              <option value="encuesta">🗳 Votación</option>
+            </select>
+            <span class="composer-hint">Las menciones @Nombre notifican a la persona (y le llegan por correo).</span>
+            <button class="btn btn-primary btn-sm" onclick="submitPost()">Publicar</button>
+          </div>
+        </div>
+        <div id="commsFeed"></div>
+      </div>
     </div>
 
     <!-- IDEAS -->
@@ -826,7 +1001,22 @@ select option{background:var(--bg1)}
 
     <!-- RECURSOS -->
     <div id="view-resources" class="view-body" hidden>
+      <div class="res-toolbar" id="resToolbar"></div>
       <div id="resContent"></div>
+    </div>
+
+    <!-- WIKI -->
+    <div id="view-wiki" class="view-body" hidden>
+      <div class="wiki-grid">
+        <div class="wiki-nav" id="wikiNav"></div>
+        <div id="wikiMain"></div>
+      </div>
+    </div>
+
+    <!-- ¿QUÉ PUEDO HACER? -->
+    <div id="view-guide" class="view-body" hidden>
+      <div class="guide-tabs" id="guideTabs"></div>
+      <div id="guideBody"></div>
     </div>
 
     <!-- NOTES -->
@@ -1065,6 +1255,77 @@ select option{background:var(--bg1)}
   </div>
 </div>
 
+<!-- UPLOAD FILE MODAL -->
+<div class="modal" id="fileModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Subir Archivo</span>
+      <button class="modal-close" onclick="closeModal('fileModal')" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <form id="fileForm" onsubmit="submitFile(event)">
+      <div class="fg">
+        <label>Archivo * (máx. 25 MB — imágenes, PDF, Office, ZIP…)</label>
+        <input name="file" type="file" required
+          accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.md,.svg">
+      </div>
+      <div class="fg">
+        <label>Título (si lo dejás vacío se usa el nombre del archivo)</label>
+        <input name="title" placeholder="Ej: Banner campaña julio" autocomplete="off">
+      </div>
+      <div class="fg">
+        <label>Descripción</label>
+        <textarea name="description" placeholder="Qué es y para qué sirve" style="min-height:52px"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>Categoría</label>
+          <select name="category">
+            <option value="doc" selected>Documento</option>
+            <option value="manual">Manual</option>
+            <option value="brand">Marca</option>
+            <option value="drive">OneDrive / Drive</option>
+            <option value="tool">Herramienta</option>
+            <option value="link">Otro</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Visible para</label>
+          <select name="perm">
+            <option value="" selected>Todo el equipo</option>
+            <option value="plans.manage">Quien gestiona pagos</option>
+            <option value="stats.view">Quien ve estadísticas</option>
+            <option value="content.manage">Quien gestiona contenido</option>
+            <option value="system.config">Solo configuración (superadmin)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-acts">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('fileModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="fileSubmitBtn">Subir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal" id="previewModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title" id="previewTitle">Vista previa</span>
+      <button class="modal-close" onclick="closeModal('previewModal')" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div id="previewBody"></div>
+  </div>
+</div>
+
+<!-- input oculto para adjuntar archivos a una tarea -->
+<input type="file" id="taskAttachInput" hidden
+  accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.md,.svg">
+
 <!-- TASK DETAIL PANEL -->
 <div class="detail-overlay" id="detailOverlay" onclick="onDetailOverlayClick(event)">
   <div class="detail-panel" id="detailPanel"></div>
@@ -1171,15 +1432,108 @@ const NOTE_TYPES = [
 ]
 const CAT_ICON = {feature:'🧩',bug:'🐛',content:'📚',ops:'⚙️',general:'📌'}
 const VIEW_CFG = {
-  myday:     {title:'Mi Día',      sub:'Qué hacer hoy, sin buscar',        action:'Nueva Tarea'},
-  tasks:     {title:'Tareas',      sub:'Tablero Kanban',                   action:'Nueva Tarea'},
-  calendar:  {title:'Calendario',  sub:'Fechas límite del equipo',         action:'Nueva Tarea'},
-  ideas:     {title:'Ideas',       sub:'Lluvia de ideas del proyecto',     action:'Nueva Idea'},
-  resources: {title:'Recursos',    sub:'Documentos y enlaces del equipo',  action:null}, // se ajusta por permiso
-  notes:     {title:'Notas',       sub:'Notas internas del equipo',        action:'Nueva Nota'},
-  activity:  {title:'Actividad',   sub:'Historial en tiempo real',         action:null},
-  roadmap:   {title:'Roadmap',     sub:'Planificación del proyecto',       action:'Nueva Tarea'},
+  myday:     {title:'Mi Día',        sub:'Qué hacer hoy, sin buscar',            action:'Nueva Tarea'},
+  comms:     {title:'Comunicación',  sub:'Anuncios, decisiones y votaciones',    action:null},
+  tasks:     {title:'Tareas',        sub:'Tablero Kanban',                       action:'Nueva Tarea'},
+  calendar:  {title:'Calendario',    sub:'Fechas límite del equipo',             action:'Nueva Tarea'},
+  ideas:     {title:'Ideas',         sub:'Lluvia de ideas del proyecto',         action:'Nueva Idea'},
+  resources: {title:'Recursos',      sub:'Archivos, documentos y enlaces',       action:null}, // se ajusta por permiso
+  wiki:      {title:'Wiki',          sub:'Conocimiento y procesos del equipo',   action:'Nueva Página'},
+  notes:     {title:'Notas',         sub:'Notas internas del equipo',            action:'Nueva Nota'},
+  guide:     {title:'¿Qué puedo hacer?', sub:'Guía de trabajo por disciplina',   action:null},
+  activity:  {title:'Actividad',     sub:'Historial completo y auditable',       action:null},
+  roadmap:   {title:'Roadmap',       sub:'Planificación del proyecto',           action:'Nueva Tarea'},
 }
+
+// ─── Comunicación / Wiki: estado ───
+let posts = [], postReplies = {}, openReplies = {}
+let wikiPages = [], wikiSel = null, wikiEditing = false, wikiQ = ''
+let guideTab = null
+let resQ = ''
+
+// ─── Menciones @usuario ───
+// Se parsean contra la lista de admins; cada mención inserta una notificación
+// vía la RPC ws_notify (SECURITY DEFINER) que además dispara el correo del
+// pipeline existente. Sin servidores nuevos, sin WhatsApp.
+function escRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
+function findMentions(text){
+  const lower = (text || '').toLowerCase()
+  return admins.filter(a => {
+    const full = '@' + a.name.toLowerCase()
+    const first = '@' + a.name.split(' ')[0].toLowerCase()
+    return lower.includes(full) || lower.includes(first)
+  }).filter(a => a.id !== profile.id)
+}
+async function notifyMentions(text, title, entityType, entityId){
+  for (const a of findMentions(text)) {
+    try {
+      await sb.rpc('ws_notify', {
+        p_recipient: a.id, p_title: title,
+        p_body: (text || '').slice(0, 200), p_type: 'mention',
+        p_entity_type: entityType || null, p_entity_id: entityId || null
+      })
+    } catch (_) {}
+  }
+}
+// Resalta @menciones dentro de texto YA escapado
+function highlightMentions(escaped){
+  let out = escaped
+  for (const a of admins) {
+    const first = a.name.split(' ')[0]
+    const rx = new RegExp('@(' + escRegExp(esc(a.name)) + '|' + escRegExp(esc(first)) + ')', 'gi')
+    out = out.replace(rx, '<span class="mention">@$1</span>')
+  }
+  return out
+}
+
+// ─── ¿QUÉ PUEDO HACER? — guía por disciplina ───
+// Curada de prácticas reales de equipos de producto y startups (weekly review,
+// triage, auditorías de contenido, análisis de competencia, QA visual).
+// Visible para todo el equipo; el rol solo define la pestaña sugerida.
+const GUIDE_SECTIONS = [
+  { id:'operacion', label:'Operación', roles:['superadmin','admin'], intro:'Mantener el negocio sano: métricas, pagos y foco semanal.', items:[
+    { t:'<strong>Weekly review</strong>: revisar qué se cerró, qué se atrasó y elegir 3 prioridades de la semana', cat:'ops' },
+    { t:'<strong>Métricas de producto</strong>: usuarios nuevos, activación, uso por sección y retención', cat:'ops' },
+    { t:'<strong>Search Console</strong>: queries que crecen, páginas que pierden clics, contenido faltante', cat:'ops' },
+    { t:'<strong>Pagos y vencimientos</strong>: activaciones pendientes y planes que vencen en 7 días', cat:'ops' },
+    { t:'<strong>Roadmap</strong>: revisar que el tablero refleje la realidad; archivar lo obsoleto', cat:'general' },
+    { t:'<strong>Auditoría de accesos</strong> (mensual): roles del equipo al mínimo privilegio', cat:'ops' },
+  ]},
+  { id:'marketing', label:'Marketing', roles:['editor'], intro:'Atraer estudiantes nuevos sin gastar de más.', items:[
+    { t:'<strong>Preparar publicaciones</strong> de la semana para redes (3 mínimo) y programarlas', cat:'content' },
+    { t:'<strong>Analizar 1 competidor</strong>: qué publica, qué le funciona, qué hueco deja', cat:'content' },
+    { t:'<strong>Revisar métricas</strong> de las últimas publicaciones y duplicar lo que funcionó', cat:'content' },
+    { t:'<strong>Investigar tendencias</strong> de estudio/universidad en LATAM para contenido oportuno', cat:'content' },
+    { t:'<strong>Buscar alianzas</strong>: grupos de estudiantes, profesores, comunidades académicas', cat:'content' },
+    { t:'<strong>Actualizar campañas</strong>: revisar textos de la landing contra objeciones reales de usuarios', cat:'content' },
+  ]},
+  { id:'contenido', label:'Contenido', roles:['editor'], intro:'La calidad académica es el producto.', items:[
+    { t:'<strong>Auditar un resumen</strong>: exactitud científica, markup pedagógico y paridad ES/EN', cat:'content' },
+    { t:'<strong>Revisar simulacros</strong>: preguntas reportadas como confusas o con errores', cat:'content' },
+    { t:'<strong>Ampliar banco de preguntas</strong> del parcial activo del semestre', cat:'content' },
+    { t:'<strong>Organizar recursos</strong>: subir materiales nuevos a Recursos con buena descripción', cat:'content' },
+    { t:'<strong>Actualizar la Wiki</strong>: procesos que cambiaron, FAQ nuevas de soporte', cat:'general' },
+  ]},
+  { id:'diseno', label:'Diseño', roles:['editor'], intro:'Consistencia visual = confianza.', items:[
+    { t:'<strong>QA visual</strong> de una sección en desktop y móvil (spacing, contraste, estados)', cat:'content' },
+    { t:'<strong>Revisar accesibilidad</strong>: foco de teclado, alt text, contraste 4.5:1', cat:'content' },
+    { t:'<strong>Crear banners</strong> para campañas o anuncios internos de la app', cat:'content' },
+    { t:'<strong>Revisar consistencia de marca</strong>: verde de acción, tipografías, tono de textos', cat:'content' },
+  ]},
+  { id:'comunidad', label:'Comunidad', roles:['moderator'], intro:'Estudiantes escuchados = estudiantes que se quedan.', items:[
+    { t:'<strong>Triage de feedback</strong>: clasificar lo nuevo (bug / sugerencia / testimonio)', cat:'ops' },
+    { t:'<strong>Moderar testimonios</strong>: aprobar públicos los que representan bien la marca', cat:'ops' },
+    { t:'<strong>Revisar misiones y eventos</strong>: participación, expirar viejos, proponer nuevos', cat:'ops' },
+    { t:'<strong>Detectar patrones</strong>: bugs o quejas repetidas → una sola tarea bien documentada', cat:'bug' },
+  ]},
+  { id:'soporte', label:'Soporte', roles:['support'], intro:'Respuesta rápida = reputación.', items:[
+    { t:'<strong>Inbox cero</strong>: responder correos de soporte con menos de 24 h', cat:'ops' },
+    { t:'<strong>Activaciones pendientes</strong>: usuarios que pagaron y no ven su plan', cat:'ops' },
+    { t:'<strong>Problemas de acceso</strong>: contraseñas, correos sin verificar, sesiones', cat:'ops' },
+    { t:'<strong>Alimentar la Wiki</strong>: cada pregunta repetida se vuelve entrada del FAQ', cat:'general' },
+    { t:'<strong>Escalar bugs</strong> con pasos para reproducir, capturas y usuario afectado', cat:'bug' },
+  ]},
+]
 
 // ─── AUTH ───
 async function init() {
@@ -1204,7 +1558,7 @@ async function init() {
     if (!access.admin_role && p.admin_role) access.admin_role = p.admin_role
     document.getElementById('sbRole').textContent = ROLE_LABELS[access.admin_role] || 'Admin ✦'
 
-    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins(), loadIdeas(), loadResources(), loadCommentCounts()])
+    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins(), loadIdeas(), loadResources(), loadCommentCounts(), loadPosts(), loadWiki()])
     initNav()
     populateAssigneeSelect()
     renderView('myday')
@@ -1277,6 +1631,39 @@ async function loadResources() {
 }
 function updateUrgBadge() {
   setBadge(tasks.filter(t => t.status==='urgent' || t.status==='blocked' || isOverdue(t)).length)
+}
+async function loadPosts() {
+  try {
+    const { data, error } = await sb.from('workspace_posts').select('*')
+      .order('pinned', {ascending:false}).order('created_at', {ascending:false}).limit(40)
+    posts = error ? [] : (data || [])
+    if (posts.length) {
+      const ids = posts.map(p => p.id)
+      const { data: reps } = await sb.from('workspace_post_replies').select('*')
+        .in('post_id', ids).order('created_at')
+      postReplies = {}
+      for (const r of (reps || [])) (postReplies[r.post_id] = postReplies[r.post_id] || []).push(r)
+    } else postReplies = {}
+  } catch (_) { posts = []; postReplies = {} }
+  updateCommsBadge()
+}
+async function loadWiki() {
+  try {
+    const { data, error } = await sb.from('workspace_wiki_pages').select('*')
+      .order('pinned', {ascending:false}).order('title')
+    wikiPages = error ? [] : (data || [])
+  } catch (_) { wikiPages = [] }
+}
+// Badge de Comunicación: publicaciones nuevas desde la última visita
+function updateCommsBadge() {
+  const seen = localStorage.getItem('ws_comms_seen') || ''
+  const n = posts.filter(p => p.created_at > seen && p.author_id !== profile?.id).length
+  const b = document.getElementById('commsBadge')
+  if (b) { b.hidden = n === 0; b.textContent = n > 9 ? '9+' : String(n) }
+}
+function markCommsSeen() {
+  try { localStorage.setItem('ws_comms_seen', new Date().toISOString()) } catch (_) {}
+  updateCommsBadge()
 }
 
 // ─── Automatización: helpers de fechas y orden inteligente ───
@@ -1401,9 +1788,10 @@ function renderView(name) {
   const cfg = VIEW_CFG[name] || {}
   document.getElementById('vTitle').textContent = cfg.title || name
   document.getElementById('vSub').textContent = cfg.sub || ''
-  // Acción primaria por vista; "Nuevo Recurso" solo con permiso de contenido
+  // Acción primaria por vista. En Recursos todo el staff puede subir archivos
+  // (la RLS lo respalda); los enlaces curados siguen bajo content.manage.
   let action = cfg.action
-  if (name === 'resources') action = can('content.manage') ? 'Nuevo Recurso' : null
+  if (name === 'resources') action = 'Subir Archivo'
   const mb = document.getElementById('mainBtn')
   mb.hidden = !action
   if (action) document.getElementById('mainBtnLbl').textContent = action
@@ -1413,10 +1801,13 @@ function renderView(name) {
 
 function renderCurrent() {
   if (currentView === 'myday') renderMyDay()
+  else if (currentView === 'comms') { renderComms(); markCommsSeen() }
   else if (currentView === 'tasks') renderKanban()
   else if (currentView === 'calendar') renderCalendar()
   else if (currentView === 'ideas') renderIdeas()
   else if (currentView === 'resources') renderResources()
+  else if (currentView === 'wiki') renderWiki()
+  else if (currentView === 'guide') renderGuide()
   else if (currentView === 'notes') renderNotes()
   else if (currentView === 'activity') renderActivity()
   else if (currentView === 'roadmap') renderRoadmap()
@@ -1506,8 +1897,16 @@ function renderMyDay() {
     <div class="md-chip"><strong>${pool.filter(t=>t.status==='in_progress').length}</strong> en progreso</div>
     <div class="md-chip ok"><strong>${doneHoy.length}</strong> hechas hoy</div>`
 
-  // Columna principal: atrasadas → hoy → siguiente en cola
+  // Columna principal: anuncio vigente → atrasadas → hoy → siguiente en cola
   let main = ''
+  const ann = posts.find(p => p.type === 'anuncio' &&
+    (p.pinned || (Date.now() - new Date(p.created_at)) < 7 * 86400000))
+  if (ann) main += `
+    <div class="md-banner" onclick="renderView('comms')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter')renderView('comms')">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
+      <span class="b-txt"><strong>Anuncio:</strong> ${esc(ann.title)} — ${esc(ann.author_name)}</span>
+    </div>`
   if (atras.length) main += mdSection('Atrasadas — resolver primero', I.alert, atras.map(mdTaskRow).join(''), '', atras.length)
   main += mdSection('Para hoy', I.sun, hoy.map(mdTaskRow).join(''), 'Nada vence hoy. Respirá y tomá algo de la cola.', hoy.length)
   main += mdSection('Siguiente en la cola', I.queue, cola.map(mdTaskRow).join(''),
@@ -1540,6 +1939,21 @@ function renderMyDay() {
       <div class="md-sec">
         <div class="md-sec-hd">${I.pulse}<h3>Actividad reciente</h3></div>
         <div class="act-feed">${activity.slice(0,5).map(actHtml).join('') || '<div class="md-empty">Sin actividad aún</div>'}</div>
+      </div>`
+  }
+  // Comunicación reciente (todos los roles)
+  const recentPosts = posts.slice(0, 3)
+  if (recentPosts.length) {
+    side += `
+      <div class="md-sec">
+        <div class="md-sec-hd">${I.pulse}<h3>Comunicación reciente</h3></div>
+        ${recentPosts.map(p => `
+          <div class="md-task" onclick="renderView('comms')" role="button" tabindex="0"
+               onkeydown="if(event.key==='Enter')renderView('comms')">
+            <span class="t-dot" style="background:${p.type==='anuncio'?'var(--yellow)':p.type==='encuesta'?'var(--purple)':'var(--blue)'}"></span>
+            <span class="t-title">${esc(p.title)}</span>
+            <span class="t-when">${esc((p.author_name||'').split(' ')[0])}</span>
+          </div>`).join('')}
       </div>`
   }
   if (pb) {
@@ -1657,7 +2071,7 @@ function renderCalendar() {
         </div>`
     }
     body.innerHTML = `<div class="cal-week">${cols}</div>`
-  } else {
+  } else if (calView === 'day') {
     const iso = dstr(calCursor)
     titleEl.textContent = calCursor.toLocaleDateString('es-CR', { weekday:'long', day:'numeric', month:'long', year:'numeric' })
     const evs = byDate[iso] || []
@@ -1666,6 +2080,33 @@ function renderCalendar() {
         ${evs.length
           ? evs.map(t => mdTaskRow(t)).join('')
           : `<div class="empty"><p>Nada vence este día.</p></div>`}
+        <button class="attach-btn" style="margin-top:.7rem" onclick="openNewTask('todo','${iso}')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round"/></svg>
+          Nueva tarea para este día
+        </button>
+      </div>`
+  } else {
+    // Agenda: los próximos 14 días con tareas, agrupados por día
+    titleEl.textContent = 'Próximos 14 días'
+    const days = []
+    for (let i = 0; i < 14; i++) {
+      const d = new Date(); d.setDate(d.getDate() + i)
+      const iso = dstr(d)
+      if (byDate[iso]?.length) days.push([d, iso, byDate[iso]])
+    }
+    const overdue = sortByScore(list.filter(isOverdue))
+    body.innerHTML = `
+      <div class="cal-day-list">
+        ${overdue.length ? `
+          <div class="md-sec">
+            <div class="md-sec-hd">${I.alert}<h3>Atrasadas</h3><span class="sec-cnt">${overdue.length}</span></div>
+            ${overdue.map(mdTaskRow).join('')}
+          </div>` : ''}
+        ${days.map(([d, iso, evs]) => `
+          <div class="md-sec">
+            <div class="md-sec-hd">${I.cal}<h3 style="text-transform:capitalize">${d.toLocaleDateString('es-CR', { weekday:'long', day:'numeric', month:'long' })}${iso === today ? ' · hoy' : ''}</h3><span class="sec-cnt">${evs.length}</span></div>
+            ${evs.map(mdTaskRow).join('')}
+          </div>`).join('') || '<div class="empty"><p>Nada agendado en los próximos 14 días.</p></div>'}
       </div>`
   }
 
@@ -1837,10 +2278,33 @@ function noteCardHtml(n) {
     </div>`
 }
 
-// ─── ACTIVITY ───
+// ─── ACTIVITY (historial completo con filtros para auditoría) ───
+let af = { actor: '', type: '' }
+const ACT_TYPE_LBL = { task:'Tareas', note:'Notas', idea:'Ideas', resource:'Recursos', post:'Comunicación', wiki:'Wiki' }
 function renderActivity() {
-  document.getElementById('actFeed').innerHTML = activity.map(a => actHtml(a)).join('')
-    || `<div class="empty"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Sin actividad todavía</p></div>`
+  const feedEl = document.getElementById('actFeed')
+  const actors = [...new Set(activity.map(a => a.actor_name).filter(Boolean))].sort()
+  const types = [...new Set(activity.map(a => a.entity_type).filter(Boolean))]
+  let bar = document.getElementById('actFilters')
+  if (!bar) {
+    bar = document.createElement('div')
+    bar.className = 'act-filters'; bar.id = 'actFilters'
+    feedEl.parentNode.insertBefore(bar, feedEl)
+  }
+  bar.innerHTML = `
+    <select onchange="af.actor=this.value;renderActivity()" aria-label="Filtrar por persona">
+      <option value="">Todo el equipo</option>
+      ${actors.map(n => `<option value="${esc(n)}" ${af.actor===n?'selected':''}>${esc(n)}</option>`).join('')}
+    </select>
+    <select onchange="af.type=this.value;renderActivity()" aria-label="Filtrar por tipo">
+      <option value="">Todo tipo</option>
+      ${types.map(t => `<option value="${t}" ${af.type===t?'selected':''}>${ACT_TYPE_LBL[t]||t}</option>`).join('')}
+    </select>
+    ${af.actor || af.type ? '<button class="filters-clear" onclick="af={actor:\'\',type:\'\'};renderActivity()">Limpiar ✕</button>' : ''}`
+  const list = activity.filter(a =>
+    (!af.actor || a.actor_name === af.actor) && (!af.type || a.entity_type === af.type))
+  feedEl.innerHTML = list.map(a => actHtml(a)).join('')
+    || `<div class="empty"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke-linecap="round" stroke-linejoin="round"/></svg><p>Sin actividad con esos filtros</p></div>`
 }
 
 function actHtml(a) {
@@ -2021,6 +2485,192 @@ async function deleteNote(id) {
   await loadNotes(); renderNotes()
 }
 
+// ─── CENTRO DE COMUNICACIONES ───
+// Anuncios, actualizaciones y votaciones con respuestas y @menciones.
+// El objetivo: que la coordinación del equipo viva acá y no en WhatsApp.
+const POST_TYPE_LBL = { anuncio:'Anuncio', actualizacion:'Actualización', encuesta:'Votación' }
+
+function renderComms() {
+  const feed = document.getElementById('commsFeed')
+  if (!feed) return
+  feed.innerHTML = posts.map(p => postCardHtml(p)).join('') || `
+    <div class="empty">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
+      <p>Todavía no hay publicaciones. Escribí la primera actualización para el equipo.</p>
+    </div>`
+}
+
+function postCardHtml(p) {
+  const init = (p.author_name || 'A').charAt(0).toUpperCase()
+  const reps = postReplies[p.id] || []
+  const isOpen = !!openReplies[p.id]
+  const canDel = p.author_id === profile.id || can('roles.manage')
+  const body = p.body ? `<div class="post-body">${highlightMentions(esc(p.body))}</div>` : ''
+
+  // Encuesta: opciones o resultados
+  let pollHtml = ''
+  if (p.type === 'encuesta' && Array.isArray(p.options)) {
+    const votes = p.votes || {}
+    const myVote = votes[profile.id]
+    const total = Object.keys(votes).length
+    const counts = {}
+    for (const v of Object.values(votes)) counts[v] = (counts[v] || 0) + 1
+    const max = Math.max(0, ...Object.values(counts))
+    if (p.closed || myVote) {
+      pollHtml = p.options.map(o => {
+        const c = counts[o.id] || 0
+        const pct = total ? Math.round(c / total * 100) : 0
+        return `
+          <div class="poll-res ${c === max && c > 0 ? 'win' : ''}">
+            <div class="bar" style="transform:scaleX(${pct / 100})"></div>
+            <div class="lbl"><span>${esc(o.label)}${myVote === o.id ? ' · <strong>tu voto</strong>' : ''}</span>
+              <span class="pct">${c} · ${pct}%</span></div>
+          </div>`
+      }).join('') + `<div class="poll-meta">${total} voto(s)${p.closed ? ' · votación cerrada' : (myVote ? ' · podés cambiar tu voto tocando otra opción' : '')}</div>`
+      if (!p.closed && myVote) {
+        pollHtml += p.options.map(o => o.id === myVote ? '' :
+          `<button class="post-link-btn" onclick="votePoll('${p.id}','${o.id}')">Cambiar a: ${esc(o.label)}</button>`).join('')
+      }
+    } else {
+      pollHtml = p.options.map(o =>
+        `<button class="poll-opt" onclick="votePoll('${p.id}','${o.id}')">${esc(o.label)}</button>`).join('') +
+        `<div class="poll-meta">${total} voto(s) hasta ahora — tu voto queda registrado con tu nombre</div>`
+    }
+  }
+
+  return `
+    <div class="post-card ${p.pinned ? 'pinned' : ''} fu">
+      <div class="post-hd">
+        <div class="act-av">${init}</div>
+        <div class="post-who"><strong>${esc(p.author_name)}</strong><time>${timeAgo(p.created_at)}</time></div>
+        ${p.pinned ? '<span class="post-type" style="background:var(--yellow-s);color:var(--yellow)">📌 Fijado</span>' : ''}
+        <span class="post-type pt-${p.type}">${POST_TYPE_LBL[p.type] || p.type}</span>
+      </div>
+      <div class="post-title">${esc(p.title)}</div>
+      ${body}
+      ${pollHtml}
+      <div class="post-acts">
+        <button class="post-link-btn" onclick="toggleReplies('${p.id}')">${isOpen ? 'Ocultar' : 'Responder'} ${reps.length ? `(${reps.length})` : ''}</button>
+        <span class="spacer"></span>
+        ${p.type === 'encuesta' && !p.closed && (p.author_id === profile.id || can('roles.manage'))
+          ? `<button class="post-link-btn" onclick="closePoll('${p.id}')">Cerrar votación</button>` : ''}
+        ${can('content.manage') ? `<button class="post-link-btn" onclick="togglePinPost('${p.id}', ${!p.pinned})">${p.pinned ? 'Desfijar' : 'Fijar'}</button>` : ''}
+        ${canDel ? `<button class="post-link-btn" onclick="deletePost('${p.id}')">Eliminar</button>` : ''}
+      </div>
+      ${isOpen ? `
+        <div class="replies">
+          ${reps.map(r => `
+            <div class="cmt">
+              <div class="act-av">${esc((r.author_name || 'A').charAt(0).toUpperCase())}</div>
+              <div class="cmt-body">
+                <div class="cmt-meta"><strong>${esc(r.author_name)}</strong><time>${timeAgo(r.created_at)}</time>
+                  ${r.author_id === profile.id || can('roles.manage') ? `<button class="cmt-del" onclick="deleteReply('${r.id}','${p.id}')">Eliminar</button>` : ''}
+                </div>
+                <div class="cmt-txt">${highlightMentions(esc(r.body))}</div>
+              </div>
+            </div>`).join('') || '<div class="md-empty">Sin respuestas aún.</div>'}
+          <div class="cmt-form">
+            <input id="reply-${p.id}" placeholder="Respondé… (@Nombre para mencionar)" maxlength="800"
+              onkeydown="if(event.key==='Enter')addReply('${p.id}')" aria-label="Responder publicación">
+            <button class="btn btn-primary btn-sm" onclick="addReply('${p.id}')">Enviar</button>
+          </div>
+        </div>` : ''}
+    </div>`
+}
+
+async function submitPost() {
+  const bodyEl = document.getElementById('postBody')
+  const typeEl = document.getElementById('postType')
+  const raw = (bodyEl.value || '').trim()
+  if (!raw) return toast('Escribí algo primero', true)
+  const type = typeEl.value
+  // Primera línea = título; el resto = cuerpo
+  const nl = raw.indexOf('\n')
+  const title = (nl === -1 ? raw : raw.slice(0, nl)).slice(0, 140)
+  const body = nl === -1 ? null : raw.slice(nl + 1).trim() || null
+
+  let options = null
+  if (type === 'encuesta') {
+    const lines = (document.getElementById('pollOpts').value || '').split('\n').map(s => s.trim()).filter(Boolean)
+    if (lines.length < 2) return toast('Una votación necesita al menos 2 opciones', true)
+    options = lines.slice(0, 6).map((label, i) => ({ id: 'o' + (i + 1), label: label.slice(0, 120) }))
+  }
+
+  const { data: created, error } = await sb.from('workspace_posts').insert({
+    author_id: profile.id, author_name: profile.name,
+    type, title, body, options, updated_at: new Date().toISOString()
+  }).select('id').single()
+  if (error) return toast('Error: ' + error.message, true)
+
+  bodyEl.value = ''
+  document.getElementById('pollOpts').value = ''
+  const lbl = { anuncio: 'publicó un anuncio', actualizacion: 'compartió una actualización', encuesta: 'abrió una votación' }
+  await log(lbl[type], 'post', title, created?.id)
+  await notifyMentions(raw, `${profile.name} te mencionó en Comunicación: "${title}"`, 'post', created?.id)
+  toast('Publicado ✓')
+  await loadPosts(); renderComms(); markCommsSeen()
+}
+
+function toggleReplies(id) { openReplies[id] = !openReplies[id]; renderComms() }
+
+async function addReply(postId) {
+  const input = document.getElementById('reply-' + postId)
+  const body = (input?.value || '').trim()
+  if (!body) return
+  const p = posts.find(x => x.id === postId)
+  const { error } = await sb.from('workspace_post_replies').insert({
+    post_id: postId, author_id: profile.id, author_name: profile.name, body
+  })
+  if (error) return toast('Error: ' + error.message, true)
+  await notifyMentions(body, `${profile.name} te mencionó en: "${p?.title || 'una publicación'}"`, 'post', postId)
+  // Notificar también a quien publicó (si no soy yo y no quedó ya mencionado)
+  if (p && p.author_id && p.author_id !== profile.id && !findMentions(body).some(a => a.id === p.author_id)) {
+    try { await sb.rpc('ws_notify', { p_recipient: p.author_id, p_title: `${profile.name} respondió a "${p.title}"`, p_body: body.slice(0, 200), p_type: 'reply', p_entity_type: 'post', p_entity_id: postId }) } catch (_) {}
+  }
+  await loadPosts(); openReplies[postId] = true; renderComms()
+}
+
+async function deleteReply(id, postId) {
+  await sb.from('workspace_post_replies').delete().eq('id', id)
+  await loadPosts(); openReplies[postId] = true; renderComms()
+}
+
+async function votePoll(postId, optionId) {
+  const p = posts.find(x => x.id === postId)
+  if (!p || p.closed) return
+  const votes = { ...(p.votes || {}) }
+  votes[profile.id] = optionId
+  const { error } = await sb.from('workspace_posts').update({ votes, updated_at: new Date().toISOString() }).eq('id', postId)
+  if (error) return toast('Error: ' + error.message, true)
+  p.votes = votes
+  await log('votó en', 'post', p.title, postId)
+  renderComms()
+}
+
+async function closePoll(postId) {
+  const p = posts.find(x => x.id === postId)
+  if (!p) return
+  if (!confirm(`¿Cerrar la votación "${p.title}"? El resultado queda registrado.`)) return
+  const { error } = await sb.from('workspace_posts').update({ closed: true, updated_at: new Date().toISOString() }).eq('id', postId)
+  if (error) return toast('Error: ' + error.message, true)
+  p.closed = true
+  await log('cerró la votación', 'post', p.title, postId)
+  renderComms()
+}
+
+async function togglePinPost(postId, pinned) {
+  await sb.from('workspace_posts').update({ pinned }).eq('id', postId)
+  await loadPosts(); renderComms()
+}
+
+async function deletePost(postId) {
+  const p = posts.find(x => x.id === postId)
+  if (!confirm(`¿Eliminar "${p?.title}"? Se borran también sus respuestas.`)) return
+  await sb.from('workspace_posts').delete().eq('id', postId)
+  await log('eliminó una publicación', 'post', p?.title, postId)
+  await loadPosts(); renderComms()
+}
+
 // ─── IDEAS ───
 const IDEA_CATS = [
   ['all','Todas'], ['marketing','Marketing'], ['social','Redes'], ['diseno','Diseño'],
@@ -2147,38 +2797,134 @@ const RES_ICON = {
   drive:'<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>',
   brand:'<svg viewBox="0 0 24 24"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.68-.75 1.68-1.68 0-.44-.16-.84-.44-1.14-.28-.3-.44-.7-.44-1.14A1.68 1.68 0 0114.48 16H16a6 6 0 006-6c0-4.42-4.5-8-10-8z"/></svg>',
 }
+function fmtSize(b) {
+  if (!b) return ''
+  if (b < 1024) return b + ' B'
+  if (b < 1048576) return (b / 1024).toFixed(0) + ' KB'
+  return (b / 1048576).toFixed(1) + ' MB'
+}
+function resCardHtml(r) {
+  const isFile = r.kind === 'file'
+  const canEdit = can('content.manage') || r.created_by === profile.id
+  const meta = isFile
+    ? `<div class="res-meta"><span>${esc(r.created_by_name || 'Equipo')}</span><span>${new Date(r.created_at).toLocaleDateString('es-CR')}</span><span>${fmtSize(r.size_bytes)}</span></div>`
+    : ''
+  const previewable = isFile && r.mime && (/^image\//.test(r.mime) || r.mime === 'application/pdf')
+  const open = isFile
+    ? `<div class="res-btns">
+        ${previewable ? `<button class="res-btn" onclick="previewFile('${r.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Ver</button>` : ''}
+        <button class="res-btn" onclick="downloadFile('${r.id}')"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10" stroke-linecap="round" stroke-linejoin="round"/><line x1="12" y1="15" x2="12" y2="3" stroke-linecap="round"/></svg>Descargar</button>
+      </div>`
+    : `<a class="res-open" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
+        Abrir <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round"/></svg></a>`
+  return `
+    <div class="res-card">
+      ${canEdit ? `
+        <div class="res-acts">
+          ${isFile ? '' : `<button class="note-act-btn" title="Editar" onclick="openEditResource('${r.id}')" aria-label="Editar recurso">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </button>`}
+          <button class="note-act-btn" title="Eliminar" onclick="deleteResource('${r.id}')" aria-label="Eliminar recurso">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          </button>
+        </div>` : ''}
+      <div class="res-icn">${RES_ICON[r.category] || RES_ICON.link}</div>
+      <div class="res-title">${r.pinned ? '📌 ' : ''}${esc(r.title)}</div>
+      ${r.description ? `<div class="res-desc">${esc(r.description)}</div>` : ''}
+      ${meta}
+      ${open}
+    </div>`
+}
 function renderResources() {
   const canManage = can('content.manage')
+  const tb = document.getElementById('resToolbar')
+  if (tb && tb.querySelector('input[type=search]') !== document.activeElement) {
+    tb.innerHTML = `
+      <input type="search" placeholder="Buscar recursos y archivos…" value="${esc(resQ)}" aria-label="Buscar recursos"
+        oninput="resQ=this.value;renderResourcesGridOnly()">
+      ${canManage ? `<button class="btn btn-ghost btn-sm" onclick="openNewResource()">+ Nuevo enlace</button>` : ''}`
+  }
+  renderResourcesGridOnly()
+}
+function renderResourcesGridOnly() {
+  const canManage = can('content.manage')
+  const q = resQ.toLowerCase()
+  const list = q ? resources.filter(r => (r.title + ' ' + (r.description || '')).toLowerCase().includes(q)) : resources
   const bySec = {}
-  for (const r of resources) (bySec[r.category] = bySec[r.category] || []).push(r)
+  for (const r of list) (bySec[r.category] = bySec[r.category] || []).push(r)
   document.getElementById('resContent').innerHTML = RES_CATS
     .filter(([k]) => bySec[k]?.length)
     .map(([k, label]) => `
       <div class="res-sec">
         <div class="sec-head"><h3>${label}</h3><span class="sec-cnt">${bySec[k].length}</span></div>
-        <div class="res-grid">
-          ${bySec[k].map(r => `
-            <div class="res-card">
-              ${canManage ? `
-                <div class="res-acts">
-                  <button class="note-act-btn" title="Editar" onclick="openEditResource('${r.id}')" aria-label="Editar recurso">
-                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                  </button>
-                  <button class="note-act-btn" title="Eliminar" onclick="deleteResource('${r.id}')" aria-label="Eliminar recurso">
-                    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                  </button>
-                </div>` : ''}
-              <div class="res-icn">${RES_ICON[r.category]||RES_ICON.link}</div>
-              <div class="res-title">${r.pinned ? '📌 ' : ''}${esc(r.title)}</div>
-              ${r.description ? `<div class="res-desc">${esc(r.description)}</div>` : ''}
-              <a class="res-open" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">
-                Abrir <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round"/></svg>
-              </a>
-            </div>`).join('')}
-        </div>
+        <div class="res-grid">${bySec[k].map(resCardHtml).join('')}</div>
       </div>`).join('') || `<div class="empty">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-        <p>Sin recursos todavía.${canManage ? ' Usá "Nuevo Recurso" para agregar documentos y enlaces del equipo.' : ' Quien gestiona contenido puede agregarlos.'}</p></div>`
+        <p>${q ? 'Nada coincide con la búsqueda.' : 'Sin recursos todavía. Subí el primer archivo del equipo con "Subir Archivo".'}</p></div>`
+}
+
+// ─── ARCHIVOS (Supabase Storage, bucket privado workspace-files) ───
+async function submitFile(e) {
+  e.preventDefault()
+  const f = e.target
+  const file = f.file.files[0]
+  if (!file) return toast('Elegí un archivo', true)
+  if (file.size > 25 * 1048576) return toast('El archivo supera los 25 MB', true)
+  const btn = document.getElementById('fileSubmitBtn')
+  btn.disabled = true; btn.textContent = 'Subiendo…'
+  try {
+    const safe = file.name.replace(/[^\w.\-áéíóúñÁÉÍÓÚÑ ]/g, '_')
+    const path = `${profile.id}/${Date.now()}_${safe}`
+    const { error: upErr } = await sb.storage.from('workspace-files')
+      .upload(path, file, { contentType: file.type || 'application/octet-stream' })
+    if (upErr) throw upErr
+    const title = f.title.value.trim() || file.name
+    const { error: insErr } = await sb.from('workspace_resources').insert({
+      title, description: f.description.value.trim() || null,
+      category: f.category.value, perm: f.perm.value || null,
+      kind: 'file', storage_path: path,
+      mime: file.type || 'application/octet-stream', size_bytes: file.size,
+      created_by: profile.id, created_by_name: profile.name,
+      updated_at: new Date().toISOString()
+    })
+    if (insErr) throw insErr
+    await log('subió un archivo', 'resource', title)
+    toast('Archivo subido ✓')
+    closeModal('fileModal'); f.reset()
+    await loadResources(); if (currentView === 'resources') renderResources()
+  } catch (err) {
+    toast('Error: ' + (err.message || err), true)
+  } finally {
+    btn.disabled = false; btn.textContent = 'Subir'
+  }
+}
+async function wsSignedUrl(path, download) {
+  const { data, error } = await sb.storage.from('workspace-files')
+    .createSignedUrl(path, 3600, download ? { download: true } : undefined)
+  if (error) { toast('Error: ' + error.message, true); return null }
+  return data?.signedUrl || null
+}
+async function downloadFile(id) {
+  const r = resources.find(x => x.id === id)
+  if (!r?.storage_path) return
+  const url = await wsSignedUrl(r.storage_path, true)
+  if (url) window.open(url, '_blank', 'noopener')
+}
+async function previewFile(id) {
+  const r = resources.find(x => x.id === id)
+  if (!r?.storage_path) return
+  const url = await wsSignedUrl(r.storage_path)
+  if (!url) return
+  document.getElementById('previewTitle').textContent = r.title
+  document.getElementById('previewBody').innerHTML = /^image\//.test(r.mime || '')
+    ? `<img src="${esc(url)}" alt="${esc(r.title)}">`
+    : `<iframe src="${esc(url)}" title="${esc(r.title)}"></iframe>`
+  openModal('previewModal')
+}
+// Abrir un adjunto de tarea (links con url "ws-file:<path>")
+async function openWsFile(path) {
+  const url = await wsSignedUrl(path)
+  if (url) window.open(url, '_blank', 'noopener')
 }
 async function submitResource(e) {
   e.preventDefault()
@@ -2236,6 +2982,195 @@ async function deleteResource(id) {
   await loadResources(); renderResources()
 }
 
+// ─── WIKI INTERNA ───
+const WIKI_CATS = [
+  ['procesos','Procesos'], ['producto','Producto'], ['marca','Marca'],
+  ['soporte','Soporte'], ['faq','FAQ'], ['general','General']
+]
+
+// Mini-markdown seguro: escapa primero, luego aplica formato.
+// Soporta: # ## ###, listas -, **negrita**, *cursiva*, `código`,
+// [texto](url) y autolinks https.
+function mdRender(src) {
+  const lines = esc(src || '').split('\n')
+  let html = '', inList = false
+  const inline = s => s
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>')
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false } }
+  for (const raw of lines) {
+    const l = raw.trimEnd()
+    if (/^### /.test(l)) { closeList(); html += `<h3>${inline(l.slice(4))}</h3>` }
+    else if (/^## /.test(l)) { closeList(); html += `<h2>${inline(l.slice(3))}</h2>` }
+    else if (/^# /.test(l)) { closeList(); html += `<h1>${inline(l.slice(2))}</h1>` }
+    else if (/^- /.test(l)) { if (!inList) { html += '<ul>'; inList = true }; html += `<li>${inline(l.slice(2))}</li>` }
+    else if (l === '') { closeList() }
+    else { closeList(); html += `<p>${inline(l)}</p>` }
+  }
+  closeList()
+  return html
+}
+
+function renderWiki() {
+  const nav = document.getElementById('wikiNav')
+  const main = document.getElementById('wikiMain')
+  if (!nav || !main) return
+  if (!wikiSel && wikiPages.length) wikiSel = (wikiPages.find(p => p.pinned) || wikiPages[0]).id
+
+  const q = wikiQ.toLowerCase()
+  const filtered = q ? wikiPages.filter(p => (p.title + ' ' + p.content).toLowerCase().includes(q)) : wikiPages
+  nav.innerHTML = `
+    <input type="search" placeholder="Buscar en la wiki…" value="${esc(wikiQ)}" aria-label="Buscar en la wiki"
+      oninput="wikiQ=this.value;renderWikiNavOnly()">` +
+    WIKI_CATS.filter(([k]) => filtered.some(p => p.category === k)).map(([k, label]) => `
+      <div class="wiki-cat">${label}</div>
+      ${filtered.filter(p => p.category === k).map(p => `
+        <button class="wiki-item ${p.id === wikiSel ? 'on' : ''}"
+          onclick="wikiSel='${p.id}';wikiEditing=false;renderWiki()">${p.pinned ? '📌 ' : ''}${esc(p.title)}</button>`).join('')}`
+    ).join('') || '<div class="md-empty">Nada coincide con la búsqueda.</div>'
+
+  const page = wikiPages.find(p => p.id === wikiSel)
+  if (!page) {
+    main.innerHTML = `<div class="wiki-page"><div class="empty"><p>Elegí una página o creá la primera con "Nueva Página".</p></div></div>`
+    return
+  }
+  if (wikiEditing) {
+    main.innerHTML = `
+      <div class="wiki-page wiki-editor">
+        <div class="fg"><label>Título</label><input id="wkTitle" value="${esc(page.title)}" maxlength="120"></div>
+        <div class="form-row">
+          <div class="fg"><label>Categoría</label>
+            <select id="wkCat">${WIKI_CATS.map(([k, l]) => `<option value="${k}" ${page.category === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+          </div>
+          <div class="fg"><label>Fijada</label>
+            <select id="wkPin"><option value="0" ${!page.pinned ? 'selected' : ''}>No</option><option value="1" ${page.pinned ? 'selected' : ''}>Sí</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>Contenido (Markdown: # títulos, - listas, **negrita**, [enlace](url))</label>
+          <textarea id="wkContent">${esc(page.content)}</textarea>
+        </div>
+        <div class="form-acts">
+          ${page.created_by === profile.id || can('roles.manage')
+            ? `<button class="btn btn-danger" onclick="wikiDelete('${page.id}')">Eliminar</button>` : ''}
+          <span style="flex:1"></span>
+          <button class="btn btn-ghost" onclick="wikiEditing=false;renderWiki()">Cancelar</button>
+          <button class="btn btn-primary" onclick="wikiSave('${page.id}')">Guardar</button>
+        </div>
+      </div>`
+  } else {
+    main.innerHTML = `
+      <div class="wiki-page">
+        <div class="wiki-page-hd">
+          <h2>${esc(page.title)}</h2>
+          <button class="btn btn-ghost btn-sm" onclick="wikiEditing=true;renderWiki()">Editar</button>
+        </div>
+        <div class="wiki-meta">Actualizada ${timeAgo(page.updated_at)}${page.updated_by_name ? ' por ' + esc(page.updated_by_name) : ''} · ${(WIKI_CATS.find(([k]) => k === page.category) || [])[1] || page.category}</div>
+        <div class="wiki-body">${mdRender(page.content)}</div>
+      </div>`
+  }
+}
+// Solo refresca el nav (para no perder el foco del buscador al escribir)
+function renderWikiNavOnly() {
+  const q = wikiQ.toLowerCase()
+  const filtered = q ? wikiPages.filter(p => (p.title + ' ' + p.content).toLowerCase().includes(q)) : wikiPages
+  const nav = document.getElementById('wikiNav')
+  const search = nav.querySelector('input[type=search]')
+  const rest = WIKI_CATS.filter(([k]) => filtered.some(p => p.category === k)).map(([k, label]) => `
+    <div class="wiki-cat">${label}</div>
+    ${filtered.filter(p => p.category === k).map(p => `
+      <button class="wiki-item ${p.id === wikiSel ? 'on' : ''}"
+        onclick="wikiSel='${p.id}';wikiEditing=false;renderWiki()">${p.pinned ? '📌 ' : ''}${esc(p.title)}</button>`).join('')}`
+  ).join('') || '<div class="md-empty">Nada coincide con la búsqueda.</div>'
+  nav.querySelectorAll(':scope > :not(input)').forEach(n => n.remove())
+  search.insertAdjacentHTML('afterend', rest)
+}
+async function wikiNew() {
+  const { data, error } = await sb.from('workspace_wiki_pages').insert({
+    title: 'Nueva página', category: 'general', content: '# Nueva página\n\nEscribí acá…',
+    created_by: profile.id, created_by_name: profile.name, updated_by_name: profile.name
+  }).select('id').single()
+  if (error) return toast('Error: ' + error.message, true)
+  await log('creó una página de wiki', 'wiki', 'Nueva página', data?.id)
+  await loadWiki()
+  wikiSel = data.id; wikiEditing = true
+  renderWiki()
+}
+async function wikiSave(id) {
+  const title = document.getElementById('wkTitle').value.trim() || 'Sin título'
+  const payload = {
+    title,
+    category: document.getElementById('wkCat').value,
+    pinned: document.getElementById('wkPin').value === '1',
+    content: document.getElementById('wkContent').value,
+    updated_by_name: profile.name,
+    updated_at: new Date().toISOString()
+  }
+  const { error } = await sb.from('workspace_wiki_pages').update(payload).eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  await log('actualizó la página de wiki', 'wiki', title, id)
+  toast('Página guardada ✓')
+  wikiEditing = false
+  await loadWiki(); renderWiki()
+}
+async function wikiDelete(id) {
+  const p = wikiPages.find(x => x.id === id)
+  if (!confirm(`¿Eliminar la página "${p?.title}"? Esta acción no se puede deshacer.`)) return
+  const { error } = await sb.from('workspace_wiki_pages').delete().eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  await log('eliminó la página de wiki', 'wiki', p?.title, id)
+  wikiSel = null; wikiEditing = false
+  await loadWiki(); renderWiki()
+}
+
+// ─── ¿QUÉ PUEDO HACER? ───
+function renderGuide() {
+  if (!guideTab) {
+    const suggested = GUIDE_SECTIONS.find(s => s.roles.includes(access.admin_role))
+    guideTab = suggested ? suggested.id : GUIDE_SECTIONS[0].id
+  }
+  document.getElementById('guideTabs').innerHTML = GUIDE_SECTIONS.map(s => `
+    <span class="fchip ${guideTab === s.id ? 'on' : ''}" role="button" tabindex="0"
+      onclick="guideTab='${s.id}';renderGuide()"
+      onkeydown="if(event.key==='Enter'){guideTab='${s.id}';renderGuide()}">${s.label}${s.roles.includes(access.admin_role) ? ' ·⭐' : ''}</span>`).join('')
+  const sec = GUIDE_SECTIONS.find(s => s.id === guideTab)
+  document.getElementById('guideBody').innerHTML = `
+    <div class="guide-sec">
+      <h3>${sec.label}</h3>
+      <div class="g-sub">${sec.intro} Cada punto se convierte en tarea asignada a vos con el botón +.</div>
+      ${sec.items.map((it, i) => `
+        <div class="pb-item">
+          <span class="pb-txt">${it.t}</span>
+          <button class="pb-add" title="Crear tarea" aria-label="Crear tarea a partir de esta sugerencia"
+            onclick="adoptGuideItem('${sec.id}', ${i})">${I.plus}</button>
+        </div>`).join('')}
+    </div>
+    <p style="font-size:.72rem;color:var(--dim);max-width:640px;line-height:1.5">
+      ⭐ marca la disciplina sugerida para tu rol. Estas listas están curadas de prácticas de
+      equipos de producto y startups; no son tareas automáticas — elegí lo que aporte hoy.</p>`
+}
+async function adoptGuideItem(secId, idx) {
+  const sec = GUIDE_SECTIONS.find(s => s.id === secId)
+  const it = sec?.items[idx]
+  if (!it) return
+  const title = it.t.replace(/<[^>]+>/g, '')
+  const due = new Date(Date.now() + 3 * 86400000)
+  const dueStr = `${due.getFullYear()}-${String(due.getMonth()+1).padStart(2,'0')}-${String(due.getDate()).padStart(2,'0')}`
+  const { data: created, error } = await sb.from('workspace_tasks').insert({
+    title, description: `Creada desde la guía "${sec.label}".`, checklist: [],
+    status: 'todo', priority: 'normal', category: it.cat || 'general',
+    assignee_name: profile.name, due_date: dueStr,
+    created_by: profile.id, created_by_name: profile.name,
+    updated_at: new Date().toISOString()
+  }).select('id').single()
+  if (error) return toast('Error: ' + error.message, true)
+  await log('adoptó una sugerencia de la guía', 'task', title, created?.id)
+  toast('Tarea creada y asignada a vos ✓')
+  await loadTasks(); renderCurrent()
+}
+
 // ─── ACTIVITY LOG ───
 // entityId permite reconstruir el historial de una tarea puntual.
 async function log(action, entityType, entityTitle, entityId) {
@@ -2276,6 +3211,19 @@ function initRealtime() {
       await loadCommentCounts()
       if (currentView === 'tasks') renderKanban()
     })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_posts'}, async () => {
+      await loadPosts()
+      if (currentView === 'comms') renderComms()
+      else if (currentView === 'myday') renderMyDay()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_post_replies'}, async () => {
+      await loadPosts()
+      if (currentView === 'comms') renderComms()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_wiki_pages'}, async () => {
+      await loadWiki()
+      if (currentView === 'wiki' && !wikiEditing) renderWiki()
+    })
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'workspace_notifications', filter:`recipient_id=eq.${profile.id}`}, (payload) => {
       notifications.unshift(payload.new)
       renderNotifBadge()
@@ -2303,15 +3251,17 @@ function initRealtime() {
 function primaryAction() {
   if (currentView === 'notes') openNewNote()
   else if (currentView === 'ideas') openNewIdea()
-  else if (currentView === 'resources') openNewResource()
+  else if (currentView === 'resources') openModal('fileModal')
+  else if (currentView === 'wiki') wikiNew()
   else openNewTask()
 }
 
-function openNewTask(status = 'todo') {
+function openNewTask(status = 'todo', dueDate = '') {
   editTaskId = null
   document.getElementById('taskModalTitle').textContent = 'Nueva Tarea'
   document.getElementById('taskSubmitBtn').textContent = 'Crear Tarea'
   const f = document.getElementById('taskForm'); f.reset(); f.status.value = status
+  if (dueDate) f.due_date.value = dueDate
   openModal('taskModal')
 }
 
@@ -2382,13 +3332,21 @@ function openDetail(id) {
     </div>` : ''
 
   const tags = (t.tags||[]).length ? `<div class="t-tags" style="margin-top:.4rem">${t.tags.map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</div>` : ''
-  const links = (t.links||[]).length ? `
-    <div class="dsec"><label>Enlaces</label>
-      <div class="t-links">${t.links.map(l => `
-        <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>${esc(l.label)}</a>`).join('')}
-      </div>
-    </div>` : ''
+  const linkIcon = '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>'
+  const fileIcon = '<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  const linkItems = (t.links||[]).map(l =>
+    l.url && l.url.startsWith('ws-file:')
+      ? `<a href="#" onclick="event.preventDefault();openWsFile('${esc(l.url.slice(8))}')">${fileIcon}${esc(l.label)}</a>`
+      : `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${linkIcon}${esc(l.label)}</a>`
+  ).join('')
+  const links = `
+    <div class="dsec"><label>Enlaces y archivos</label>
+      <div class="t-links">${linkItems || ''}</div>
+      <button class="attach-btn" onclick="attachFileToTask('${t.id}')">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        Adjuntar archivo
+      </button>
+    </div>`
 
   document.getElementById('detailPanel').innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;margin-bottom:1rem">
@@ -2435,6 +3393,26 @@ function openDetail(id) {
 }
 
 // ─── COMENTARIOS E HISTORIAL POR TAREA ───
+// Cada tarea es un espacio de colaboración: hilos, @menciones y decisiones.
+let _cmtReplyTo = null   // id del comentario al que se responde
+
+function cmtHtml(c, taskId, isReply) {
+  const mine = c.author_id === profile.id
+  return `
+    <div class="cmt ${isReply ? 'reply' : ''} ${c.is_decision ? 'decision' : ''}">
+      <div class="act-av">${esc((c.author_name||'A').charAt(0).toUpperCase())}</div>
+      <div class="cmt-body">
+        <div class="cmt-meta"><strong>${esc(c.author_name)}</strong><time>${timeAgo(c.created_at)}</time>
+          ${c.is_decision ? '<span class="decision-badge">✓ Decisión</span>' : ''}
+          <span style="flex:1"></span>
+          ${isReply ? '' : `<button class="cmt-act" onclick="setReplyTo('${c.id}','${esc(c.author_name)}')">Responder</button>`}
+          <button class="cmt-act" onclick="toggleDecision('${c.id}','${taskId}', ${!c.is_decision})" title="${c.is_decision ? 'Quitar marca de decisión' : 'Marcar como decisión del equipo'}">${c.is_decision ? 'No es decisión' : 'Decisión'}</button>
+          ${mine ? `<button class="cmt-del" onclick="deleteComment('${c.id}','${taskId}')" aria-label="Eliminar comentario">Eliminar</button>` : ''}
+        </div>
+        <div class="cmt-txt">${highlightMentions(esc(c.body))}</div>
+      </div>
+    </div>`
+}
 async function loadTaskComments(taskId) {
   const el = document.getElementById('cmtList')
   if (!el) return
@@ -2442,33 +3420,73 @@ async function loadTaskComments(taskId) {
     const { data, error } = await sb.from('workspace_task_comments')
       .select('*').eq('task_id', taskId).order('created_at')
     if (error) throw error
-    el.innerHTML = (data || []).map(c => `
-      <div class="cmt">
-        <div class="act-av">${esc((c.author_name||'A').charAt(0).toUpperCase())}</div>
-        <div class="cmt-body">
-          <div class="cmt-meta"><strong>${esc(c.author_name)}</strong><time>${timeAgo(c.created_at)}</time>
-            ${c.author_id === profile.id ? `<button class="cmt-del" onclick="deleteComment('${c.id}','${taskId}')" aria-label="Eliminar comentario">Eliminar</button>` : ''}
-          </div>
-          <div class="cmt-txt">${esc(c.body)}</div>
-        </div>
-      </div>`).join('') || '<div class="md-empty">Sin comentarios. Sé la primera persona en comentar.</div>'
+    const all = data || []
+    const tops = all.filter(c => !c.parent_id)
+    const kids = id => all.filter(c => c.parent_id === id)
+    el.innerHTML = tops.map(c => cmtHtml(c, taskId, false) + kids(c.id).map(k => cmtHtml(k, taskId, true)).join('')).join('')
+      || '<div class="md-empty">Sin comentarios. La conversación de esta tarea vive acá, no en WhatsApp.</div>'
   } catch (_) {
     el.innerHTML = '<div class="md-empty">Los comentarios se activan al aplicar la migración del Centro de Operaciones.</div>'
   }
+}
+function setReplyTo(commentId, authorName) {
+  _cmtReplyTo = commentId
+  const input = document.getElementById('cmtInput')
+  if (input) { input.placeholder = `Respondiendo a ${authorName}… (Esc para cancelar)`; input.focus() }
 }
 async function addComment(taskId) {
   const input = document.getElementById('cmtInput')
   const body = (input?.value || '').trim()
   if (!body) return
+  const t = tasks.find(x => x.id === taskId)
   const { error } = await sb.from('workspace_task_comments').insert({
-    task_id: taskId, author_id: profile.id, author_name: profile.name, body
+    task_id: taskId, author_id: profile.id, author_name: profile.name, body,
+    parent_id: _cmtReplyTo || null
   })
   if (error) return toast('Error: ' + error.message, true)
-  input.value = ''
-  const t = tasks.find(x => x.id === taskId)
+  input.value = ''; input.placeholder = 'Escribí un comentario…'
+  _cmtReplyTo = null
   commentCounts[taskId] = (commentCounts[taskId] || 0) + 1
   await log('comentó en la tarea', 'task', t?.title, taskId)
+  await notifyMentions(body, `${profile.name} te mencionó en la tarea "${t?.title}"`, 'task', taskId)
   loadTaskComments(taskId)
+}
+async function toggleDecision(commentId, taskId, val) {
+  const { error } = await sb.from('workspace_task_comments').update({ is_decision: val }).eq('id', commentId)
+  if (error) return toast('Error: ' + error.message, true)
+  if (val) {
+    const t = tasks.find(x => x.id === taskId)
+    await log('marcó una decisión en la tarea', 'task', t?.title, taskId)
+  }
+  loadTaskComments(taskId)
+}
+// Adjuntar un archivo a la tarea: sube al bucket privado y lo agrega a links
+function attachFileToTask(taskId) {
+  const input = document.getElementById('taskAttachInput')
+  input.onchange = async () => {
+    const file = input.files[0]
+    input.value = ''
+    if (!file) return
+    if (file.size > 25 * 1048576) return toast('El archivo supera los 25 MB', true)
+    toast('Subiendo archivo…')
+    try {
+      const safe = file.name.replace(/[^\w.\-áéíóúñÁÉÍÓÚÑ ]/g, '_')
+      const path = `tasks/${taskId}/${Date.now()}_${safe}`
+      const { error: upErr } = await sb.storage.from('workspace-files')
+        .upload(path, file, { contentType: file.type || 'application/octet-stream' })
+      if (upErr) throw upErr
+      const t = tasks.find(x => x.id === taskId)
+      const links = [...(t?.links || []), { label: file.name.slice(0, 60), url: 'ws-file:' + path }]
+      const { error } = await sb.from('workspace_tasks')
+        .update({ links, updated_at: new Date().toISOString() }).eq('id', taskId)
+      if (error) throw error
+      if (t) t.links = links
+      await log('adjuntó un archivo a la tarea', 'task', t?.title, taskId)
+      toast('Archivo adjuntado ✓')
+      openDetail(taskId)
+    } catch (err) { toast('Error: ' + (err.message || err), true) }
+  }
+  input.click()
 }
 async function deleteComment(id, taskId) {
   await sb.from('workspace_task_comments').delete().eq('id', id)
@@ -2544,6 +3562,13 @@ document.querySelectorAll('.modal').forEach(el => {
 })
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
+    // Cancelar modo respuesta en comentarios antes de cerrar paneles
+    if (_cmtReplyTo) {
+      _cmtReplyTo = null
+      const ci = document.getElementById('cmtInput')
+      if (ci) ci.placeholder = 'Escribí un comentario…'
+      return
+    }
     document.querySelectorAll('.modal.open').forEach(el => closeModal(el.id))
     closeDetailPanel()
     document.getElementById('notifPanel')?.classList.remove('open')
