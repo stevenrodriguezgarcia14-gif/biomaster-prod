@@ -508,7 +508,7 @@ select option{background:var(--bg1)}
         <div class="admin-av" id="sbAv">?</div>
         <div>
           <div class="admin-name" id="sbName">Admin</div>
-          <div class="admin-role">Admin ✦</div>
+          <div class="admin-role" id="sbRole">Admin ✦</div>
         </div>
       </div>
       <a href="/" class="back-link">
@@ -757,6 +757,10 @@ async function init() {
     profile = p
     document.getElementById('sbAv').textContent = (p.name||'A').charAt(0).toUpperCase()
     document.getElementById('sbName').textContent = p.name || 'Admin'
+    // Rol de equipo (sistema de roles): superadmin | admin | editor | moderator | support.
+    // Todo el staff (role='admin') accede al Workspace; acá solo se muestra el rol.
+    const ROLE_LABELS = { superadmin:'Súper Admin 🜲', admin:'Admin ✦', editor:'Editor ✏️', moderator:'Moderador 🛡️', support:'Soporte 🎧' }
+    document.getElementById('sbRole').textContent = ROLE_LABELS[p.admin_role] || 'Admin ✦'
 
     await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins()])
     initNav()

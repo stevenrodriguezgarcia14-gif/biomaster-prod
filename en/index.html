@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+/* ═══ PASSWORD RECOVERY ═══
+   Si un enlace de reset aterriza en la raíz (flujo viejo con tokens en el hash,
+   o fallback de Supabase al Site URL), reenviamos a la página dedicada ANTES de
+   que la app procese la sesión — conservando token y parámetros. */
+(function(){
+  var h = location.hash || '', q = location.search || ''
+  var isRecovery = /[#&]type=recovery/.test(h) || /[?&]type=recovery/.test(q) ||
+                   /error_code=otp_expired/.test(h)
+  if (!isRecovery) return
+  var base = location.pathname.indexOf('/en') === 0 ? '/en/reset-password' : '/reset-password'
+  location.replace(base + q + h)
+})()
+</script>
      
 
 <style>
@@ -9719,15 +9733,15 @@ window.Analytics = (function(){
         <div id="adminRoleBadge" style="margin-bottom:.8rem"></div>
         <div class="grid4" id="adminStatCards" style="margin-bottom:1rem"></div>
         <div class="tab-bar">
-          <button class="tab-btn active" onclick="A.adminTab(this,'paneFb')">💬 Feedback</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneUsers')">👥 Users</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'panePlans')">💳 Plans and payments</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneProgress')">📊 Progress</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneVenc')">⏰ Expirations</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneAlertas')">🔔 Alerts</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneTools')">🛠 Tools</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneCountries');A.adminRefreshCountries()">🌍 Countries</button>
-          <button class="tab-btn" onclick="A.adminTab(this,'paneMissions');window.adminRefreshMissions()">🎯 Missions</button>
+          <button class="tab-btn active" data-perm="feedback.moderate" data-pane="paneFb" onclick="A.adminTab(this,'paneFb')">💬 Feedback</button>
+          <button class="tab-btn" data-perm="users.view" data-pane="paneUsers" onclick="A.adminTab(this,'paneUsers')">👥 Users</button>
+          <button class="tab-btn" data-perm="plans.manage" data-pane="panePlans" onclick="A.adminTab(this,'panePlans')">💳 Plans and payments</button>
+          <button class="tab-btn" data-perm="stats.view" data-pane="paneProgress" onclick="A.adminTab(this,'paneProgress')">📊 Progress</button>
+          <button class="tab-btn" data-perm="plans.manage" data-pane="paneVenc" onclick="A.adminTab(this,'paneVenc')">⏰ Expirations</button>
+          <button class="tab-btn" data-perm="plans.manage" data-pane="paneAlertas" onclick="A.adminTab(this,'paneAlertas')">🔔 Alerts</button>
+          <button class="tab-btn" data-perm="system.config" data-pane="paneTools" onclick="A.adminTab(this,'paneTools')">🛠 Tools</button>
+          <button class="tab-btn" data-perm="stats.view" data-pane="paneCountries" onclick="A.adminTab(this,'paneCountries');A.adminRefreshCountries()">🌍 Countries</button>
+          <button class="tab-btn" data-perm="missions.manage" data-pane="paneMissions" onclick="A.adminTab(this,'paneMissions');window.adminRefreshMissions()">🎯 Missions</button>
         </div>
         <div class="tab-pane active" id="paneFb">
           <div id="adminFbList">Loading…</div>
@@ -10510,9 +10524,10 @@ async function doLogout(){
 async function forgotPassword(){
   const email = document.getElementById('loginEmail').value.trim()
   if (!validEmail(email)) return showMsg('loginMsg','bad','⚠ Enter your email in the field above first.')
-  // redirectTo apunta a la raíz de la app (index.html).
-  // Supabase inyecta el token en el hash y onAuthStateChange dispara PASSWORD_RECOVERY.
-  const redirectTo = window.location.origin + (window.location.pathname.startsWith('/en') ? '/en' : '/')
+  // redirectTo apunta a la página dedicada de reset. La plantilla del correo
+  // construye el enlace como {{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery
+  // y la página verifica el token con verifyOtp() al enviar el formulario.
+  const redirectTo = window.location.origin + (window.location.pathname.startsWith('/en') ? '/en' : '') + '/reset-password'
   showMsg('loginMsg','good','🔄 Sending email…')
   const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo })
   if (error) return showMsg('loginMsg','bad','⚠ ' + humanizeAuthError(error))
@@ -10541,6 +10556,7 @@ async function doResetPassword(){
 }
 
 function authSwitchTab(tab){
+  _recoveryFlow = false
   document.getElementById('authLogin').style.display    = tab === 'login'    ? '' : 'none'
   document.getElementById('authRegister').style.display = tab === 'register' ? '' : 'none'
   const rp = document.getElementById('authResetPassword')
@@ -10572,8 +10588,13 @@ function exitGuestToAuth(){
 // o el getSession() del arranque + el listener) compitan y dejen la UI a medio
 // procesar.
 let _sessionHandling = false
+// Flag del flujo de recuperación de contraseña: mientras el panel de reset está
+// activo, la sesión temporal de recovery NO debe abrir la app (eso mataba el
+// panel: PASSWORD_RECOVERY lo mostraba e INITIAL_SESSION lo ocultaba al instante).
+let _recoveryFlow = false
 
 async function handleAuthSession(session){
+  if (_recoveryFlow) return
   if (_sessionHandling) return
   _sessionHandling = true
   try {
@@ -10616,6 +10637,20 @@ async function handleAuthSession(session){
         }
       } catch(e){ /* ignorar — seguimos con el perfil mínimo */ }
 
+      // ═══ SISTEMA DE ROLES DE ADMINISTRACIÓN ═══
+      // Una sola RPC trae el rol de equipo y sus permisos. Si la migración
+      // de roles aún no corrió, admin_perms queda undefined y el staff
+      // conserva el comportamiento legacy (acceso completo).
+      if (profile.role === 'admin'){
+        try {
+          const { data: acc } = await sb.rpc('get_my_admin_access')
+          if (acc && Array.isArray(acc.permissions)){
+            profile.admin_role  = acc.admin_role
+            profile.admin_perms = acc.permissions
+          }
+        } catch(e){ /* legacy: sin sistema de roles todavía */ }
+      }
+
       currentSession = { user: session.user, profile, isGuest: false }
       window.Analytics?.identifyUser(session.user.id, session.user.email, profile?.plan || 'free')
     } else {
@@ -10645,6 +10680,7 @@ sb.auth.onAuthStateChange((event, session) => {
   // PASSWORD_RECOVERY: el usuario llegó desde el enlace de reset de contraseña.
   // No lo tratamos como login normal — mostramos el panel para ingresar nueva clave.
   if (event === 'PASSWORD_RECOVERY') {
+    _recoveryFlow = true
     _showPasswordResetPanel()
     return
   }
@@ -11440,6 +11476,27 @@ async function loadMyFeedback(){
 // ═══════════════════════════════════════════════════════════
 //  13. ADMIN PANEL
 // ═══════════════════════════════════════════════════════════
+// ═══ ADMIN ROLE SYSTEM ═══
+// Matriz de permisos por rol: vive en la tabla admin_role_permissions
+// (Supabase) y llega al cliente vía get_my_admin_access(). El enforcement
+// real está en el backend (RLS, trigger de profiles, RPCs, Edge Functions);
+// esto solo adapta la UI al rol.
+const ADMIN_ROLE_LABELS = {
+  superadmin: '🜲 Super Admin',
+  admin:      '👑 Admin',
+  editor:     '✏️ Editor',
+  moderator:  '🛡️ Moderator',
+  support:    '🎧 Support'
+}
+function adminCan(perm){
+  const p = currentSession?.profile
+  if (!p || p.role !== 'admin') return false
+  // Legacy: si la migración de roles no corrió aún, no hay lista de permisos
+  // y todos los admins conservan acceso completo (compatibilidad).
+  if (!Array.isArray(p.admin_perms)) return true
+  return p.admin_perms.includes(perm)
+}
+
 async function openAdmin(){
   if (currentSession?.profile?.role !== 'admin'){
     toast('🔒 Access restricted to administrators.', true)
@@ -11464,8 +11521,22 @@ function adminTab(btn, paneId){
 
 async function renderAdminPanel(){
   if (currentSession?.profile?.role !== 'admin') return
+  const _roleLabel = ADMIN_ROLE_LABELS[currentSession.profile.admin_role] || '👑 admin'
   document.getElementById('adminRoleBadge').innerHTML =
-    `Session: <strong>${escapeHtml(currentSession.profile.email)}</strong> · <span class="account-badge badge-admin">👑 admin</span>`
+    `Session: <strong>${escapeHtml(currentSession.profile.email)}</strong> · <span class="account-badge badge-admin">${_roleLabel}</span>`
+
+  // Mínimo privilegio: ocultar pestañas que el rol no puede usar y
+  // asegurar que la pestaña activa sea una visible.
+  let _firstVisibleTab = null
+  document.querySelectorAll('#adminSection .tab-btn[data-perm]').forEach(b => {
+    const ok = adminCan(b.dataset.perm)
+    b.style.display = ok ? '' : 'none'
+    if (ok && !_firstVisibleTab) _firstVisibleTab = b
+  })
+  const _activeTab = document.querySelector('#adminSection .tab-btn.active')
+  if (_firstVisibleTab && (!_activeTab || _activeTab.style.display === 'none')){
+    adminTab(_firstVisibleTab, _firstVisibleTab.dataset.pane)
+  }
 
   // Stats agregadas — incluye plan data para métricas de vencimiento
   const now = new Date()
@@ -11507,13 +11578,13 @@ async function renderAdminPanel(){
       <div class="sv" style="color:var(--yellow)">${pendingFbCount ?? '—'}</div><div class="sl">Pending fb.</div>
     </div>`
 
-  // Renderizar todas las pestañas en paralelo
+  // Renderizar en paralelo solo las pestañas que el rol puede ver
   await Promise.all([
-    _renderAdminFeedback(),
-    _renderAdminUsers(),
-    _renderAdminPlans(),
-    _renderAdminVencimientos(),
-    _renderAdminCountries()
+    adminCan('feedback.moderate') ? _renderAdminFeedback()     : null,
+    adminCan('users.view')        ? _renderAdminUsers()        : null,
+    adminCan('plans.manage')      ? _renderAdminPlans()        : null,
+    adminCan('plans.manage')      ? _renderAdminVencimientos() : null,
+    adminCan('stats.view')        ? _renderAdminCountries()    : null
   ])
 }
 
@@ -12027,11 +12098,20 @@ async function toggleFeedbackPublic(id, makePublic){
 }
 
 async function _renderAdminUsers(){
-  const { data: users, error: ue } = await sb
+  // admin_role puede no existir pre-migración → segunda query best-effort
+  let users, ue
+  ;({ data: users, error: ue } = await sb
     .from('profiles')
-    .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
+    .select('id,name,email,role,admin_role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
     .order('created_at', { ascending:false })
-    .limit(200)
+    .limit(200))
+  if (ue && /admin_role/.test(ue.message || '')){
+    ;({ data: users, error: ue } = await sb
+      .from('profiles')
+      .select('id,name,email,role,email_type,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
+      .order('created_at', { ascending:false })
+      .limit(200))
+  }
   const userList = document.getElementById('adminUserList')
   if (!userList) return
   if (ue){ userList.innerHTML = '<span class="bad">⚠ '+escapeHtml(ue.message)+'</span>' }
@@ -12039,9 +12119,16 @@ async function _renderAdminUsers(){
   else {
     const now = new Date()
     const in7d = new Date(now.getTime() + 7 * 86400000)
+    const canPlans  = adminCan('plans.manage')
+    const canRoles  = adminCan('roles.manage')
+    const canDelete = adminCan('users.delete')
+    const canReset  = adminCan('progress.reset')
     userList.innerHTML = users.map(u => {
       const isMe = u.id === currentSession?.user?.id
       const safeEmail = escapeHtml(u.email).replace(/'/g,'&#39;')
+      const teamChip = u.role === 'admin' && u.admin_role
+        ? ` <span class="fb-status fb-resuelto" title="Team role">${escapeHtml(ADMIN_ROLE_LABELS[u.admin_role] || u.admin_role)}</span>`
+        : ''
       // Plan tags incluyendo P3
       const parciales = [u.plan_p1&&'P1', u.plan_p2&&'P2', u.plan_p3&&'P3'].filter(Boolean)
       const planTag = u.plan_full
@@ -12067,19 +12154,22 @@ async function _renderAdminUsers(){
       <div style="display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;align-items:center">
         <div>
           <strong>${escapeHtml(u.name||'(no name)')}</strong>
-          <span class="fb-status ${u.role==='admin'?'fb-resuelto':'fb-leido'}">${u.role}</span>
+          <span class="fb-status ${u.role==='admin'?'fb-resuelto':'fb-leido'}">${u.role}</span>${teamChip}
           ${planTag}${expBadge}
           ${isMe?'<span class="account-badge badge-admin" style="margin-left:.3rem">you</span>':''}
           <br><small class="muted">${escapeHtml(u.email)} · Registered: ${new Date(u.created_at).toLocaleDateString()}${exp?' · Expires: '+exp.toLocaleDateString():''}</small>
         </div>
         <div style="display:flex;gap:.3rem;flex-wrap:wrap">
-          <button class="btn primary" onclick="A.adminQuickGrant('${safeEmail}')">⬆ Manage access</button>
-          ${hasAnyPlan?`<button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revoke</button>`:''}
-          ${u.role==='admin'
-            ? `<button class="btn" onclick="A.adminRowAction('demote','${safeEmail}')">👤 a user</button>`
-            : `<button class="btn warn" onclick="A.adminRowAction('promote','${safeEmail}')">👑 a admin</button>`}
-          <button class="btn" onclick="A.adminRowAction('reset','${safeEmail}')">🧹 progress</button>
-          ${isMe?'':`<button class="btn danger" onclick="A.adminRowAction('delete','${safeEmail}')">🗑</button>`}
+          ${canPlans?`<button class="btn primary" onclick="A.adminQuickGrant('${safeEmail}')">⬆ Manage access</button>`:''}
+          ${canPlans && hasAnyPlan?`<button class="btn danger" onclick="A.adminRevokePlan('${safeEmail}')">🚫 Revoke</button>`:''}
+          ${canRoles && !isMe
+            ? (u.role==='admin'
+              ? `<button class="btn" onclick="A.adminRowAction('demote','${safeEmail}')">👤 to user</button>
+                 <button class="btn" onclick="A.adminSetTeamRole('${safeEmail}')">🜲 team role</button>`
+              : `<button class="btn warn" onclick="A.adminRowAction('promote','${safeEmail}')">👑 to staff</button>`)
+            : ''}
+          ${canReset?`<button class="btn" onclick="A.adminRowAction('reset','${safeEmail}')">🧹 progress</button>`:''}
+          ${canDelete && !isMe?`<button class="btn danger" onclick="A.adminRowAction('delete','${safeEmail}')">🗑</button>`:''}
         </div>
       </div>
     </div>`}).join('')
@@ -12755,6 +12845,7 @@ async function _grantPlanWithFallback(email, plan, note, source = 'manual'){
 // Activar plan desde el formulario grande (pestaña Planes y pagos)
 async function adminGrantPlan(){
   if (currentSession?.profile?.role !== 'admin'){ toast('Admins only.', true); return }
+  if (!adminCan('plans.manage')){ toast('🔒 Your role cannot manage plans.', true); return }
   const email = document.getElementById('adminGrantEmail').value.trim()
   const plan  = document.getElementById('adminGrantPlan').value
   const note  = document.getElementById('adminGrantNote').value.trim()
@@ -12775,6 +12866,7 @@ async function adminGrantPlan(){
 // Activar plan rápido desde la lista de usuarios (botón "⬆ Mejorar plan" por fila)
 async function adminQuickGrant(email){
   if (currentSession?.profile?.role !== 'admin'){ toast('Admins only.', true); return }
+  if (!adminCan('plans.manage')){ toast('🔒 Your role cannot manage plans.', true); return }
   // Mini selector inline
   const planOptions = [
     { v:'p1',       l:'Unit 1 Pass · $11.99 USD · 60 days' },
@@ -12813,6 +12905,7 @@ async function adminQuickGrant(email){
 
 async function adminRevokePlan(email){
   if (currentSession?.profile?.role !== 'admin'){ toast('Admins only.', true); return }
+  if (!adminCan('plans.manage')){ toast('🔒 Your role cannot manage plans.', true); return }
   if (!confirm(`Revoke ALL active plans for ${email}?\nThis removes their premium access immediately.`)) return
   try {
     const r = await _grantPlanWithFallback(email, 'revoke', `Revoked by admin ${new Date().toISOString().slice(0,10)}`)
@@ -12872,23 +12965,47 @@ async function adminRowAction(kind, email){
   const e = (email || '').trim()
   if (!e) return
   if (kind === 'promote'){
-    if (!confirm(`Promote ${e} to admin?`)) return
+    if (!adminCan('roles.manage')){ toast('🔒 Only the superadmin manages roles.', true); return }
+    if (!confirm(`Promote ${e} to staff? They start with the "Support" role (least privilege); you can raise their role later with "🜲 team role".`)) return
     return _runPromoteSilent(e, 'admin')
   }
   if (kind === 'demote'){
+    if (!adminCan('roles.manage')){ toast('🔒 Only the superadmin manages roles.', true); return }
     if (!confirm(`Demote ${e} to user?`)) return
     return _runPromoteSilent(e, 'user')
   }
   if (kind === 'reset'){
+    if (!adminCan('progress.reset')){ toast('🔒 Your role cannot reset progress.', true); return }
     return resetUserProgress(e)
   }
   if (kind === 'delete'){
+    if (!adminCan('users.delete')){ toast('🔒 Only the superadmin can delete users.', true); return }
     return deleteUser(e)
   }
 }
 
+// Asignar rol de equipo (solo superadmin): superadmin | admin | editor | moderator | support
+async function adminSetTeamRole(email){
+  if (!adminCan('roles.manage')){ toast('🔒 Only the superadmin manages roles.', true); return }
+  const roles = ['superadmin','admin','editor','moderator','support']
+  const pick = prompt(
+    `Team role for: ${email}\n\nType the number:\n\n` +
+    roles.map((r,i) => `${i+1}. ${ADMIN_ROLE_LABELS[r]} (${r})`).join('\n')
+  )
+  if (!pick) return
+  const idx = parseInt(pick.trim()) - 1
+  if (isNaN(idx) || idx < 0 || idx >= roles.length){ toast('Invalid option.', true); return }
+  const { data, error } = await sb.rpc('admin_set_admin_role', {
+    target_email: email, new_admin_role: roles[idx]
+  })
+  if (error || data?.error){ toast('⚠ ' + (error?.message || data?.error), true); return }
+  toast(`✅ ${email} → ${ADMIN_ROLE_LABELS[roles[idx]]}`, false)
+  await renderAdminPanel()
+}
+
 // Versión silenciosa de promote (sin prompts) para botones de fila
 async function _runPromoteSilent(email, newRole){
+  if (!adminCan('roles.manage')){ toast('🔒 Only the superadmin manages roles.', true); return }
   const msg = document.getElementById('adminControlMsg')
   const setMsg = (kind, text) => {
     if (!msg) return
@@ -12940,6 +13057,7 @@ async function setFbStatus(id, status){
 
 async function promoteUser(newRole){
   if (currentSession?.profile?.role !== 'admin') return
+  if (!adminCan('roles.manage')){ toast('🔒 Only the superadmin manages roles.', true); return }
   const email = prompt('Email of the user to update:')
   if (!email) return
   if (!validEmail(email)){
@@ -12993,6 +13111,7 @@ async function promoteUser(newRole){
 // ═══════════════════════════════════════════════════════════
 async function deleteUser(targetEmail){
   if (currentSession?.profile?.role !== 'admin') return
+  if (!adminCan('users.delete')){ toast('🔒 Only the superadmin can delete users.', true); return }
   const email = (targetEmail || prompt('Email of the user to DELETE (irreversible operation):'))?.trim()
   if (!email) return
   if (!validEmail(email)){
@@ -13269,6 +13388,7 @@ async function resetMyProgress(){
 
 async function resetUserProgress(targetEmail){
   if (currentSession?.profile?.role !== 'admin') return
+  if (!adminCan('progress.reset')){ toast('🔒 Your role cannot reset progress.', true); return }
   const email = (targetEmail || prompt('Email of the user whose progress you want to reset:'))?.trim()
   if (!email) return
   if (!validEmail(email)){ toast('⚠ Invalid email', true); return }
@@ -20568,6 +20688,7 @@ const A = {
   openAdmin, closeAdmin, adminTab, setFbStatus, toggleFeedbackPublic, promoteUser, refreshMyProfile,
   deleteUser, resetMyProgress, resetUserProgress, adminRowAction, renderAdminPanel,
   adminGrantPlan, adminRevokePlan, adminQuickGrant, adminViewAudit,
+  adminSetTeamRole, adminCan,
   adminProgressFilter: window.adminProgressFilter,
   adminProgressSort: window.adminProgressSort,
   adminRefreshProgress: window.adminRefreshProgress,
