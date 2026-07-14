@@ -757,6 +757,68 @@ select option{background:var(--bg1)}
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .md-banner .b-txt strong{color:var(--yellow)}
 
+/* ─── AUTOCOMPLETADO DE MENCIONES ─── */
+#mentionDrop{position:fixed;z-index:1003;background:var(--bg2);border:1px solid var(--border-b);
+  border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;display:none;min-width:220px;max-width:300px}
+#mentionDrop.open{display:block}
+.m-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;cursor:pointer;transition:background .1s}
+.m-item:hover,.m-item.active{background:var(--green-s)}
+.m-item .act-av{width:26px;height:26px;font-size:.68rem;flex-shrink:0}
+.m-item .m-name{font-size:.8rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-item .m-role{font-size:.63rem;color:var(--dim);margin-left:auto;flex-shrink:0}
+.mention-note{display:flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--dim);
+  margin-top:.35rem;min-height:1rem;flex-wrap:wrap}
+.mention-note .m-chip{display:inline-flex;align-items:center;gap:.3rem;background:var(--green-s);
+  color:var(--green-b);font-weight:700;font-size:.68rem;padding:2px 8px;border-radius:10px}
+.mention-note svg{width:12px;height:12px;stroke:var(--green-b);fill:none;stroke-width:2;flex-shrink:0}
+
+/* ─── CHAT ─── */
+.chat-wrap{display:grid;grid-template-columns:220px 1fr;gap:1rem;height:calc(100vh - 130px)}
+.chat-chans{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
+  padding:.6rem;overflow-y:auto;scrollbar-width:thin}
+.chan-item{display:flex;align-items:center;gap:.45rem;width:100%;text-align:left;background:none;
+  border:none;color:var(--muted);font-size:.8rem;font-weight:600;padding:.45rem .6rem;
+  border-radius:var(--rs);cursor:pointer;font-family:inherit;transition:background var(--t),color var(--t)}
+.chan-item:hover{background:var(--bg3);color:var(--text)}
+.chan-item.on{background:var(--green-s);color:var(--green-b)}
+.chan-item .hash{opacity:.6;font-weight:800}
+.chan-item .c-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chan-unread{background:var(--red);color:#fff;font-size:.6rem;font-weight:700;
+  padding:1px 6px;border-radius:10px;min-width:16px;text-align:center}
+.chan-add{width:100%;background:transparent;border:1px dashed var(--border-b);color:var(--dim);
+  font-size:.72rem;padding:.4rem;border-radius:var(--rs);cursor:pointer;font-family:inherit;
+  margin-top:.4rem;transition:all var(--t)}
+.chan-add:hover{color:var(--green-b);border-color:var(--green)}
+.chat-main{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);
+  display:flex;flex-direction:column;overflow:hidden}
+.chat-hd{padding:.7rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.chat-hd strong{font-size:.88rem;color:var(--text)}
+.chat-hd .c-desc{font-size:.7rem;color:var(--dim);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-msgs{flex:1;overflow-y:auto;padding:.8rem 1rem;scrollbar-width:thin;scrollbar-color:var(--border-b) transparent}
+.msg-day{display:flex;align-items:center;gap:.7rem;margin:.9rem 0 .5rem;font-size:.65rem;
+  font-weight:700;color:var(--dim);text-transform:capitalize}
+.msg-day::before,.msg-day::after{content:'';flex:1;height:1px;background:var(--border)}
+.msg{display:flex;gap:.6rem;padding:.22rem .4rem;border-radius:var(--rs);position:relative}
+.msg:hover{background:var(--bg2)}
+.msg .act-av{width:30px;height:30px;font-size:.74rem;flex-shrink:0;margin-top:2px}
+.msg.grouped{padding-top:1px;padding-bottom:1px}
+.msg.grouped .act-av{visibility:hidden;height:0;margin:0}
+.msg-body{flex:1;min-width:0}
+.msg-meta{display:flex;align-items:baseline;gap:.5rem}
+.msg-meta strong{font-size:.79rem;color:var(--text)}
+.msg-meta time{font-size:.62rem;color:var(--dim)}
+.msg-txt{font-size:.81rem;color:var(--muted);line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.msg-txt a{color:var(--green-b)}
+.msg-del{position:absolute;top:.2rem;right:.4rem;opacity:0;background:var(--bg3);border:none;
+  color:var(--dim);cursor:pointer;font-size:.65rem;padding:2px 7px;border-radius:5px;font-family:inherit}
+.msg:hover .msg-del{opacity:1}
+.msg-del:hover{color:var(--red)}
+.chat-typing{min-height:1.1rem;font-size:.68rem;color:var(--dim);padding:0 1rem;font-style:italic}
+.chat-composer{padding:.6rem .8rem .8rem;border-top:1px solid var(--border)}
+.chat-composer textarea{min-height:42px;max-height:120px;resize:none}
+.chat-load-more{text-align:center;font-size:.7rem;color:var(--green-b);cursor:pointer;padding:.4rem;font-weight:600}
+.chat-load-more:hover{text-decoration:underline}
+
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
@@ -794,6 +856,10 @@ select option{background:var(--bg1)}
   .wiki-grid{grid-template-columns:1fr}
   .wiki-nav{position:static;max-height:none}
   .cmt.reply{margin-left:.9rem}
+  .chat-wrap{grid-template-columns:1fr;height:calc(100vh - 120px);grid-template-rows:auto 1fr}
+  .chat-chans{display:flex;gap:.3rem;overflow-x:auto;overflow-y:hidden;padding:.4rem;white-space:nowrap}
+  .chan-item{width:auto;flex-shrink:0}
+  .chan-add{width:auto;margin-top:0;flex-shrink:0}
 }
 </style>
 </head>
@@ -829,6 +895,11 @@ select option{background:var(--bg1)}
       <div class="nav-item active" data-view="myday" tabindex="0">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/></svg>
         <span>Mi Día</span>
+      </div>
+      <div class="nav-item" data-view="chat" tabindex="0">
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.86 9.86 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        <span>Chat</span>
+        <span class="nav-badge" id="chatBadge" hidden>0</span>
       </div>
       <div class="nav-item" data-view="comms" tabindex="0">
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
@@ -971,6 +1042,22 @@ select option{background:var(--bg1)}
       <div class="cal-nodate" id="calNoDate"></div>
     </div>
 
+    <!-- CHAT -->
+    <div id="view-chat" class="view-body" hidden style="padding-bottom:.8rem">
+      <div class="chat-wrap">
+        <div class="chat-chans" id="chatChans"></div>
+        <div class="chat-main">
+          <div class="chat-hd" id="chatHd"></div>
+          <div class="chat-msgs" id="chatMsgs" aria-live="polite"></div>
+          <div class="chat-typing" id="chatTyping"></div>
+          <div class="chat-composer">
+            <textarea id="chatInput" placeholder="Mensaje para el canal… (@ para mencionar, Enter envía, Shift+Enter salto de línea)" maxlength="2000" aria-label="Escribir mensaje"></textarea>
+            <div class="mention-note" id="chatMentionNote"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- COMUNICACIÓN -->
     <div id="view-comms" class="view-body" hidden>
       <div class="comms-wrap">
@@ -985,9 +1072,10 @@ select option{background:var(--bg1)}
               <option value="anuncio">📣 Anuncio</option>
               <option value="encuesta">🗳 Votación</option>
             </select>
-            <span class="composer-hint">Las menciones @Nombre notifican a la persona (y le llegan por correo).</span>
+            <span class="composer-hint">Escribí @ para mencionar — la persona recibe notificación y correo.</span>
             <button class="btn btn-primary btn-sm" onclick="submitPost()">Publicar</button>
           </div>
+          <div class="mention-note" id="postMentionNote"></div>
         </div>
         <div id="commsFeed"></div>
       </div>
@@ -1334,6 +1422,9 @@ select option{background:var(--bg1)}
 <!-- TOASTS -->
 <div id="toasts"></div>
 
+<!-- DROPDOWN GLOBAL DE MENCIONES -->
+<div id="mentionDrop" role="listbox" aria-label="Sugerencias de mención"></div>
+
 <script>
 // ══════════════════════════════════════════
 // CONFIG — pega aquí tus credenciales de Supabase
@@ -1433,6 +1524,7 @@ const NOTE_TYPES = [
 const CAT_ICON = {feature:'🧩',bug:'🐛',content:'📚',ops:'⚙️',general:'📌'}
 const VIEW_CFG = {
   myday:     {title:'Mi Día',        sub:'Qué hacer hoy, sin buscar',            action:'Nueva Tarea'},
+  chat:      {title:'Chat',          sub:'Conversación del equipo en tiempo real', action:null},
   comms:     {title:'Comunicación',  sub:'Anuncios, decisiones y votaciones',    action:null},
   tasks:     {title:'Tareas',        sub:'Tablero Kanban',                       action:'Nueva Tarea'},
   calendar:  {title:'Calendario',    sub:'Fechas límite del equipo',             action:'Nueva Tarea'},
@@ -1485,6 +1577,97 @@ function highlightMentions(escaped){
   }
   return out
 }
+
+// ─── AUTOCOMPLETADO DE MENCIONES (estilo Instagram) ───
+// Al escribir @ aparece la lista del equipo; se filtra letra a letra,
+// se navega con ↑↓ y se elige con Enter/Tab o clic. Debajo del campo,
+// "Se notificará a:" confirma quién recibirá la notificación.
+let _mnEl = null, _mnItems = [], _mnIdx = 0
+const _mnDrop = () => document.getElementById('mentionDrop')
+
+function mentionToken(el){
+  const caret = el.selectionStart
+  const before = (el.value || '').slice(0, caret)
+  const m = before.match(/@([A-Za-zÁÉÍÓÚáéíóúÑñ]*)$/)
+  return m ? { start: caret - m[0].length, q: m[1] } : null
+}
+function openMentionDrop(el){
+  const tok = mentionToken(el)
+  if (!tok) return closeMentionDrop()
+  const q = tok.q.toLowerCase()
+  _mnItems = admins.filter(a => a.id !== profile.id && a.name.toLowerCase().includes(q)).slice(0, 6)
+  if (!_mnItems.length) return closeMentionDrop()
+  _mnEl = el; _mnIdx = 0
+  const d = _mnDrop()
+  d.innerHTML = _mnItems.map((a, i) => `
+    <div class="m-item ${i === 0 ? 'active' : ''}" role="option" aria-selected="${i === 0}"
+         onmousedown="event.preventDefault();pickMention(${i})">
+      <div class="act-av">${esc(a.name.charAt(0).toUpperCase())}</div>
+      <span class="m-name">${esc(a.name)}</span>
+    </div>`).join('')
+  const r = el.getBoundingClientRect()
+  d.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 310)) + 'px'
+  d.style.top = (r.bottom + 4) + 'px'
+  d.style.width = Math.min(Math.max(r.width, 220), 300) + 'px'
+  d.classList.add('open')
+}
+function closeMentionDrop(){ _mnDrop()?.classList.remove('open'); _mnEl = null; _mnItems = [] }
+function mentionDropOpen(){ return _mnDrop()?.classList.contains('open') }
+function pickMention(i){
+  if (!_mnEl) return
+  const a = _mnItems[i]; if (!a) return
+  const tok = mentionToken(_mnEl); if (!tok) return closeMentionDrop()
+  // Primer nombre si es único en el equipo; si no, el nombre completo
+  const first = a.name.split(' ')[0]
+  const uniq = admins.filter(x => x.name.split(' ')[0].toLowerCase() === first.toLowerCase()).length === 1
+  const insert = '@' + (uniq ? first : a.name) + ' '
+  const el = _mnEl, v = el.value
+  el.value = v.slice(0, tok.start) + insert + v.slice(el.selectionStart)
+  const pos = tok.start + insert.length
+  closeMentionDrop()
+  el.focus()
+  el.setSelectionRange(pos, pos)
+  el.dispatchEvent(new CustomEvent('mentionpicked'))
+}
+function updateMentionNote(el, noteId){
+  const note = document.getElementById(noteId)
+  if (!note) return
+  const who = findMentions(el.value)
+  note.innerHTML = who.length
+    ? `<svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+       Se notificará a: ${who.map(a => `<span class="m-chip">@${esc(a.name.split(' ')[0])}</span>`).join(' ')}`
+    : ''
+}
+// Activa el autocompletado en un campo. opts.onSubmit → Enter (sin Shift)
+// envía; opts.note → id del indicador "Se notificará a".
+function enableMentions(el, opts = {}){
+  if (!el || el._mnWired) return
+  el._mnWired = true
+  el.addEventListener('input', () => {
+    openMentionDrop(el)
+    if (opts.note) updateMentionNote(el, opts.note)
+  })
+  el.addEventListener('mentionpicked', () => { if (opts.note) updateMentionNote(el, opts.note) })
+  el.addEventListener('blur', () => setTimeout(closeMentionDrop, 150))
+  el.addEventListener('keydown', e => {
+    if (mentionDropOpen() && _mnEl === el) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        _mnIdx = (_mnIdx + (e.key === 'ArrowDown' ? 1 : _mnItems.length - 1)) % _mnItems.length
+        _mnDrop().querySelectorAll('.m-item').forEach((n, i) => {
+          n.classList.toggle('active', i === _mnIdx)
+          n.setAttribute('aria-selected', String(i === _mnIdx))
+        })
+        return
+      }
+      if (e.key === 'Enter' || e.key === 'Tab') { e.preventDefault(); pickMention(_mnIdx); return }
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeMentionDrop(); return }
+    }
+    if (e.key === 'Enter' && !e.shiftKey && opts.onSubmit) { e.preventDefault(); opts.onSubmit() }
+  })
+}
+window.addEventListener('scroll', closeMentionDrop, true)
+window.addEventListener('resize', closeMentionDrop)
 
 // ─── ¿QUÉ PUEDO HACER? — guía por disciplina ───
 // Curada de prácticas reales de equipos de producto y startups (weekly review,
@@ -1558,7 +1741,7 @@ async function init() {
     if (!access.admin_role && p.admin_role) access.admin_role = p.admin_role
     document.getElementById('sbRole').textContent = ROLE_LABELS[access.admin_role] || 'Admin ✦'
 
-    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins(), loadIdeas(), loadResources(), loadCommentCounts(), loadPosts(), loadWiki()])
+    await Promise.all([loadTasks(), loadNotes(), loadActivity(), loadNotifications(), loadAdmins(), loadIdeas(), loadResources(), loadCommentCounts(), loadPosts(), loadWiki(), loadChannels()])
     initNav()
     populateAssigneeSelect()
     renderView('myday')
@@ -1566,6 +1749,12 @@ async function init() {
     updateUrgBadge()
     showApp()
     initRealtime()
+    initChatPresence()
+    // Autocompletado de menciones en los composers fijos
+    enableMentions(document.getElementById('postBody'), { note: 'postMentionNote' })
+    const chatIn = document.getElementById('chatInput')
+    enableMentions(chatIn, { onSubmit: sendChatMsg, note: 'chatMentionNote' })
+    chatIn?.addEventListener('input', chatTypingPing)
     openTaskFromUrl()
   } catch(e) {
     console.error(e)
@@ -1801,6 +1990,10 @@ function renderView(name) {
 
 function renderCurrent() {
   if (currentView === 'myday') renderMyDay()
+  else if (currentView === 'chat') {
+    if (chatSel && !chatMsgs.length) chatOpen(chatSel)
+    else { renderChat(); if (chatSel) markChanRead(chatSel) }
+  }
   else if (currentView === 'comms') { renderComms(); markCommsSeen() }
   else if (currentView === 'tasks') renderKanban()
   else if (currentView === 'calendar') renderCalendar()
@@ -2485,6 +2678,175 @@ async function deleteNote(id) {
   await loadNotes(); renderNotes()
 }
 
+// ─── CHAT EN TIEMPO REAL ───
+// Canales estilo Slack adaptados al equipo: #general seed, canales libres,
+// mensajes agrupados, día separador, no-leídos por canal, "está escribiendo…"
+// (broadcast, sin tocar la DB) y @menciones que notifican + correo.
+// Los mensajes normales NO generan correo: el chat es conversación, no inbox.
+let channels = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
+let chanLatest = {}
+let _typingCh = null, _typingThrottle = null, _typingHideTimer = null
+
+async function loadChannels(){
+  try {
+    const { data } = await sb.from('workspace_channels').select('*').order('created_at')
+    channels = data || []
+    if (!chatSel && channels.length) chatSel = channels[0].id
+    const { data: latest } = await sb.from('workspace_messages')
+      .select('channel_id, created_at').order('created_at', {ascending:false}).limit(300)
+    chanLatest = {}
+    for (const m of (latest || [])) if (!chanLatest[m.channel_id]) chanLatest[m.channel_id] = m.created_at
+  } catch (_) { channels = [] }
+  updateChatBadge()
+}
+function chatReadMap(){ try { return JSON.parse(localStorage.getItem('ws_chat_read') || '{}') } catch (_) { return {} } }
+function markChanRead(id){
+  const m = chatReadMap(); m[id] = new Date().toISOString()
+  try { localStorage.setItem('ws_chat_read', JSON.stringify(m)) } catch (_) {}
+  updateChatBadge()
+}
+function chanUnread(id){
+  const last = chatReadMap()[id] || ''
+  return !!chanLatest[id] && chanLatest[id] > last
+}
+function updateChatBadge(){
+  const n = channels.filter(c => chanUnread(c.id)).length
+  const b = document.getElementById('chatBadge')
+  if (b) { b.hidden = n === 0; b.textContent = String(n) }
+}
+
+async function loadChatMsgs(reset = true){
+  if (!chatSel) return
+  let q = sb.from('workspace_messages').select('*').eq('channel_id', chatSel)
+    .order('created_at', {ascending:false}).limit(60)
+  if (!reset && chatOldest) q = q.lt('created_at', chatOldest)
+  const { data } = await q
+  const batch = (data || []).reverse()
+  chatMsgs = reset ? batch : [...batch, ...chatMsgs]
+  chatOldest = chatMsgs[0]?.created_at || null
+  _chatHasMore = (data || []).length === 60
+}
+
+function linkifyChat(s){
+  return s.replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>')
+}
+function renderChat(){
+  const chansEl = document.getElementById('chatChans')
+  if (!chansEl) return
+  chansEl.innerHTML = channels.map(c => `
+    <button class="chan-item ${c.id === chatSel ? 'on' : ''}" onclick="chatOpen('${c.id}')">
+      <span class="hash">#</span><span class="c-name">${esc(c.name)}</span>
+      ${chanUnread(c.id) && c.id !== chatSel ? '<span class="chan-unread">●</span>' : ''}
+    </button>`).join('') +
+    `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>`
+  const c = channels.find(x => x.id === chatSel)
+  document.getElementById('chatHd').innerHTML = c ? `
+    <strong>#${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}</span>
+    ${(c.created_by === profile.id || can('roles.manage')) && channels.length > 1
+      ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar canal</button>` : ''}` : ''
+  renderChatMsgs()
+}
+function renderChatMsgs(keepScroll){
+  const box = document.getElementById('chatMsgs')
+  if (!box) return
+  const stick = !keepScroll || (box.scrollHeight - box.scrollTop - box.clientHeight < 80)
+  let html = _chatHasMore ? `<div class="chat-load-more" onclick="chatLoadMore()">Cargar mensajes anteriores</div>` : ''
+  let lastDay = '', lastAuthor = '', lastTime = 0
+  for (const m of chatMsgs) {
+    const dt = new Date(m.created_at)
+    const day = dt.toLocaleDateString('es-CR', { weekday:'long', day:'numeric', month:'long' })
+    if (day !== lastDay) { html += `<div class="msg-day">${day}</div>`; lastDay = day; lastAuthor = '' }
+    const grouped = m.author_id === lastAuthor && (dt - lastTime) < 5 * 60000
+    html += `
+      <div class="msg ${grouped ? 'grouped' : ''}">
+        <div class="act-av">${esc((m.author_name || 'A').charAt(0).toUpperCase())}</div>
+        <div class="msg-body">
+          ${grouped ? '' : `<div class="msg-meta"><strong>${esc(m.author_name)}</strong><time>${dt.toLocaleTimeString('es-CR', { hour:'2-digit', minute:'2-digit' })}</time></div>`}
+          <div class="msg-txt">${linkifyChat(highlightMentions(esc(m.body)))}</div>
+        </div>
+        ${m.author_id === profile.id || can('roles.manage')
+          ? `<button class="msg-del" onclick="deleteChatMsg('${m.id}')">Eliminar</button>` : ''}
+      </div>`
+    lastAuthor = m.author_id; lastTime = dt
+  }
+  box.innerHTML = html || '<div class="empty"><p>Canal nuevo. Escribí el primer mensaje.</p></div>'
+  if (stick) box.scrollTop = box.scrollHeight
+}
+
+async function chatOpen(id){
+  chatSel = id
+  await loadChatMsgs(true)
+  markChanRead(id)
+  renderChat()
+  document.getElementById('chatInput')?.focus()
+}
+async function chatLoadMore(){ await loadChatMsgs(false); renderChatMsgs(true) }
+
+async function sendChatMsg(){
+  const input = document.getElementById('chatInput')
+  const body = (input.value || '').trim()
+  if (!body || !chatSel) return
+  input.value = ''
+  updateMentionNote(input, 'chatMentionNote')
+  const c = channels.find(x => x.id === chatSel)
+  const { data: created, error } = await sb.from('workspace_messages').insert({
+    channel_id: chatSel, author_id: profile.id, author_name: profile.name, body
+  }).select('*').single()
+  if (error) { input.value = body; return toast('Error: ' + error.message, true) }
+  // Render optimista (realtime lo traería igual, pero sin esperar)
+  if (created && !chatMsgs.some(m => m.id === created.id)) { chatMsgs.push(created); renderChatMsgs(true) }
+  chanLatest[chatSel] = created?.created_at || new Date().toISOString()
+  markChanRead(chatSel)
+  await notifyMentions(body, `${profile.name} te mencionó en #${c?.name || 'chat'}`, 'chat', chatSel)
+}
+async function deleteChatMsg(id){
+  if (!confirm('¿Eliminar este mensaje?')) return
+  await sb.from('workspace_messages').delete().eq('id', id)
+  chatMsgs = chatMsgs.filter(m => m.id !== id)
+  renderChatMsgs(true)
+}
+async function newChannel(){
+  const raw = (prompt('Nombre del canal (sin #, ej: marketing):') || '').trim()
+  const name = raw.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-áéíóúñ]/g, '').slice(0, 30)
+  if (!name) return
+  const description = (prompt('Descripción corta (opcional):') || '').trim().slice(0, 140) || null
+  const { data, error } = await sb.from('workspace_channels').insert({
+    name, description, created_by: profile.id, created_by_name: profile.name
+  }).select('id').single()
+  if (error) return toast(/duplicate|unique/i.test(error.message) ? 'Ya existe un canal con ese nombre' : 'Error: ' + error.message, true)
+  await log('creó el canal', 'chat', '#' + name, data?.id)
+  await loadChannels()
+  chatOpen(data.id)
+}
+async function deleteChannel(id){
+  const c = channels.find(x => x.id === id)
+  if (!confirm(`¿Eliminar el canal #${c?.name} y TODOS sus mensajes? No se puede deshacer.`)) return
+  await sb.from('workspace_channels').delete().eq('id', id)
+  await log('eliminó el canal', 'chat', '#' + (c?.name || ''), id)
+  chatSel = null; chatMsgs = []
+  await loadChannels()
+  if (chatSel) await chatOpen(chatSel)
+  else renderChat()
+}
+
+// "Está escribiendo…" — broadcast de Realtime, sin tocar la base de datos
+function initChatPresence(){
+  _typingCh = sb.channel('ws-typing')
+  _typingCh.on('broadcast', { event: 'typing' }, ({ payload }) => {
+    if (!payload || payload.channel !== chatSel || payload.user === profile.name) return
+    const el = document.getElementById('chatTyping')
+    if (!el) return
+    el.textContent = `${payload.user} está escribiendo…`
+    clearTimeout(_typingHideTimer)
+    _typingHideTimer = setTimeout(() => { el.textContent = '' }, 3000)
+  }).subscribe()
+}
+function chatTypingPing(){
+  if (!_typingCh || !chatSel || _typingThrottle) return
+  _typingThrottle = setTimeout(() => { _typingThrottle = null }, 1500)
+  _typingCh.send({ type: 'broadcast', event: 'typing', payload: { user: profile.name, channel: chatSel } })
+}
+
 // ─── CENTRO DE COMUNICACIONES ───
 // Anuncios, actualizaciones y votaciones con respuestas y @menciones.
 // El objetivo: que la coordinación del equipo viva acá y no en WhatsApp.
@@ -2498,6 +2860,11 @@ function renderComms() {
       <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
       <p>Todavía no hay publicaciones. Escribí la primera actualización para el equipo.</p>
     </div>`
+  // Autocompletado de menciones en los campos de respuesta abiertos
+  for (const p of posts) {
+    const el = document.getElementById('reply-' + p.id)
+    if (el) enableMentions(el, { onSubmit: () => addReply(p.id), note: 'replyNote-' + p.id })
+  }
 }
 
 function postCardHtml(p) {
@@ -2570,10 +2937,11 @@ function postCardHtml(p) {
               </div>
             </div>`).join('') || '<div class="md-empty">Sin respuestas aún.</div>'}
           <div class="cmt-form">
-            <input id="reply-${p.id}" placeholder="Respondé… (@Nombre para mencionar)" maxlength="800"
-              onkeydown="if(event.key==='Enter')addReply('${p.id}')" aria-label="Responder publicación">
+            <input id="reply-${p.id}" placeholder="Respondé… (escribí @ para mencionar)" maxlength="800"
+              aria-label="Responder publicación">
             <button class="btn btn-primary btn-sm" onclick="addReply('${p.id}')">Enviar</button>
           </div>
+          <div class="mention-note" id="replyNote-${p.id}"></div>
         </div>` : ''}
     </div>`
 }
@@ -2603,6 +2971,7 @@ async function submitPost() {
   if (error) return toast('Error: ' + error.message, true)
 
   bodyEl.value = ''
+  updateMentionNote(bodyEl, 'postMentionNote')
   document.getElementById('pollOpts').value = ''
   const lbl = { anuncio: 'publicó un anuncio', actualizacion: 'compartió una actualización', encuesta: 'abrió una votación' }
   await log(lbl[type], 'post', title, created?.id)
@@ -3224,6 +3593,27 @@ function initRealtime() {
       await loadWiki()
       if (currentView === 'wiki' && !wikiEditing) renderWiki()
     })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_messages'}, payload => {
+      if (payload.eventType === 'INSERT') {
+        const m = payload.new
+        chanLatest[m.channel_id] = m.created_at
+        if (currentView === 'chat' && m.channel_id === chatSel) {
+          if (!chatMsgs.some(x => x.id === m.id)) { chatMsgs.push(m); renderChatMsgs(true) }
+          document.getElementById('chatTyping').textContent = ''
+          markChanRead(chatSel)
+        } else {
+          updateChatBadge()
+          if (currentView === 'chat') renderChat()
+        }
+      } else if (payload.eventType === 'DELETE') {
+        chatMsgs = chatMsgs.filter(x => x.id !== payload.old?.id)
+        if (currentView === 'chat') renderChatMsgs(true)
+      }
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_channels'}, async () => {
+      await loadChannels()
+      if (currentView === 'chat') renderChat()
+    })
     .on('postgres_changes', {event:'INSERT', schema:'public', table:'workspace_notifications', filter:`recipient_id=eq.${profile.id}`}, (payload) => {
       notifications.unshift(payload.new)
       renderNotifBadge()
@@ -3374,10 +3764,11 @@ function openDetail(id) {
       <label>Comentarios</label>
       <div id="cmtList"><div class="md-empty">Cargando…</div></div>
       <div class="cmt-form">
-        <input id="cmtInput" placeholder="Escribí un comentario…" maxlength="800"
-          onkeydown="if(event.key==='Enter')addComment('${t.id}')" aria-label="Nuevo comentario">
+        <input id="cmtInput" placeholder="Escribí un comentario… (@ para mencionar)" maxlength="800"
+          aria-label="Nuevo comentario">
         <button class="btn btn-primary btn-sm" onclick="addComment('${t.id}')">Enviar</button>
       </div>
+      <div class="mention-note" id="cmtMentionNote"></div>
     </div>
     <div class="dsec">
       <label>Historial</label>
@@ -3388,6 +3779,7 @@ function openDetail(id) {
     </div>`
 
   document.getElementById('detailOverlay').classList.add('open')
+  enableMentions(document.getElementById('cmtInput'), { onSubmit: () => addComment(t.id), note: 'cmtMentionNote' })
   loadTaskComments(t.id)
   loadTaskHistory(t.id)
 }
@@ -3444,7 +3836,8 @@ async function addComment(taskId) {
     parent_id: _cmtReplyTo || null
   })
   if (error) return toast('Error: ' + error.message, true)
-  input.value = ''; input.placeholder = 'Escribí un comentario…'
+  input.value = ''; input.placeholder = 'Escribí un comentario… (@ para mencionar)'
+  updateMentionNote(input, 'cmtMentionNote')
   _cmtReplyTo = null
   commentCounts[taskId] = (commentCounts[taskId] || 0) + 1
   await log('comentó en la tarea', 'task', t?.title, taskId)
