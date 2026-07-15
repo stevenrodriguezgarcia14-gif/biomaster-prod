@@ -1354,7 +1354,7 @@ select option{background:var(--bg1)}
     </div>
     <form id="fileForm" onsubmit="submitFile(event)">
       <div class="fg">
-        <label>Archivo * (máx. 25 MB — imágenes, PDF, Office, ZIP…)</label>
+        <label>Archivo * (máx. 50 MB — imágenes, PDF, Office, ZIP…)</label>
         <input name="file" type="file" required
           accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.md,.svg">
       </div>
@@ -3238,7 +3238,7 @@ async function submitFile(e) {
   const f = e.target
   const file = f.file.files[0]
   if (!file) return toast('Elegí un archivo', true)
-  if (file.size > 25 * 1048576) return toast('El archivo supera los 25 MB', true)
+  if (file.size > 50 * 1048576) return toast('El archivo supera los 50 MB', true)
   const btn = document.getElementById('fileSubmitBtn')
   btn.disabled = true; btn.textContent = 'Subiendo…'
   try {
@@ -3860,7 +3860,7 @@ function attachFileToTask(taskId) {
     const file = input.files[0]
     input.value = ''
     if (!file) return
-    if (file.size > 25 * 1048576) return toast('El archivo supera los 25 MB', true)
+    if (file.size > 50 * 1048576) return toast('El archivo supera los 50 MB', true)
     toast('Subiendo archivo…')
     try {
       const safe = file.name.replace(/[^\w.\-áéíóúñÁÉÍÓÚÑ ]/g, '_')
