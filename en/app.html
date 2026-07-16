@@ -4723,6 +4723,20 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 .cm-flash-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1rem}
 .cm-flash-count{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
 @media(max-width:900px){.cm-builder2{grid-template-columns:1fr}.cm-left .cm-selcard{position:static;max-height:none}}
+
+/* Modo Personalizado v3 — resumen real + quiz por subtema */
+.cm-res-block{padding:.9rem 0;border-bottom:1px solid var(--border)}
+.cm-res-block:last-child{border-bottom:none}
+.cm-res-h{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.4rem}
+.cm-res-h .cm-out-num{font-weight:800;font-size:.82rem;color:var(--green);font-variant-numeric:tabular-nums}
+.cm-res-h strong{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+.cm-res-body{font-size:.9rem;line-height:1.6;color:var(--text)}
+.cm-res-body ul{margin:.2rem 0 .2rem 1.1rem;padding:0}
+.cm-res-body li{margin-bottom:.35rem}
+.cm-res-body .list{list-style:disc}
+.cm-quiz-empty{background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--muted);line-height:1.5}
+.cm-flash-back p{font-size:.9rem;line-height:1.5;text-align:left}
+.cm-flash-back ul{margin:.3rem 0 0 1rem;text-align:left}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -10929,44 +10943,65 @@ function nextSim(){
 //  F3: MODO PERSONALIZADO — práctica dirigida multi-parcial
 //  Premium (acceso completo). Reutiliza simState + renderSim.
 // ═══════════════════════════════════════════════════════════
-const _CM_STR = {"none": "Select at least one subtopic.", "q": "questions", "themes": "subtopics", "defRoute": "My first route", "namePrompt": "Name your BioMaster (e.g. Final review, Genetics, Med)", "mgrTitle": "Your custom BioMasters", "mgrSub": "Create tailored study spaces. Each builds its own summary, quiz, exam, diagnostic, plan and flashcards — only with the exact subtopics you pick.", "create": "Create new BioMaster", "open": "Open", "sub": "subtopics", "back": "My routes", "delConfirm": "Delete this custom route?", "empty": "You have none yet. Create your first custom BioMaster.", "newCardT": "Create new", "newCardP": "A study space tailored to you", "selHead": "Pick your subtopics", "selSub": "Check exactly what you want to study. Mix subtopics from any unit.", "all": "All", "clear": "Clear", "wsEmpty": "Pick subtopics on the left to generate your experience.", "activeRoute": "Your BioMaster", "tResumen": "Summary", "tResumenD": "Your focused syllabus.", "tQuiz": "Quiz", "tQuizD": "Adaptive practice.", "tExamen": "Exam", "tExamenD": "Unit-style test.", "tDiag": "Diagnostic", "tDiagD": "Measure your level.", "tPlan": "Plan", "tPlanD": "Your study checklist.", "tFlash": "Flashcards", "tFlashD": "Quick review.", "resHead": "Your custom syllabus", "resSub": "subtopics selected. This is exactly your content to study.", "planHead": "Your study plan", "planSub": "Check off each subtopic as you master it.", "flashHead": "Flashcards from your selection", "flip": "Flip", "next": "Next", "prev": "Prev", "of": "of", "quizResult": "Result", "correct": "correct", "retry": "Retry", "confirm": "Confirm", "finish": "Finish", "noContent": "No content for this subtopic yet.", "startQuiz": "Start"}
-let _cmSel = []      // [{parcial, theme, id, label}]
+const _CM_STR = {"none": "Select at least one subtopic.", "q": "questions", "themes": "subtopics", "defRoute": "My first route", "namePrompt": "Name your BioMaster (e.g. Final review, Genetics, Med)", "open": "Open", "sub": "subtopics", "back": "My routes", "delConfirm": "Delete this custom route?", "empty": "You have none yet. Create your first custom BioMaster.", "newCardT": "Create new", "newCardP": "A study space tailored to you", "all": "All", "resHead": "Your custom summary", "resSub": "The exact theory of the subtopics you picked.", "planHead": "Your study plan", "planSub": "Check off each subtopic as you master it.", "flashHead": "Flashcards from your selection", "flip": "Show answer", "next": "Next", "prev": "Prev", "of": "of", "quizResult": "Result", "correct": "correct", "retry": "Retry", "finish": "Finish", "noQ": "These subtopics have no practice questions yet. Try the Summary or Flashcards.", "wsEmpty": "Pick subtopics on the left to generate your experience."}
+let _cmSel = []      // [{parcial, id}]
 let _cmActiveId = null
 let _cmQuiz = null
+let _cmCatCache = null
 function _cmBank(parcial){
   if (parcial === 'p1') return E1Q
   if (parcial === 'p3') return EXAM_P3_BANK.map(q => ({q:q.q, ops:q.o, a:q.a, theme:q.theme, exp:q.f||''}))
   return E23Q
 }
-// Catálogo fino de subtemas enumerados (reusa P1_SUBTOPICS y SUBTOPICS del módulo)
+function _cmNorm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') }
+function _cmEsc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
+// Catálogo REAL: extraído de los .subitem del resumen (runtime). Cada uno = subtema con teoría.
 function _cmCatalog(){
+  if(_cmCatCache) return _cmCatCache
   const cat=[]
-  try{
-    const p1n={int:'P1 · Introducción',bio:'P1 · Biomoléculas',cel:'P1 · Célula',met:'P1 · Metabolismo',ene:'P1 · Fotosíntesis y respiración'}
-    ;['int','bio','cel','met','ene'].forEach(th=>{
-      const items=P1_SUBTOPICS.filter(s=>s.theme===th).map(s=>({parcial:'p1',theme:th,id:'p1:'+s.id,num:s.id,label:s.t,desc:''}))
-      if(items.length) cat.push({group:p1n[th],items})
+  ;[['p1','resumenP1'],['p2','resumen'],['p3','resumenP3']].forEach(([parcial,sec])=>{
+    const root=document.getElementById(sec); if(!root) return
+    root.querySelectorAll('.subitem').forEach(el=>{
+      const strong=el.querySelector('strong'); if(!strong) return
+      const txt=strong.textContent.trim()
+      const m=txt.match(/^([0-9]+(?:\.[0-9]+)+(?:[\u2013-][0-9.]+)?)\s*(.*)$/)
+      if(!m) return
+      const num=m[1], label=(m[2]||txt).trim()
+      const kw=(el.dataset.keywords||'').split(/\s+/).map(_cmNorm).filter(w=>w.length>2)
+      const det=el.closest('details'); const gs=det&&det.querySelector('summary strong')
+      const group=gs?gs.textContent.trim():sec
+      const clone=el.cloneNode(true); const cs=clone.querySelector('strong'); if(cs)cs.remove()
+      cat.push({parcial,id:parcial+':'+num,num,label,keywords:kw,group,body:clone.innerHTML.trim()})
     })
-  }catch(e){}
-  try{
-    const p2map={T4:['gen','P2 · Genética'],T5:['evo','P2 · Evolución'],T6:['ori','P2 · Origen de la vida']}
-    ;['T4','T5','T6'].forEach(T=>{ if(!SUBTOPICS[T])return; const mp=p2map[T]||['gen','P2']
-      const items=SUBTOPICS[T].map(s=>({parcial:'p2',theme:mp[0],id:'p2:'+s.id,num:s.id,label:(s.label||'').replace(/^[0-9.]+\s*/,''),desc:s.desc||''}))
-      cat.push({group:mp[1],items})
-    })
-  }catch(e){}
-  const p3={ori:'Origen de la vida',dom:'Sistemática',virpro:'Virus y procariotas',euk:'Eucariotas (protistas, plantas, hongos)',ani:'Animales',eco:'Ecología'}
-  cat.push({group:'P3 · Diversidad y ecología', items:['ori','dom','virpro','euk','ani','eco'].map(th=>({parcial:'p3',theme:th,id:'p3:'+th,num:'',label:p3[th],desc:''}))})
-  return cat
+  })
+  _cmCatCache=cat; return cat
 }
+function _cmItem(id){ return _cmCatalog().find(x=>x.id===id) }
+function _cmSelItems(){ return _cmSel.map(s=>_cmItem(s.id)).filter(Boolean) }
+function _cmGroupSel(){ const gm=new Map(); _cmSelItems().forEach(it=>{ if(!gm.has(it.group))gm.set(it.group,[]); gm.get(it.group).push(it) }); return [...gm.entries()] }
+// Matching pregunta ↔ subtema por keywords (≥2 coincidencias)
+function _cmQText(q){ return _cmNorm((q.q||'')+' '+(q.exp||'')+' '+((q.ops||[]).join(' '))) }
+function _cmMatch(t, kws){ let n=0; for(const k of kws){ if(k && t.indexOf(k)>=0){ n++; if(n>=2) return true } } return false }
+function _cmPoolOf(sel){
+  const byP={p1:[],p2:[],p3:[]}
+  ;(sel||[]).forEach(s=>{ const it=_cmItem(s.id); if(it) byP[it.parcial].push(it) })
+  let pool=[], seen=new Set()
+  ;['p1','p2','p3'].forEach(p=>{ if(!byP[p].length)return
+    _cmBank(p).forEach(q=>{ const t=_cmQText(q); if(byP[p].some(it=>_cmMatch(t,it.keywords))){ if(!seen.has(q.q)){seen.add(q.q); pool.push(q)} } }) })
+  return pool
+}
+function _cmMasteryOf(sel){ let acc=0,n=0; const seen=new Set(); (sel||[]).forEach(s=>{ const it=_cmItem(s.id); if(!it)return; const th=it.parcial+':'+_cmItemTheme(it); if(seen.has(th))return; seen.add(th); const t=_cmItemTheme(it); const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[t])||0,m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[t])||0; if(h+m>0){acc+=h/(h+m);n++} }); return n?Math.round(acc/n*100):0 }
+function _cmItemTheme(it){ // tema (primer número) → theme aproximado por parcial
+  const t=parseInt(it.num);
+  if(it.parcial==='p1') return ({1:'int',2:'bio',3:'cel',4:'met',5:'ene'})[t]||'int'
+  if(it.parcial==='p2') return ({4:'gen',5:'evo',6:'ori'})[t]||'gen'
+  return 'ori'
+}
+
 function _cmData(){ S.custom=S.custom||{}; if(!Array.isArray(S.custom.routes)) S.custom.routes=[]; return S.custom }
-function _cmMigrate(){ const d=_cmData(); if(!d.routes.length && Array.isArray(d.sel) && d.sel.length){ d.routes.push({id:'r'+Date.now(), name:_CM_STR.defRoute, sel:[]}); try{persistState()}catch(e){} } }
+function _cmMigrate(){ const d=_cmData(); if(!d.routes.length && Array.isArray(d.sel) && d.sel.length){ d.routes.push({id:'r'+Date.now(),name:_CM_STR.defRoute,sel:[]}); try{persistState()}catch(e){} } }
 function _cmActive(){ const d=_cmData(); return d.routes.find(r=>r.id===_cmActiveId)||null }
 function _cmSync(){ const r=_cmActive(); if(r){ r.sel=_cmSel.slice(); try{persistState()}catch(e){} } }
-function _cmThemes(){ const s=new Set(); _cmSel.forEach(x=>s.add(x.parcial+':'+x.theme)); return [...s].map(k=>{const[p,t]=k.split(':');return{parcial:p,theme:t}}) }
-function _cmPoolOf(sel){ let c=0; const seen=new Set(); (sel||[]).forEach(x=>{ const k=x.parcial+':'+x.theme; if(seen.has(k))return; seen.add(k); _cmBank(x.parcial).forEach(q=>{ if(q.theme===x.theme)c++ }) }); return c }
-function _cmMasteryOf(sel){ let acc=0,n=0; const seen=new Set(); (sel||[]).forEach(x=>{ const k=x.parcial+':'+x.theme; if(seen.has(k))return; seen.add(k); const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[x.theme])||0,m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[x.theme])||0; if(h+m>0){acc+=h/(h+m);n++} }); return n?Math.round(acc/n*100):0 }
-
 function renderCustomMode(){
   const gate=document.getElementById('cmGate'),mgr=document.getElementById('cmManager'),bh=document.getElementById('cmBuilderHead'),picker=document.getElementById('cmPicker')
   if(!gate||!mgr||!picker) return
@@ -10975,7 +11010,6 @@ function renderCustomMode(){
   if(_cmActiveId && _cmActive()) renderBuilder(); else renderManager()
 }
 function _cmRingSvg(pct){ const C=138.2; return '<span class="crc-ring"><svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" stroke="var(--soft)" stroke-width="5" fill="none"/><circle cx="26" cy="26" r="22" stroke="var(--green)" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 26 26)"/></svg><span class="crv">'+pct+'%</span></span>' }
-function _cmEsc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
 function renderManager(){
   _cmActiveId=null
   document.getElementById('cmManager').style.display=''
@@ -10984,7 +11018,7 @@ function renderManager(){
   const d=_cmData(), grid=document.getElementById('cmRouteGrid'); if(!grid)return
   let html=''
   if(!d.routes.length) html+='<div class="cm-mgr-empty">'+_CM_STR.empty+'</div>'
-  d.routes.forEach(r=>{ const n=(r.sel||[]).length,pool=_cmPoolOf(r.sel),m=_cmMasteryOf(r.sel)
+  d.routes.forEach(r=>{ const n=(r.sel||[]).length,pool=_cmPoolOf(r.sel).length,m=_cmMasteryOf(r.sel)
     html+='<div class="cm-route-card" onclick="A.cmOpenRoute(\''+r.id+'\')"><div class="crc-top">'+_cmRingSvg(m)+'<button class="crc-del" onclick="event.stopPropagation();A.cmDeleteRoute(\''+r.id+'\')"><svg><use href="#i-trash"/></svg></button></div><h4>'+_cmEsc(r.name)+'</h4><p>'+n+' '+_CM_STR.sub+' \u00b7 '+pool+' '+_CM_STR.q+'</p><span class="crc-open">'+_CM_STR.open+' <svg><use href="#i-arrow"/></svg></span></div>'
   })
   html+='<div class="cm-route-card crc-new" onclick="A.cmNewRoute()"><span class="crn-ic"><svg><use href="#i-wand"/></svg></span><h4>'+_CM_STR.newCardT+'</h4><p>'+_CM_STR.newCardP+'</p></div>'
@@ -10992,19 +11026,17 @@ function renderManager(){
 }
 function _cmRenderCatalog(){
   const host=document.getElementById('cmCatalog'); if(!host)return
-  const cat=_cmCatalog(); let html=''
-  cat.forEach((g,gi)=>{
-    html+='<div class="cm-cat-group"><div class="cm-cat-glbl">'+_cmEsc(g.group)+'<span class="cm-cat-all" onclick="A.cmSelectGroup('+gi+')">'+_CM_STR.all+'</span></div>'
-    g.items.forEach(it=>{
-      const on=_cmSel.some(s=>s.id===it.id)
-      html+='<div class="cm-st'+(on?' on':'')+'" data-id="'+it.id+'" onclick="A.cmToggleSub(this)"><span class="cm-box"><svg><use href="#i-check"/></svg></span><span>'+(it.num?('<b style=\'color:var(--green);font-weight:800\'>'+it.num+'</b> '):'')+_cmEsc(it.label)+'</span></div>'
+  let html=''
+  _cmGroupCat().forEach((g,gi)=>{
+    html+='<div class="cm-cat-group"><div class="cm-cat-glbl">'+_cmEsc(g[0])+'<span class="cm-cat-all" onclick="A.cmSelectGroup('+gi+')">'+_CM_STR.all+'</span></div>'
+    g[1].forEach(it=>{ const on=_cmSel.some(s=>s.id===it.id)
+      html+='<div class="cm-st'+(on?' on':'')+'" data-id="'+it.id+'" onclick="A.cmToggleSub(this)"><span class="cm-box"><svg><use href="#i-check"/></svg></span><span><b style="color:var(--green);font-weight:800">'+it.num+'</b> '+_cmEsc(it.label)+'</span></div>'
     })
     html+='</div>'
   })
   host.innerHTML=html
-  host._cat=cat
 }
-function _cmFindItem(id){ const cat=_cmCatalog(); for(const g of cat) for(const it of g.items) if(it.id===id) return it; return null }
+function _cmGroupCat(){ const gm=new Map(); _cmCatalog().forEach(it=>{ if(!gm.has(it.group))gm.set(it.group,[]); gm.get(it.group).push(it) }); return [...gm.entries()] }
 function renderBuilder(){
   const r=_cmActive(); if(!r){ renderManager(); return }
   _cmSel=(r.sel||[]).slice()
@@ -11023,7 +11055,7 @@ function cmDeleteRoute(id){ if(!confirm(_CM_STR.delConfirm))return; const d=_cmD
 function cmBackToRoutes(){ renderManager() }
 function _cmSet(id,v){ const e=document.getElementById(id); if(e) e.textContent=v }
 function _cmRefresh(){
-  const n=_cmSel.length,mastery=_cmMasteryOf(_cmSel),pool=_cmPoolOf(_cmSel)
+  const n=_cmSel.length,mastery=_cmMasteryOf(_cmSel),pool=_cmPoolOf(_cmSel).length
   _cmSet('cmStatCount',n); _cmSet('cmStatMastery',mastery+'%'); _cmSet('cmStatPool',pool); _cmSet('cmRingVal',mastery+'%')
   const fg=document.getElementById('cmRingFg'); if(fg){const C=214; fg.style.strokeDashoffset=(C*(1-mastery/100)).toFixed(1)}
   const has=n>0
@@ -11031,25 +11063,11 @@ function _cmRefresh(){
   const empty=document.getElementById('cmEmpty'); if(empty) empty.style.display=has?'none':''
   if(!has){ const st=document.getElementById('cmStage'); if(st){st.style.display='none';st.innerHTML=''} }
 }
-function cmToggleSub(el){
-  const id=el.dataset.id, it=_cmFindItem(id); if(!it)return
-  const i=_cmSel.findIndex(s=>s.id===id)
-  if(i>=0){ _cmSel.splice(i,1); el.classList.remove('on') } else { _cmSel.push(it); el.classList.add('on') }
-  _cmSync(); _cmRefresh()
-}
-function cmSelectGroup(gi){
-  const cat=_cmCatalog(), g=cat[gi]; if(!g)return
-  const allOn=g.items.every(it=>_cmSel.some(s=>s.id===it.id))
-  g.items.forEach(it=>{ const i=_cmSel.findIndex(s=>s.id===it.id); if(allOn){ if(i>=0)_cmSel.splice(i,1) } else { if(i<0)_cmSel.push(it) } })
-  _cmSync(); _cmRenderCatalog(); _cmRefresh()
-}
+function cmToggleSub(el){ const id=el.dataset.id; const it=_cmItem(id); if(!it)return; const i=_cmSel.findIndex(s=>s.id===id); if(i>=0){_cmSel.splice(i,1);el.classList.remove('on')}else{_cmSel.push({parcial:it.parcial,id});el.classList.add('on')}; _cmSync(); _cmRefresh() }
+function cmSelectGroup(gi){ const g=_cmGroupCat()[gi]; if(!g)return; const allOn=g[1].every(it=>_cmSel.some(s=>s.id===it.id)); g[1].forEach(it=>{ const i=_cmSel.findIndex(s=>s.id===it.id); if(allOn){if(i>=0)_cmSel.splice(i,1)}else{if(i<0)_cmSel.push({parcial:it.parcial,id:it.id})} }); _cmSync(); _cmRenderCatalog(); _cmRefresh() }
 function cmClear(){ _cmSel=[]; _cmSync(); _cmRenderCatalog(); _cmRefresh() }
 
-// ── INLINE: stage tools ──
-function _cmStageOpen(kind){
-  document.querySelectorAll('#cmTools .cm-tool').forEach(x=>x.classList.toggle('active', x.dataset.t===kind))
-  const st=document.getElementById('cmStage'); st.style.display=''; return st
-}
+function _cmStageOpen(kind){ document.querySelectorAll('#cmTools .cm-tool').forEach(x=>x.classList.toggle('active', x.dataset.t===kind)); const st=document.getElementById('cmStage'); st.style.display=''; return st }
 function cmTool(kind){
   if(!_cmSel.length){ toast(_CM_STR.none,true); return }
   if(kind==='resumen') return cmRenderResumen()
@@ -11059,50 +11077,42 @@ function cmTool(kind){
   if(kind==='examen') return cmStartQuiz('examen',30)
   if(kind==='diagnostico') return cmStartQuiz('diagnostico',10)
 }
-function _cmSelByGroup(){ // agrupa la selección por group del catálogo
-  const cat=_cmCatalog(), out=[]
-  cat.forEach(g=>{ const items=g.items.filter(it=>_cmSel.some(s=>s.id===it.id)); if(items.length) out.push({group:g.group,items}) })
-  return out
-}
 function cmRenderResumen(){
-  const st=_cmStageOpen('resumen'), groups=_cmSelByGroup()
-  let html='<div class="cm-panel"><div class="cm-panel-h"><svg><use href="#i-book"/></svg><h3>'+_CM_STR.resHead+'</h3></div><p class="cm-panel-sub">'+_cmSel.length+' '+_CM_STR.resSub+'</p>'
-  groups.forEach(g=>{ html+='<div class="cm-out-group"><div class="cm-out-glbl">'+_cmEsc(g.group)+'</div>'
-    g.items.forEach(it=>{ html+='<div class="cm-out-item"><span class="cm-out-num">'+(it.num||'•')+'</span><span class="cm-out-txt"><strong>'+_cmEsc(it.label)+'</strong>'+(it.desc?'<small>'+_cmEsc(it.desc)+'</small>':'')+'</span></div>' })
+  const st=_cmStageOpen('resumen')
+  let html='<div class="cm-panel"><div class="cm-panel-h"><svg><use href="#i-book"/></svg><h3>'+_CM_STR.resHead+'</h3></div><p class="cm-panel-sub">'+_cmSel.length+' '+_CM_STR.themes+' · '+_CM_STR.resSub+'</p>'
+  _cmGroupSel().forEach(([group,items])=>{ html+='<div class="cm-out-group"><div class="cm-out-glbl">'+_cmEsc(group)+'</div>'
+    items.forEach(it=>{ html+='<div class="cm-res-block"><div class="cm-res-h"><span class="cm-out-num">'+it.num+'</span><strong>'+_cmEsc(it.label)+'</strong></div><div class="cm-res-body">'+it.body+'</div></div>' })
     html+='</div>' })
   html+='</div>'; st.innerHTML=html; try{st.scrollIntoView({behavior:'smooth',block:'nearest'})}catch(e){}
 }
 function cmRenderPlan(){
-  const st=_cmStageOpen('plan'), groups=_cmSelByGroup()
-  const done=(S.custom&&S.custom.planDone)||{}
+  const st=_cmStageOpen('plan'); const done=(S.custom&&S.custom.planDone)||{}
   let html='<div class="cm-panel"><div class="cm-panel-h"><svg><use href="#i-cal"/></svg><h3>'+_CM_STR.planHead+'</h3></div><p class="cm-panel-sub">'+_CM_STR.planSub+'</p>'
-  groups.forEach(g=>{ g.items.forEach(it=>{ const dn=done[it.id]?' done':''
-    html+='<div class="cm-plan-item'+dn+'" data-id="'+it.id+'" onclick="A.cmPlanToggle(this)"><span class="cm-box"><svg><use href="#i-check"/></svg></span><span class="cm-plan-t">'+(it.num?'<small>'+it.num+'</small>':'')+_cmEsc(it.label)+'</span></div>' }) })
+  _cmGroupSel().forEach(([group,items])=>{ items.forEach(it=>{ const dn=done[it.id]?' done':''
+    html+='<div class="cm-plan-item'+dn+'" data-id="'+it.id+'" onclick="A.cmPlanToggle(this)"><span class="cm-box"><svg><use href="#i-check"/></svg></span><span class="cm-plan-t"><small>'+it.num+'</small>'+_cmEsc(it.label)+'</span></div>' }) })
   html+='</div>'; st.innerHTML=html
 }
 function cmPlanToggle(el){ const id=el.dataset.id; S.custom=S.custom||{}; S.custom.planDone=S.custom.planDone||{}; S.custom.planDone[id]=!S.custom.planDone[id]; el.classList.toggle('done'); try{persistState()}catch(e){} }
 function cmRenderFlash(){
   const st=_cmStageOpen('flashcards')
-  const cards=[]; _cmSelByGroup().forEach(g=>g.items.forEach(it=>cards.push({front:it.label,back:it.desc||g.group,num:it.num})))
+  const cards=_cmSelItems().map(it=>({front:it.num+' '+it.label, back:it.body}))
   if(!cards.length){ st.innerHTML=''; return }
-  window._cmFlash={cards,idx:0}
-  _cmFlashRender()
+  window._cmFlash={cards,idx:0}; _cmFlashRender()
 }
 function _cmFlashRender(){
-  const st=document.getElementById('cmStage'), f=window._cmFlash; if(!st||!f)return
-  const c=f.cards[f.idx]
+  const st=document.getElementById('cmStage'), f=window._cmFlash; if(!st||!f)return; const c=f.cards[f.idx]
   st.innerHTML='<div class="cm-panel"><div class="cm-panel-h"><svg><use href="#i-cards"/></svg><h3>'+_CM_STR.flashHead+'</h3></div>'
-    +'<div class="cm-flash"><div class="cm-flash-card" id="cmFlashCard" onclick="this.classList.toggle(\'flip\')">'
-    +'<div class="cm-flash-face cm-flash-front"><div>'+(c.num?'<div style=\'color:var(--green);font-weight:800;margin-bottom:.4rem\'>'+c.num+'</div>':'')+'<strong>'+_cmEsc(c.front)+'</strong><p>'+_CM_STR.flip+'</p></div></div>'
-    +'<div class="cm-flash-face cm-flash-back"><div><p>'+_cmEsc(c.back)+'</p></div></div></div>'
+    +'<div class="cm-flash"><div class="cm-flash-card" onclick="this.classList.toggle(\'flip\')">'
+    +'<div class="cm-flash-face cm-flash-front"><div><strong>'+_cmEsc(c.front)+'</strong><p>'+_CM_STR.flip+'</p></div></div>'
+    +'<div class="cm-flash-face cm-flash-back"><div><p>'+c.back+'</p></div></div></div>'
     +'<div class="cm-flash-nav"><button class="btn" onclick="A.cmFlashNav(-1)"><svg class="btn-ic" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>'+_CM_STR.prev+'</button><span class="cm-flash-count">'+(f.idx+1)+' '+_CM_STR.of+' '+f.cards.length+'</span><button class="btn" onclick="A.cmFlashNav(1)">'+_CM_STR.next+'<svg class="btn-ic"><use href="#i-arrow"/></svg></button></div></div></div>'
 }
 function cmFlashNav(d){ const f=window._cmFlash; if(!f)return; f.idx=(f.idx+d+f.cards.length)%f.cards.length; _cmFlashRender() }
 
-// ── INLINE QUIZ (self-contained) ──
-function _cmQuizPool(count){ let pool=[]; const seen=new Set(); _cmSel.forEach(x=>{ const k=x.parcial+':'+x.theme; if(seen.has(k))return; seen.add(k); _cmBank(x.parcial).forEach(q=>{ if(q.theme===x.theme) pool.push(q) }) }); return pool.sort(()=>Math.random()-.5).slice(0,count) }
 function cmStartQuiz(kind,count){
-  const pool=_cmQuizPool(count); if(!pool.length){ toast(_CM_STR.none,true); return }
+  const all=_cmPoolOf(_cmSel)
+  if(!all.length){ const st=_cmStageOpen('quiz'); st.innerHTML='<div class="cm-quiz-empty">'+_CM_STR.noQ+'</div>'; return }
+  const pool=all.slice().sort(()=>Math.random()-.5).slice(0,count)
   _cmQuiz={qs:pool,idx:0,hits:0,miss:0,ans:false,kind}
   _cmStageOpen('quiz'); _cmRenderQuiz()
 }
@@ -11110,30 +11120,23 @@ function _cmRenderQuiz(){
   const st=document.getElementById('cmStage'), Q=_cmQuiz; if(!st||!Q)return
   if(Q.idx>=Q.qs.length){ return _cmQuizResult() }
   const q=Q.qs[Q.idx], prog=Math.round(Q.idx/Q.qs.length*100)
-  let html='<div class="cm-quiz"><div class="cm-quiz-top"><span class="cm-quiz-badge">'+(Q.idx+1)+' / '+Q.qs.length+'</span><div class="cm-quiz-prog"><span style="width:'+prog+'%"></span></div><span class="cm-quiz-badge" style="color:var(--green)">'+Q.hits+' \u2713</span></div>'
+  st.innerHTML='<div class="cm-quiz"><div class="cm-quiz-top"><span class="cm-quiz-badge">'+(Q.idx+1)+' / '+Q.qs.length+'</span><div class="cm-quiz-prog"><span style="width:'+prog+'%"></span></div><span class="cm-quiz-badge" style="color:var(--green)">'+Q.hits+' \u2713</span></div>'
     +'<div class="cm-quiz-q">'+_cmEsc(q.q)+'</div>'
     +q.ops.map((o,i)=>'<button class="cm-opt" data-i="'+i+'" onclick="A.cmAnswer('+i+')">'+_cmEsc(o)+'</button>').join('')
     +'<div id="cmQuizFb"></div><div id="cmQuizNext"></div></div>'
-  st.innerHTML=html
 }
 function cmAnswer(i){
   const Q=_cmQuiz; if(!Q||Q.ans)return; Q.ans=true
-  const q=Q.qs[Q.idx], ok=(i===q.a)
-  if(ok)Q.hits++; else Q.miss++
-  document.querySelectorAll('#cmStage .cm-opt').forEach((b,idx)=>{ b.setAttribute('disabled','') ; if(idx===q.a)b.classList.add('ok'); else if(idx===i&&!ok)b.classList.add('bad') })
-  const fb=document.getElementById('cmQuizFb')
-  if(fb){ fb.className='cm-quiz-fb '+(ok?'ok':'bad'); fb.innerHTML=(ok?'\u2713 ':'\u2717 ')+(q.exp||'') }
-  const nx=document.getElementById('cmQuizNext')
-  if(nx) nx.innerHTML='<button class="btn primary" onclick="A.cmNext()" style="width:100%;justify-content:center">'+((Q.idx+1>=Q.qs.length)?_CM_STR.finish:_CM_STR.next)+' <svg class="btn-ic"><use href="#i-arrow"/></svg></button>'
+  const q=Q.qs[Q.idx], ok=(i===q.a); if(ok)Q.hits++; else Q.miss++
+  document.querySelectorAll('#cmStage .cm-opt').forEach((b,idx)=>{ b.setAttribute('disabled',''); if(idx===q.a)b.classList.add('ok'); else if(idx===i&&!ok)b.classList.add('bad') })
+  const fb=document.getElementById('cmQuizFb'); if(fb){ fb.className='cm-quiz-fb '+(ok?'ok':'bad'); fb.innerHTML=(ok?'\u2713 ':'\u2717 ')+_cmEsc(q.exp||'') }
+  const nx=document.getElementById('cmQuizNext'); if(nx) nx.innerHTML='<button class="btn primary" onclick="A.cmNext()" style="width:100%;justify-content:center">'+((Q.idx+1>=Q.qs.length)?_CM_STR.finish:_CM_STR.next)+' <svg class="btn-ic"><use href="#i-arrow"/></svg></button>'
   try{ recordAnswer(ok, q.theme) }catch(e){}
 }
 function cmNext(){ const Q=_cmQuiz; if(!Q)return; Q.idx++; Q.ans=false; _cmRenderQuiz() }
 function _cmQuizResult(){
-  const st=document.getElementById('cmStage'), Q=_cmQuiz, total=Q.hits+Q.miss, pct=total?Math.round(Q.hits/total*100):0
-  const C=314, off=(C*(1-pct/100)).toFixed(1)
-  st.innerHTML='<div class="cm-quiz"><div class="cm-quiz-res"><div class="cm-res-ring"><svg width="130" height="130"><circle cx="65" cy="65" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle cx="65" cy="65" r="50" stroke="var(--green)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+off+'" transform="rotate(-90 65 65)"/></svg><span class="v">'+pct+'%</span></div>'
-    +'<h3 style="font-size:1.2rem;font-weight:800">'+_CM_STR.quizResult+': '+Q.hits+'/'+total+' '+_CM_STR.correct+'</h3>'
-    +'<div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.2rem"><button class="btn primary" onclick="A.cmTool(\''+Q.kind+'\')">'+_CM_STR.retry+'</button></div></div></div>'
+  const st=document.getElementById('cmStage'), Q=_cmQuiz, total=Q.hits+Q.miss, pct=total?Math.round(Q.hits/total*100):0, C=314
+  st.innerHTML='<div class="cm-quiz"><div class="cm-quiz-res"><div class="cm-res-ring"><svg width="130" height="130"><circle cx="65" cy="65" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle cx="65" cy="65" r="50" stroke="var(--green)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 65 65)"/></svg><span class="v">'+pct+'%</span></div><h3 style="font-size:1.2rem;font-weight:800">'+_CM_STR.quizResult+': '+Q.hits+'/'+total+' '+_CM_STR.correct+'</h3><div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.2rem"><button class="btn primary" onclick="A.cmTool(\''+Q.kind+'\')">'+_CM_STR.retry+'</button></div></div></div>'
   try{ if(S.stats){ S.stats.simsDone=(S.stats.simsDone||0)+1; persistState() } }catch(e){}
   _cmRefresh()
 }
