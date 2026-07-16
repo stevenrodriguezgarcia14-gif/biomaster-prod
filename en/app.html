@@ -4600,6 +4600,22 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 .cm-tool-state .cm-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
 @media(max-width:900px){.cm-builder{grid-template-columns:1fr}.cm-left .card.panel{position:static}.cm-tools{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.cm-tools{grid-template-columns:1fr}.cm-route-hero{flex-direction:column;text-align:center}}
+
+/* ═══════════════════════════════════════════════════════════
+   REDISEÑO PREMIUM F4 — Parciales como panel de plan
+   ═══════════════════════════════════════════════════════════ */
+.pl-header{display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:1.4rem 1.6rem;box-shadow:var(--e1);margin-bottom:1.2rem}
+.pl-ring{position:relative;width:120px;height:120px;flex-shrink:0}
+.pl-ring-v{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.pl-ring-v b{font-size:1.8rem;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.pl-ring-v small{font-size:.62rem;color:var(--muted);font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:.15rem}
+.pl-meta .eyebrow{display:inline-flex;align-items:center;gap:.3rem;margin-bottom:.5rem}
+.pl-meta h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;text-wrap:balance}
+.pl-meta p{color:var(--muted);font-size:.9rem;margin-top:.3rem;max-width:52ch;line-height:1.5}
+.pl-actions{display:flex;flex-direction:column;gap:.5rem;flex-shrink:0}
+.pl-actions .btn{display:inline-flex;align-items:center;gap:.45rem;justify-content:flex-start;white-space:nowrap;transition:transform var(--d-fast) var(--ease),box-shadow var(--d)}
+.pl-actions .btn:active{transform:scale(.97)}
+@media(max-width:900px){.pl-header{grid-template-columns:1fr;text-align:center;justify-items:center}.pl-actions{flex-direction:row;flex-wrap:wrap;justify-content:center}.pl-meta p{margin-left:auto;margin-right:auto}}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -5866,6 +5882,7 @@ window.Analytics = (function(){
         </div>
 
     <div class="app-view" id="view-parciales">
+      <div class="pl-header" id="parcialPlanHeader"><div class="pl-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle id="plRingFg" cx="60" cy="60" r="50" stroke="url(#plGrad)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)"/><defs><linearGradient id="plGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#37a459"/><stop offset="1" stop-color="#5fd98a"/></linearGradient></defs></svg><span class="pl-ring-v"><b id="plRingVal">0%</b><small>Mastered</small></span></div><div class="pl-meta"><span class="eyebrow" id="plEyebrow"><svg class="btn-ic"><use href="#i-leaf"/></svg> Unit 1 · Active</span><h2 class="serif" id="plTitle">Cell and biomolecules</h2><p id="plDesc">5 topics · introduction, biomolecules, cell, metabolism and energy. Your base for the whole course.</p></div><div class="pl-actions"><button class="btn primary" onclick="A.plGo('res')"><svg class="btn-ic"><use href="#i-book"/></svg>Summary</button><button class="btn" onclick="A.plGo('cob')"><svg class="btn-ic"><use href="#i-target"/></svg>Coverage</button><button class="btn" onclick="A.plGo('ev')"><svg class="btn-ic"><use href="#i-doc"/></svg>Assessment</button></div></div>
 <section class="section p1-content" id="resumenP1" data-parcial="p1">
       <div class="section-head">
         <div>
@@ -10849,6 +10866,36 @@ function cmTool(kind){
   if(kind==='resumen'){ const map={p1:'resumenP1',p2:'resumen',p3:'resumenP3'}; try{navigateTo(map[_cmSel[0].parcial]||'resumen')}catch(e){}; return }
 }
 
+
+/* ═══ F4: Parcial como panel de plan ═══ */
+const _PL_CFG = {"p1": {"eb": "Unit 1", "title": "Cell and biomolecules", "desc": "5 topics · introduction, biomolecules, cell, metabolism and energy. Your base for the whole course.", "themes": ["int", "bio", "cel", "met", "ene"], "res": "resumenP1", "cob": "coberturaP1", "ev": "examenP1Section"}, "p2": {"eb": "Unit 2", "title": "Genetics and evolution", "desc": "Genetic basis, inheritance, evolution, biotechnology and diversity.", "themes": ["gen", "evo", "biot", "ori"], "res": "resumen", "cob": "cobertura", "ev": "examenes"}, "p3": {"eb": "Unit 3", "title": "Diversity and ecology", "desc": "Origin of life, systematics, biological diversity and ecology.", "themes": ["ori", "dom", "virpro", "euk", "ani", "eco"], "res": "resumenP3", "cob": "coberturaP3", "ev": "examenP3Section"}}
+const _PL_ACTIVE = "Active"
+let _plCur = null
+function _plMastery(themes){
+  let acc=0,n=0
+  ;(themes||[]).forEach(th=>{
+    const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[th])||0
+    const m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[th])||0
+    if(h+m>0){ acc+=h/(h+m); n++ }
+  })
+  return n? Math.round(acc/n*100):0
+}
+function renderParcialPlan(){
+  try{
+    const p=(typeof getActiveParcial==='function')?getActiveParcial():'p1'
+    const cfg=_PL_CFG[p]; if(!cfg) return
+    _plCur=cfg
+    const s=(id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v }
+    s('plTitle',cfg.title); s('plDesc',cfg.desc)
+    const eb=document.getElementById('plEyebrow')
+    if(eb) eb.innerHTML='<svg class="btn-ic"><use href="#i-leaf"/></svg> '+cfg.eb+' \u00b7 '+_PL_ACTIVE
+    const m=_plMastery(cfg.themes)
+    s('plRingVal',m+'%')
+    const fg=document.getElementById('plRingFg'); if(fg){ const C=314; fg.style.strokeDashoffset=(C*(1-m/100)).toFixed(1) }
+  }catch(e){}
+}
+function plGo(kind){ const cfg=_plCur||_PL_CFG['p1']; const id=cfg[kind]; if(id){ try{ navigateTo(id) }catch(e){} } }
+
 async function endSim(silent=false){
   simState.finished = true
   const total = simState.hits + simState.miss
@@ -15434,6 +15481,7 @@ function applyParcialActive(){
   applyParcialFiltering()
   // Filtrar visualizadores BioVisual al parcial activo
   try { if (typeof window.bvFilterByParcial === 'function') window.bvFilterByParcial(p) } catch(e){}
+  try { renderParcialPlan() } catch(e){}
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -20333,7 +20381,7 @@ const A = {
   calcGlobal, toggleExamTimer,
   // sim
   startSim, answerSim, nextSim,
-  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode, cmTool,
+  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode, cmTool, plGo, renderParcialPlan,
   // flash
   flipFlash, nextFlash, prevFlash, shuffleFlash,
   // ranking & feedback
@@ -29749,5 +29797,6 @@ BW.lab = {
   })
 })()
 </script>
+<script>(function(){var v=document.getElementById('view-parciales');if(v)v.addEventListener('view:shown',function(){try{window.A&&window.A.renderParcialPlan&&window.A.renderParcialPlan()}catch(e){}});})();</script>
 </body>
 </html>
