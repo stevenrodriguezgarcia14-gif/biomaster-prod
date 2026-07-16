@@ -261,8 +261,8 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f5faf6;--surface:#fff;--soft:#eef7f0;--soft2:#f8fbf8;--text:#183526;--muted:#667c70;--border:rgba(24,53,38,.12);--shadow:0 16px 42px rgba(18,46,32,.08);--green:#2f8b4d;--red:#c45252;--yellow:#c89a12;--blue:#2b6ea3;--greenSoft:rgba(47,139,77,.14);--redSoft:rgba(196,82,82,.14);--yellowSoft:rgba(200,154,18,.16);--blueSoft:rgba(43,110,163,.14);--radius:24px;--fs:16px}
-.theme-dark{--bg:#0d1f13;--surface:#162218;--soft:#1c2e1e;--soft2:#18281a;--text:#d0edd8;--muted:#6fa07a;--border:rgba(80,180,100,.15);--shadow:0 16px 42px rgba(0,0,0,.5)}
+:root{--bg:#f5faf6;--surface:#fff;--soft:#eef7f0;--soft2:#f8fbf8;--text:#183526;--muted:#667c70;--border:rgba(24,53,38,.12);--shadow:0 4px 14px rgba(18,46,32,.07),0 1px 3px rgba(18,46,32,.05);--green:#2f8b4d;--red:#c45252;--yellow:#c89a12;--blue:#2b6ea3;--greenSoft:rgba(47,139,77,.14);--redSoft:rgba(196,82,82,.14);--yellowSoft:rgba(200,154,18,.16);--blueSoft:rgba(43,110,163,.14);--radius:18px;--fs:16px;--r-sm:10px;--r-md:14px;--r-lg:18px;--r-xl:24px;--e1:0 1px 2px rgba(16,40,28,.05),0 1px 2px rgba(16,40,28,.04);--e2:0 2px 6px rgba(16,40,28,.07),0 6px 16px rgba(16,40,28,.05);--e3:0 10px 30px rgba(16,40,28,.12),0 2px 8px rgba(16,40,28,.06);--ease:cubic-bezier(.22,1,.36,1);--ease-in:cubic-bezier(.4,0,1,1);--d-fast:120ms;--d:180ms;--d-slow:280ms}
+.theme-dark{--bg:#0d1f13;--surface:#162218;--soft:#1c2e1e;--soft2:#18281a;--text:#d0edd8;--muted:#6fa07a;--border:rgba(80,180,100,.15);--shadow:0 6px 20px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);--e1:0 1px 2px rgba(0,0,0,.3);--e2:0 4px 14px rgba(0,0,0,.4);--e3:0 14px 36px rgba(0,0,0,.5)}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;font-size:var(--fs)}
 body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background .3s,color .3s}
 a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit;color:var(--text)}button{cursor:pointer}
@@ -4623,6 +4623,20 @@ body:not(.route-biocosmos) #sec-cosmos{display:none!important}
 @media(max-width:480px){
   .appbar-search{display:none}
 }
+
+/* ═══════════════════════════════════════════════════════════
+   REDISEÑO PREMIUM F1 — sistema de diseño
+   Sprite de iconos SVG + tokens de radio/elevación/motion.
+   ═══════════════════════════════════════════════════════════ */
+svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+/* Sidebar con iconos */
+#appNav a{display:flex;align-items:center;gap:.7rem}
+#appNav a .nav-ic{width:19px;height:19px;flex-shrink:0;opacity:.92}
+#appNav a.active .nav-ic{opacity:1}
+#appNav a .pro-badge{margin-left:auto}
+/* Bottom-nav con iconos */
+.app-bottomnav .bn-ico{display:inline-flex}
+.app-bottomnav .bn-ico svg{width:21px;height:21px}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -4784,6 +4798,31 @@ window.Analytics = (function(){
 </head>
 <body>
 <div class="toast" id="toastEl"></div>
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+<symbol id="i-wand" viewBox="0 0 24 24"><path d="M15 4V2M15 10V8M11 6H9M21 6h-2M18.5 3.5 17 5M12.5 3.5 14 5M4 20l9-9M18.5 8.5 17 7"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11l-1 8.5L18.5 10H12l1-8Z"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 8.5A2 2 0 0 0 6.8 21h10.4a2 2 0 0 0 1.8-3.5L14 9V3"/><path d="M7.5 15h9"/></symbol>
+<symbol id="i-game" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="4"/><path d="M7 11v3M5.5 12.5h3M15.5 12h.01M18 14h.01"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 5.2A3.2 3.2 0 0 1 16 11M18 20c0-2.4-1-4-2.8-4.6"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16"/><rect x="7.5" y="12" width="3" height="5" rx="1"/><rect x="12.5" y="8" width="3" height="9" rx="1"/><rect x="17.5" y="14" width="3" height="3" rx="1"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.2-6 7.5-6s7.5 2.4 7.5 6"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1 .3-1.8.7-2.5C9 10 9.5 11 11 11c0-2-1-3.5 1-8Z"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3M9 20h6M12 14v6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5Z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></symbol>
+<symbol id="i-cards" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="15" rx="2.5"/><path d="M8 3h9a2 2 0 0 1 2 2v11"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l5 5v13H6V3Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+<symbol id="i-dna" viewBox="0 0 24 24"><path d="M7 3c0 5 10 7 10 12s-10 4-10 6M17 3c0 3-4 5-7 6M17 21c0-3-4-5-7-6"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C4 12 8 4 20 4c0 12-8 16-15 15Z"/><path d="M5 19c3-6 6-8 10-9"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</defs></svg>
 
 <!-- ═══════════════════════════════════════════════════════════
      LANDING PAGE — puerta de entrada antes del login
@@ -5583,20 +5622,20 @@ window.Analytics = (function(){
     <button class="mob-nav-close" onclick="window.toggleMobSidebar()">✕ Cerrar</button>
     <nav class="panel navbox" id="appNav">
       <div class="nav-sec-lbl">Estudiar</div>
-      <a href="#/inicio" data-route="inicio">🏠 Inicio</a>
-      <a href="#/mi-estudio" data-route="mi-estudio">🎯 Mi estudio</a>
-      <a href="#/parciales" data-route="parciales">📚 Parciales</a>
-      <a href="#/personalizado" data-route="personalizado">✨ Modo personalizado <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Semestre</span></a>
+      <a href="#/inicio" data-route="inicio"><svg class="nav-ic"><use href="#i-home"/></svg>Inicio</a>
+      <a href="#/mi-estudio" data-route="mi-estudio"><svg class="nav-ic"><use href="#i-target"/></svg>Mi estudio</a>
+      <a href="#/parciales" data-route="parciales"><svg class="nav-ic"><use href="#i-layers"/></svg>Parciales</a>
+      <a href="#/personalizado" data-route="personalizado"><svg class="nav-ic"><use href="#i-wand"/></svg>Modo personalizado <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Semestre</span></a>
       <div class="nav-sec-lbl">Practicar</div>
-      <a href="#/practica" data-route="practica">⚡ Práctica</a>
-      <a href="#/biovisual" data-route="biovisual">🔬 BioVisual <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
-      <a href="#/juegos" data-route="juegos">🎮 Juegos</a>
+      <a href="#/practica" data-route="practica"><svg class="nav-ic"><use href="#i-bolt"/></svg>Práctica</a>
+      <a href="#/biovisual" data-route="biovisual"><svg class="nav-ic"><use href="#i-flask"/></svg>BioVisual <span class="pro-badge" style="font-size:.55rem;padding:.1rem .35rem">Pro</span></a>
+      <a href="#/juegos" data-route="juegos"><svg class="nav-ic"><use href="#i-game"/></svg>Juegos</a>
       <div class="nav-sec-lbl">Explorar</div>
-      <a href="#/biocosmos" data-route="biocosmos">🌍 Biocosmos</a>
-      <a href="#/comunidad" data-route="comunidad">👥 Comunidad</a>
+      <a href="#/biocosmos" data-route="biocosmos"><svg class="nav-ic"><use href="#i-globe"/></svg>Biocosmos</a>
+      <a href="#/comunidad" data-route="comunidad"><svg class="nav-ic"><use href="#i-users"/></svg>Comunidad</a>
       <div class="nav-sec-lbl">Tu cuenta</div>
-      <a href="#/progreso" data-route="progreso">📊 Mi progreso</a>
-      <a href="#/cuenta" data-route="cuenta">👤 Mi cuenta</a>
+      <a href="#/progreso" data-route="progreso"><svg class="nav-ic"><use href="#i-chart"/></svg>Mi progreso</a>
+      <a href="#/cuenta" data-route="cuenta"><svg class="nav-ic"><use href="#i-user"/></svg>Mi cuenta</a>
     </nav>
   </aside>
 
@@ -30500,11 +30539,11 @@ BW.lab = {
   </script>
 
 <nav class="app-bottomnav" aria-label="Navegación inferior">
-  <a href="#/inicio" data-route="inicio"><span class="bn-ico">🏠</span>Inicio</a>
-  <a href="#/parciales" data-route="parciales"><span class="bn-ico">📚</span>Parciales</a>
-  <a href="#/practica" data-route="practica"><span class="bn-ico">⚡</span>Práctica</a>
-  <a href="#/progreso" data-route="progreso"><span class="bn-ico">📊</span>Progreso</a>
-  <a href="#" onclick="window.toggleMobSidebar();return false"><span class="bn-ico">☰</span>Más</a>
+  <a href="#/inicio" data-route="inicio"><span class="bn-ico"><svg><use href="#i-home"/></svg></span>Inicio</a>
+  <a href="#/parciales" data-route="parciales"><span class="bn-ico"><svg><use href="#i-layers"/></svg></span>Parciales</a>
+  <a href="#/practica" data-route="practica"><span class="bn-ico"><svg><use href="#i-bolt"/></svg></span>Práctica</a>
+  <a href="#/progreso" data-route="progreso"><span class="bn-ico"><svg><use href="#i-chart"/></svg></span>Progreso</a>
+  <a href="#" onclick="window.toggleMobSidebar();return false"><span class="bn-ico"><svg><use href="#i-menu"/></svg></span>Más</a>
 </nav>
 <script>
 /* ═══════════════════════════════════════════════════════════
