@@ -1,0 +1,7 @@
+/* BioMaster design tokens — compartidos por landing y app */
+:root{--bg:#f5faf6;--surface:#fff;--soft:#eef7f0;--soft2:#f8fbf8;--text:#183526;--muted:#667c70;--border:rgba(24,53,38,.12);--shadow:0 16px 42px rgba(18,46,32,.08);--green:#2f8b4d;--red:#c45252;--yellow:#c89a12;--blue:#2b6ea3;--greenSoft:rgba(47,139,77,.14);--redSoft:rgba(196,82,82,.14);--yellowSoft:rgba(200,154,18,.16);--blueSoft:rgba(43,110,163,.14);--radius:24px;--fs:16px}
+.theme-dark{--bg:#0d1f13;--surface:#162218;--soft:#1c2e1e;--soft2:#18281a;--text:#d0edd8;--muted:#6fa07a;--border:rgba(80,180,100,.15);--shadow:0 16px 42px rgba(0,0,0,.5)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;font-size:var(--fs)}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background .3s,color .3s}
+a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit;color:var(--text)}button{cursor:pointer}
+.container{width:min(1420px,100% - 1rem);margin:auto}
