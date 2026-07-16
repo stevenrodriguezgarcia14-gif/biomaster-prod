@@ -4857,6 +4857,20 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 .cm-quiz-empty{background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--muted);line-height:1.5}
 .cm-flash-back p{font-size:.9rem;line-height:1.5;text-align:left}
 .cm-flash-back ul{margin:.3rem 0 0 1rem;text-align:left}
+
+/* Modo Personalizado v3 — resumen real + quiz por subtema */
+.cm-res-block{padding:.9rem 0;border-bottom:1px solid var(--border)}
+.cm-res-block:last-child{border-bottom:none}
+.cm-res-h{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.4rem}
+.cm-res-h .cm-out-num{font-weight:800;font-size:.82rem;color:var(--green);font-variant-numeric:tabular-nums}
+.cm-res-h strong{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+.cm-res-body{font-size:.9rem;line-height:1.6;color:var(--text)}
+.cm-res-body ul{margin:.2rem 0 .2rem 1.1rem;padding:0}
+.cm-res-body li{margin-bottom:.35rem}
+.cm-res-body .list{list-style:disc}
+.cm-quiz-empty{background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--muted);line-height:1.5}
+.cm-flash-back p{font-size:.9rem;line-height:1.5;text-align:left}
+.cm-flash-back ul{margin:.3rem 0 0 1rem;text-align:left}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -11142,6 +11156,7 @@ function _cmBank(parcial){
   return E23Q
 }
 function _cmNorm(s){ return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') }
+const _CM_STOP = 'de la el los las un una y o en con por para que se su del al es como mas menos entre sobre este esta estos estas cada tipo nivel forma parte'.split(' ')
 function _cmEsc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
 // Catálogo REAL: extraído de los .subitem del resumen (runtime). Cada uno = subtema con teoría.
 function _cmCatalog(){
@@ -11156,6 +11171,8 @@ function _cmCatalog(){
       if(!m) return
       const num=m[1], label=(m[2]||txt).trim()
       const kw=(el.dataset.keywords||'').split(/\s+/).map(_cmNorm).filter(w=>w.length>2)
+      // agregar palabras del título como keywords (mejora cobertura de subtemas sin match)
+      _cmNorm(label).split(/[^a-z0-9]+/).forEach(w=>{ if(w.length>3 && _CM_STOP.indexOf(w)<0 && kw.indexOf(w)<0) kw.push(w) })
       const det=el.closest('details'); const gs=det&&det.querySelector('summary strong')
       const group=gs?gs.textContent.trim():sec
       const clone=el.cloneNode(true); const cs=clone.querySelector('strong'); if(cs)cs.remove()
@@ -11169,13 +11186,21 @@ function _cmSelItems(){ return _cmSel.map(s=>_cmItem(s.id)).filter(Boolean) }
 function _cmGroupSel(){ const gm=new Map(); _cmSelItems().forEach(it=>{ if(!gm.has(it.group))gm.set(it.group,[]); gm.get(it.group).push(it) }); return [...gm.entries()] }
 // Matching pregunta ↔ subtema por keywords (≥2 coincidencias)
 function _cmQText(q){ return _cmNorm((q.q||'')+' '+(q.exp||'')+' '+((q.ops||[]).join(' '))) }
-function _cmMatch(t, kws){ let n=0; for(const k of kws){ if(k && t.indexOf(k)>=0){ n++; if(n>=2) return true } } return false }
+function _cmScore(t, kws){ let n=0; for(const k of kws){ if(k && t.indexOf(k)>=0) n++ } return n }
+// Pool por subtema con umbral ADAPTATIVO: ≥2 keywords (específico); si un subtema
+// no matchea nada, baja a ≥1 para garantizar que TODO subtema tenga preguntas.
 function _cmPoolOf(sel){
   const byP={p1:[],p2:[],p3:[]}
   ;(sel||[]).forEach(s=>{ const it=_cmItem(s.id); if(it) byP[it.parcial].push(it) })
   let pool=[], seen=new Set()
   ;['p1','p2','p3'].forEach(p=>{ if(!byP[p].length)return
-    _cmBank(p).forEach(q=>{ const t=_cmQText(q); if(byP[p].some(it=>_cmMatch(t,it.keywords))){ if(!seen.has(q.q)){seen.add(q.q); pool.push(q)} } }) })
+    const bank=_cmBank(p).map(q=>({q, t:_cmQText(q)}))
+    byP[p].forEach(it=>{
+      let hits=bank.filter(x=>_cmScore(x.t,it.keywords)>=2)
+      if(!hits.length) hits=bank.filter(x=>_cmScore(x.t,it.keywords)>=1)
+      hits.forEach(x=>{ if(!seen.has(x.q.q)){ seen.add(x.q.q); pool.push(x.q) } })
+    })
+  })
   return pool
 }
 function _cmMasteryOf(sel){ let acc=0,n=0; const seen=new Set(); (sel||[]).forEach(s=>{ const it=_cmItem(s.id); if(!it)return; const th=it.parcial+':'+_cmItemTheme(it); if(seen.has(th))return; seen.add(th); const t=_cmItemTheme(it); const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[t])||0,m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[t])||0; if(h+m>0){acc+=h/(h+m);n++} }); return n?Math.round(acc/n*100):0 }
