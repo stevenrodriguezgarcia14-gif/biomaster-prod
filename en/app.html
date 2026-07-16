@@ -4554,6 +4554,52 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 #dashboardWidgets .card>strong svg,#dashboardWidgets .card>strong>svg{width:18px;height:18px;vertical-align:-4px;color:var(--green);margin-right:.15rem}
 /* Guest banner integrado al sistema verde */
 .guest-banner{background:linear-gradient(135deg,var(--greenSoft),var(--soft))!important;border:1px solid rgba(47,139,77,.3)!important;color:var(--text)!important;border-radius:var(--r-lg)}
+
+/* ═══════════════════════════════════════════════════════════
+   REDISEÑO PREMIUM F3 — Constructor de Experiencias
+   ═══════════════════════════════════════════════════════════ */
+.cm-wrap{max-width:100%}
+.cm-gate{text-align:center;padding:2.6rem 1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--e1)}
+.cm-gate-ic{width:56px;height:56px;border-radius:16px;background:var(--greenSoft);color:var(--green);display:inline-grid;place-items:center;margin-bottom:1rem}
+.cm-gate-ic svg{width:28px;height:28px}
+.cm-gate h3{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.cm-gate p{color:var(--muted);max-width:540px;margin:.6rem auto 1.3rem;line-height:1.6}
+.cm-builder{display:grid;grid-template-columns:320px 1fr;gap:1.2rem;align-items:start}
+.cm-left .card.panel{position:sticky;top:.5rem}
+.cm-phead{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:1rem;margin-bottom:1rem}
+.cm-group{margin-bottom:1rem}
+.cm-glbl{font-size:.62rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);opacity:.7;margin-bottom:.5rem}
+.cm-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.cm-chip{display:inline-flex;align-items:center;gap:.3rem;padding:.42rem .72rem;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-weight:600;font-size:.8rem;color:var(--muted);cursor:pointer;transition:all var(--d) var(--ease)}
+.cm-chip:hover{border-color:var(--green);color:var(--text)}
+.cm-chip.on{background:var(--greenSoft);border-color:var(--green);color:var(--green)}
+.cm-chip.on::before{content:"✓";font-weight:900;font-size:.72rem}
+.cm-actions{display:flex;gap:.5rem;margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.cm-actions .btn{flex:1;justify-content:center;display:inline-flex;align-items:center;gap:.4rem;transition:transform var(--d-fast) var(--ease)}
+.cm-actions .btn:active{transform:scale(.97)}
+.cm-route-hero{display:flex;align-items:center;gap:1.3rem;background:linear-gradient(135deg,#0e2318,#0a1b12 65%,#0d2b1a);border-radius:var(--r-xl);padding:1.5rem;color:#eaf7ee;position:relative;overflow:hidden;box-shadow:var(--e3);margin-bottom:1.1rem}
+.cm-route-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(460px 170px at 92% 0,rgba(95,217,138,.2),transparent 62%)}
+.cm-ring{position:relative;width:84px;height:84px;flex-shrink:0}
+.cm-ring-v{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:1.15rem;font-variant-numeric:tabular-nums}
+.cm-route-meta{position:relative}
+.cm-eyebrow{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--green-glow);background:rgba(95,217,138,.14);padding:.28rem .55rem;border-radius:8px}
+.cm-route-meta h3{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:.45rem 0 .2rem}
+.cm-rstats{display:flex;gap:1.5rem;margin-top:.5rem}
+.cm-rstats div b{font-size:1.35rem;font-weight:800;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.cm-rstats div small{font-size:.68rem;color:rgba(220,240,226,.6);font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.cm-empty{background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--muted);font-size:.9rem;line-height:1.5;max-width:560px}
+.cm-tools{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}
+.cm-tool{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.1rem;box-shadow:var(--e1);cursor:pointer;transition:transform var(--d) var(--ease),box-shadow var(--d) var(--ease),border-color var(--d)}
+.cm-tool:hover{transform:translateY(-4px);box-shadow:var(--e2);border-color:var(--green)}
+.cm-tool:active{transform:translateY(-1px) scale(.99)}
+.cm-tool-ic{width:40px;height:40px;border-radius:11px;background:var(--greenSoft);color:var(--green);display:grid;place-items:center;margin-bottom:.7rem}
+.cm-tool-ic svg{width:21px;height:21px}
+.cm-tool h4{font-size:.95rem;font-weight:800;letter-spacing:-.01em}
+.cm-tool p{font-size:.78rem;color:var(--muted);margin-top:.2rem;line-height:1.4}
+.cm-tool-state{margin-top:.7rem;font-size:.72rem;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:.35rem}
+.cm-tool-state .cm-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+@media(max-width:900px){.cm-builder{grid-template-columns:1fr}.cm-left .card.panel{position:static}.cm-tools{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cm-tools{grid-template-columns:1fr}.cm-route-hero{flex-direction:column;text-align:center}}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -8510,8 +8556,8 @@ window.Analytics = (function(){
     <div class="app-view" id="view-personalizado">
 
   <section class="section" id="personalizado">
-    <div class="section-head"><div><h2>✨ Custom mode</h2><p class="module-desc">Choose exactly which subtopics you want to study and practice only that, combining all three units.</p></div></div>
-    <div class="card panel" id="customModeBody"><div id="cmGate" style="display:none;text-align:center;padding:1.4rem"><div style="font-size:2.2rem;margin-bottom:.5rem">✨</div><h3 style="margin-bottom:.5rem">✨ Custom mode</h3><p class="muted" style="max-width:520px;margin:0 auto 1rem;line-height:1.55">Custom mode lets you mix subtopics from all three units into a single focused practice. It is exclusive to the Full Semester plan, which gives you full access to U1, U2 and U3.</p><button class="btn primary" onclick="window.showPaywall('personalizado','Custom mode lets you mix subtopics from all three units into a single focused practice. It is exclusive to the Full Semester plan, which gives you full access to U1, U2 and U3.')">See the Semester plan →</button></div><div id="cmPicker" style="display:none"><h3 style="margin-bottom:.2rem">Choose the topics you want to practice</h3><p class="muted" style="font-size:.85rem;margin-bottom:1rem">Select one or more topics from any unit. We generate a practice with only those topics.</p><div class="cm-group"><div class="nav-sec-lbl" style="margin:.2rem 0 .5rem">U1 · Cell and biomolecules</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="int" onclick="A.toggleCustomTheme(this)">🔬 Introduction</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="bio" onclick="A.toggleCustomTheme(this)">🧪 Biomolecules</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="cel" onclick="A.toggleCustomTheme(this)">🔍 Cell</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="met" onclick="A.toggleCustomTheme(this)">⚙️ Metabolism</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="ene" onclick="A.toggleCustomTheme(this)">⚡ Photo/Resp</button></div></div><div class="cm-group"><div class="nav-sec-lbl" style="margin:.2rem 0 .5rem">U2 · Genetics and evolution</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="gen" onclick="A.toggleCustomTheme(this)">🧬 Genetics</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="evo" onclick="A.toggleCustomTheme(this)">🌿 Evolution</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="biot" onclick="A.toggleCustomTheme(this)">🧫 Biotechnology</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">🌍 Origin & diversity</button></div></div><div class="cm-group"><div class="nav-sec-lbl" style="margin:.2rem 0 .5rem">U3 · Diversity and ecology</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">🌱 Origin of life</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="dom" onclick="A.toggleCustomTheme(this)">🌳 Systematics</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="virpro" onclick="A.toggleCustomTheme(this)">🦠 Viruses/Prokaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="euk" onclick="A.toggleCustomTheme(this)">🌿 Eukaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ani" onclick="A.toggleCustomTheme(this)">🐾 Animals</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="eco" onclick="A.toggleCustomTheme(this)">🌍 Ecology</button></div></div><div class="cm-bar"><span class="muted" style="font-size:.85rem"><strong id="cmCount">0</strong> topics selected</span><div style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn" onclick="A.clearCustomThemes()">Clear</button><button class="btn primary" id="cmStartBtn" onclick="A.startCustomSim()">⚡ Practice my selection</button></div></div><div class="cm-resources" id="cmResources" style="display:none"><span class="muted" style="font-size:.8rem">Go to the resources for these topics:</span><a class="btn" id="cmResSummary" href="#">📚 Summaries</a><a class="btn" href="#flashcards">🃏 Flashcards</a></div></div></div>
+    <div class="section-head"><div><h2><svg class="hd-ic" style="width:22px;height:22px"><use href="#i-wand"/></svg> Custom mode</h2><p class="module-desc">Choose exactly which subtopics you want to study and practice only that, combining all three units.</p></div></div>
+    <div class="cm-wrap" id="customModeBody"><div id="cmGate" class="cm-gate" style="display:none"><span class="cm-gate-ic"><svg><use href="#i-wand"/></svg></span><h3 class="serif">Experience builder</h3><p>Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.</p><button class="btn primary" onclick="window.showPaywall('personalizado','Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.')">See the Semester plan <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div><div id="cmPicker" class="cm-builder" style="display:none"><div class="cm-left"><div class="card panel"><div class="cm-phead"><svg class="hd-ic"><use href="#i-layers"/></svg>Your subtopics</div><div class="cm-group"><div class="cm-glbl">U1 · Cell and biomolecules</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="int" onclick="A.toggleCustomTheme(this)">Introduction</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="bio" onclick="A.toggleCustomTheme(this)">Biomolecules</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="cel" onclick="A.toggleCustomTheme(this)">Cell</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="met" onclick="A.toggleCustomTheme(this)">Metabolism</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="ene" onclick="A.toggleCustomTheme(this)">Photo/Resp</button></div></div><div class="cm-group"><div class="cm-glbl">U2 · Genetics and evolution</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="gen" onclick="A.toggleCustomTheme(this)">Genetics</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="evo" onclick="A.toggleCustomTheme(this)">Evolution</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="biot" onclick="A.toggleCustomTheme(this)">Biotechnology</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin & diversity</button></div></div><div class="cm-group"><div class="cm-glbl">U3 · Diversity and ecology</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin of life</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="dom" onclick="A.toggleCustomTheme(this)">Systematics</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="virpro" onclick="A.toggleCustomTheme(this)">Viruses/Prokaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="euk" onclick="A.toggleCustomTheme(this)">Eukaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ani" onclick="A.toggleCustomTheme(this)">Animals</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="eco" onclick="A.toggleCustomTheme(this)">Ecology</button></div></div><div class="cm-actions"><button class="btn" onclick="A.clearCustomThemes()">Clear</button><button class="btn primary" id="cmStartBtn" onclick="A.startCustomSim()"><svg class="btn-ic"><use href="#i-bolt"/></svg>Practice selection</button></div></div></div><div class="cm-right"><div class="cm-route-hero"><div class="cm-ring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="cmRingFg" cx="42" cy="42" r="34" stroke="#5fd98a" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/></svg><span class="cm-ring-v" id="cmRingVal">0%</span></div><div class="cm-route-meta"><span class="cm-eyebrow">My active route</span><h3 class="serif">Your custom route</h3><div class="cm-rstats"><div><b id="cmStatCount">0</b><small>Subtopics</small></div><div><b id="cmStatMastery">0%</b><small>Mastered</small></div><div><b id="cmStatPool">0</b><small>Questions</small></div></div></div></div><div class="cm-empty" id="cmEmpty">Pick one or more subtopics on the left. We generate your whole study experience focused only on that.</div><div class="cm-tools" id="cmTools" style="display:none"><button type="button" class="cm-tool" onclick="A.cmTool('resumen')"><span class="cm-tool-ic"><svg><use href="#i-book"/></svg></span><h4>Summary</h4><p>Only the theory of your subtopics.</p><span class="cm-tool-state" id="cmSt_resumen"><span class="cm-dot"></span>topics</span></button><button type="button" class="cm-tool" onclick="A.cmTool('flashcards')"><span class="cm-tool-ic"><svg><use href="#i-cards"/></svg></span><h4>Flashcards</h4><p>Spaced-repetition review.</p><span class="cm-tool-state" id="cmSt_flashcards"><span class="cm-dot"></span>Spaced review</span></button><button type="button" class="cm-tool" onclick="A.cmTool('simulacro')"><span class="cm-tool-ic"><svg><use href="#i-bolt"/></svg></span><h4>Mock exam</h4><p>Adaptive questions from your pick.</p><span class="cm-tool-state" id="cmSt_simulacro"><span class="cm-dot"></span>questions</span></button><button type="button" class="cm-tool" onclick="A.cmTool('examen')"><span class="cm-tool-ic"><svg><use href="#i-doc"/></svg></span><h4>Exam</h4><p>Assembled unit-style test.</p><span class="cm-tool-state" id="cmSt_examen"><span class="cm-dot"></span>Unit-style</span></button><button type="button" class="cm-tool" onclick="A.cmTool('diagnostico')"><span class="cm-tool-ic"><svg><use href="#i-target"/></svg></span><h4>Diagnostic</h4><p>Measures your real level.</p><span class="cm-tool-state" id="cmSt_diagnostico"><span class="cm-dot"></span>Measures level</span></button><button type="button" class="cm-tool" onclick="A.cmTool('plan')"><span class="cm-tool-ic"><svg><use href="#i-cal"/></svg></span><h4>Study plan</h4><p>Your calendar to the exam.</p><span class="cm-tool-state" id="cmSt_plan"><span class="cm-dot"></span>Your calendar</span></button></div></div></div></div>
   </section>
     </div>
 
@@ -10725,90 +10771,82 @@ function nextSim(){
 //  F3: MODO PERSONALIZADO — práctica dirigida multi-parcial
 //  Premium (acceso completo). Reutiliza simState + renderSim.
 // ═══════════════════════════════════════════════════════════
-const _CM_STR = {"none": "Select at least one topic to start."}
-let _cmSel = []  // [{parcial, theme}]
-
+const _CM_STR = {"none": "Select at least one subtopic.", "q": "questions", "themes": "topics"}
+let _cmSel = []
 function _cmBank(parcial){
   if (parcial === 'p1') return E1Q
   if (parcial === 'p3') return EXAM_P3_BANK.map(q => ({q:q.q, ops:q.o, a:q.a, theme:q.theme, exp:q.f||''}))
   return E23Q
 }
-
-function renderCustomMode(){
-  const gate = document.getElementById('cmGate')
-  const picker = document.getElementById('cmPicker')
-  if (!gate || !picker) return
-  if (!hasFullAccess()){
-    gate.style.display = ''
-    picker.style.display = 'none'
-    return
-  }
-  gate.style.display = 'none'
-  picker.style.display = ''
-  // restaurar selección persistida
-  try {
-    const saved = (S.custom && Array.isArray(S.custom.sel)) ? S.custom.sel : []
-    _cmSel = saved.slice()
-    document.querySelectorAll('#cmPicker .cm-chip').forEach(ch => {
-      const on = _cmSel.some(s => s.parcial === ch.dataset.cmParcial && s.theme === ch.dataset.cmTheme)
-      ch.classList.toggle('on', on)
-    })
-  } catch(e){ _cmSel = [] }
-  _cmRefresh()
-}
-
-function _cmRefresh(){
-  const n = _cmSel.length
-  const cnt = document.getElementById('cmCount'); if (cnt) cnt.textContent = n
-  const btn = document.getElementById('cmStartBtn'); if (btn) btn.disabled = (n === 0)
-  const res = document.getElementById('cmResources')
-  if (res){
-    res.style.display = n ? 'flex' : 'none'
-    // resumen del primer parcial seleccionado
-    const first = _cmSel[0]
-    if (first){
-      const map = { p1:'#resumenP1', p2:'#resumen', p3:'#resumenP3' }
-      const a = document.getElementById('cmResSummary')
-      if (a) a.setAttribute('href', map[first.parcial] || '#resumen')
-    }
-  }
-}
-
-function toggleCustomTheme(el){
-  const parcial = el.dataset.cmParcial, theme = el.dataset.cmTheme
-  const i = _cmSel.findIndex(s => s.parcial === parcial && s.theme === theme)
-  if (i >= 0){ _cmSel.splice(i, 1); el.classList.remove('on') }
-  else { _cmSel.push({ parcial, theme }); el.classList.add('on') }
-  S.custom = S.custom || {}; S.custom.sel = _cmSel.slice()
-  try { persistState() } catch(e){}
-  _cmRefresh()
-}
-
-function clearCustomThemes(){
-  _cmSel = []
-  document.querySelectorAll('#cmPicker .cm-chip.on').forEach(c => c.classList.remove('on'))
-  S.custom = S.custom || {}; S.custom.sel = []
-  try { persistState() } catch(e){}
-  _cmRefresh()
-}
-
-function startCustomSim(){
-  if (!hasFullAccess()){ renderCustomMode(); return }
-  if (!_cmSel.length){ toast(_CM_STR.none, true); return }
-  let pool = []
-  _cmSel.forEach(s => {
-    const bank = _cmBank(s.parcial)
-    bank.forEach(q => { if (q.theme === s.theme) pool.push(Object.assign({}, q, { _p: s.parcial })) })
+function _cmPoolSize(){ let c=0; _cmSel.forEach(s=>{ _cmBank(s.parcial).forEach(q=>{ if(q.theme===s.theme)c++ }) }); return c }
+function _cmMastery(){
+  let acc=0,n=0
+  _cmSel.forEach(s=>{
+    const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[s.theme])||0
+    const m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[s.theme])||0
+    if(h+m>0){ acc+=h/(h+m); n++ }
   })
-  if (!pool.length){ toast(_CM_STR.none, true); return }
-  pool = pool.sort(() => Math.random() - 0.5).slice(0, 20)
-  simState = { qs: pool, idx:0, hits:0, miss:0, ans:false, theme:'custom', finished:false, custom:true, parcial: _cmSel[0].parcial }
-  // Reuse the real Simulacros engine and container (#simContainer lives in the
-  // practice view). navigateTo activates that view before rendering, so we avoid
-  // duplicating #simContainer and the result is visible.
-  try { navigateTo('simulacros') } catch(e){}
-  requestAnimationFrame(() => { renderSim() })
-  window.Analytics?.trackSimulacroStarted('custom', 'custom')
+  return n? Math.round(acc/n*100):0
+}
+function renderCustomMode(){
+  const gate=document.getElementById('cmGate'), picker=document.getElementById('cmPicker')
+  if(!gate||!picker) return
+  if(!hasFullAccess()){ gate.style.display=''; picker.style.display='none'; return }
+  gate.style.display='none'; picker.style.display=''
+  try{
+    const saved=(S.custom&&Array.isArray(S.custom.sel))?S.custom.sel:[]
+    _cmSel=saved.slice()
+    document.querySelectorAll('#cmPicker .cm-chip').forEach(ch=>{
+      ch.classList.toggle('on', _cmSel.some(s=>s.parcial===ch.dataset.cmParcial&&s.theme===ch.dataset.cmTheme))
+    })
+  }catch(e){ _cmSel=[] }
+  _cmRefresh()
+}
+function _cmSet(id,v){ const e=document.getElementById(id); if(e) e.textContent=v }
+function _cmRefresh(){
+  const n=_cmSel.length, mastery=_cmMastery(), pool=_cmPoolSize()
+  _cmSet('cmCount',n); _cmSet('cmStatCount',n); _cmSet('cmStatMastery',mastery+'%'); _cmSet('cmStatPool',pool); _cmSet('cmRingVal',mastery+'%')
+  const fg=document.getElementById('cmRingFg'); if(fg){ const C=214; fg.style.strokeDashoffset = (C*(1-mastery/100)).toFixed(1) }
+  const has=n>0
+  const tools=document.getElementById('cmTools'); if(tools) tools.style.display=has?'grid':'none'
+  const empty=document.getElementById('cmEmpty'); if(empty) empty.style.display=has?'none':''
+  const btn=document.getElementById('cmStartBtn'); if(btn) btn.disabled=!has
+  _cmSet('cmSt_resumen', n+' '+_CM_STR.themes)
+  _cmSet('cmSt_simulacro', pool+' '+_CM_STR.q)
+}
+function toggleCustomTheme(el){
+  const parcial=el.dataset.cmParcial, theme=el.dataset.cmTheme
+  const i=_cmSel.findIndex(s=>s.parcial===parcial&&s.theme===theme)
+  if(i>=0){ _cmSel.splice(i,1); el.classList.remove('on') } else { _cmSel.push({parcial,theme}); el.classList.add('on') }
+  S.custom=S.custom||{}; S.custom.sel=_cmSel.slice()
+  try{ persistState() }catch(e){}
+  _cmRefresh()
+}
+function clearCustomThemes(){
+  _cmSel=[]; document.querySelectorAll('#cmPicker .cm-chip.on').forEach(c=>c.classList.remove('on'))
+  S.custom=S.custom||{}; S.custom.sel=[]; try{ persistState() }catch(e){}; _cmRefresh()
+}
+function startCustomSim(count){
+  if(!hasFullAccess()){ renderCustomMode(); return }
+  if(!_cmSel.length){ toast(_CM_STR.none,true); return }
+  let pool=[]
+  _cmSel.forEach(s=>{ _cmBank(s.parcial).forEach(q=>{ if(q.theme===s.theme) pool.push(Object.assign({},q,{_p:s.parcial})) }) })
+  if(!pool.length){ toast(_CM_STR.none,true); return }
+  pool=pool.sort(()=>Math.random()-0.5).slice(0, count||20)
+  simState={ qs:pool, idx:0, hits:0, miss:0, ans:false, theme:'custom', finished:false, custom:true, parcial:_cmSel[0].parcial }
+  try{ navigateTo('simulacros') }catch(e){}
+  requestAnimationFrame(()=>{ renderSim() })
+  window.Analytics?.trackSimulacroStarted('custom','custom')
+}
+function cmTool(kind){
+  if(!hasFullAccess()){ renderCustomMode(); return }
+  if(!_cmSel.length){ toast(_CM_STR.none,true); return }
+  if(kind==='simulacro') return startCustomSim(20)
+  if(kind==='examen') return startCustomSim(40)
+  if(kind==='diagnostico') return startCustomSim(12)
+  if(kind==='flashcards'){ try{navigateTo('flashcards')}catch(e){}; return }
+  if(kind==='plan'){ try{navigateTo('plan-estudio')}catch(e){}; return }
+  if(kind==='resumen'){ const map={p1:'resumenP1',p2:'resumen',p3:'resumenP3'}; try{navigateTo(map[_cmSel[0].parcial]||'resumen')}catch(e){}; return }
 }
 
 async function endSim(silent=false){
@@ -20295,7 +20333,7 @@ const A = {
   calcGlobal, toggleExamTimer,
   // sim
   startSim, answerSim, nextSim,
-  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode,
+  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode, cmTool,
   // flash
   flipFlash, nextFlash, prevFlash, shuffleFlash,
   // ranking & feedback
