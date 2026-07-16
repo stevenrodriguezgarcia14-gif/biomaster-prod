@@ -4627,6 +4627,31 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 .acct-view .pref-sep{border-top:1px solid var(--border);margin:.6rem 0}
 .acct-view .pref-lbl{font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);opacity:.7;margin-bottom:.2rem}
 .acct-view .card.panel>strong{margin-bottom:.6rem}
+
+/* Crea tu propio BioMaster — gestor de rutas */
+.cm-mgr-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.cm-route-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.cm-route-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem;box-shadow:var(--e1);cursor:pointer;transition:transform var(--d) var(--ease),box-shadow var(--d) var(--ease),border-color var(--d);position:relative;overflow:hidden}
+.cm-route-card:hover{transform:translateY(-4px);box-shadow:var(--e2);border-color:var(--green)}
+.cm-route-card .crc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem}
+.cm-route-card .crc-ring{position:relative;width:52px;height:52px}
+.cm-route-card .crc-ring .crv{position:absolute;inset:0;display:grid;place-items:center;font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums}
+.cm-route-card .crc-del{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--muted);background:var(--soft);border:1px solid var(--border);transition:all var(--d) var(--ease)}
+.cm-route-card .crc-del:hover{color:var(--red);border-color:var(--red)}
+.cm-route-card .crc-del svg{width:15px;height:15px}
+.cm-route-card h4{font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.cm-route-card p{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+.cm-route-card .crc-open{display:inline-flex;align-items:center;gap:.3rem;margin-top:.9rem;font-size:.82rem;font-weight:700;color:var(--green)}
+.cm-route-card .crc-open svg{width:14px;height:14px}
+.cm-route-card.crc-new{border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);min-height:170px}
+.cm-route-card.crc-new .crn-ic{width:46px;height:46px;border-radius:12px;background:var(--greenSoft);color:var(--green);display:grid;place-items:center;margin-bottom:.6rem}
+.cm-route-card.crc-new .crn-ic svg{width:24px;height:24px}
+.cm-route-card.crc-new h4{color:var(--text)}
+.cm-builder-head{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.cm-builder-head #cmBuilderName{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.cm-builder-head .btn{transition:transform var(--d-fast) var(--ease)}
+.cm-builder-head .btn:active{transform:scale(.97)}
+.cm-mgr-empty{grid-column:1/-1;background:var(--surface);border:1px dashed var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--muted);font-size:.9rem;line-height:1.5}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -8355,7 +8380,7 @@ window.Analytics = (function(){
 
   <section class="section" id="personalizado">
     <div class="section-head"><div><h2><svg class="hd-ic" style="width:22px;height:22px"><use href="#i-wand"/></svg> Custom mode</h2><p class="module-desc">Choose exactly which subtopics you want to study and practice only that, combining all three units.</p></div></div>
-    <div class="cm-wrap" id="customModeBody"><div id="cmGate" class="cm-gate" style="display:none"><span class="cm-gate-ic"><svg><use href="#i-wand"/></svg></span><h3 class="serif">Experience builder</h3><p>Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.</p><button class="btn primary" onclick="window.showPaywall('personalizado','Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.')">See the Semester plan <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div><div id="cmPicker" class="cm-builder" style="display:none"><div class="cm-left"><div class="card panel"><div class="cm-phead"><svg class="hd-ic"><use href="#i-layers"/></svg>Your subtopics</div><div class="cm-group"><div class="cm-glbl">U1 · Cell and biomolecules</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="int" onclick="A.toggleCustomTheme(this)">Introduction</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="bio" onclick="A.toggleCustomTheme(this)">Biomolecules</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="cel" onclick="A.toggleCustomTheme(this)">Cell</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="met" onclick="A.toggleCustomTheme(this)">Metabolism</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="ene" onclick="A.toggleCustomTheme(this)">Photo/Resp</button></div></div><div class="cm-group"><div class="cm-glbl">U2 · Genetics and evolution</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="gen" onclick="A.toggleCustomTheme(this)">Genetics</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="evo" onclick="A.toggleCustomTheme(this)">Evolution</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="biot" onclick="A.toggleCustomTheme(this)">Biotechnology</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin & diversity</button></div></div><div class="cm-group"><div class="cm-glbl">U3 · Diversity and ecology</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin of life</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="dom" onclick="A.toggleCustomTheme(this)">Systematics</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="virpro" onclick="A.toggleCustomTheme(this)">Viruses/Prokaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="euk" onclick="A.toggleCustomTheme(this)">Eukaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ani" onclick="A.toggleCustomTheme(this)">Animals</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="eco" onclick="A.toggleCustomTheme(this)">Ecology</button></div></div><div class="cm-actions"><button class="btn" onclick="A.clearCustomThemes()">Clear</button><button class="btn primary" id="cmStartBtn" onclick="A.startCustomSim()"><svg class="btn-ic"><use href="#i-bolt"/></svg>Practice selection</button></div></div></div><div class="cm-right"><div class="cm-route-hero"><div class="cm-ring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="cmRingFg" cx="42" cy="42" r="34" stroke="#5fd98a" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/></svg><span class="cm-ring-v" id="cmRingVal">0%</span></div><div class="cm-route-meta"><span class="cm-eyebrow">My active route</span><h3 class="serif">Your custom route</h3><div class="cm-rstats"><div><b id="cmStatCount">0</b><small>Subtopics</small></div><div><b id="cmStatMastery">0%</b><small>Mastered</small></div><div><b id="cmStatPool">0</b><small>Questions</small></div></div></div></div><div class="cm-empty" id="cmEmpty">Pick one or more subtopics on the left. We generate your whole study experience focused only on that.</div><div class="cm-tools" id="cmTools" style="display:none"><button type="button" class="cm-tool" onclick="A.cmTool('resumen')"><span class="cm-tool-ic"><svg><use href="#i-book"/></svg></span><h4>Summary</h4><p>Only the theory of your subtopics.</p><span class="cm-tool-state" id="cmSt_resumen"><span class="cm-dot"></span>topics</span></button><button type="button" class="cm-tool" onclick="A.cmTool('flashcards')"><span class="cm-tool-ic"><svg><use href="#i-cards"/></svg></span><h4>Flashcards</h4><p>Spaced-repetition review.</p><span class="cm-tool-state" id="cmSt_flashcards"><span class="cm-dot"></span>Spaced review</span></button><button type="button" class="cm-tool" onclick="A.cmTool('simulacro')"><span class="cm-tool-ic"><svg><use href="#i-bolt"/></svg></span><h4>Mock exam</h4><p>Adaptive questions from your pick.</p><span class="cm-tool-state" id="cmSt_simulacro"><span class="cm-dot"></span>questions</span></button><button type="button" class="cm-tool" onclick="A.cmTool('examen')"><span class="cm-tool-ic"><svg><use href="#i-doc"/></svg></span><h4>Exam</h4><p>Assembled unit-style test.</p><span class="cm-tool-state" id="cmSt_examen"><span class="cm-dot"></span>Unit-style</span></button><button type="button" class="cm-tool" onclick="A.cmTool('diagnostico')"><span class="cm-tool-ic"><svg><use href="#i-target"/></svg></span><h4>Diagnostic</h4><p>Measures your real level.</p><span class="cm-tool-state" id="cmSt_diagnostico"><span class="cm-dot"></span>Measures level</span></button><button type="button" class="cm-tool" onclick="A.cmTool('plan')"><span class="cm-tool-ic"><svg><use href="#i-cal"/></svg></span><h4>Study plan</h4><p>Your calendar to the exam.</p><span class="cm-tool-state" id="cmSt_plan"><span class="cm-dot"></span>Your calendar</span></button></div></div></div></div>
+    <div class="cm-wrap" id="customModeBody"><div id="cmGate" class="cm-gate" style="display:none"><span class="cm-gate-ic"><svg><use href="#i-wand"/></svg></span><h3 class="serif">Experience builder</h3><p>Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.</p><button class="btn primary" onclick="window.showPaywall('personalizado','Custom mode lets you mix subtopics from all three units and BioMaster generates the whole academic experience — summary, flashcards, mock exams, exam, diagnostic and plan — focused only on what you pick. Exclusive to the Full Semester plan.')">See the Semester plan <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div><div id="cmManager" style="display:none"><div class="cm-mgr-head"><div><h3 class="serif" style="font-size:1.4rem;font-weight:800;letter-spacing:-.02em">Your custom BioMasters</h3><p class="module-desc" style="max-width:64ch">Create tailored study spaces. Each route builds its own summary, flashcards, mock exams, exam, diagnostic and plan — only with the subtopics you pick.</p></div><button class="btn primary" onclick="A.cmNewRoute()"><svg class="btn-ic"><use href="#i-wand"/></svg>Create new BioMaster</button></div><div class="cm-route-grid" id="cmRouteGrid"></div></div><div id="cmBuilderHead" class="cm-builder-head" style="display:none"><button class="btn" onclick="A.cmBackToRoutes()"><svg class="btn-ic" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>My routes</button><strong id="cmBuilderName" class="serif"></strong></div><div id="cmPicker" class="cm-builder" style="display:none"><div class="cm-left"><div class="card panel"><div class="cm-phead"><svg class="hd-ic"><use href="#i-layers"/></svg>Your subtopics</div><div class="cm-group"><div class="cm-glbl">U1 · Cell and biomolecules</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="int" onclick="A.toggleCustomTheme(this)">Introduction</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="bio" onclick="A.toggleCustomTheme(this)">Biomolecules</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="cel" onclick="A.toggleCustomTheme(this)">Cell</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="met" onclick="A.toggleCustomTheme(this)">Metabolism</button><button type="button" class="cm-chip" data-cm-parcial="p1" data-cm-theme="ene" onclick="A.toggleCustomTheme(this)">Photo/Resp</button></div></div><div class="cm-group"><div class="cm-glbl">U2 · Genetics and evolution</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="gen" onclick="A.toggleCustomTheme(this)">Genetics</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="evo" onclick="A.toggleCustomTheme(this)">Evolution</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="biot" onclick="A.toggleCustomTheme(this)">Biotechnology</button><button type="button" class="cm-chip" data-cm-parcial="p2" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin & diversity</button></div></div><div class="cm-group"><div class="cm-glbl">U3 · Diversity and ecology</div><div class="cm-chips"><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ori" onclick="A.toggleCustomTheme(this)">Origin of life</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="dom" onclick="A.toggleCustomTheme(this)">Systematics</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="virpro" onclick="A.toggleCustomTheme(this)">Viruses/Prokaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="euk" onclick="A.toggleCustomTheme(this)">Eukaryotes</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="ani" onclick="A.toggleCustomTheme(this)">Animals</button><button type="button" class="cm-chip" data-cm-parcial="p3" data-cm-theme="eco" onclick="A.toggleCustomTheme(this)">Ecology</button></div></div><div class="cm-actions"><button class="btn" onclick="A.clearCustomThemes()">Clear</button><button class="btn primary" id="cmStartBtn" onclick="A.startCustomSim()"><svg class="btn-ic"><use href="#i-bolt"/></svg>Practice selection</button></div></div></div><div class="cm-right"><div class="cm-route-hero"><div class="cm-ring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="cmRingFg" cx="42" cy="42" r="34" stroke="#5fd98a" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/></svg><span class="cm-ring-v" id="cmRingVal">0%</span></div><div class="cm-route-meta"><span class="cm-eyebrow">My active route</span><h3 class="serif">Your custom route</h3><div class="cm-rstats"><div><b id="cmStatCount">0</b><small>Subtopics</small></div><div><b id="cmStatMastery">0%</b><small>Mastered</small></div><div><b id="cmStatPool">0</b><small>Questions</small></div></div></div></div><div class="cm-empty" id="cmEmpty">Pick one or more subtopics on the left. We generate your whole study experience focused only on that.</div><div class="cm-tools" id="cmTools" style="display:none"><button type="button" class="cm-tool" onclick="A.cmTool('resumen')"><span class="cm-tool-ic"><svg><use href="#i-book"/></svg></span><h4>Summary</h4><p>Only the theory of your subtopics.</p><span class="cm-tool-state" id="cmSt_resumen"><span class="cm-dot"></span>topics</span></button><button type="button" class="cm-tool" onclick="A.cmTool('flashcards')"><span class="cm-tool-ic"><svg><use href="#i-cards"/></svg></span><h4>Flashcards</h4><p>Spaced-repetition review.</p><span class="cm-tool-state" id="cmSt_flashcards"><span class="cm-dot"></span>Spaced review</span></button><button type="button" class="cm-tool" onclick="A.cmTool('simulacro')"><span class="cm-tool-ic"><svg><use href="#i-bolt"/></svg></span><h4>Mock exam</h4><p>Adaptive questions from your pick.</p><span class="cm-tool-state" id="cmSt_simulacro"><span class="cm-dot"></span>questions</span></button><button type="button" class="cm-tool" onclick="A.cmTool('examen')"><span class="cm-tool-ic"><svg><use href="#i-doc"/></svg></span><h4>Exam</h4><p>Assembled unit-style test.</p><span class="cm-tool-state" id="cmSt_examen"><span class="cm-dot"></span>Unit-style</span></button><button type="button" class="cm-tool" onclick="A.cmTool('diagnostico')"><span class="cm-tool-ic"><svg><use href="#i-target"/></svg></span><h4>Diagnostic</h4><p>Measures your real level.</p><span class="cm-tool-state" id="cmSt_diagnostico"><span class="cm-dot"></span>Measures level</span></button><button type="button" class="cm-tool" onclick="A.cmTool('plan')"><span class="cm-tool-ic"><svg><use href="#i-cal"/></svg></span><h4>Study plan</h4><p>Your calendar to the exam.</p><span class="cm-tool-state" id="cmSt_plan"><span class="cm-dot"></span>Your calendar</span></button></div></div></div></div>
   </section>
     </div>
 
@@ -10833,42 +10858,90 @@ function nextSim(){
 //  F3: MODO PERSONALIZADO — práctica dirigida multi-parcial
 //  Premium (acceso completo). Reutiliza simState + renderSim.
 // ═══════════════════════════════════════════════════════════
-const _CM_STR = {"none": "Select at least one subtopic.", "q": "questions", "themes": "topics"}
+const _CM_STR = {"none": "Select at least one subtopic.", "q": "questions", "themes": "topics", "defRoute": "My first route", "namePrompt": "Name your BioMaster (e.g. Final review, Genetics, Med)", "mgrTitle": "Your custom BioMasters", "mgrSub": "Create tailored study spaces. Each route builds its own summary, flashcards, mock exams, exam, diagnostic and plan — only with the subtopics you pick.", "create": "Create new BioMaster", "createShort": "New", "open": "Open route", "sub": "subtopics", "back": "My routes", "delConfirm": "Delete this custom route?", "empty": "You have none yet. Create your first custom BioMaster and study exactly what you need.", "newCardT": "Create new", "newCardP": "A study space tailored to you"}
 let _cmSel = []
+let _cmActiveId = null
 function _cmBank(parcial){
   if (parcial === 'p1') return E1Q
   if (parcial === 'p3') return EXAM_P3_BANK.map(q => ({q:q.q, ops:q.o, a:q.a, theme:q.theme, exp:q.f||''}))
   return E23Q
 }
-function _cmPoolSize(){ let c=0; _cmSel.forEach(s=>{ _cmBank(s.parcial).forEach(q=>{ if(q.theme===s.theme)c++ }) }); return c }
-function _cmMastery(){
+function _cmPoolOf(sel){ let c=0; (sel||[]).forEach(s=>{ _cmBank(s.parcial).forEach(q=>{ if(q.theme===s.theme)c++ }) }); return c }
+function _cmPoolSize(){ return _cmPoolOf(_cmSel) }
+function _cmMasteryOf(sel){
   let acc=0,n=0
-  _cmSel.forEach(s=>{
+  ;(sel||[]).forEach(s=>{
     const h=(S.stats&&S.stats.themeHits&&S.stats.themeHits[s.theme])||0
     const m=(S.stats&&S.stats.themeMiss&&S.stats.themeMiss[s.theme])||0
     if(h+m>0){ acc+=h/(h+m); n++ }
   })
   return n? Math.round(acc/n*100):0
 }
+function _cmMastery(){ return _cmMasteryOf(_cmSel) }
+function _cmData(){ S.custom=S.custom||{}; if(!Array.isArray(S.custom.routes)) S.custom.routes=[]; return S.custom }
+function _cmMigrate(){ const d=_cmData(); if(!d.routes.length && Array.isArray(d.sel) && d.sel.length){ d.routes.push({id:'r'+Date.now(), name:_CM_STR.defRoute, sel:d.sel.slice()}); try{persistState()}catch(e){} } }
+function _cmActive(){ const d=_cmData(); return d.routes.find(r=>r.id===_cmActiveId)||null }
+function _cmSyncRoute(){ const r=_cmActive(); if(r){ r.sel=_cmSel.slice(); try{persistState()}catch(e){} } }
+
 function renderCustomMode(){
-  const gate=document.getElementById('cmGate'), picker=document.getElementById('cmPicker')
-  if(!gate||!picker) return
-  if(!hasFullAccess()){ gate.style.display=''; picker.style.display='none'; return }
-  gate.style.display='none'; picker.style.display=''
-  try{
-    const saved=(S.custom&&Array.isArray(S.custom.sel))?S.custom.sel:[]
-    _cmSel=saved.slice()
-    document.querySelectorAll('#cmPicker .cm-chip').forEach(ch=>{
-      ch.classList.toggle('on', _cmSel.some(s=>s.parcial===ch.dataset.cmParcial&&s.theme===ch.dataset.cmTheme))
-    })
-  }catch(e){ _cmSel=[] }
+  const gate=document.getElementById('cmGate'), mgr=document.getElementById('cmManager'),
+        bh=document.getElementById('cmBuilderHead'), picker=document.getElementById('cmPicker')
+  if(!gate||!mgr||!picker) return
+  if(!hasFullAccess()){ gate.style.display=''; mgr.style.display='none'; bh.style.display='none'; picker.style.display='none'; return }
+  gate.style.display='none'
+  _cmMigrate()
+  if(_cmActiveId && _cmActive()) renderBuilder(); else renderManager()
+}
+function _cmRing(pct){
+  const C=138.2 // 2*pi*22
+  return '<span class="crc-ring"><svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" stroke="var(--soft)" stroke-width="5" fill="none"/><circle cx="26" cy="26" r="22" stroke="var(--green)" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 26 26)"/></svg><span class="crv">'+pct+'%</span></span>'
+}
+function renderManager(){
+  _cmActiveId=null
+  document.getElementById('cmManager').style.display=''
+  document.getElementById('cmBuilderHead').style.display='none'
+  document.getElementById('cmPicker').style.display='none'
+  const d=_cmData(), grid=document.getElementById('cmRouteGrid'); if(!grid) return
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+  let html=''
+  if(!d.routes.length) html+='<div class="cm-mgr-empty">'+_CM_STR.empty+'</div>'
+  d.routes.forEach(r=>{
+    const n=r.sel.length, pool=_cmPoolOf(r.sel), m=_cmMasteryOf(r.sel)
+    html+='<div class="cm-route-card" onclick="A.cmOpenRoute(\''+r.id+'\')">'
+      +'<div class="crc-top">'+_cmRing(m)+'<button class="crc-del" title="Eliminar" onclick="event.stopPropagation();A.cmDeleteRoute(\''+r.id+'\')"><svg><use href="#i-trash"/></svg></button></div>'
+      +'<h4>'+esc(r.name)+'</h4><p>'+n+' '+_CM_STR.sub+' \u00b7 '+pool+' '+_CM_STR.q+'</p>'
+      +'<span class="crc-open">'+_CM_STR.open+' <svg><use href="#i-arrow"/></svg></span></div>'
+  })
+  html+='<div class="cm-route-card crc-new" onclick="A.cmNewRoute()"><span class="crn-ic"><svg><use href="#i-wand"/></svg></span><h4>'+_CM_STR.newCardT+'</h4><p>'+_CM_STR.newCardP+'</p></div>'
+  grid.innerHTML=html
+}
+function renderBuilder(){
+  const r=_cmActive(); if(!r){ renderManager(); return }
+  _cmSel=(r.sel||[]).slice()
+  document.getElementById('cmManager').style.display='none'
+  document.getElementById('cmBuilderHead').style.display='flex'
+  document.getElementById('cmPicker').style.display=''
+  const nm=document.getElementById('cmBuilderName'); if(nm) nm.textContent=r.name
+  document.querySelectorAll('#cmPicker .cm-chip').forEach(ch=>{
+    ch.classList.toggle('on', _cmSel.some(s=>s.parcial===ch.dataset.cmParcial&&s.theme===ch.dataset.cmTheme))
+  })
   _cmRefresh()
 }
+function cmNewRoute(){
+  const name=(prompt(_CM_STR.namePrompt)||'').trim(); if(!name) return
+  const d=_cmData(), r={id:'r'+Date.now(), name:name.slice(0,40), sel:[]}
+  d.routes.push(r); try{persistState()}catch(e){}
+  _cmActiveId=r.id; renderBuilder()
+}
+function cmOpenRoute(id){ _cmActiveId=id; renderBuilder() }
+function cmDeleteRoute(id){ if(!confirm(_CM_STR.delConfirm)) return; const d=_cmData(); d.routes=d.routes.filter(r=>r.id!==id); try{persistState()}catch(e){}; if(_cmActiveId===id)_cmActiveId=null; renderManager() }
+function cmBackToRoutes(){ renderManager() }
+
 function _cmSet(id,v){ const e=document.getElementById(id); if(e) e.textContent=v }
 function _cmRefresh(){
   const n=_cmSel.length, mastery=_cmMastery(), pool=_cmPoolSize()
   _cmSet('cmCount',n); _cmSet('cmStatCount',n); _cmSet('cmStatMastery',mastery+'%'); _cmSet('cmStatPool',pool); _cmSet('cmRingVal',mastery+'%')
-  const fg=document.getElementById('cmRingFg'); if(fg){ const C=214; fg.style.strokeDashoffset = (C*(1-mastery/100)).toFixed(1) }
+  const fg=document.getElementById('cmRingFg'); if(fg){ const C=214; fg.style.strokeDashoffset=(C*(1-mastery/100)).toFixed(1) }
   const has=n>0
   const tools=document.getElementById('cmTools'); if(tools) tools.style.display=has?'grid':'none'
   const empty=document.getElementById('cmEmpty'); if(empty) empty.style.display=has?'none':''
@@ -10880,13 +10953,11 @@ function toggleCustomTheme(el){
   const parcial=el.dataset.cmParcial, theme=el.dataset.cmTheme
   const i=_cmSel.findIndex(s=>s.parcial===parcial&&s.theme===theme)
   if(i>=0){ _cmSel.splice(i,1); el.classList.remove('on') } else { _cmSel.push({parcial,theme}); el.classList.add('on') }
-  S.custom=S.custom||{}; S.custom.sel=_cmSel.slice()
-  try{ persistState() }catch(e){}
-  _cmRefresh()
+  _cmSyncRoute(); _cmRefresh()
 }
 function clearCustomThemes(){
   _cmSel=[]; document.querySelectorAll('#cmPicker .cm-chip.on').forEach(c=>c.classList.remove('on'))
-  S.custom=S.custom||{}; S.custom.sel=[]; try{ persistState() }catch(e){}; _cmRefresh()
+  _cmSyncRoute(); _cmRefresh()
 }
 function startCustomSim(count){
   if(!hasFullAccess()){ renderCustomMode(); return }
@@ -20426,7 +20497,7 @@ const A = {
   calcGlobal, toggleExamTimer,
   // sim
   startSim, answerSim, nextSim,
-  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode, cmTool, plGo, renderParcialPlan,
+  toggleCustomTheme, clearCustomThemes, startCustomSim, renderCustomMode, cmTool, cmNewRoute, cmOpenRoute, cmDeleteRoute, cmBackToRoutes, plGo, renderParcialPlan,
   // flash
   flipFlash, nextFlash, prevFlash, shuffleFlash,
   // ranking & feedback
