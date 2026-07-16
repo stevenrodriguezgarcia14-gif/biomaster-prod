@@ -5728,193 +5728,6 @@ window.Analytics = (function(){
     </div>
 
     <div class="app-view" id="view-mi-estudio">
-<section class="section" id="hoy">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-cal"/></svg> What to study today <span class="pro-badge">Pro</span></h2>
-          <p class="module-desc">Daily tasks calculated from your diagnostic, your personalized plan and your recent mistakes.</p>
-        </div>
-      </div>
-      <div id="hoyContent">
-        <div class="today-card" id="hoyCardLocked" style="display:none">
-          <h3><svg class="ui-ic"><use href="#i-lock"/></svg> Activate Pro to see your daily plan</h3>
-          <p class="today-card-greeting">Once you have Pro and the diagnostic done, this section tells you exactly what to do each day: which subtopic to review, which mock exam to take, how much time to spend.</p>
-          <button class="lp-btn-primary" style="font-size:.88rem;padding:.7rem 1.2rem" onclick="window.showPaywall('hoy','The \\'What to study today\\' panel is the backbone of the personalized plan. Each day it automatically calculates which subtopic to prioritize based on your mistakes, your diagnostic and the exam date.')">Activate Pro and see my daily plan →</button>
-        </div>
-        <div class="today-card" id="hoyCardActive" style="display:none">
-          <h3 id="hoyTitle">Your plan for today</h3>
-          <div class="today-card-greeting" id="hoyGreeting">Hi. Here's what's worth doing today:</div>
-          <div class="today-tasks" id="hoyTasks"></div>
-        </div>
-
-        <!-- ═══ PANEL FEATURES V2 ═══
-             Línea de progreso biológica + perfil académico + estadísticas
-             emocionales + recomendación automática. Solo se muestra si
-             hay sesión y plan activo. Botón modo ultra limpio en el header. -->
-        <div class="today-card" id="featuresV2Panel" style="display:none;margin-top:.8rem">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem">
-            <div id="bioProgressBar"></div>
-            <button class="btn" style="font-size:.72rem;padding:.3rem .6rem" onclick="window.toggleUltraClean()">🧘 Ultra-clean mode</button>
-          </div>
-          <div id="studentProfileBox" style="padding:.6rem .8rem;background:var(--soft);border-radius:10px;margin-bottom:.5rem;font-size:.85rem"></div>
-          <div id="autoRecoBox" style="padding:.7rem .9rem;background:linear-gradient(135deg,var(--greenSoft),var(--soft));border-radius:10px;margin-bottom:.5rem"></div>
-          <details>
-            <summary style="cursor:pointer;font-size:.78rem;color:var(--muted);margin-bottom:.4rem"><svg class="ui-ic"><use href="#i-chart"/></svg> Detailed statistics (active unit)</summary>
-            <div id="emotionalStatsBox" style="font-size:.82rem;line-height:1.6;padding-top:.4rem"></div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ DIAGNÓSTICO INICIAL (PREMIUM) ═══ -->
-    <section class="section" id="diagnostico">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-target"/></svg> Smart diagnostic <span class="pro-badge" style="background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Free</span></h2>
-          <p class="module-desc">15 mixed questions. At the end you know exactly which subtopics you're good at, which need review and which require studying from scratch.</p>
-        </div>
-      </div>
-      <div id="diagContent">
-        <!-- Estado por defecto -->
-        <div class="diag-card" id="diagCardIntro">
-          <h3><svg class="ui-ic"><use href="#i-target"/></svg> Where to start studying?</h3>
-          <p>The diagnostic is the first thing you should do. In 5–7 minutes it tells you which topic you master and which you don't — and from there it builds your personalized plan. Without a diagnostic, you study blindly.</p>
-          <button class="btn primary" id="diagStartBtn" onclick="A.diagStart()">▶ Start diagnostic</button>
-          <button class="btn" style="margin-left:.5rem" id="diagLockBtn" onclick="window.showPaywall('diagnostico','The smart diagnostic is Pro-only. It calculates your real level in each topic with 15 questions and builds your personalized plan.')" style="display:none"><svg class="ui-ic"><use href="#i-lock"/></svg> Available in Pro</button>
-        </div>
-        <!-- Diagnóstico en curso -->
-        <div class="diag-card" id="diagCardRunning" style="display:none">
-          <h3 id="diagQNum">Question 1 of 15</h3>
-          <div class="diag-progress"><div class="diag-progress-fill" id="diagProgFill" style="width:0%"></div></div>
-          <div id="diagQuestion" style="margin-top:.8rem"></div>
-          <div class="mcq" id="diagOptions"></div>
-        </div>
-        <!-- Resultado -->
-        <div class="diag-card completed" id="diagCardResult" style="display:none">
-          <h3>✅ Diagnostic completed</h3>
-          <p id="diagResultSummary">Here's your map of strengths and weaknesses:</p>
-          <div class="diag-result">
-            <strong style="font-size:.88rem">Accuracy by topic</strong>
-            <div class="diag-bars" id="diagBars"></div>
-          </div>
-          <div class="diag-result">
-            <strong style="font-size:.88rem">📌 Automatic recommendations</strong>
-            <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
-          </div>
-          <div class="diag-result" id="diagReviewWrap" style="display:none">
-            <details open>
-              <summary style="font-size:.88rem;font-weight:700;cursor:pointer"><svg class="ui-ic"><use href="#i-book"/></svg> Review what you missed</summary>
-              <p class="muted" style="font-size:.78rem;margin:.3rem 0 .5rem">Reviewing the error with the correct explanation is where most learning happens. Read each one before moving on.</p>
-              <div id="diagReview"></div>
-            </details>
-          </div>
-          <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Retake</button>
-          <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Share my result</button>
-          <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Build my study plan →</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ PLAN DE ESTUDIO PERSONALIZADO (PREMIUM) ═══ -->
-    <section class="section" id="plan-estudio">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-doc"/></svg> My study plan <span class="pro-badge">Pro</span></h2>
-          <p class="module-desc">A day-by-day plan calculated from your diagnostic and your exam date. It adjusts automatically based on your progress.</p>
-        </div>
-      </div>
-      <div id="planContent">
-        <div class="plan-setup" id="planSetup">
-          <h4><svg class="ui-ic"><use href="#i-cal"/></svg> When is your exam?</h4>
-          <p>Give me the date and I'll build a day-by-day plan prioritizing the subtopics you're weakest in according to the diagnostic.</p>
-          <div class="input-row">
-            <input type="date" id="planExamDate">
-            <button class="btn primary" onclick="A.planBuild()">Build my plan →</button>
-          </div>
-        </div>
-        <div id="planSchedule"></div>
-        <div id="planLocked" style="display:none">
-          <div class="locked-section" style="margin-top:1rem">
-            <div class="lock-overlay">
-              <h4><svg class="ui-ic"><use href="#i-lock"/></svg> Personalized plan available in Pro</h4>
-              <p>Activate Pro to build your day-by-day study plan based on your exam date and your real weak points.</p>
-              <button class="lock-cta" onclick="window.showPaywall('plan','The personalized study plan is what separates studying at random from studying strategically. It calculates how many days you have left, which subtopics to prioritize based on your diagnostic, and reorganizes the calendar if you fall behind.')">Activate Pro →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ PREDICCIÓN DE PREPARACIÓN (PREMIUM) ═══ -->
-    <section class="section" id="prediccion">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-target"/></svg> Are you ready for the exam? <span class="pro-badge">Pro</span></h2>
-          <p class="module-desc">Pass probability calculated from your mock exam performance, your mastery map and the days remaining.</p>
-        </div>
-      </div>
-      <div id="prediccionContent">
-        <div class="grid2">
-          <div class="gauge-card">
-            <div class="gauge">
-              <svg viewBox="0 0 160 160">
-                <circle class="gauge-bg" cx="80" cy="80" r="65"/>
-                <circle class="gauge-fg" cx="80" cy="80" r="65" id="gaugeFg" stroke="var(--red)" stroke-dasharray="0 408"/>
-              </svg>
-              <div class="gauge-text"><span id="gaugePct">—</span><small>readiness</small></div>
-            </div>
-            <div class="gauge-label" id="gaugeLabel">Start your diagnostic</div>
-            <div class="gauge-tip" id="gaugeTip">Take the initial diagnostic so your real pass probability can be calculated.</div>
-          </div>
-          <div class="card panel">
-            <strong style="font-size:.92rem"><svg class="ui-ic"><use href="#i-chart"/></svg> What affects your readiness?</strong>
-            <div id="readinessBreakdown" style="margin-top:.7rem;display:grid;gap:.5rem;font-size:.85rem"></div>
-            <div id="prediccionLocked" style="display:none;margin-top:.8rem;padding:.8rem;background:var(--soft);border-radius:12px;text-align:center">
-              <p style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem"><svg class="ui-ic"><use href="#i-lock"/></svg> Activate Pro to see your real prediction.</p>
-              <button class="btn primary" style="font-size:.78rem" onclick="window.showPaywall('prediccion','The pass prediction combines your mock exam performance, your mastered subtopics and the days remaining until the exam to give you a realistic pass probability estimate.')">Activate Pro →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ HISTORIAL DE ERRORES FRECUENTES (PREMIUM) ═══ -->
-    <section class="section" id="errlog">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-alert"/></svg> Common mistakes <span class="pro-badge">Pro</span></h2>
-          <p class="module-desc">The questions you miss most, grouped together. Ideal for reviewing before the exam.</p>
-        </div>
-      </div>
-      <div id="errlogContent">
-        <div id="errlogList"></div>
-        <div id="errlogLocked" style="display:none">
-          <div class="locked-section">
-            <div class="lock-overlay">
-              <h4><svg class="ui-ic"><use href="#i-lock"/></svg> Available in Pro</h4>
-              <p>The common mistakes log shows you exactly which questions and subtopics are costing you the most, so you review what matters.</p>
-              <button class="lock-cta" onclick="window.showPaywall('errlog','The common mistakes log is one of the features that moves the needle most. Knowing exactly what you miss saves you hours of misdirected studying.')">Activate Pro →</button>
-            </div>
-          </div>
-        </div>
-        <p id="errlogEmpty" style="color:var(--muted);font-size:.85rem;font-style:italic;display:none">You don't have enough recorded mistakes yet. Take some mock exams and the most frequent ones will appear here.</p>
-      </div>
-    </section>
-
-    <!-- ═══ DASHBOARD ═══ -->
-
-
-    <!-- ═══════════════════════════════════════════════════════════
-         CONTENIDO ACADÉMICO PRIMER PARCIAL (P1)
-         Cubre: Introducción, Composición química, Biología celular,
-         Fotosíntesis y Respiración celular. Estructura paralela al
-         segundo parcial: secciones colapsables por subtema con
-         errores comunes, claves de examen y trampas frecuentes.
-         ═══════════════════════════════════════════════════════════ -->
-        </div>
-
-    <div class="app-view" id="view-parciales">
-      <div class="pl-header" id="parcialPlanHeader"><div class="pl-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle id="plRingFg" cx="60" cy="60" r="50" stroke="url(#plGrad)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)"/><defs><linearGradient id="plGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#37a459"/><stop offset="1" stop-color="#5fd98a"/></linearGradient></defs></svg><span class="pl-ring-v"><b id="plRingVal">0%</b><small>Mastered</small></span></div><div class="pl-meta"><span class="eyebrow" id="plEyebrow"><svg class="btn-ic"><use href="#i-leaf"/></svg> Unit 1 · Active</span><h2 class="serif" id="plTitle">Cell and biomolecules</h2><p id="plDesc">5 topics · introduction, biomolecules, cell, metabolism and energy. Your base for the whole course.</p></div><div class="pl-actions"><button class="btn primary" onclick="A.plGo('res')"><svg class="btn-ic"><use href="#i-book"/></svg>Summary</button><button class="btn" onclick="A.plGo('cob')"><svg class="btn-ic"><use href="#i-target"/></svg>Coverage</button><button class="btn" onclick="A.plGo('ev')"><svg class="btn-ic"><use href="#i-doc"/></svg>Assessment</button></div></div>
 <section class="section p1-content" id="resumenP1" data-parcial="p1">
       <div class="section-head">
         <div>
@@ -6633,8 +6446,6 @@ window.Analytics = (function(){
         </ul>
       </div>
     </section>
-
-    <!-- ═══ COBERTURA P1 ═══ -->
     <section class="section p1-content" id="coberturaP1" data-parcial="p1">
       <div class="section-head">
         <div>
@@ -6647,43 +6458,6 @@ window.Analytics = (function(){
         <div class="subtopic-grid" id="subtopicGridP1"></div>
       </div>
     </section>
-
-    <!-- ═══ EXAMEN PRIMER PARCIAL ═══ -->
-    <section class="section p1-content" id="examenP1Section" data-parcial="p1">
-      <div class="section-head">
-        <div>
-          <span class="parcial-context"><svg class="ui-ic"><use href="#i-book"/></svg> First unit</span>
-          <h2><svg class="ui-ic"><use href="#i-doc"/></svg> Exam-style mock — P1</h2>
-          <p class="module-desc">25 multiple-choice questions + 4 short-answer + 1 matching. University exam-style format.</p>
-        </div>
-        <div class="toolbar">
-          <div class="timer-d" id="examP1Timer" style="display:none"><svg class="ui-ic"><use href="#i-timer"/></svg> 00:00</div>
-          <button class="btn" id="examP1TimerBtn" onclick="A.toggleExamP1Timer()"><svg class="ui-ic"><use href="#i-timer"/></svg> Start timer</button>
-        </div>
-      </div>
-      <div class="exam-banner" id="examP1Banner"><svg class="ui-ic"><use href="#i-book"/></svg> <strong>Study Mode:</strong> feedback appears on review.</div>
-      <div id="examP1Container"></div>
-      <div class="toolbar" style="margin-top:1rem">
-        <button class="btn primary" onclick="A.reviewP1Exam()"><svg class="ui-ic"><use href="#i-doc"/></svg> Review P1 exam</button>
-        <button class="btn" onclick="A.resetP1Exam()">↺ Reset</button>
-        <span class="badge" id="examP1Score">Score: 0 / 30</span>
-      </div>
-      <!-- GLOBAL RESULT P1 (same grading mode as P2) -->
-      <div class="fullbox" style="margin-top:1rem;background:var(--surface);display:none" id="globalResultP1">
-        <strong><svg class="ui-ic"><use href="#i-chart"/></svg> Overall exam result</strong>
-        <p class="muted" style="font-size:.83rem">Breakdown by topic section of the first unit.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
-          <div class="stat-card"><div class="sv" id="globP1_earned">—</div><div class="sl">Points earned</div></div>
-          <div class="stat-card"><div class="sv" id="globP1_possible">—</div><div class="sl">Total points</div></div>
-          <div class="stat-card"><div class="sv" id="globP1_pct">—</div><div class="sl">Percentage</div></div>
-        </div>
-        <div id="globalDiagP1" style="font-size:.83rem;line-height:1.8;margin-top:.5rem"></div>
-      </div>
-    </section>
-
-    <!-- ═══ FIN BLOQUE P1 ═══ -->
-
-
     <section class="section p2-content" id="resumen" data-parcial="p2">
       <div class="section-head">
         <div><h2><svg class="ui-ic"><use href="#i-book"/></svg> Theory summary</h2><p class="module-desc">Complete content organized by topics 4–5–6. Use it before practicing. Each subtopic includes the most common mistakes to avoid.</p></div>
@@ -7130,10 +6904,6 @@ window.Analytics = (function(){
 
       </div>
     </section>
-
-    <!-- ═══════════ COBERTURA ═══════════ -->
-
-    <!-- ═══ COBERTURA (V5 literal) ═══ -->
     <section class="section p2-content" id="cobertura" data-parcial="p2">
       <div class="section-head"><div><h2><svg class="ui-ic"><use href="#i-map"/></svg> Course coverage</h2><p class="module-desc">Mark your level in each subtopic manually. It connects with the mastery map and the automatic recommendations.</p></div></div>
       <div class="card panel">
@@ -7174,154 +6944,6 @@ window.Analytics = (function(){
         </div>
       </div>
     </section>
-    <!-- ═══ EXAMEN 2023 (V5 literal completo: P1+P2+Manual+A1+A2+Desarrollo) ═══ -->
-    <section class="section p2-content" id="examenes" data-parcial="p2">
-      <div class="section-head">
-        <div><h2><svg class="ui-ic"><use href="#i-doc"/></svg> Exam-style assessment — P2</h2><p class="module-desc">Complete university-style practice assessment. <strong>Study Mode</strong>: instant feedback. <strong>Exam Mode</strong>: answers at the end.</p></div>
-        <div class="toolbar">
-          <div class="timer-d" id="examTimerDisp" style="display:none"><svg class="ui-ic"><use href="#i-timer"/></svg> 00:00</div>
-          <button class="btn" id="examTimerBtn" onclick="A.toggleExamTimer()"><svg class="ui-ic"><use href="#i-timer"/></svg> Timer</button>
-          <span class="badge" id="examModeBadge">Mode: Study</span>
-        </div>
-      </div>
-      <div class="warn" style="margin-bottom:.8rem"><svg class="ui-ic"><use href="#i-doc"/></svg> <em>Exam-style assessment based on an academic assessment used at TEC during 2023, reworded and used solely for educational and practice purposes within BioMaster.</em></div>
-      <details class="card panel" open>
-        <summary class="summary-line" style="cursor:pointer">
-          <div class="summary-left"><span class="num">P2</span><div><strong>Exam-style assessment · General Biology</strong><div class="muted">First part: Multiple choice (40 pts) · Second: Short answer · Third: Matching · Fourth: Essay</div></div></div>
-          <div class="summary-right"><span class="badge badge-blue">Complete assessment</span></div>
-        </summary>
-        <div class="body">
-          <div class="warn" id="examModeInfo"><svg class="ui-ic"><use href="#i-book"/></svg> <strong>Study Mode active:</strong> feedback appears immediately when you review each section.</div>
-          <!-- PARTE 1 -->
-          <div class="fullbox" style="background:var(--surface)"><strong>First part: Mark with X · 1 point each · Total: 40 points</strong></div>
-          <div id="exam2023Parts"></div>
-          <div class="fullbox" id="p1summary" style="display:none;background:#fff7ed;border:1px solid #fed7aa"></div>
-          <div class="toolbar" style="margin-top:.8rem">
-            <button class="btn primary" onclick="A.reviewP1()">✅ Review part 1</button>
-            <button class="btn" onclick="A.resetP1()">↺ Reset</button>
-            <button class="btn" onclick="A.tts(document.querySelector('#exam2023Parts .sim-question strong')?.textContent||'')"><svg class="ui-ic"><use href="#i-audio"/></svg></button>
-          </div>
-          <!-- PARTE 2: RESPUESTA CORTA -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Second part: Fill in / Short answer (20 points — 2 pts each)</strong><p class="muted" style="font-size:.85rem">Write the term that matches each definition.</p></div>
-          <div class="sim-question"><strong>1. Acellular infectious agent made only of nucleic acid, surrounded by a protein capsid, requires a host cell. (2 pts)</strong><textarea id="s0" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs0"></div></div>
-          <div class="sim-question"><strong>2. Pathogenic agent made of small, single-stranded, circular RNA molecules without a capsid; no proteins or lipids. (2 pts)</strong><textarea id="s1" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs1"></div></div>
-          <div class="sim-question"><strong>3. Infectious protein particles that transform normal membrane proteins. (2 pts)</strong><textarea id="s2" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs2"></div></div>
-          <div class="sim-question"><strong>4. Virus capable of infecting bacteria. (2 pts)</strong><textarea id="s3" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs3"></div></div>
-          <div class="sim-question"><strong>5. Symbiotic association between an alga and a fungus. (2 pts)</strong><textarea id="s4" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs4"></div></div>
-          <div class="sim-question"><strong>6. Symbiotic associations between roots and fungi. (2 pts)</strong><textarea id="s5" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs5"></div></div>
-          <div class="sim-question"><strong>7. Plants with multiples-of-5 structures, taproot and branched venation. (2 pts)</strong><textarea id="s6" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs6"></div></div>
-          <div class="sim-question"><strong>8. Term that describes when two or more species mutually influence each other's evolution. (2 pts)</strong><textarea id="s7" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs7"></div></div>
-          <div class="sim-question"><strong>9. Organism that has no body cavity (e.g. planarians, tapeworms, flatworms). (2 pts)</strong><textarea id="s8" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs8"></div></div>
-          <div class="sim-question"><strong>10. Type of evolution in which similar structures develop from different ancestors through different processes. (2 pts)</strong><textarea id="s9" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs9"></div></div>
-          <div class="fullbox" id="p2summary" style="display:none;background:#eff6ff;border:1px solid #93c5fd"></div>
-          <div class="toolbar"><button class="btn primary" onclick="A.reviewP2()">✅ Review part 2</button><button class="btn" onclick="A.resetP2()">↺</button></div>
-          <!-- PARTE 2B: PREGUNTAS ABIERTAS -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Open-ended questions (manual review)</strong><p class="muted" style="font-size:.83rem">The expected answer is shown when you press "Review".</p></div>
-          <div class="sim-question"><strong>11. Two human traits determined by polygenic inheritance:</strong><textarea id="m0" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm0" style="display:none"></div></div>
-          <div class="sim-question"><strong>12. Two differences between the domains Archaea and Bacteria:</strong><textarea id="m1" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm1" style="display:none"></div></div>
-          <div class="sim-question"><strong>13. Name three types of evidence for evolution:</strong><textarea id="m2" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm2" style="display:none"></div></div>
-          <div class="sim-question"><strong>14. Cite two factors that cause mutations in living things:</strong><textarea id="m3" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm3" style="display:none"></div></div>
-          <div class="sim-question"><strong>15. State one economic importance of red algae:</strong><textarea id="m4" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm4" style="display:none"></div></div>
-          <div class="fullbox" id="pmansummary" style="display:none;background:#f8fafc;border:1px solid #cbd5e1"></div>
-          <div class="toolbar"><button class="btn primary" onclick="A.reviewManual()">✅ Review open answers</button><button class="btn" onclick="A.resetManual()">↺</button></div>
-          <!-- PARTE 3: ASOCIACIÓN 1 -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Third part — Matching 1 (10 points)</strong><p class="muted" style="font-size:.83rem">Write the number from the right column that corresponds to each item on the left.</p></div>
-          <div class="fullbox" style="background:var(--surface);overflow:auto">
-            <table style="width:100%;border-collapse:collapse;min-width:820px">
-              <thead><tr><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:38%">Left column</th><th style="padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:14%">Ans.</th><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc">Right column</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">1. Annelida</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_0" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_0" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Chordata</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">2. Pseudocoelomates</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_1" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_1" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Arthropoda</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">3. Birds</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_2" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_2" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Platyhelminthes</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">4. Cestodes, planarians</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_3" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_3" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Earthworm</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">5. Notochord, dorsal nerve cord, post-anal tail</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_4" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_4" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Cnidaria</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">6. Mollusca</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_5" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_5" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Echinodermata</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">7. Water vascular system</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_6" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_6" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Porifera</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">8. Lepidoptera, Diptera</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_7" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_7" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Nematodes</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">9. Animals without tissues</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_8" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_8" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Forelimbs modified for flight</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">10. Radial symmetry</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_9" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_9" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Gastropod, bivalve, octopus</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="fullbox" id="pa1summary" style="display:none;background:#fefce8;border:1px solid #fde68a"></div>
-          <div class="toolbar"><button class="btn primary" onclick="A.reviewA1()">✅ Review matching 1</button><button class="btn" onclick="A.resetA1()">↺</button></div>
-          <!-- PARTE 3: ASOCIACIÓN 2 -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Third part — Matching 2 (10 points)</strong></div>
-          <div class="fullbox" style="background:var(--surface);overflow:auto">
-            <table style="width:100%;border-collapse:collapse;min-width:820px">
-              <thead><tr><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:38%">Left column</th><th style="padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:14%">Ans.</th><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc">Right column</th></tr></thead>
-              <tbody>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">1. Mutations</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_0" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_0" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Founder effect</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">2. Inbreeding</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_1" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_1" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Encompasses global transformations in evolution</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">3. Inheritance of acquired traits</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_2" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_2" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Increases gene flow, causes greater diversity</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">4. Polyploidy</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_3" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_3" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Traits are inherited from parents to offspring</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">5. Occurs when a small number of organisms found isolated colonies</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_4" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_4" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Original and main source of genetic variation</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">6. Microevolution</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_5" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_5" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Lamarck</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">7. Darwin and Wallace</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_6" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_6" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Creationism</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">8. Macroevolution</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_7" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_7" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Small-scale evolution within a single population</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">9. The Earth is the center of the universe and the world was populated in a single act of creation</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_8" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_8" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">More than two chromosome sets; diploid becomes tetraploid</td></tr>
-                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">10. Migration</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_9" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_9" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Many recessive genes remain hidden in heterozygosity</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="fullbox" id="pa2summary" style="display:none;background:#fefce8;border:1px solid #fde68a"></div>
-          <div class="toolbar"><button class="btn primary" onclick="A.reviewA2()">✅ Review matching 2</button><button class="btn" onclick="A.resetA2()">↺</button></div>
-          <!-- PARTE 4: DESARROLLO -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Fourth part — Essay</strong></div>
-          <div class="sim-question">
-            <strong>1. In a H-W equilibrium population, the allele frequency of "a" is 0.3. What would be the expected frequency of heterozygotes "Aa"? (3 pts)</strong>
-            <div class="fullbox" style="margin-top:.7rem;background:var(--surface)">
-              <strong>1a) Calculation:</strong>
-              <input type="text" id="hw_ans" placeholder="Ej: 0.42" style="margin-top:.4rem">
-              <div class="feedback" id="fb_hw_a"></div>
-            </div>
-            <div class="fullbox" style="margin-top:.7rem;background:var(--surface)">
-              <strong>1b) List the 5 conditions of Hardy-Weinberg equilibrium (4 pts):</strong>
-              <textarea id="hw_cond" rows="4" placeholder="Write the 5 conditions…"></textarea>
-              <div class="feedback" id="fb_hw_b" style="display:none"></div>
-            </div>
-            <div class="fullbox" id="pdev1sum" style="display:none;background:#fefce8"></div>
-            <div class="toolbar"><button class="btn primary" onclick="A.reviewDev1()">✅ Review essay 1</button><button class="btn" onclick="A.resetDev1()">↺</button></div>
-          </div>
-          <div class="sim-question" style="margin-top:1rem">
-            <strong>2. Explain the three types of natural selection with an example of each:</strong>
-            <div style="display:grid;gap:.6rem;margin-top:.6rem">
-              <div><label style="font-size:.85rem;font-weight:700">A) Stabilizing selection:</label><textarea id="dev2_a" rows="2" placeholder="Explain and give an example…"></textarea></div>
-              <div><label style="font-size:.85rem;font-weight:700">B) Directional selection:</label><textarea id="dev2_b" rows="2" placeholder="Explain and give an example…"></textarea></div>
-              <div><label style="font-size:.85rem;font-weight:700">C) Disruptive selection:</label><textarea id="dev2_c" rows="2" placeholder="Explain and give an example…"></textarea></div>
-            </div>
-            <div class="feedback" id="fb_dev2" style="display:none;margin-top:.6rem"></div>
-            <div class="toolbar" style="margin-top:.5rem"><button class="btn primary" onclick="A.reviewDev2()">✅ Show expected answer</button><button class="btn" onclick="A.resetDev2()">↺</button></div>
-          </div>
-          <div class="sim-question" style="margin-top:1rem">
-            <strong>3. Draw and explain asexual reproduction by spores in a fungus:</strong>
-            <textarea id="dev3_note" rows="4" placeholder="Describe the process (hypha → sporangium → spores) and explain whether it is mitosis or meiosis…"></textarea>
-            <div class="feedback" id="fb_dev3" style="display:none;margin-top:.6rem"></div>
-            <div class="toolbar" style="margin-top:.5rem"><button class="btn primary" onclick="A.reviewDev3()">✅ Show expected answer</button><button class="btn" onclick="A.resetDev3()">↺</button></div>
-          </div>
-          <!-- RESULTADO GLOBAL -->
-          <div class="fullbox" style="margin-top:1rem;background:var(--surface)" id="globalResult">
-            <strong><svg class="ui-ic"><use href="#i-chart"/></svg> Overall exam result</strong>
-            <p class="muted" style="font-size:.83rem">Review each section before calculating the total.</p>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
-              <div class="stat-card"><div class="sv" id="glob_earned">—</div><div class="sl">Pts earned</div></div>
-              <div class="stat-card"><div class="sv" id="glob_possible">—</div><div class="sl">Pts reviewed</div></div>
-              <div class="stat-card"><div class="sv" id="glob_pct">—</div><div class="sl">Percentage</div></div>
-            </div>
-            <div id="globalDiag" style="display:none;font-size:.83rem;line-height:1.8;margin-top:.5rem"></div>
-            <button class="btn primary" onclick="A.calcGlobal()">🧮 Calculate overall result</button>
-          </div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         PARCIAL 3 — Resumen, cobertura y evaluación tipo parcial
-         Bloque de contenido completo del tercer parcial integrado
-         con coherencia visual respecto a P1 y P2.
-         ═══════════════════════════════════════════════════════════ -->
-
-    <!-- ═══ RESUMEN P3 ═══ -->
     <section class="section p3-content" id="resumenP3" data-parcial="p3">
       <div class="section-head">
         <div>
@@ -8281,268 +7903,6 @@ window.Analytics = (function(){
         <button class="btn primary" style="white-space:nowrap;flex-shrink:0" onclick="document.getElementById('simulacros').scrollIntoView({behavior:'smooth'})"><svg class="ui-ic"><use href="#i-bolt"/></svg> Go to Mock exams →</button>
       </div>
     </section>
-
-    <!-- ═══ CASOS HIPOTÉTICOS P3 ═══ -->
-    <section class="section p3-content" id="casosP3" data-parcial="p3">
-      <div class="section-head">
-        <div>
-          <h2><svg class="ui-ic"><use href="#i-flask"/></svg> Hypothetical Cases — Unit 3</h2>
-          <p class="module-desc">31 real exam scenarios · Applied reasoning · Organised by topic · Reveal and self-assess</p>
-        </div>
-      </div>
-      <script>
-        var _ch3bd=0,_ch3bda={};
-        function ch3Rev(n){var el=document.getElementById('ch3a'+n),btn=document.getElementById('ch3rb'+n);if(!el)return;var show=el.style.display==='none';el.style.display=show?'block':'none';if(btn)btn.textContent=show?'▼ Hide':'▶ Show answer';document.querySelectorAll('[data-ch3m="'+n+'"]').forEach(function(b){b.style.display=show?'inline-block':'none';});}
-        function ch3Mark(n,ok){_ch3bda[n]=ok;var c=0;Object.keys(_ch3bda).forEach(function(k){if(_ch3bda[k])c++;});_ch3bd=c;var bd=document.getElementById('ch3score');if(bd)bd.textContent=_ch3bd+'/'+Object.keys(_ch3bda).length;document.querySelectorAll('[data-ch3m="'+n+'"]').forEach(function(b){var isOk=b.getAttribute('data-ch3ok')==='1';b.style.opacity=(isOk===ok)?'1':'.3';b.style.fontWeight=(isOk===ok)?'700':'400';});}
-        function ch3Reset(){_ch3bd=0;_ch3bda={};for(var i=1;i<=31;i++){var a=document.getElementById('ch3a'+i);if(a)a.style.display='none';var rb=document.getElementById('ch3rb'+i);if(rb)rb.textContent='▶ Ver respuesta';}document.querySelectorAll('[data-ch3m]').forEach(function(b){b.style.opacity='1';b.style.fontWeight='400';b.style.display='none';});var sc=document.getElementById('ch3score');if(sc)sc.textContent='0/0';}
-      </script>
-      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem;padding:.45rem .75rem;background:rgba(139,92,246,.05);border-radius:8px;border:1px solid rgba(139,92,246,.18);font-size:.81rem">
-        <span style="color:var(--muted)"><svg class="ui-ic"><use href="#i-chart"/></svg> Self-assessment:</span>
-        <span><strong>Completed:</strong> <span id="ch3score" style="color:var(--green);font-weight:700">0/0</span></span>
-        <button onclick="ch3Reset()" style="margin-left:auto;font-size:.74rem;padding:.18rem .65rem;border-radius:6px;border:1px solid var(--border);background:var(--soft);cursor:pointer;color:var(--muted)">↺ Reset</button>
-      </div>
-
-      <!-- T6.1 FILOGENIA -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(139,92,246,.25);background:rgba(139,92,246,.05)"><svg class="ui-ic"><use href="#i-leaf"/></svg> T6.1 — Phylogeny and classification <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">1.</span> You have a tree where A and B share a node, and that node then connects to C at an older node. Who is most closely related to whom?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb1" onclick="ch3Rev(1)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(139,92,246,.35);background:rgba(139,92,246,.08);color:rgba(139,92,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="1" data-ch3ok="1" onclick="ch3Mark(1,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="1" data-ch3ok="0" onclick="ch3Mark(1,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a1" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(139,92,246,.06);border-radius:6px;line-height:1.65">A and B are more closely related to each other than either is to C, because their common ancestor is more recent.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.2 DOMINIOS -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(59,130,246,.25);background:rgba(59,130,246,.05)"><svg class="ui-ic"><use href="#i-dna"/></svg> T6.2 — Domains of life (Bacteria &amp; Archaea) <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">3 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">2.</span> You are given a unicellular organism with no nucleus. Cell wall without peptidoglycan, ether-linked lipids, lives at 90°C. Bacterium or Archaea?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb2" onclick="ch3Rev(2)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="2" data-ch3ok="1" onclick="ch3Mark(2,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="2" data-ch3ok="0" onclick="ch3Mark(2,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a2" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65"><strong>Archaea.</strong> No peptidoglycan and ether lipids are diagnostic. Bacteria have peptidoglycan and ester lipids.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">3.</span> A Gram-positive bacterium loses the ability to synthesise peptidoglycan by mutation. What happens to it?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb3" onclick="ch3Rev(3)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="3" data-ch3ok="1" onclick="ch3Mark(3,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="3" data-ch3ok="0" onclick="ch3Mark(3,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a3" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65">It becomes osmotically fragile (loses structural support), lyses easily, and stops retaining crystal violet in the stain. This is essentially the mechanism by which <strong>penicillin</strong> acts (inhibiting peptidoglycan synthesis).</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">4.</span> An ampicillin-sensitive bacterium is mixed with a resistant bacterium that carries the resistance gene on a plasmid. After some time, the formerly sensitive bacteria are also resistant. What happened?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb4" onclick="ch3Rev(4)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="4" data-ch3ok="1" onclick="ch3Mark(4,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="4" data-ch3ok="0" onclick="ch3Mark(4,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a4" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65"><strong>Conjugation.</strong> The plasmid carrying the resistance gene was transferred by direct contact (pili) to the sensitive bacteria. This is why antibiotic resistance spreads so rapidly.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.3 VIROLOGÍA -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(249,115,22,.25);background:rgba(249,115,22,.05)"><svg class="ui-ic"><use href="#i-dna"/></svg> T6.3 — Virology and infectious agents <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">5.</span> A bacterium with an integrated prophage is exposed to UV radiation. What do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb5" onclick="ch3Rev(5)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(249,115,22,.35);background:rgba(249,115,22,.08);color:rgba(249,115,22,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="5" data-ch3ok="1" onclick="ch3Mark(5,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="5" data-ch3ok="0" onclick="ch3Mark(5,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a5" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(249,115,22,.06);border-radius:6px;line-height:1.65">The prophage may <strong>activate</strong>, enter the lytic cycle, replicate, and lyse the bacterium. This is the <strong>lysogenic → lytic</strong> transition induced by stress (UV radiation damages DNA and triggers excision of the prophage).</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">6.</span> An infectious agent is resistant to treatments that destroy nucleic acids (nucleases) but sensitive to treatments that destroy proteins (proteases). What type is it?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb6" onclick="ch3Rev(6)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(249,115,22,.35);background:rgba(249,115,22,.08);color:rgba(249,115,22,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="6" data-ch3ok="1" onclick="ch3Mark(6,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="6" data-ch3ok="0" onclick="ch3Mark(6,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a6" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(249,115,22,.06);border-radius:6px;line-height:1.65"><strong>Prion.</strong> Its nature is exclusively proteinaceous (misfolded PrP protein). It contains no nucleic acids of its own, which is why nucleases have no effect on it.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.4 EUCARIONTES -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(20,184,166,.25);background:rgba(20,184,166,.05)"><svg class="ui-ic"><use href="#i-scope"/></svg> T6.4 — Eukaryotes and endosymbiotic theory <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">7.</span> A new organelle is discovered in a protist with a double membrane, its own circular DNA, and 70S ribosomes. What hypothesis arises about its origin?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb7" onclick="ch3Rev(7)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(20,184,166,.35);background:rgba(20,184,166,.08);color:rgba(20,184,166,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="7" data-ch3ok="1" onclick="ch3Mark(7,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="7" data-ch3ok="0" onclick="ch3Mark(7,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a7" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(20,184,166,.06);border-radius:6px;line-height:1.65"><strong>Endosymbiotic origin</strong>, probably from a bacterium. The three lines of evidence (double membrane, circular DNA, 70S ribosomes) are the diagnostic criteria used for mitochondria and chloroplasts.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.5 PLANTAS -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.05)"><svg class="ui-ic"><use href="#i-leaf"/></svg> T6.5 — Plants <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">8.</span> A plant has a large, green gametophyte and a small sporophyte that grows on the gametophyte and depends on it nutritionally. What group is it?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb8" onclick="ch3Rev(8)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="8" data-ch3ok="1" onclick="ch3Mark(8,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="8" data-ch3ok="0" onclick="ch3Mark(8,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a8" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(34,197,94,.06);border-radius:6px;line-height:1.65"><strong>Bryophytes</strong> (mosses, liverworts, hornworts). The dominant phase is the gametophyte; the sporophyte is dependent. In pteridophytes and seed plants this relationship is reversed.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">9.</span> If all angiosperms disappeared, what would happen to pollinators?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb9" onclick="ch3Rev(9)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="9" data-ch3ok="1" onclick="ch3Mark(9,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="9" data-ch3ok="0" onclick="ch3Mark(9,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a9" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(34,197,94,.06);border-radius:6px;line-height:1.65">Massive collapse. Most pollinators (bees, butterflies, hummingbirds, bats) depend on flowers. Gymnosperms (mostly wind-pollinated) cannot sustain these pollinators. The result would be a cascade extinction of these animal groups.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.6 HONGOS -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.05)">🍄 T6.6 — Fungi <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">10.</span> If mycorrhizae completely die off in a forest region, what do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb10" onclick="ch3Rev(10)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.08);color:rgba(245,158,11,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="10" data-ch3ok="1" onclick="ch3Mark(10,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="10" data-ch3ok="0" onclick="ch3Mark(10,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a10" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(245,158,11,.06);border-radius:6px;line-height:1.65">Reduced phosphorus and water uptake in plants → plant stress → slower growth → changes in plant community composition → cascade effects on herbivores and other trophic levels. The disruption may take years but will be profound.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.7 INVERTEBRADOS -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(244,63,94,.25);background:rgba(244,63,94,.05)">🦑 T6.7 — Invertebrates <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">11.</span> In an embryo, the blastopore becomes the anus. Which lineage does it belong to?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb11" onclick="ch3Rev(11)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:rgba(244,63,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="11" data-ch3ok="1" onclick="ch3Mark(11,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="11" data-ch3ok="0" onclick="ch3Mark(11,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a11" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(244,63,94,.06);border-radius:6px;line-height:1.65"><strong>Deuterostomes.</strong> This places it with echinoderms and chordates. In protostomes the opposite is true: blastopore → mouth.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">12.</span> You find a bilateral aquatic animal, segmented, with a cylindrical body and bristles on each segment. What phylum is it?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb12" onclick="ch3Rev(12)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:rgba(244,63,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="12" data-ch3ok="1" onclick="ch3Mark(12,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="12" data-ch3ok="0" onclick="ch3Mark(12,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a12" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(244,63,94,.06);border-radius:6px;line-height:1.65"><strong>Annelid</strong> (probably a polychaete if marine). Key features: segmentation + setae (chaetae). Nematodes are cylindrical but neither segmented nor bristled.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T6.8 CORDADOS -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.05)">🐟 T6.8 — Chordates <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">3 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">13.</span> A swimming larva with a notochord and a post-anal muscular tail becomes a sessile adult lacking those traits. What group is it?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb13" onclick="ch3Rev(13)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="13" data-ch3ok="1" onclick="ch3Mark(13,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="13" data-ch3ok="0" onclick="ch3Mark(13,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a13" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Urochordate</strong> (tunicate / ascidian). The larva is unambiguously chordate; the adult attaches to the substrate and loses its notochord and tail. The four chordate features are only visible in the larva.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">14.</span> If the amniotic egg had never evolved, which groups would not exist today?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb14" onclick="ch3Rev(14)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="14" data-ch3ok="1" onclick="ch3Mark(14,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="14" data-ch3ok="0" onclick="ch3Mark(14,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a14" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65">Reptiles, birds, and mammals (all <strong>amniotes</strong>). Vertebrates would have remained confined to water's edge for reproduction, like modern amphibians.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">15.</span> A mammal species loses the ability to maintain a stable body temperature. What consequences do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb15" onclick="ch3Rev(15)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="15" data-ch3ok="1" onclick="ch3Mark(15,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="15" data-ch3ok="0" onclick="ch3Mark(15,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a15" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65">Reduced activity in cold climates, greater dependence on the thermal environment (like reptiles), drastic changes in geographic distribution and behaviour. Some existing mammals (sloths, hibernating bears) already show partial versions of this.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T7.1 POBLACIONES -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(16,185,129,.25);background:rgba(16,185,129,.05)"><svg class="ui-ic"><use href="#i-chart"/></svg> T7.1 — Population dynamics <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">16.</span> An invasive species arrives on an island with no predators or competitors. Initially it shows J-shaped growth. After some time, what do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb16" onclick="ch3Rev(16)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="16" data-ch3ok="1" onclick="ch3Mark(16,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="16" data-ch3ok="0" onclick="ch3Mark(16,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a16" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">It will eventually slow down (<strong>logistic model</strong>) as it hits the carrying capacity K through food depletion, space limitations, or the emergence of density-dependent diseases. It may cause local ecological collapse if it overshoots K.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">17.</span> A fire eliminates 80% of a deer population. The following year, the wolves that feed on deer also decline dramatically. What factor affected each?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb17" onclick="ch3Rev(17)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="17" data-ch3ok="1" onclick="ch3Mark(17,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="17" data-ch3ok="0" onclick="ch3Mark(17,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a17" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">For the deer: <strong>density-independent</strong> factor (the fire, unrelated to deer numbers). For the wolves: <strong>density-dependent</strong> factor (prey scarcity, which does depend on the size of the deer population).</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">18.</span> A species produces thousands of eggs, provides no parental care, juveniles mature within weeks and live only a few months. What life-history strategy does it show?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb18" onclick="ch3Rev(18)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="18" data-ch3ok="1" onclick="ch3Mark(18,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="18" data-ch3ok="0" onclick="ch3Mark(18,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a18" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65"><strong>r-selection</strong> (r strategy): high reproductive rate, little parental investment, short life span, early reproduction. Typical of bony fish, insects, and frogs.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">19.</span> Can humans grow indefinitely?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb19" onclick="ch3Rev(19)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="19" data-ch3ok="1" onclick="ch3Mark(19,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="19" data-ch3ok="0" onclick="ch3Mark(19,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a19" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65"><strong>No.</strong> Although technology extends K, planetary resources (arable land, fresh water, energy, CO₂ absorption capacity) are finite. There are inescapable thermodynamic and ecological limits.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T7.2 COMUNIDADES -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(14,165,233,.25);background:rgba(14,165,233,.05)"><svg class="ui-ic"><use href="#i-globe"/></svg> T7.2 — Communities and succession <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">20.</span> Two bird species in the same tree eat the same seeds, at the same time, on the same branch. What do you predict in the long run?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb20" onclick="ch3Rev(20)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="20" data-ch3ok="1" onclick="ch3Mark(20,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="20" data-ch3ok="0" onclick="ch3Mark(20,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a20" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65">Intense competition over an identical niche. In the long run: either one displaces the other (<strong>competitive exclusion</strong>), or they partition the resource (<strong>resource partitioning</strong>: one feeds in the canopy, the other below; one by day, the other at dawn; etc.).</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">21.</span> Two squirrel species share a forest. One feeds on ground seeds, the other on canopy seeds. What evolutionary process enabled this coexistence?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb21" onclick="ch3Rev(21)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="21" data-ch3ok="1" onclick="ch3Mark(21,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="21" data-ch3ok="0" onclick="ch3Mark(21,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a21" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Resource partitioning</strong> / possible character displacement, derived from ancestral competition. Each species occupies a slightly different niche, avoiding competitive exclusion.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">22.</span> Species A benefits from the presence of species B. Species B is not clearly affected. What type of interspecific relationship is this?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb22" onclick="ch3Rev(22)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="22" data-ch3ok="1" onclick="ch3Mark(22,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="22" data-ch3ok="0" onclick="ch3Mark(22,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a22" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Commensalism</strong> (+ / 0). Only one species benefits; the other neither gains nor loses. Example: remoras and sharks.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">23.</span> After a fire that devastates a forest but leaves the soil intact, what type of succession follows?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb23" onclick="ch3Rev(23)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="23" data-ch3ok="1" onclick="ch3Mark(23,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="23" data-ch3ok="0" onclick="ch3Mark(23,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a23" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Secondary succession.</strong> The intact soil allows faster recovery (years to decades), starting with annual herbs and shrubs. Primary succession begins from bare rock and is much slower.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T7.3 FLUJO DE ENERGÍA -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(234,179,8,.25);background:rgba(234,179,8,.05)"><svg class="ui-ic"><use href="#i-bolt"/></svg> T7.3 — Energy flow and biogeochemical cycles <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">24.</span> Why are there fewer eagles than mice in an ecosystem?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb24" onclick="ch3Rev(24)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="24" data-ch3ok="1" onclick="ch3Mark(24,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="24" data-ch3ok="0" onclick="ch3Mark(24,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a24" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">Because of the <strong>10% rule</strong>. Mice (primary consumers) receive ~10% of plant energy; eagles (carnivores) receive only ~10% of that from the mice. There is simply much less energy available at higher trophic levels.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">25.</span> A forest has a GPP of 5,000 g/m²/year and producers respire 2,000 g/m²/year. What is the NPP?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb25" onclick="ch3Rev(25)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="25" data-ch3ok="1" onclick="ch3Mark(25,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="25" data-ch3ok="0" onclick="ch3Mark(25,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a25" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">NPP = GPP − Respiration = 5,000 − 2,000 = <strong>3,000 g/m²/year</strong>. NPP is the biomass available to herbivores.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">26.</span> If all decomposers disappear from an ecosystem, what happens to the biogeochemical cycles?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb26" onclick="ch3Rev(26)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="26" data-ch3ok="1" onclick="ch3Mark(26,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="26" data-ch3ok="0" onclick="ch3Mark(26,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a26" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">Nutrients become locked in dead biomass. Plants cannot access recycled N, P, or C. Productivity and biomass collapse within a few years. Matter cycles, but energy can no longer flow without the breakdown of organic matter.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">27.</span> A river receives a massive discharge of agricultural fertilizer. What ecological sequence do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb27" onclick="ch3Rev(27)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="27" data-ch3ok="1" onclick="ch3Mark(27,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="27" data-ch3ok="0" onclick="ch3Mark(27,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a27" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65"><strong>Eutrophication:</strong> algal bloom → massive die-off and decomposition → drop in dissolved O₂ (hypoxia) → death of fish and invertebrates → dead zone.</div>
-          </div>
-        </div>
-      </details>
-
-      <!-- T7.4 BIÓSFERA -->
-      <details style="margin-bottom:.6rem">
-        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(5,150,105,.25);background:rgba(5,150,105,.05)"><svg class="ui-ic"><use href="#i-globe"/></svg> T7.4 — Biosphere, biomes and sustainability <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
-        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">28.</span> A plant species blooms two weeks earlier due to rising temperatures, but its pollinator does not advance its migration. What do you predict?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb28" onclick="ch3Rev(28)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="28" data-ch3ok="1" onclick="ch3Mark(28,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="28" data-ch3ok="0" onclick="ch3Mark(28,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a28" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>Phenological mismatch.</strong> The plant is not pollinated efficiently → reproduction drops → population may decline. The pollinator loses its resource. This is an example of <strong>mutualism disruption</strong> caused by climate change.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">29.</span> If a savanna receives much higher and more consistent rainfall, toward which biome would it tend to shift?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb29" onclick="ch3Rev(29)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="29" data-ch3ok="1" onclick="ch3Mark(29,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="29" data-ch3ok="0" onclick="ch3Mark(29,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a29" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65">Toward a <strong>tropical rainforest</strong> (if temperature is high) or a temperate forest (if lower). Greater moisture supports dense trees and displaces the dominant grasses.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">30.</span> No sunlight reaches the deep-sea hydrothermal vents, yet dense communities thrive there. How is this possible?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb30" onclick="ch3Rev(30)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="30" data-ch3ok="1" onclick="ch3Mark(30,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="30" data-ch3ok="0" onclick="ch3Mark(30,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a30" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>Chemosynthesis.</strong> Bacteria use H₂S (hydrogen sulfide) released by the vents as an energy source, forming the base of the food chain. It is an ecosystem entirely independent of solar energy.</div>
-          </div>
-          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
-            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">31.</span> A region decides to intensively harvest timber to generate jobs. After 10 years the forests are depleted and the economy collapses. Which dimension(s) of sustainability failed?</p>
-            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb31" onclick="ch3Rev(31)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="31" data-ch3ok="1" onclick="ch3Mark(31,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="31" data-ch3ok="0" onclick="ch3Mark(31,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
-            <div id="ch3a31" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>All three dimensions.</strong> Environmental: deforestation. Economic: a strategy that is not viable long-term. Social: loss of sustainable jobs. Sustainability fails when any dimension is completely sacrificed for the others.</div>
-          </div>
-        </div>
-      </details>
-    </section>
-
-    <!-- ═══ COBERTURA P3 ═══ -->
     <section class="section p3-content" id="coberturaP3" data-parcial="p3">
       <div class="section-head">
         <div>
@@ -8576,6 +7936,395 @@ window.Analytics = (function(){
         <div class="subtopic-item level-2"><div>7.4 Biosphere and biomes</div><select data-st="7.4.p3" onchange="A.saveST('7.4.p3',this.value)"><option>No visto</option><option>Estudiado</option><option>Practicado</option><option>Dominado</option></select></div>
       </div>
     </section>
+<section class="section" id="hoy">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-cal"/></svg> What to study today <span class="pro-badge">Pro</span></h2>
+          <p class="module-desc">Daily tasks calculated from your diagnostic, your personalized plan and your recent mistakes.</p>
+        </div>
+      </div>
+      <div id="hoyContent">
+        <div class="today-card" id="hoyCardLocked" style="display:none">
+          <h3><svg class="ui-ic"><use href="#i-lock"/></svg> Activate Pro to see your daily plan</h3>
+          <p class="today-card-greeting">Once you have Pro and the diagnostic done, this section tells you exactly what to do each day: which subtopic to review, which mock exam to take, how much time to spend.</p>
+          <button class="lp-btn-primary" style="font-size:.88rem;padding:.7rem 1.2rem" onclick="window.showPaywall('hoy','The \\'What to study today\\' panel is the backbone of the personalized plan. Each day it automatically calculates which subtopic to prioritize based on your mistakes, your diagnostic and the exam date.')">Activate Pro and see my daily plan →</button>
+        </div>
+        <div class="today-card" id="hoyCardActive" style="display:none">
+          <h3 id="hoyTitle">Your plan for today</h3>
+          <div class="today-card-greeting" id="hoyGreeting">Hi. Here's what's worth doing today:</div>
+          <div class="today-tasks" id="hoyTasks"></div>
+        </div>
+
+        <!-- ═══ PANEL FEATURES V2 ═══
+             Línea de progreso biológica + perfil académico + estadísticas
+             emocionales + recomendación automática. Solo se muestra si
+             hay sesión y plan activo. Botón modo ultra limpio en el header. -->
+        <div class="today-card" id="featuresV2Panel" style="display:none;margin-top:.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem">
+            <div id="bioProgressBar"></div>
+            <button class="btn" style="font-size:.72rem;padding:.3rem .6rem" onclick="window.toggleUltraClean()">🧘 Ultra-clean mode</button>
+          </div>
+          <div id="studentProfileBox" style="padding:.6rem .8rem;background:var(--soft);border-radius:10px;margin-bottom:.5rem;font-size:.85rem"></div>
+          <div id="autoRecoBox" style="padding:.7rem .9rem;background:linear-gradient(135deg,var(--greenSoft),var(--soft));border-radius:10px;margin-bottom:.5rem"></div>
+          <details>
+            <summary style="cursor:pointer;font-size:.78rem;color:var(--muted);margin-bottom:.4rem"><svg class="ui-ic"><use href="#i-chart"/></svg> Detailed statistics (active unit)</summary>
+            <div id="emotionalStatsBox" style="font-size:.82rem;line-height:1.6;padding-top:.4rem"></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DIAGNÓSTICO INICIAL (PREMIUM) ═══ -->
+    <section class="section" id="diagnostico">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-target"/></svg> Smart diagnostic <span class="pro-badge" style="background:#2f8b4d;color:#fff;border-color:#2f8b4d">✦ Free</span></h2>
+          <p class="module-desc">15 mixed questions. At the end you know exactly which subtopics you're good at, which need review and which require studying from scratch.</p>
+        </div>
+      </div>
+      <div id="diagContent">
+        <!-- Estado por defecto -->
+        <div class="diag-card" id="diagCardIntro">
+          <h3><svg class="ui-ic"><use href="#i-target"/></svg> Where to start studying?</h3>
+          <p>The diagnostic is the first thing you should do. In 5–7 minutes it tells you which topic you master and which you don't — and from there it builds your personalized plan. Without a diagnostic, you study blindly.</p>
+          <button class="btn primary" id="diagStartBtn" onclick="A.diagStart()">▶ Start diagnostic</button>
+          <button class="btn" style="margin-left:.5rem" id="diagLockBtn" onclick="window.showPaywall('diagnostico','The smart diagnostic is Pro-only. It calculates your real level in each topic with 15 questions and builds your personalized plan.')" style="display:none"><svg class="ui-ic"><use href="#i-lock"/></svg> Available in Pro</button>
+        </div>
+        <!-- Diagnóstico en curso -->
+        <div class="diag-card" id="diagCardRunning" style="display:none">
+          <h3 id="diagQNum">Question 1 of 15</h3>
+          <div class="diag-progress"><div class="diag-progress-fill" id="diagProgFill" style="width:0%"></div></div>
+          <div id="diagQuestion" style="margin-top:.8rem"></div>
+          <div class="mcq" id="diagOptions"></div>
+        </div>
+        <!-- Resultado -->
+        <div class="diag-card completed" id="diagCardResult" style="display:none">
+          <h3>✅ Diagnostic completed</h3>
+          <p id="diagResultSummary">Here's your map of strengths and weaknesses:</p>
+          <div class="diag-result">
+            <strong style="font-size:.88rem">Accuracy by topic</strong>
+            <div class="diag-bars" id="diagBars"></div>
+          </div>
+          <div class="diag-result">
+            <strong style="font-size:.88rem">📌 Automatic recommendations</strong>
+            <div id="diagRecos" style="margin-top:.5rem;font-size:.88rem;line-height:1.6"></div>
+          </div>
+          <div class="diag-result" id="diagReviewWrap" style="display:none">
+            <details open>
+              <summary style="font-size:.88rem;font-weight:700;cursor:pointer"><svg class="ui-ic"><use href="#i-book"/></svg> Review what you missed</summary>
+              <p class="muted" style="font-size:.78rem;margin:.3rem 0 .5rem">Reviewing the error with the correct explanation is where most learning happens. Read each one before moving on.</p>
+              <div id="diagReview"></div>
+            </details>
+          </div>
+          <button class="btn" style="margin-top:.7rem" onclick="A.diagReset()">↺ Retake</button>
+          <button class="btn" style="margin-top:.7rem" onclick="window.shareDiagResult()">📲 Share my result</button>
+          <button class="btn primary" style="margin-top:.7rem" onclick="document.getElementById('plan-estudio').scrollIntoView({behavior:'smooth'})">Build my study plan →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PLAN DE ESTUDIO PERSONALIZADO (PREMIUM) ═══ -->
+    <section class="section" id="plan-estudio">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-doc"/></svg> My study plan <span class="pro-badge">Pro</span></h2>
+          <p class="module-desc">A day-by-day plan calculated from your diagnostic and your exam date. It adjusts automatically based on your progress.</p>
+        </div>
+      </div>
+      <div id="planContent">
+        <div class="plan-setup" id="planSetup">
+          <h4><svg class="ui-ic"><use href="#i-cal"/></svg> When is your exam?</h4>
+          <p>Give me the date and I'll build a day-by-day plan prioritizing the subtopics you're weakest in according to the diagnostic.</p>
+          <div class="input-row">
+            <input type="date" id="planExamDate">
+            <button class="btn primary" onclick="A.planBuild()">Build my plan →</button>
+          </div>
+        </div>
+        <div id="planSchedule"></div>
+        <div id="planLocked" style="display:none">
+          <div class="locked-section" style="margin-top:1rem">
+            <div class="lock-overlay">
+              <h4><svg class="ui-ic"><use href="#i-lock"/></svg> Personalized plan available in Pro</h4>
+              <p>Activate Pro to build your day-by-day study plan based on your exam date and your real weak points.</p>
+              <button class="lock-cta" onclick="window.showPaywall('plan','The personalized study plan is what separates studying at random from studying strategically. It calculates how many days you have left, which subtopics to prioritize based on your diagnostic, and reorganizes the calendar if you fall behind.')">Activate Pro →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PREDICCIÓN DE PREPARACIÓN (PREMIUM) ═══ -->
+    <section class="section" id="prediccion">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-target"/></svg> Are you ready for the exam? <span class="pro-badge">Pro</span></h2>
+          <p class="module-desc">Pass probability calculated from your mock exam performance, your mastery map and the days remaining.</p>
+        </div>
+      </div>
+      <div id="prediccionContent">
+        <div class="grid2">
+          <div class="gauge-card">
+            <div class="gauge">
+              <svg viewBox="0 0 160 160">
+                <circle class="gauge-bg" cx="80" cy="80" r="65"/>
+                <circle class="gauge-fg" cx="80" cy="80" r="65" id="gaugeFg" stroke="var(--red)" stroke-dasharray="0 408"/>
+              </svg>
+              <div class="gauge-text"><span id="gaugePct">—</span><small>readiness</small></div>
+            </div>
+            <div class="gauge-label" id="gaugeLabel">Start your diagnostic</div>
+            <div class="gauge-tip" id="gaugeTip">Take the initial diagnostic so your real pass probability can be calculated.</div>
+          </div>
+          <div class="card panel">
+            <strong style="font-size:.92rem"><svg class="ui-ic"><use href="#i-chart"/></svg> What affects your readiness?</strong>
+            <div id="readinessBreakdown" style="margin-top:.7rem;display:grid;gap:.5rem;font-size:.85rem"></div>
+            <div id="prediccionLocked" style="display:none;margin-top:.8rem;padding:.8rem;background:var(--soft);border-radius:12px;text-align:center">
+              <p style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem"><svg class="ui-ic"><use href="#i-lock"/></svg> Activate Pro to see your real prediction.</p>
+              <button class="btn primary" style="font-size:.78rem" onclick="window.showPaywall('prediccion','The pass prediction combines your mock exam performance, your mastered subtopics and the days remaining until the exam to give you a realistic pass probability estimate.')">Activate Pro →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ HISTORIAL DE ERRORES FRECUENTES (PREMIUM) ═══ -->
+    <section class="section" id="errlog">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-alert"/></svg> Common mistakes <span class="pro-badge">Pro</span></h2>
+          <p class="module-desc">The questions you miss most, grouped together. Ideal for reviewing before the exam.</p>
+        </div>
+      </div>
+      <div id="errlogContent">
+        <div id="errlogList"></div>
+        <div id="errlogLocked" style="display:none">
+          <div class="locked-section">
+            <div class="lock-overlay">
+              <h4><svg class="ui-ic"><use href="#i-lock"/></svg> Available in Pro</h4>
+              <p>The common mistakes log shows you exactly which questions and subtopics are costing you the most, so you review what matters.</p>
+              <button class="lock-cta" onclick="window.showPaywall('errlog','The common mistakes log is one of the features that moves the needle most. Knowing exactly what you miss saves you hours of misdirected studying.')">Activate Pro →</button>
+            </div>
+          </div>
+        </div>
+        <p id="errlogEmpty" style="color:var(--muted);font-size:.85rem;font-style:italic;display:none">You don't have enough recorded mistakes yet. Take some mock exams and the most frequent ones will appear here.</p>
+      </div>
+    </section>
+
+    <!-- ═══ DASHBOARD ═══ -->
+
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CONTENIDO ACADÉMICO PRIMER PARCIAL (P1)
+         Cubre: Introducción, Composición química, Biología celular,
+         Fotosíntesis y Respiración celular. Estructura paralela al
+         segundo parcial: secciones colapsables por subtema con
+         errores comunes, claves de examen y trampas frecuentes.
+         ═══════════════════════════════════════════════════════════ -->
+        </div>
+
+    <div class="app-view" id="view-parciales">
+      <div class="pl-header" id="parcialPlanHeader"><div class="pl-ring"><svg width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle id="plRingFg" cx="60" cy="60" r="50" stroke="url(#plGrad)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset .7s cubic-bezier(.22,1,.36,1)"/><defs><linearGradient id="plGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#37a459"/><stop offset="1" stop-color="#5fd98a"/></linearGradient></defs></svg><span class="pl-ring-v"><b id="plRingVal">0%</b><small>Mastered</small></span></div><div class="pl-meta"><span class="eyebrow" id="plEyebrow"><svg class="btn-ic"><use href="#i-leaf"/></svg> Unit 1 · Active</span><h2 class="serif" id="plTitle">Cell and biomolecules</h2><p id="plDesc">5 topics · introduction, biomolecules, cell, metabolism and energy. Your base for the whole course.</p></div><div class="pl-actions"><button class="btn primary" onclick="A.plGo('ev')"><svg class="btn-ic"><use href="#i-doc"/></svg>Take assessment</button><button class="btn" onclick="A.plGo('res')"><svg class="btn-ic"><use href="#i-book"/></svg>Review summary</button></div></div>
+
+
+    <!-- ═══ COBERTURA P1 ═══ -->
+
+
+    <!-- ═══ EXAMEN PRIMER PARCIAL ═══ -->
+    <section class="section p1-content" id="examenP1Section" data-parcial="p1">
+      <div class="section-head">
+        <div>
+          <span class="parcial-context"><svg class="ui-ic"><use href="#i-book"/></svg> First unit</span>
+          <h2><svg class="ui-ic"><use href="#i-doc"/></svg> Exam-style mock — P1</h2>
+          <p class="module-desc">25 multiple-choice questions + 4 short-answer + 1 matching. University exam-style format.</p>
+        </div>
+        <div class="toolbar">
+          <div class="timer-d" id="examP1Timer" style="display:none"><svg class="ui-ic"><use href="#i-timer"/></svg> 00:00</div>
+          <button class="btn" id="examP1TimerBtn" onclick="A.toggleExamP1Timer()"><svg class="ui-ic"><use href="#i-timer"/></svg> Start timer</button>
+        </div>
+      </div>
+      <div class="exam-banner" id="examP1Banner"><svg class="ui-ic"><use href="#i-book"/></svg> <strong>Study Mode:</strong> feedback appears on review.</div>
+      <div id="examP1Container"></div>
+      <div class="toolbar" style="margin-top:1rem">
+        <button class="btn primary" onclick="A.reviewP1Exam()"><svg class="ui-ic"><use href="#i-doc"/></svg> Review P1 exam</button>
+        <button class="btn" onclick="A.resetP1Exam()">↺ Reset</button>
+        <span class="badge" id="examP1Score">Score: 0 / 30</span>
+      </div>
+      <!-- GLOBAL RESULT P1 (same grading mode as P2) -->
+      <div class="fullbox" style="margin-top:1rem;background:var(--surface);display:none" id="globalResultP1">
+        <strong><svg class="ui-ic"><use href="#i-chart"/></svg> Overall exam result</strong>
+        <p class="muted" style="font-size:.83rem">Breakdown by topic section of the first unit.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
+          <div class="stat-card"><div class="sv" id="globP1_earned">—</div><div class="sl">Points earned</div></div>
+          <div class="stat-card"><div class="sv" id="globP1_possible">—</div><div class="sl">Total points</div></div>
+          <div class="stat-card"><div class="sv" id="globP1_pct">—</div><div class="sl">Percentage</div></div>
+        </div>
+        <div id="globalDiagP1" style="font-size:.83rem;line-height:1.8;margin-top:.5rem"></div>
+      </div>
+    </section>
+
+    <!-- ═══ FIN BLOQUE P1 ═══ -->
+
+
+
+
+    <!-- ═══════════ COBERTURA ═══════════ -->
+
+    <!-- ═══ COBERTURA (V5 literal) ═══ -->
+
+    <!-- ═══ EXAMEN 2023 (V5 literal completo: P1+P2+Manual+A1+A2+Desarrollo) ═══ -->
+    <section class="section p2-content" id="examenes" data-parcial="p2">
+      <div class="section-head">
+        <div><h2><svg class="ui-ic"><use href="#i-doc"/></svg> Exam-style assessment — P2</h2><p class="module-desc">Complete university-style practice assessment. <strong>Study Mode</strong>: instant feedback. <strong>Exam Mode</strong>: answers at the end.</p></div>
+        <div class="toolbar">
+          <div class="timer-d" id="examTimerDisp" style="display:none"><svg class="ui-ic"><use href="#i-timer"/></svg> 00:00</div>
+          <button class="btn" id="examTimerBtn" onclick="A.toggleExamTimer()"><svg class="ui-ic"><use href="#i-timer"/></svg> Timer</button>
+          <span class="badge" id="examModeBadge">Mode: Study</span>
+        </div>
+      </div>
+      <div class="warn" style="margin-bottom:.8rem"><svg class="ui-ic"><use href="#i-doc"/></svg> <em>Exam-style assessment based on an academic assessment used at TEC during 2023, reworded and used solely for educational and practice purposes within BioMaster.</em></div>
+      <details class="card panel" open>
+        <summary class="summary-line" style="cursor:pointer">
+          <div class="summary-left"><span class="num">P2</span><div><strong>Exam-style assessment · General Biology</strong><div class="muted">First part: Multiple choice (40 pts) · Second: Short answer · Third: Matching · Fourth: Essay</div></div></div>
+          <div class="summary-right"><span class="badge badge-blue">Complete assessment</span></div>
+        </summary>
+        <div class="body">
+          <div class="warn" id="examModeInfo"><svg class="ui-ic"><use href="#i-book"/></svg> <strong>Study Mode active:</strong> feedback appears immediately when you review each section.</div>
+          <!-- PARTE 1 -->
+          <div class="fullbox" style="background:var(--surface)"><strong>First part: Mark with X · 1 point each · Total: 40 points</strong></div>
+          <div id="exam2023Parts"></div>
+          <div class="fullbox" id="p1summary" style="display:none;background:#fff7ed;border:1px solid #fed7aa"></div>
+          <div class="toolbar" style="margin-top:.8rem">
+            <button class="btn primary" onclick="A.reviewP1()">✅ Review part 1</button>
+            <button class="btn" onclick="A.resetP1()">↺ Reset</button>
+            <button class="btn" onclick="A.tts(document.querySelector('#exam2023Parts .sim-question strong')?.textContent||'')"><svg class="ui-ic"><use href="#i-audio"/></svg></button>
+          </div>
+          <!-- PARTE 2: RESPUESTA CORTA -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Second part: Fill in / Short answer (20 points — 2 pts each)</strong><p class="muted" style="font-size:.85rem">Write the term that matches each definition.</p></div>
+          <div class="sim-question"><strong>1. Acellular infectious agent made only of nucleic acid, surrounded by a protein capsid, requires a host cell. (2 pts)</strong><textarea id="s0" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs0"></div></div>
+          <div class="sim-question"><strong>2. Pathogenic agent made of small, single-stranded, circular RNA molecules without a capsid; no proteins or lipids. (2 pts)</strong><textarea id="s1" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs1"></div></div>
+          <div class="sim-question"><strong>3. Infectious protein particles that transform normal membrane proteins. (2 pts)</strong><textarea id="s2" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs2"></div></div>
+          <div class="sim-question"><strong>4. Virus capable of infecting bacteria. (2 pts)</strong><textarea id="s3" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs3"></div></div>
+          <div class="sim-question"><strong>5. Symbiotic association between an alga and a fungus. (2 pts)</strong><textarea id="s4" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs4"></div></div>
+          <div class="sim-question"><strong>6. Symbiotic associations between roots and fungi. (2 pts)</strong><textarea id="s5" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs5"></div></div>
+          <div class="sim-question"><strong>7. Plants with multiples-of-5 structures, taproot and branched venation. (2 pts)</strong><textarea id="s6" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs6"></div></div>
+          <div class="sim-question"><strong>8. Term that describes when two or more species mutually influence each other's evolution. (2 pts)</strong><textarea id="s7" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs7"></div></div>
+          <div class="sim-question"><strong>9. Organism that has no body cavity (e.g. planarians, tapeworms, flatworms). (2 pts)</strong><textarea id="s8" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs8"></div></div>
+          <div class="sim-question"><strong>10. Type of evolution in which similar structures develop from different ancestors through different processes. (2 pts)</strong><textarea id="s9" rows="2" placeholder="Write your answer"></textarea><div class="feedback" id="fs9"></div></div>
+          <div class="fullbox" id="p2summary" style="display:none;background:#eff6ff;border:1px solid #93c5fd"></div>
+          <div class="toolbar"><button class="btn primary" onclick="A.reviewP2()">✅ Review part 2</button><button class="btn" onclick="A.resetP2()">↺</button></div>
+          <!-- PARTE 2B: PREGUNTAS ABIERTAS -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Open-ended questions (manual review)</strong><p class="muted" style="font-size:.83rem">The expected answer is shown when you press "Review".</p></div>
+          <div class="sim-question"><strong>11. Two human traits determined by polygenic inheritance:</strong><textarea id="m0" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm0" style="display:none"></div></div>
+          <div class="sim-question"><strong>12. Two differences between the domains Archaea and Bacteria:</strong><textarea id="m1" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm1" style="display:none"></div></div>
+          <div class="sim-question"><strong>13. Name three types of evidence for evolution:</strong><textarea id="m2" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm2" style="display:none"></div></div>
+          <div class="sim-question"><strong>14. Cite two factors that cause mutations in living things:</strong><textarea id="m3" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm3" style="display:none"></div></div>
+          <div class="sim-question"><strong>15. State one economic importance of red algae:</strong><textarea id="m4" rows="3" placeholder="Write your answer"></textarea><div class="feedback" id="fm4" style="display:none"></div></div>
+          <div class="fullbox" id="pmansummary" style="display:none;background:#f8fafc;border:1px solid #cbd5e1"></div>
+          <div class="toolbar"><button class="btn primary" onclick="A.reviewManual()">✅ Review open answers</button><button class="btn" onclick="A.resetManual()">↺</button></div>
+          <!-- PARTE 3: ASOCIACIÓN 1 -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Third part — Matching 1 (10 points)</strong><p class="muted" style="font-size:.83rem">Write the number from the right column that corresponds to each item on the left.</p></div>
+          <div class="fullbox" style="background:var(--surface);overflow:auto">
+            <table style="width:100%;border-collapse:collapse;min-width:820px">
+              <thead><tr><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:38%">Left column</th><th style="padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:14%">Ans.</th><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc">Right column</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">1. Annelida</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_0" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_0" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Chordata</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">2. Pseudocoelomates</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_1" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_1" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Arthropoda</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">3. Birds</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_2" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_2" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Platyhelminthes</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">4. Cestodes, planarians</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_3" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_3" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Earthworm</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">5. Notochord, dorsal nerve cord, post-anal tail</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_4" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_4" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Cnidaria</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">6. Mollusca</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_5" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_5" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Echinodermata</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">7. Water vascular system</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_6" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_6" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Porifera</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">8. Lepidoptera, Diptera</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_7" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_7" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Nematodes</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">9. Animals without tissues</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_8" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_8" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Forelimbs modified for flight</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">10. Radial symmetry</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a1_9" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa1_9" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Gastropod, bivalve, octopus</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="fullbox" id="pa1summary" style="display:none;background:#fefce8;border:1px solid #fde68a"></div>
+          <div class="toolbar"><button class="btn primary" onclick="A.reviewA1()">✅ Review matching 1</button><button class="btn" onclick="A.resetA1()">↺</button></div>
+          <!-- PARTE 3: ASOCIACIÓN 2 -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Third part — Matching 2 (10 points)</strong></div>
+          <div class="fullbox" style="background:var(--surface);overflow:auto">
+            <table style="width:100%;border-collapse:collapse;min-width:820px">
+              <thead><tr><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:38%">Left column</th><th style="padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc;width:14%">Ans.</th><th style="text-align:left;padding:.6rem;border:1px solid #e5e7eb;background:#f8fafc">Right column</th></tr></thead>
+              <tbody>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">1. Mutations</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_0" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_0" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Founder effect</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">2. Inbreeding</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_1" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_1" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Encompasses global transformations in evolution</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">3. Inheritance of acquired traits</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_2" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_2" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Increases gene flow, causes greater diversity</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">4. Polyploidy</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_3" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_3" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Traits are inherited from parents to offspring</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">5. Occurs when a small number of organisms found isolated colonies</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_4" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_4" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Original and main source of genetic variation</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">6. Microevolution</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_5" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_5" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Lamarck</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">7. Darwin and Wallace</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_6" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_6" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Creationism</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">8. Macroevolution</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_7" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_7" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Small-scale evolution within a single population</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">9. The Earth is the center of the universe and the world was populated in a single act of creation</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_8" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_8" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">More than two chromosome sets; diploid becomes tetraploid</td></tr>
+                <tr><td style="padding:.6rem;border:1px solid #e5e7eb">10. Migration</td><td style="padding:.6rem;border:1px solid #e5e7eb"><input id="a2_9" type="text" inputmode="numeric" placeholder="__" style="width:60px"><div class="feedback" id="fa2_9" style="display:inline"></div></td><td style="padding:.6rem;border:1px solid #e5e7eb">Many recessive genes remain hidden in heterozygosity</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="fullbox" id="pa2summary" style="display:none;background:#fefce8;border:1px solid #fde68a"></div>
+          <div class="toolbar"><button class="btn primary" onclick="A.reviewA2()">✅ Review matching 2</button><button class="btn" onclick="A.resetA2()">↺</button></div>
+          <!-- PARTE 4: DESARROLLO -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)"><strong>Fourth part — Essay</strong></div>
+          <div class="sim-question">
+            <strong>1. In a H-W equilibrium population, the allele frequency of "a" is 0.3. What would be the expected frequency of heterozygotes "Aa"? (3 pts)</strong>
+            <div class="fullbox" style="margin-top:.7rem;background:var(--surface)">
+              <strong>1a) Calculation:</strong>
+              <input type="text" id="hw_ans" placeholder="Ej: 0.42" style="margin-top:.4rem">
+              <div class="feedback" id="fb_hw_a"></div>
+            </div>
+            <div class="fullbox" style="margin-top:.7rem;background:var(--surface)">
+              <strong>1b) List the 5 conditions of Hardy-Weinberg equilibrium (4 pts):</strong>
+              <textarea id="hw_cond" rows="4" placeholder="Write the 5 conditions…"></textarea>
+              <div class="feedback" id="fb_hw_b" style="display:none"></div>
+            </div>
+            <div class="fullbox" id="pdev1sum" style="display:none;background:#fefce8"></div>
+            <div class="toolbar"><button class="btn primary" onclick="A.reviewDev1()">✅ Review essay 1</button><button class="btn" onclick="A.resetDev1()">↺</button></div>
+          </div>
+          <div class="sim-question" style="margin-top:1rem">
+            <strong>2. Explain the three types of natural selection with an example of each:</strong>
+            <div style="display:grid;gap:.6rem;margin-top:.6rem">
+              <div><label style="font-size:.85rem;font-weight:700">A) Stabilizing selection:</label><textarea id="dev2_a" rows="2" placeholder="Explain and give an example…"></textarea></div>
+              <div><label style="font-size:.85rem;font-weight:700">B) Directional selection:</label><textarea id="dev2_b" rows="2" placeholder="Explain and give an example…"></textarea></div>
+              <div><label style="font-size:.85rem;font-weight:700">C) Disruptive selection:</label><textarea id="dev2_c" rows="2" placeholder="Explain and give an example…"></textarea></div>
+            </div>
+            <div class="feedback" id="fb_dev2" style="display:none;margin-top:.6rem"></div>
+            <div class="toolbar" style="margin-top:.5rem"><button class="btn primary" onclick="A.reviewDev2()">✅ Show expected answer</button><button class="btn" onclick="A.resetDev2()">↺</button></div>
+          </div>
+          <div class="sim-question" style="margin-top:1rem">
+            <strong>3. Draw and explain asexual reproduction by spores in a fungus:</strong>
+            <textarea id="dev3_note" rows="4" placeholder="Describe the process (hypha → sporangium → spores) and explain whether it is mitosis or meiosis…"></textarea>
+            <div class="feedback" id="fb_dev3" style="display:none;margin-top:.6rem"></div>
+            <div class="toolbar" style="margin-top:.5rem"><button class="btn primary" onclick="A.reviewDev3()">✅ Show expected answer</button><button class="btn" onclick="A.resetDev3()">↺</button></div>
+          </div>
+          <!-- RESULTADO GLOBAL -->
+          <div class="fullbox" style="margin-top:1rem;background:var(--surface)" id="globalResult">
+            <strong><svg class="ui-ic"><use href="#i-chart"/></svg> Overall exam result</strong>
+            <p class="muted" style="font-size:.83rem">Review each section before calculating the total.</p>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:.8rem 0">
+              <div class="stat-card"><div class="sv" id="glob_earned">—</div><div class="sl">Pts earned</div></div>
+              <div class="stat-card"><div class="sv" id="glob_possible">—</div><div class="sl">Pts reviewed</div></div>
+              <div class="stat-card"><div class="sv" id="glob_pct">—</div><div class="sl">Percentage</div></div>
+            </div>
+            <div id="globalDiag" style="display:none;font-size:.83rem;line-height:1.8;margin-top:.5rem"></div>
+            <button class="btn primary" onclick="A.calcGlobal()">🧮 Calculate overall result</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         PARCIAL 3 — Resumen, cobertura y evaluación tipo parcial
+         Bloque de contenido completo del tercer parcial integrado
+         con coherencia visual respecto a P1 y P2.
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- ═══ RESUMEN P3 ═══ -->
+
+
+    <!-- ═══ CASOS HIPOTÉTICOS P3 ═══ -->
+
+
+    <!-- ═══ COBERTURA P3 ═══ -->
+
 
     <!-- ═══ EVALUACIÓN P3 ═══ -->
     <section class="section p3-content" id="examenP3Section" data-parcial="p3">
@@ -8855,6 +8604,265 @@ window.Analytics = (function(){
         </div>
         <div class="timer-d" id="cdDisplay" style="font-size:2rem;margin-top:.6rem;text-align:center">—</div>
       </div>
+    </section>
+
+    <section class="section p3-content" id="casosP3" data-parcial="p3">
+      <div class="section-head">
+        <div>
+          <h2><svg class="ui-ic"><use href="#i-flask"/></svg> Hypothetical Cases — Unit 3</h2>
+          <p class="module-desc">31 real exam scenarios · Applied reasoning · Organised by topic · Reveal and self-assess</p>
+        </div>
+      </div>
+      <script>
+        var _ch3bd=0,_ch3bda={};
+        function ch3Rev(n){var el=document.getElementById('ch3a'+n),btn=document.getElementById('ch3rb'+n);if(!el)return;var show=el.style.display==='none';el.style.display=show?'block':'none';if(btn)btn.textContent=show?'▼ Hide':'▶ Show answer';document.querySelectorAll('[data-ch3m="'+n+'"]').forEach(function(b){b.style.display=show?'inline-block':'none';});}
+        function ch3Mark(n,ok){_ch3bda[n]=ok;var c=0;Object.keys(_ch3bda).forEach(function(k){if(_ch3bda[k])c++;});_ch3bd=c;var bd=document.getElementById('ch3score');if(bd)bd.textContent=_ch3bd+'/'+Object.keys(_ch3bda).length;document.querySelectorAll('[data-ch3m="'+n+'"]').forEach(function(b){var isOk=b.getAttribute('data-ch3ok')==='1';b.style.opacity=(isOk===ok)?'1':'.3';b.style.fontWeight=(isOk===ok)?'700':'400';});}
+        function ch3Reset(){_ch3bd=0;_ch3bda={};for(var i=1;i<=31;i++){var a=document.getElementById('ch3a'+i);if(a)a.style.display='none';var rb=document.getElementById('ch3rb'+i);if(rb)rb.textContent='▶ Ver respuesta';}document.querySelectorAll('[data-ch3m]').forEach(function(b){b.style.opacity='1';b.style.fontWeight='400';b.style.display='none';});var sc=document.getElementById('ch3score');if(sc)sc.textContent='0/0';}
+      </script>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:.9rem;padding:.45rem .75rem;background:rgba(139,92,246,.05);border-radius:8px;border:1px solid rgba(139,92,246,.18);font-size:.81rem">
+        <span style="color:var(--muted)"><svg class="ui-ic"><use href="#i-chart"/></svg> Self-assessment:</span>
+        <span><strong>Completed:</strong> <span id="ch3score" style="color:var(--green);font-weight:700">0/0</span></span>
+        <button onclick="ch3Reset()" style="margin-left:auto;font-size:.74rem;padding:.18rem .65rem;border-radius:6px;border:1px solid var(--border);background:var(--soft);cursor:pointer;color:var(--muted)">↺ Reset</button>
+      </div>
+
+      <!-- T6.1 FILOGENIA -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(139,92,246,.25);background:rgba(139,92,246,.05)"><svg class="ui-ic"><use href="#i-leaf"/></svg> T6.1 — Phylogeny and classification <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">1.</span> You have a tree where A and B share a node, and that node then connects to C at an older node. Who is most closely related to whom?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb1" onclick="ch3Rev(1)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(139,92,246,.35);background:rgba(139,92,246,.08);color:rgba(139,92,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="1" data-ch3ok="1" onclick="ch3Mark(1,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="1" data-ch3ok="0" onclick="ch3Mark(1,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a1" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(139,92,246,.06);border-radius:6px;line-height:1.65">A and B are more closely related to each other than either is to C, because their common ancestor is more recent.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.2 DOMINIOS -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(59,130,246,.25);background:rgba(59,130,246,.05)"><svg class="ui-ic"><use href="#i-dna"/></svg> T6.2 — Domains of life (Bacteria &amp; Archaea) <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">3 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">2.</span> You are given a unicellular organism with no nucleus. Cell wall without peptidoglycan, ether-linked lipids, lives at 90°C. Bacterium or Archaea?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb2" onclick="ch3Rev(2)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="2" data-ch3ok="1" onclick="ch3Mark(2,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="2" data-ch3ok="0" onclick="ch3Mark(2,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a2" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65"><strong>Archaea.</strong> No peptidoglycan and ether lipids are diagnostic. Bacteria have peptidoglycan and ester lipids.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">3.</span> A Gram-positive bacterium loses the ability to synthesise peptidoglycan by mutation. What happens to it?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb3" onclick="ch3Rev(3)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="3" data-ch3ok="1" onclick="ch3Mark(3,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="3" data-ch3ok="0" onclick="ch3Mark(3,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a3" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65">It becomes osmotically fragile (loses structural support), lyses easily, and stops retaining crystal violet in the stain. This is essentially the mechanism by which <strong>penicillin</strong> acts (inhibiting peptidoglycan synthesis).</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">4.</span> An ampicillin-sensitive bacterium is mixed with a resistant bacterium that carries the resistance gene on a plasmid. After some time, the formerly sensitive bacteria are also resistant. What happened?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb4" onclick="ch3Rev(4)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(59,130,246,.35);background:rgba(59,130,246,.08);color:rgba(59,130,246,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="4" data-ch3ok="1" onclick="ch3Mark(4,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="4" data-ch3ok="0" onclick="ch3Mark(4,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a4" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(59,130,246,.06);border-radius:6px;line-height:1.65"><strong>Conjugation.</strong> The plasmid carrying the resistance gene was transferred by direct contact (pili) to the sensitive bacteria. This is why antibiotic resistance spreads so rapidly.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.3 VIROLOGÍA -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(249,115,22,.25);background:rgba(249,115,22,.05)"><svg class="ui-ic"><use href="#i-dna"/></svg> T6.3 — Virology and infectious agents <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">5.</span> A bacterium with an integrated prophage is exposed to UV radiation. What do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb5" onclick="ch3Rev(5)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(249,115,22,.35);background:rgba(249,115,22,.08);color:rgba(249,115,22,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="5" data-ch3ok="1" onclick="ch3Mark(5,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="5" data-ch3ok="0" onclick="ch3Mark(5,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a5" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(249,115,22,.06);border-radius:6px;line-height:1.65">The prophage may <strong>activate</strong>, enter the lytic cycle, replicate, and lyse the bacterium. This is the <strong>lysogenic → lytic</strong> transition induced by stress (UV radiation damages DNA and triggers excision of the prophage).</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">6.</span> An infectious agent is resistant to treatments that destroy nucleic acids (nucleases) but sensitive to treatments that destroy proteins (proteases). What type is it?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb6" onclick="ch3Rev(6)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(249,115,22,.35);background:rgba(249,115,22,.08);color:rgba(249,115,22,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="6" data-ch3ok="1" onclick="ch3Mark(6,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="6" data-ch3ok="0" onclick="ch3Mark(6,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a6" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(249,115,22,.06);border-radius:6px;line-height:1.65"><strong>Prion.</strong> Its nature is exclusively proteinaceous (misfolded PrP protein). It contains no nucleic acids of its own, which is why nucleases have no effect on it.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.4 EUCARIONTES -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(20,184,166,.25);background:rgba(20,184,166,.05)"><svg class="ui-ic"><use href="#i-scope"/></svg> T6.4 — Eukaryotes and endosymbiotic theory <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">7.</span> A new organelle is discovered in a protist with a double membrane, its own circular DNA, and 70S ribosomes. What hypothesis arises about its origin?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb7" onclick="ch3Rev(7)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(20,184,166,.35);background:rgba(20,184,166,.08);color:rgba(20,184,166,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="7" data-ch3ok="1" onclick="ch3Mark(7,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="7" data-ch3ok="0" onclick="ch3Mark(7,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a7" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(20,184,166,.06);border-radius:6px;line-height:1.65"><strong>Endosymbiotic origin</strong>, probably from a bacterium. The three lines of evidence (double membrane, circular DNA, 70S ribosomes) are the diagnostic criteria used for mitochondria and chloroplasts.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.5 PLANTAS -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.05)"><svg class="ui-ic"><use href="#i-leaf"/></svg> T6.5 — Plants <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">8.</span> A plant has a large, green gametophyte and a small sporophyte that grows on the gametophyte and depends on it nutritionally. What group is it?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb8" onclick="ch3Rev(8)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="8" data-ch3ok="1" onclick="ch3Mark(8,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="8" data-ch3ok="0" onclick="ch3Mark(8,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a8" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(34,197,94,.06);border-radius:6px;line-height:1.65"><strong>Bryophytes</strong> (mosses, liverworts, hornworts). The dominant phase is the gametophyte; the sporophyte is dependent. In pteridophytes and seed plants this relationship is reversed.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">9.</span> If all angiosperms disappeared, what would happen to pollinators?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb9" onclick="ch3Rev(9)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="9" data-ch3ok="1" onclick="ch3Mark(9,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="9" data-ch3ok="0" onclick="ch3Mark(9,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a9" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(34,197,94,.06);border-radius:6px;line-height:1.65">Massive collapse. Most pollinators (bees, butterflies, hummingbirds, bats) depend on flowers. Gymnosperms (mostly wind-pollinated) cannot sustain these pollinators. The result would be a cascade extinction of these animal groups.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.6 HONGOS -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.05)">🍄 T6.6 — Fungi <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">1 case</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">10.</span> If mycorrhizae completely die off in a forest region, what do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb10" onclick="ch3Rev(10)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(245,158,11,.35);background:rgba(245,158,11,.08);color:rgba(245,158,11,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="10" data-ch3ok="1" onclick="ch3Mark(10,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="10" data-ch3ok="0" onclick="ch3Mark(10,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a10" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(245,158,11,.06);border-radius:6px;line-height:1.65">Reduced phosphorus and water uptake in plants → plant stress → slower growth → changes in plant community composition → cascade effects on herbivores and other trophic levels. The disruption may take years but will be profound.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.7 INVERTEBRADOS -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(244,63,94,.25);background:rgba(244,63,94,.05)">🦑 T6.7 — Invertebrates <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">2 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">11.</span> In an embryo, the blastopore becomes the anus. Which lineage does it belong to?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb11" onclick="ch3Rev(11)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:rgba(244,63,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="11" data-ch3ok="1" onclick="ch3Mark(11,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="11" data-ch3ok="0" onclick="ch3Mark(11,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a11" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(244,63,94,.06);border-radius:6px;line-height:1.65"><strong>Deuterostomes.</strong> This places it with echinoderms and chordates. In protostomes the opposite is true: blastopore → mouth.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">12.</span> You find a bilateral aquatic animal, segmented, with a cylindrical body and bristles on each segment. What phylum is it?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb12" onclick="ch3Rev(12)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:rgba(244,63,94,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="12" data-ch3ok="1" onclick="ch3Mark(12,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="12" data-ch3ok="0" onclick="ch3Mark(12,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a12" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(244,63,94,.06);border-radius:6px;line-height:1.65"><strong>Annelid</strong> (probably a polychaete if marine). Key features: segmentation + setae (chaetae). Nematodes are cylindrical but neither segmented nor bristled.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T6.8 CORDADOS -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.05)">🐟 T6.8 — Chordates <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">3 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">13.</span> A swimming larva with a notochord and a post-anal muscular tail becomes a sessile adult lacking those traits. What group is it?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb13" onclick="ch3Rev(13)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="13" data-ch3ok="1" onclick="ch3Mark(13,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="13" data-ch3ok="0" onclick="ch3Mark(13,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a13" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65"><strong>Urochordate</strong> (tunicate / ascidian). The larva is unambiguously chordate; the adult attaches to the substrate and loses its notochord and tail. The four chordate features are only visible in the larva.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">14.</span> If the amniotic egg had never evolved, which groups would not exist today?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb14" onclick="ch3Rev(14)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="14" data-ch3ok="1" onclick="ch3Mark(14,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="14" data-ch3ok="0" onclick="ch3Mark(14,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a14" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65">Reptiles, birds, and mammals (all <strong>amniotes</strong>). Vertebrates would have remained confined to water's edge for reproduction, like modern amphibians.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">15.</span> A mammal species loses the ability to maintain a stable body temperature. What consequences do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb15" onclick="ch3Rev(15)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(99,102,241,.35);background:rgba(99,102,241,.08);color:rgba(99,102,241,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="15" data-ch3ok="1" onclick="ch3Mark(15,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="15" data-ch3ok="0" onclick="ch3Mark(15,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a15" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(99,102,241,.06);border-radius:6px;line-height:1.65">Reduced activity in cold climates, greater dependence on the thermal environment (like reptiles), drastic changes in geographic distribution and behaviour. Some existing mammals (sloths, hibernating bears) already show partial versions of this.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T7.1 POBLACIONES -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(16,185,129,.25);background:rgba(16,185,129,.05)"><svg class="ui-ic"><use href="#i-chart"/></svg> T7.1 — Population dynamics <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">16.</span> An invasive species arrives on an island with no predators or competitors. Initially it shows J-shaped growth. After some time, what do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb16" onclick="ch3Rev(16)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="16" data-ch3ok="1" onclick="ch3Mark(16,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="16" data-ch3ok="0" onclick="ch3Mark(16,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a16" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">It will eventually slow down (<strong>logistic model</strong>) as it hits the carrying capacity K through food depletion, space limitations, or the emergence of density-dependent diseases. It may cause local ecological collapse if it overshoots K.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">17.</span> A fire eliminates 80% of a deer population. The following year, the wolves that feed on deer also decline dramatically. What factor affected each?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb17" onclick="ch3Rev(17)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="17" data-ch3ok="1" onclick="ch3Mark(17,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="17" data-ch3ok="0" onclick="ch3Mark(17,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a17" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65">For the deer: <strong>density-independent</strong> factor (the fire, unrelated to deer numbers). For the wolves: <strong>density-dependent</strong> factor (prey scarcity, which does depend on the size of the deer population).</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">18.</span> A species produces thousands of eggs, provides no parental care, juveniles mature within weeks and live only a few months. What life-history strategy does it show?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb18" onclick="ch3Rev(18)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="18" data-ch3ok="1" onclick="ch3Mark(18,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="18" data-ch3ok="0" onclick="ch3Mark(18,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a18" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65"><strong>r-selection</strong> (r strategy): high reproductive rate, little parental investment, short life span, early reproduction. Typical of bony fish, insects, and frogs.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">19.</span> Can humans grow indefinitely?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb19" onclick="ch3Rev(19)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(16,185,129,.35);background:rgba(16,185,129,.08);color:rgba(16,185,129,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="19" data-ch3ok="1" onclick="ch3Mark(19,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="19" data-ch3ok="0" onclick="ch3Mark(19,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a19" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(16,185,129,.06);border-radius:6px;line-height:1.65"><strong>No.</strong> Although technology extends K, planetary resources (arable land, fresh water, energy, CO₂ absorption capacity) are finite. There are inescapable thermodynamic and ecological limits.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T7.2 COMUNIDADES -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(14,165,233,.25);background:rgba(14,165,233,.05)"><svg class="ui-ic"><use href="#i-globe"/></svg> T7.2 — Communities and succession <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">20.</span> Two bird species in the same tree eat the same seeds, at the same time, on the same branch. What do you predict in the long run?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb20" onclick="ch3Rev(20)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="20" data-ch3ok="1" onclick="ch3Mark(20,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="20" data-ch3ok="0" onclick="ch3Mark(20,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a20" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65">Intense competition over an identical niche. In the long run: either one displaces the other (<strong>competitive exclusion</strong>), or they partition the resource (<strong>resource partitioning</strong>: one feeds in the canopy, the other below; one by day, the other at dawn; etc.).</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">21.</span> Two squirrel species share a forest. One feeds on ground seeds, the other on canopy seeds. What evolutionary process enabled this coexistence?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb21" onclick="ch3Rev(21)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="21" data-ch3ok="1" onclick="ch3Mark(21,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="21" data-ch3ok="0" onclick="ch3Mark(21,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a21" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Resource partitioning</strong> / possible character displacement, derived from ancestral competition. Each species occupies a slightly different niche, avoiding competitive exclusion.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">22.</span> Species A benefits from the presence of species B. Species B is not clearly affected. What type of interspecific relationship is this?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb22" onclick="ch3Rev(22)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="22" data-ch3ok="1" onclick="ch3Mark(22,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="22" data-ch3ok="0" onclick="ch3Mark(22,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a22" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Commensalism</strong> (+ / 0). Only one species benefits; the other neither gains nor loses. Example: remoras and sharks.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">23.</span> After a fire that devastates a forest but leaves the soil intact, what type of succession follows?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb23" onclick="ch3Rev(23)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(14,165,233,.35);background:rgba(14,165,233,.08);color:rgba(14,165,233,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="23" data-ch3ok="1" onclick="ch3Mark(23,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="23" data-ch3ok="0" onclick="ch3Mark(23,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a23" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(14,165,233,.06);border-radius:6px;line-height:1.65"><strong>Secondary succession.</strong> The intact soil allows faster recovery (years to decades), starting with annual herbs and shrubs. Primary succession begins from bare rock and is much slower.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T7.3 FLUJO DE ENERGÍA -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(234,179,8,.25);background:rgba(234,179,8,.05)"><svg class="ui-ic"><use href="#i-bolt"/></svg> T7.3 — Energy flow and biogeochemical cycles <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">24.</span> Why are there fewer eagles than mice in an ecosystem?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb24" onclick="ch3Rev(24)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="24" data-ch3ok="1" onclick="ch3Mark(24,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="24" data-ch3ok="0" onclick="ch3Mark(24,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a24" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">Because of the <strong>10% rule</strong>. Mice (primary consumers) receive ~10% of plant energy; eagles (carnivores) receive only ~10% of that from the mice. There is simply much less energy available at higher trophic levels.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">25.</span> A forest has a GPP of 5,000 g/m²/year and producers respire 2,000 g/m²/year. What is the NPP?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb25" onclick="ch3Rev(25)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="25" data-ch3ok="1" onclick="ch3Mark(25,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="25" data-ch3ok="0" onclick="ch3Mark(25,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a25" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">NPP = GPP − Respiration = 5,000 − 2,000 = <strong>3,000 g/m²/year</strong>. NPP is the biomass available to herbivores.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">26.</span> If all decomposers disappear from an ecosystem, what happens to the biogeochemical cycles?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb26" onclick="ch3Rev(26)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="26" data-ch3ok="1" onclick="ch3Mark(26,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="26" data-ch3ok="0" onclick="ch3Mark(26,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a26" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65">Nutrients become locked in dead biomass. Plants cannot access recycled N, P, or C. Productivity and biomass collapse within a few years. Matter cycles, but energy can no longer flow without the breakdown of organic matter.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">27.</span> A river receives a massive discharge of agricultural fertilizer. What ecological sequence do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb27" onclick="ch3Rev(27)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(234,179,8,.35);background:rgba(234,179,8,.08);color:rgba(180,130,0,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="27" data-ch3ok="1" onclick="ch3Mark(27,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="27" data-ch3ok="0" onclick="ch3Mark(27,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a27" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(234,179,8,.06);border-radius:6px;line-height:1.65"><strong>Eutrophication:</strong> algal bloom → massive die-off and decomposition → drop in dissolved O₂ (hypoxia) → death of fish and invertebrates → dead zone.</div>
+          </div>
+        </div>
+      </details>
+
+      <!-- T7.4 BIÓSFERA -->
+      <details style="margin-bottom:.6rem">
+        <summary style="cursor:pointer;padding:.5rem .8rem;border-radius:8px;font-size:.84rem;font-weight:700;list-style:none;display:flex;align-items:center;gap:.5rem;border:1px solid rgba(5,150,105,.25);background:rgba(5,150,105,.05)"><svg class="ui-ic"><use href="#i-globe"/></svg> T7.4 — Biosphere, biomes and sustainability <span style="font-size:.75rem;font-weight:400;color:var(--muted);margin-left:auto">4 cases</span></summary>
+        <div style="padding:.5rem 0 0;display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">28.</span> A plant species blooms two weeks earlier due to rising temperatures, but its pollinator does not advance its migration. What do you predict?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb28" onclick="ch3Rev(28)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="28" data-ch3ok="1" onclick="ch3Mark(28,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="28" data-ch3ok="0" onclick="ch3Mark(28,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a28" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>Phenological mismatch.</strong> The plant is not pollinated efficiently → reproduction drops → population may decline. The pollinator loses its resource. This is an example of <strong>mutualism disruption</strong> caused by climate change.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">29.</span> If a savanna receives much higher and more consistent rainfall, toward which biome would it tend to shift?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb29" onclick="ch3Rev(29)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="29" data-ch3ok="1" onclick="ch3Mark(29,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="29" data-ch3ok="0" onclick="ch3Mark(29,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a29" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65">Toward a <strong>tropical rainforest</strong> (if temperature is high) or a temperate forest (if lower). Greater moisture supports dense trees and displaces the dominant grasses.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">30.</span> No sunlight reaches the deep-sea hydrothermal vents, yet dense communities thrive there. How is this possible?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb30" onclick="ch3Rev(30)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="30" data-ch3ok="1" onclick="ch3Mark(30,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="30" data-ch3ok="0" onclick="ch3Mark(30,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a30" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>Chemosynthesis.</strong> Bacteria use H₂S (hydrogen sulfide) released by the vents as an energy source, forming the base of the food chain. It is an ecosystem entirely independent of solar energy.</div>
+          </div>
+          <div style="padding:.55rem .7rem;border-radius:7px;background:var(--soft);border:1px solid var(--border)">
+            <p style="margin:0 0 .35rem;line-height:1.5"><span style="font-weight:700;color:var(--muted)">31.</span> A region decides to intensively harvest timber to generate jobs. After 10 years the forests are depleted and the economy collapses. Which dimension(s) of sustainability failed?</p>
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center"><button id="ch3rb31" onclick="ch3Rev(31)" style="font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(5,150,105,.35);background:rgba(5,150,105,.08);color:rgba(5,150,105,.9);cursor:pointer">▶ Show answer</button><button data-ch3m="31" data-ch3ok="1" onclick="ch3Mark(31,true)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.08);color:rgba(34,197,94,.9);cursor:pointer">✓ I knew it</button><button data-ch3m="31" data-ch3ok="0" onclick="ch3Mark(31,false)" style="display:none;font-size:.78rem;padding:.18rem .55rem;border-radius:5px;border:1px solid rgba(239,68,68,.4);background:rgba(239,68,68,.08);color:rgba(239,68,68,.9);cursor:pointer">✗ I didn't know it</button></div>
+            <div id="ch3a31" style="display:none;margin-top:.4rem;padding:.4rem .55rem;background:rgba(5,150,105,.06);border-radius:6px;line-height:1.65"><strong>All three dimensions.</strong> Environmental: deforestation. Economic: a strategy that is not viable long-term. Social: loss of sustainable jobs. Sustainability fails when any dimension is completely sacrificed for the others.</div>
+          </div>
+        </div>
+      </details>
     </section>
     </div>
 
