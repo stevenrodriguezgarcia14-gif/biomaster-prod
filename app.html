@@ -4791,6 +4791,35 @@ svg:has(>use){fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:rou
 .cm-st.on{color:var(--text);font-weight:600}
 .cm-stage{margin-top:1.2rem;animation:viewIn var(--d-slow) var(--ease)}
 .cm-tool.active{border-color:var(--green);background:var(--green-soft)}
+/* config del simulacro */
+.cm-cfg-row{margin-top:1.1rem}
+.cm-cfg-lbl{display:block;font-size:.74rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.cm-cfg-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.cm-chip{padding:.5rem .95rem;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.85rem;font-weight:700;cursor:pointer;transition:transform var(--d) var(--ease),border-color var(--d),background var(--d)}
+.cm-chip:hover{border-color:var(--green)}
+.cm-chip:active{transform:scale(.96)}
+.cm-chip.on{background:var(--green);border-color:var(--green);color:#fff}
+.cm-cfg-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.4rem;flex-wrap:wrap}
+.cm-cfg-avail{font-size:.85rem;font-weight:700;color:var(--muted)}
+@media(max-width:560px){.cm-cfg-foot{flex-direction:column;align-items:stretch}.cm-cfg-foot .btn{justify-content:center}}
+/* diagnóstico por subtema */
+.cm-diag{margin-top:1.4rem;text-align:left}
+.cm-diag-h{margin-bottom:.9rem}
+.cm-diag-h strong{display:block;font-size:1rem;font-weight:800}
+.cm-diag-h span{font-size:.82rem;color:var(--muted)}
+.cm-diag-item{padding:.6rem 0;border-top:1px solid var(--border)}
+.cm-diag-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.35rem}
+.cm-diag-top b{font-weight:700;font-size:.9rem}
+.cm-diag-pill{font-size:.7rem;font-weight:800;padding:.15rem .55rem;border-radius:999px}
+.cm-diag-pill.solid{background:rgba(47,139,77,.15);color:#2f8b4d}
+.cm-diag-pill.review{background:rgba(214,158,46,.16);color:#b7791f}
+.cm-diag-pill.priority{background:rgba(197,48,48,.14);color:#c53030}
+.cm-diag-bar{height:7px;border-radius:999px;background:var(--soft);overflow:hidden}
+.cm-diag-bar span{display:block;height:100%;border-radius:999px}
+.cm-diag-bar span.solid{background:#2f8b4d}
+.cm-diag-bar span.review{background:#d69e2e}
+.cm-diag-bar span.priority{background:#c53030}
+.cm-diag-meta{font-size:.74rem;color:var(--muted);margin-top:.25rem;font-variant-numeric:tabular-nums}
 /* resumen/plan inline */
 .cm-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.3rem;box-shadow:var(--e1)}
 .cm-panel-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem}
@@ -8597,7 +8626,7 @@ window.Analytics = (function(){
 
   <section class="section" id="personalizado">
     <div class="section-head"><div><h2><svg class="hd-ic" style="width:22px;height:22px"><use href="#i-wand"/></svg> Modo personalizado</h2><p class="module-desc">Elegí exactamente qué subtemas querés estudiar y practicá solo eso, combinando los tres parciales.</p></div></div>
-    <div class="cm-wrap" id="customModeBody"><div id="cmGate" class="cm-gate" style="display:none"><span class="cm-gate-ic"><svg><use href="#i-wand"/></svg></span><h3 class="serif">Constructor de experiencias</h3><p>El Modo personalizado te deja mezclar subtemas de los tres parciales y BioMaster genera toda la experiencia académica — resumen, flashcards, simulacros, examen, diagnóstico y plan — enfocada solo en lo que elegís. Exclusivo del plan Semestre Completo.</p><button class="btn primary" onclick="window.showPaywall('personalizado','El Modo personalizado te deja mezclar subtemas de los tres parciales y BioMaster genera toda la experiencia académica — resumen, flashcards, simulacros, examen, diagnóstico y plan — enfocada solo en lo que elegís. Exclusivo del plan Semestre Completo.')">Ver el plan Semestre <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div><div id="cmManager" style="display:none"><div class="cm-mgr-head"><div><h3 class="serif" style="font-size:1.4rem;font-weight:800;letter-spacing:-.02em">Tus BioMaster personalizados</h3><p class="module-desc" style="max-width:64ch">Creá espacios de estudio a medida. Cada ruta arma su propio resumen, flashcards, simulacros, examen, diagnóstico y plan — solo con los subtemas que elijas.</p></div><button class="btn primary" onclick="A.cmNewRoute()"><svg class="btn-ic"><use href="#i-wand"/></svg>Crear nuevo BioMaster</button></div><div class="cm-route-grid" id="cmRouteGrid"></div></div><div id="cmBuilderHead" class="cm-builder-head" style="display:none"><button class="btn" onclick="A.cmBackToRoutes()"><svg class="btn-ic" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>Mis rutas</button><strong id="cmBuilderName" class="serif"></strong></div><div id="cmPicker" class="cm-builder2" style="display:none"><div class="cm-left"><div class="card panel cm-selcard"><div class="cm-phead"><svg class="hd-ic"><use href="#i-layers"/></svg>Elegí tus subtemas</div><p class="cm-selsub">Marcá exactamente lo que querés estudiar. Podés mezclar subtemas de cualquier parcial.</p><div class="cm-actions2"><button class="btn" onclick="A.cmClear()">Limpiar</button></div><div id="cmCatalog" class="cm-catalog"></div></div></div><div class="cm-right"><div class="cm-route-hero"><div class="cm-ring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="cmRingFg" cx="42" cy="42" r="34" stroke="#5fd98a" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/></svg><span class="cm-ring-v" id="cmRingVal">0%</span></div><div class="cm-route-meta"><span class="cm-eyebrow">Tu BioMaster</span><h3 class="serif" id="cmWsName">Tu BioMaster</h3><div class="cm-rstats"><div><b id="cmStatCount">0</b><small>subtemas</small></div><div><b id="cmStatMastery">0%</b><small>Dominado</small></div><div><b id="cmStatPool">0</b><small>preguntas</small></div></div></div></div><div class="cm-empty" id="cmEmpty">Elegí subtemas a la izquierda para generar tu experiencia.</div><div class="cm-tools" id="cmTools" style="display:none"><button type="button" class="cm-tool" data-t="resumen" onclick="A.cmTool('resumen')"><span class="cm-tool-ic"><svg><use href="#i-book"/></svg></span><h4>Resumen</h4><p>Tu temario enfocado.</p></button><button type="button" class="cm-tool" data-t="quiz" onclick="A.cmTool('quiz')"><span class="cm-tool-ic"><svg><use href="#i-bolt"/></svg></span><h4>Quiz</h4><p>Práctica adaptativa.</p></button><button type="button" class="cm-tool" data-t="examen" onclick="A.cmTool('examen')"><span class="cm-tool-ic"><svg><use href="#i-doc"/></svg></span><h4>Examen</h4><p>Prueba tipo parcial.</p></button><button type="button" class="cm-tool" data-t="diagnostico" onclick="A.cmTool('diagnostico')"><span class="cm-tool-ic"><svg><use href="#i-target"/></svg></span><h4>Diagnóstico</h4><p>Medí tu nivel.</p></button><button type="button" class="cm-tool" data-t="plan" onclick="A.cmTool('plan')"><span class="cm-tool-ic"><svg><use href="#i-cal"/></svg></span><h4>Plan</h4><p>Tu checklist de estudio.</p></button><button type="button" class="cm-tool" data-t="flashcards" onclick="A.cmTool('flashcards')"><span class="cm-tool-ic"><svg><use href="#i-cards"/></svg></span><h4>Flashcards</h4><p>Repaso rápido.</p></button></div><div id="cmStage" class="cm-stage" style="display:none"></div></div></div></div>
+    <div class="cm-wrap" id="customModeBody"><div id="cmGate" class="cm-gate" style="display:none"><span class="cm-gate-ic"><svg><use href="#i-wand"/></svg></span><h3 class="serif">Constructor de experiencias</h3><p>El Modo personalizado te deja mezclar subtemas de los tres parciales y BioMaster genera toda la experiencia académica — resumen, flashcards, simulacros, examen, diagnóstico y plan — enfocada solo en lo que elegís. Exclusivo del plan Semestre Completo.</p><button class="btn primary" onclick="window.showPaywall('personalizado','El Modo personalizado te deja mezclar subtemas de los tres parciales y BioMaster genera toda la experiencia académica — resumen, flashcards, simulacros, examen, diagnóstico y plan — enfocada solo en lo que elegís. Exclusivo del plan Semestre Completo.')">Ver el plan Semestre <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div><div id="cmManager" style="display:none"><div class="cm-mgr-head"><div><h3 class="serif" style="font-size:1.4rem;font-weight:800;letter-spacing:-.02em">Tus BioMaster personalizados</h3><p class="module-desc" style="max-width:64ch">Creá espacios de estudio a medida. Cada ruta arma su propio resumen, flashcards, simulacros, examen, diagnóstico y plan — solo con los subtemas que elijas.</p></div><button class="btn primary" onclick="A.cmNewRoute()"><svg class="btn-ic"><use href="#i-wand"/></svg>Crear nuevo BioMaster</button></div><div class="cm-route-grid" id="cmRouteGrid"></div></div><div id="cmBuilderHead" class="cm-builder-head" style="display:none"><button class="btn" onclick="A.cmBackToRoutes()"><svg class="btn-ic" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg>Mis rutas</button><strong id="cmBuilderName" class="serif"></strong></div><div id="cmPicker" class="cm-builder2" style="display:none"><div class="cm-left"><div class="card panel cm-selcard"><div class="cm-phead"><svg class="hd-ic"><use href="#i-layers"/></svg>Elegí tus subtemas</div><p class="cm-selsub">Marcá exactamente lo que querés estudiar. Podés mezclar subtemas de cualquier parcial.</p><div class="cm-actions2"><button class="btn" onclick="A.cmClear()">Limpiar</button></div><div id="cmCatalog" class="cm-catalog"></div></div></div><div class="cm-right"><div class="cm-route-hero"><div class="cm-ring"><svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" stroke="rgba(255,255,255,.12)" stroke-width="8" fill="none"/><circle id="cmRingFg" cx="42" cy="42" r="34" stroke="#5fd98a" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214" transform="rotate(-90 42 42)" style="transition:stroke-dashoffset .6s cubic-bezier(.22,1,.36,1)"/></svg><span class="cm-ring-v" id="cmRingVal">0%</span></div><div class="cm-route-meta"><span class="cm-eyebrow">Tu BioMaster</span><h3 class="serif" id="cmWsName">Tu BioMaster</h3><div class="cm-rstats"><div><b id="cmStatCount">0</b><small>subtemas</small></div><div><b id="cmStatMastery">0%</b><small>Dominado</small></div><div><b id="cmStatPool">0</b><small>preguntas</small></div></div></div></div><div class="cm-empty" id="cmEmpty">Elegí subtemas a la izquierda para generar tu experiencia.</div><div class="cm-tools" id="cmTools" style="display:none"><button type="button" class="cm-tool" data-t="resumen" onclick="A.cmTool('resumen')"><span class="cm-tool-ic"><svg><use href="#i-book"/></svg></span><h4>Resumen</h4><p>Tu temario enfocado.</p></button><button type="button" class="cm-tool" data-t="quiz" onclick="A.cmTool('quiz')"><span class="cm-tool-ic"><svg><use href="#i-bolt"/></svg></span><h4>Quiz</h4><p>Práctica rápida de 10.</p></button><button type="button" class="cm-tool" data-t="examen" onclick="A.cmTool('examen')"><span class="cm-tool-ic"><svg><use href="#i-doc"/></svg></span><h4>Examen</h4><p>Elegí dificultad y cantidad.</p></button><button type="button" class="cm-tool" data-t="diagnostico" onclick="A.cmTool('diagnostico')"><span class="cm-tool-ic"><svg><use href="#i-target"/></svg></span><h4>Diagnóstico</h4><p>Medí tu nivel.</p></button><button type="button" class="cm-tool" data-t="plan" onclick="A.cmTool('plan')"><span class="cm-tool-ic"><svg><use href="#i-cal"/></svg></span><h4>Plan</h4><p>Tu checklist de estudio.</p></button><button type="button" class="cm-tool" data-t="flashcards" onclick="A.cmTool('flashcards')"><span class="cm-tool-ic"><svg><use href="#i-cards"/></svg></span><h4>Flashcards</h4><p>Repaso rápido.</p></button></div><div id="cmStage" class="cm-stage" style="display:none"></div></div></div></div>
   </section>
     </div>
 
@@ -11145,7 +11174,7 @@ function nextSim(){
 //  F3: MODO PERSONALIZADO — práctica dirigida multi-parcial
 //  Premium (acceso completo). Reutiliza simState + renderSim.
 // ═══════════════════════════════════════════════════════════
-const _CM_STR = {"none": "Elegí al menos un subtema.", "q": "preguntas", "themes": "subtemas", "defRoute": "Mi primera ruta", "namePrompt": "¿Cómo se llama tu BioMaster? (ej: Repaso Final, Genética, Medicina)", "open": "Abrir", "sub": "subtemas", "back": "Mis rutas", "delConfirm": "¿Eliminar esta ruta personalizada?", "empty": "Todavía no tenés ninguna. Creá tu primer BioMaster personalizado.", "newCardT": "Crear nuevo", "newCardP": "Un espacio de estudio a tu medida", "all": "Todo", "resHead": "Tu resumen personalizado", "resSub": "La teoría exacta de los subtemas que elegiste.", "planHead": "Tu plan de estudio", "planSub": "Marcá cada subtema al dominarlo.", "flashHead": "Flashcards de tu selección", "flip": "Ver respuesta", "next": "Siguiente", "prev": "Anterior", "of": "de", "quizResult": "Resultado", "correct": "correctas", "retry": "Reintentar", "finish": "Terminar", "noQ": "Estos subtemas todavía no tienen preguntas de práctica. Probá con el Resumen o las Flashcards.", "wsEmpty": "Elegí subtemas a la izquierda para generar tu experiencia."}
+const _CM_STR = {"none": "Elegí al menos un subtema.", "q": "preguntas", "themes": "subtemas", "defRoute": "Mi primera ruta", "namePrompt": "¿Cómo se llama tu BioMaster? (ej: Repaso Final, Genética, Medicina)", "open": "Abrir", "sub": "subtemas", "back": "Mis rutas", "delConfirm": "¿Eliminar esta ruta personalizada?", "empty": "Todavía no tenés ninguna. Creá tu primer BioMaster personalizado.", "newCardT": "Crear nuevo", "newCardP": "Un espacio de estudio a tu medida", "all": "Todo", "resHead": "Tu resumen personalizado", "resSub": "La teoría exacta de los subtemas que elegiste.", "planHead": "Tu plan de estudio", "planSub": "Marcá cada subtema al dominarlo.", "flashHead": "Flashcards de tu selección", "flip": "Ver respuesta", "next": "Siguiente", "prev": "Anterior", "of": "de", "quizResult": "Resultado", "correct": "correctas", "retry": "Reintentar", "finish": "Terminar", "noQ": "Estos subtemas todavía no tienen preguntas de práctica. Probá con el Resumen o las Flashcards.", "wsEmpty": "Elegí subtemas a la izquierda para generar tu experiencia.", "cfgHead": "Armá tu simulacro", "cfgDif": "Dificultad", "cfgLen": "Cantidad de preguntas", "difMix": "Mixta", "difEasy": "Fácil", "difMed": "Media", "difHard": "Difícil", "lenAll": "Todas", "avail": "disponibles", "start": "Empezar", "cfgTip": "Con poco tiempo, elegí Media o Difícil y menos preguntas. Con más tiempo, hacé el recorrido completo.", "diagResult": "Tu nivel", "diagHead": "Diagnóstico por subtema", "diagSub": "Empezá por lo que está en rojo.", "lvSolid": "Sólido", "lvReview": "A reforzar", "lvPriority": "Prioridad"}
 let _cmSel = []      // [{parcial, id}]
 let _cmActiveId = null
 let _cmQuiz = null
@@ -11187,18 +11216,41 @@ function _cmGroupSel(){ const gm=new Map(); _cmSelItems().forEach(it=>{ if(!gm.h
 // Matching pregunta ↔ subtema por keywords (≥2 coincidencias)
 function _cmQText(q){ return _cmNorm((q.q||'')+' '+(q.exp||'')+' '+((q.ops||[]).join(' '))) }
 function _cmScore(t, kws){ let n=0; for(const k of kws){ if(k && t.indexOf(k)>=0) n++ } return n }
-// Pool por subtema con umbral ADAPTATIVO: ≥2 keywords (específico); si un subtema
-// no matchea nada, baja a ≥1 para garantizar que TODO subtema tenga preguntas.
-function _cmPoolOf(sel){
+// ═══ Banco nuevo (metodología): assets/banco/p{n}.json, índice por parcial:subtema ═══
+// Cada subtema trae ~40 preguntas etiquetadas por dificultad (facil/media/dificil).
+let _CM_NB=null, _cmNBLoading=null;
+function _cmNBIndex(list,parcial){ (list||[]).forEach(r=>{ const key=parcial+':'+r.sub
+  ;(_CM_NB[key]||(_CM_NB[key]=[])).push({q:r.q,ops:r.ops,a:r.a,theme:r.theme,exp:r.exp,dif:r.dif,sub:r.sub}) }) }
+function _cmLoadNewBank(){
+  if(_CM_NB) return Promise.resolve(_CM_NB)
+  if(_cmNBLoading) return _cmNBLoading
+  _CM_NB={}
+  _cmNBLoading=Promise.all(['p1','p2','p3'].map(p=>
+    fetch('/assets/banco/'+p+'.json',{cache:'force-cache'}).then(r=>r.ok?r.json():[]).then(l=>_cmNBIndex(l,p)).catch(()=>{})
+  )).then(()=>{ try{ if(_cmActive())_cmRefresh() }catch(e){}; return _CM_NB })
+  return _cmNBLoading
+}
+function _cmNBFor(parcial,num,dif){
+  const arr=(_CM_NB&&_CM_NB[parcial+':'+num])||null
+  if(!arr||!arr.length) return null
+  return (dif&&dif!=='mix')? arr.filter(x=>x.dif===dif) : arr.slice()
+}
+// Pool por subtema: usa el banco NUEVO por subtema exacto (con filtro de dificultad opcional);
+// para subtemas aún no generados, cae al banco viejo por keywords (≥2, y ≥1 si no hay match).
+function _cmPoolOf(sel, dif){
   const byP={p1:[],p2:[],p3:[]}
   ;(sel||[]).forEach(s=>{ const it=_cmItem(s.id); if(it) byP[it.parcial].push(it) })
   let pool=[], seen=new Set()
   ;['p1','p2','p3'].forEach(p=>{ if(!byP[p].length)return
-    const bank=_cmBank(p).map(q=>({q, t:_cmQText(q)}))
+    let bank=null
     byP[p].forEach(it=>{
+      const nb=_cmNBFor(p,it.num,dif)
+      if(nb && nb.length){ nb.forEach(q=>{ const k=p+'|'+q.q; if(!seen.has(k)){ seen.add(k); pool.push(q) } }); return }
+      if(dif&&dif!=='mix' && _CM_NB && _CM_NB[p+':'+it.num]) return // subtema en banco nuevo pero sin esa dificultad
+      if(!bank) bank=_cmBank(p).map(q=>({q, t:_cmQText(q)}))
       let hits=bank.filter(x=>_cmScore(x.t,it.keywords)>=2)
       if(!hits.length) hits=bank.filter(x=>_cmScore(x.t,it.keywords)>=1)
-      hits.forEach(x=>{ if(!seen.has(x.q.q)){ seen.add(x.q.q); pool.push(x.q) } })
+      hits.forEach(x=>{ const k=p+'|'+x.q.q; if(!seen.has(k)){ seen.add(k); pool.push(x.q) } })
     })
   })
   return pool
@@ -11219,7 +11271,7 @@ function renderCustomMode(){
   const gate=document.getElementById('cmGate'),mgr=document.getElementById('cmManager'),bh=document.getElementById('cmBuilderHead'),picker=document.getElementById('cmPicker')
   if(!gate||!mgr||!picker) return
   if(!hasFullAccess()){ gate.style.display=''; mgr.style.display='none'; bh.style.display='none'; picker.style.display='none'; return }
-  gate.style.display='none'; _cmMigrate()
+  gate.style.display='none'; _cmMigrate(); _cmLoadNewBank()
   if(_cmActiveId && _cmActive()) renderBuilder(); else renderManager()
 }
 function _cmRingSvg(pct){ const C=138.2; return '<span class="crc-ring"><svg width="52" height="52" viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" stroke="var(--soft)" stroke-width="5" fill="none"/><circle cx="26" cy="26" r="22" stroke="var(--green)" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 26 26)"/></svg><span class="crv">'+pct+'%</span></span>' }
@@ -11286,10 +11338,79 @@ function cmTool(kind){
   if(kind==='resumen') return cmRenderResumen()
   if(kind==='plan') return cmRenderPlan()
   if(kind==='flashcards') return cmRenderFlash()
-  if(kind==='quiz') return cmStartQuiz('quiz',15)
-  if(kind==='examen') return cmStartQuiz('examen',30)
-  if(kind==='diagnostico') return cmStartQuiz('diagnostico',10)
+  if(kind==='quiz') return cmStartQuiz('quiz',_cmQuizCount(),'mix')
+  if(kind==='examen') return cmQuizConfig('examen')
+  if(kind==='diagnostico') return cmStartDiag()
 }
+// La cantidad escala con la selección: ~2 por subtema (min 6, max 20) para el quiz rápido.
+function _cmQuizCount(){ const n=_cmSel.length; return Math.min(Math.max(n*2,6),20) }
+// Baraja las opciones de una pregunta y remapea el índice de la correcta.
+// Doble propósito: (1) neutraliza el sesgo de posición de la clave —el banco heredado
+// concentra la correcta en el índice 1— y (2) evita que al repetir un simulacro el
+// alumno memorice la POSICIÓN en vez del concepto.
+// Devuelve una COPIA: los objetos del banco están cacheados y se reutilizan.
+// Se aplica al ARMAR el pool, nunca al renderizar (re-render por respuesta).
+function _cmShuffleQ(q){
+  if(!q||!Array.isArray(q.ops)||q.ops.length<2||typeof q.a!=='number') return q
+  // El banco HEREDADO trae la letra dentro del texto ('A) Reproducción'). Barajar ahí
+  // dejaría 'C) Reproducción' en la primera posición: no se toca.
+  if(q.ops.some(o=>/^\s*[A-Da-d][).]\s/.test(String(o)))) return q
+  const idx=q.ops.map((_,i)=>i)
+  for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=idx[i]; idx[i]=idx[j]; idx[j]=t }
+  const a=idx.indexOf(q.a); if(a<0) return q
+  return Object.assign({},q,{ops:idx.map(k=>q.ops[k]),a:a})
+}
+// Toma hasta k ítems no vistos de arr (dedupe por texto).
+function _cmPick(arr,seen,k){ const out=[]; const sh=(arr||[]).slice().sort(()=>Math.random()-.5)
+  for(const q of sh){ if(out.length>=k)break; const key=q.q||''; if(seen.has(key))continue; seen.add(key); out.push(q) } return out }
+// Pool de DIAGNÓSTICO estratificado: por subtema, 1 fácil + 1 media + 1 difícil (balance de dificultad),
+// completando con mixtas si falta; fallback al banco viejo. Cada ítem lleva su subtema para el desglose.
+function _cmDiagPool(){
+  let pool=[], seen=new Set()
+  _cmSel.forEach(s=>{ const it=_cmItem(s.id); if(!it)return; const p=it.parcial
+    let picked=[]
+    ;['facil','media','dificil'].forEach(d=>{ const arr=_cmNBFor(p,it.num,d); if(arr&&arr.length) picked=picked.concat(_cmPick(arr,seen,1)) })
+    if(picked.length<3){ const mix=_cmNBFor(p,it.num,'mix'); if(mix) picked=picked.concat(_cmPick(mix,seen,3-picked.length)) }
+    if(!picked.length){ picked=_cmPick(_cmPoolOf([s]),seen,3) }
+    picked.forEach(q=>{ pool.push(_cmShuffleQ(Object.assign({}, q, {sub:it.num}))) })
+  })
+  return pool.sort(()=>Math.random()-.5)
+}
+function cmStartDiag(){
+  const pool=_cmDiagPool()
+  if(!pool.length){ const st=_cmStageOpen('diagnostico'); st.innerHTML='<div class="cm-quiz-empty">'+_CM_STR.noQ+'</div>'; return }
+  _cmQuiz={qs:pool,idx:0,hits:0,miss:0,ans:false,kind:'diagnostico',bySub:{}}
+  _cmStageOpen('diagnostico'); _cmRenderQuiz()
+}
+// Panel de configuración del EXAMEN: elegí dificultad y cantidad (el alumno decide el largo).
+function cmQuizConfig(kind){
+  const st=_cmStageOpen(kind); const S1=_CM_STR
+  window._cmCfg={kind, dif:'mix', count:40}
+  const difs=[['mix',S1.difMix],['facil',S1.difEasy],['media',S1.difMed],['dificil',S1.difHard]]
+  const lens=[20,40,60,'all']
+  st.innerHTML='<div class="cm-panel cm-cfg"><div class="cm-panel-h"><svg><use href="#i-doc"/></svg><h3>'+S1.cfgHead+'</h3></div>'
+    +'<p class="cm-panel-sub">'+S1.cfgTip+'</p>'
+    +'<div class="cm-cfg-row"><span class="cm-cfg-lbl">'+S1.cfgDif+'</span><div class="cm-cfg-chips" id="cmCfgDif">'
+    +difs.map(d=>'<button type="button" class="cm-chip'+(d[0]==='mix'?' on':'')+'" data-v="'+d[0]+'" onclick="A.cmCfgSet(\'dif\',\''+d[0]+'\')">'+d[1]+'</button>').join('')+'</div></div>'
+    +'<div class="cm-cfg-row"><span class="cm-cfg-lbl">'+S1.cfgLen+'</span><div class="cm-cfg-chips" id="cmCfgLen">'
+    +lens.map(n=>'<button type="button" class="cm-chip'+(n===40?' on':'')+'" data-v="'+n+'" onclick="A.cmCfgSet(\'count\',\''+n+'\')">'+(n==='all'?S1.lenAll:n)+'</button>').join('')+'</div></div>'
+    +'<div class="cm-cfg-foot"><span class="cm-cfg-avail" id="cmCfgAvail"></span>'
+    +'<button class="btn primary" onclick="A.cmCfgStart()">'+S1.start+' <svg class="btn-ic"><use href="#i-arrow"/></svg></button></div></div>'
+  _cmCfgRefresh()
+}
+function _cmCfgRefresh(){
+  const c=window._cmCfg; if(!c)return
+  const avail=_cmPoolOf(_cmSel, c.dif).length
+  const el=document.getElementById('cmCfgAvail'); if(el) el.textContent=avail+' '+_CM_STR.avail
+}
+function cmCfgSet(field,val){
+  const c=window._cmCfg; if(!c)return
+  if(field==='count') c.count=(val==='all')?'all':parseInt(val); else c[field]=val
+  const box=document.getElementById(field==='count'?'cmCfgLen':'cmCfgDif')
+  if(box) box.querySelectorAll('.cm-chip').forEach(b=>b.classList.toggle('on', b.dataset.v===String(val)))
+  _cmCfgRefresh()
+}
+function cmCfgStart(){ const c=window._cmCfg; if(!c)return; cmStartQuiz(c.kind, c.count, c.dif) }
 function cmRenderResumen(){
   const st=_cmStageOpen('resumen')
   let html='<div class="cm-panel"><div class="cm-panel-h"><svg><use href="#i-book"/></svg><h3>'+_CM_STR.resHead+'</h3></div><p class="cm-panel-sub">'+_cmSel.length+' '+_CM_STR.themes+' · '+_CM_STR.resSub+'</p>'
@@ -11322,12 +11443,13 @@ function _cmFlashRender(){
 }
 function cmFlashNav(d){ const f=window._cmFlash; if(!f)return; f.idx=(f.idx+d+f.cards.length)%f.cards.length; _cmFlashRender() }
 
-function cmStartQuiz(kind,count){
-  const all=_cmPoolOf(_cmSel)
-  if(!all.length){ const st=_cmStageOpen('quiz'); st.innerHTML='<div class="cm-quiz-empty">'+_CM_STR.noQ+'</div>'; return }
-  const pool=all.slice().sort(()=>Math.random()-.5).slice(0,count)
-  _cmQuiz={qs:pool,idx:0,hits:0,miss:0,ans:false,kind}
-  _cmStageOpen('quiz'); _cmRenderQuiz()
+function cmStartQuiz(kind,count,dif){
+  const all=_cmPoolOf(_cmSel, dif)
+  if(!all.length){ const st=_cmStageOpen(kind); st.innerHTML='<div class="cm-quiz-empty">'+_CM_STR.noQ+'</div>'; return }
+  const n=(count==='all'||!count||count>all.length)?all.length:count
+  const pool=all.slice().sort(()=>Math.random()-.5).slice(0,n).map(_cmShuffleQ)
+  _cmQuiz={qs:pool,idx:0,hits:0,miss:0,ans:false,kind,bySub:{}}
+  _cmStageOpen(kind); _cmRenderQuiz()
 }
 function _cmRenderQuiz(){
   const st=document.getElementById('cmStage'), Q=_cmQuiz; if(!st||!Q)return
@@ -11341,15 +11463,30 @@ function _cmRenderQuiz(){
 function cmAnswer(i){
   const Q=_cmQuiz; if(!Q||Q.ans)return; Q.ans=true
   const q=Q.qs[Q.idx], ok=(i===q.a); if(ok)Q.hits++; else Q.miss++
+  if(Q.bySub && q.sub){ const b=Q.bySub[q.sub]||(Q.bySub[q.sub]={h:0,m:0}); ok?b.h++:b.m++ }
   document.querySelectorAll('#cmStage .cm-opt').forEach((b,idx)=>{ b.setAttribute('disabled',''); if(idx===q.a)b.classList.add('ok'); else if(idx===i&&!ok)b.classList.add('bad') })
   const fb=document.getElementById('cmQuizFb'); if(fb){ fb.className='cm-quiz-fb '+(ok?'ok':'bad'); fb.innerHTML=(ok?'\u2713 ':'\u2717 ')+_cmEsc(q.exp||'') }
   const nx=document.getElementById('cmQuizNext'); if(nx) nx.innerHTML='<button class="btn primary" onclick="A.cmNext()" style="width:100%;justify-content:center">'+((Q.idx+1>=Q.qs.length)?_CM_STR.finish:_CM_STR.next)+' <svg class="btn-ic"><use href="#i-arrow"/></svg></button>'
   try{ recordAnswer(ok, q.theme) }catch(e){}
 }
 function cmNext(){ const Q=_cmQuiz; if(!Q)return; Q.idx++; Q.ans=false; _cmRenderQuiz() }
+function _cmLevel(pct){ return pct>=80?['solid',_CM_STR.lvSolid]:pct>=50?['review',_CM_STR.lvReview]:['priority',_CM_STR.lvPriority] }
+function _cmDiagBreakdown(Q){
+  const subs=Object.keys(Q.bySub||{}); if(!subs.length) return ''
+  const rows=subs.map(s=>{ const b=Q.bySub[s], t=b.h+b.m, pct=t?Math.round(b.h/t*100):0; return {s,pct,t,h:b.h} })
+  rows.sort((a,b)=>a.pct-b.pct)
+  let html='<div class="cm-diag"><div class="cm-diag-h"><strong>'+_CM_STR.diagHead+'</strong><span>'+_CM_STR.diagSub+'</span></div>'
+  rows.forEach(r=>{ const lv=_cmLevel(r.pct)
+    html+='<div class="cm-diag-item"><div class="cm-diag-top"><b>'+_cmEsc(r.s)+'</b><span class="cm-diag-pill '+lv[0]+'">'+lv[1]+'</span></div>'
+      +'<div class="cm-diag-bar"><span class="'+lv[0]+'" style="width:'+r.pct+'%"></span></div>'
+      +'<div class="cm-diag-meta">'+r.h+'/'+r.t+' · '+r.pct+'%</div></div>'
+  })
+  return html+'</div>'
+}
 function _cmQuizResult(){
   const st=document.getElementById('cmStage'), Q=_cmQuiz, total=Q.hits+Q.miss, pct=total?Math.round(Q.hits/total*100):0, C=314
-  st.innerHTML='<div class="cm-quiz"><div class="cm-quiz-res"><div class="cm-res-ring"><svg width="130" height="130"><circle cx="65" cy="65" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle cx="65" cy="65" r="50" stroke="var(--green)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 65 65)"/></svg><span class="v">'+pct+'%</span></div><h3 style="font-size:1.2rem;font-weight:800">'+_CM_STR.quizResult+': '+Q.hits+'/'+total+' '+_CM_STR.correct+'</h3><div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.2rem"><button class="btn primary" onclick="A.cmTool(\''+Q.kind+'\')">'+_CM_STR.retry+'</button></div></div></div>'
+  const isDiag=(Q.kind==='diagnostico')
+  st.innerHTML='<div class="cm-quiz"><div class="cm-quiz-res"><div class="cm-res-ring"><svg width="130" height="130"><circle cx="65" cy="65" r="50" stroke="var(--soft)" stroke-width="11" fill="none"/><circle cx="65" cy="65" r="50" stroke="var(--green)" stroke-width="11" fill="none" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100)).toFixed(1)+'" transform="rotate(-90 65 65)"/></svg><span class="v">'+pct+'%</span></div><h3 style="font-size:1.2rem;font-weight:800">'+(isDiag?_CM_STR.diagResult:_CM_STR.quizResult)+': '+Q.hits+'/'+total+' '+_CM_STR.correct+'</h3>'+(isDiag?_cmDiagBreakdown(Q):'')+'<div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.2rem"><button class="btn primary" onclick="A.cmTool(\''+Q.kind+'\')">'+_CM_STR.retry+'</button></div></div></div>'
   try{ if(S.stats){ S.stats.simsDone=(S.stats.simsDone||0)+1; persistState() } }catch(e){}
   _cmRefresh()
 }
@@ -21677,7 +21814,7 @@ const A = {
   calcGlobal, toggleExamTimer,
   // sim
   startSim, answerSim, nextSim,
-  renderCustomMode, cmTool, cmNewRoute, cmOpenRoute, cmDeleteRoute, cmBackToRoutes, cmToggleSub, cmSelectGroup, cmClear, cmAnswer, cmNext, cmPlanToggle, cmFlashNav, plGo, renderParcialPlan,
+  renderCustomMode, cmTool, cmNewRoute, cmOpenRoute, cmDeleteRoute, cmBackToRoutes, cmToggleSub, cmSelectGroup, cmClear, cmAnswer, cmNext, cmPlanToggle, cmFlashNav, cmQuizConfig, cmCfgSet, cmCfgStart, plGo, renderParcialPlan,
   // flash
   flipFlash, nextFlash, prevFlash, shuffleFlash,
   // ranking & feedback
