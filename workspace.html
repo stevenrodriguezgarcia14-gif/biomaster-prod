@@ -962,6 +962,19 @@ select option{background:var(--bg1)}
 .log-item{padding:.5rem .2rem;border-bottom:1px solid var(--border)}
 .log-desc{font-size:.82rem;color:var(--text)}
 .u-del:hover{color:var(--red);border-color:var(--red)}
+.pg-wrap{overflow-x:auto}
+.pg-table{width:100%;border-collapse:collapse;font-size:.8rem;min-width:520px}
+.pg-table th{text-align:left;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);padding:.4rem .5rem;border-bottom:1px solid var(--border)}
+.pg-table td{padding:.5rem .5rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.pg-rank{color:var(--dim);font-weight:700}
+.pg-em{font-size:.68rem;color:var(--dim)}
+.pg-num{text-align:right;font-variant-numeric:tabular-nums}
+.pg-when{color:var(--dim);font-size:.72rem;white-space:nowrap}
+.geo-row{display:flex;align-items:center;gap:.6rem;padding:.25rem 0}
+.geo-name{width:130px;font-size:.78rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.geo-bar{flex:1;height:8px;background:var(--bg3);border-radius:5px;overflow:hidden}
+.geo-bar span{display:block;height:100%;background:var(--green)}
+.geo-n{font-size:.74rem;color:var(--muted);width:32px;text-align:right}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1107,6 +1120,10 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="admin-metrics" data-perm="stats.view" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M18 9l-5 5-3-3-4 4"/></svg>
         <span>Métricas</span>
+      </div>
+      <div class="nav-item" data-view="admin-progress" data-perm="stats.view" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2"/></svg>
+        <span>Progreso</span>
       </div>
       <div class="nav-item" data-view="admin-announ" data-perm="content.manage" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 01-5.8-1.6"/></svg>
@@ -1326,6 +1343,12 @@ select option{background:var(--bg1)}
       <div id="admPlans"></div>
     </div>
 
+    <!-- ADMIN · PROGRESO -->
+    <div id="view-admin-progress" class="view-body" hidden>
+      <div class="adm-toolbar"><input id="admProgSearch" class="adm-search" placeholder="Buscar por nombre o correo…" oninput="renderProgTable()" autocomplete="off"></div>
+      <div id="admProgress"></div>
+    </div>
+
     <!-- ADMIN · ANUNCIOS -->
     <div id="view-admin-announ" class="view-body" hidden>
       <div id="admAnnoun"></div>
@@ -1470,6 +1493,23 @@ select option{background:var(--bg1)}
       <button class="modal-close" onclick="closeModal('membersModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
     </div>
     <div id="membersBody"></div>
+  </div>
+</div>
+
+<!-- GESTIONAR PLAN (por usuario) -->
+<div class="modal" id="planModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Gestionar plan</span>
+      <button class="modal-close" onclick="closeModal('planModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <p class="modal-hint" id="planWho"></p>
+    <div class="fg"><label>Plan a activar</label><select id="planPick" class="pref-sel" style="width:100%"></select></div>
+    <div class="fg"><label>Nota interna (opcional)</label><input id="planNote2" placeholder="PayPal · $XX · fecha" autocomplete="off"></div>
+    <div class="form-acts">
+      <button type="button" class="btn btn-ghost" onclick="planModalRevoke()">Revocar todo</button>
+      <button type="button" class="btn btn-primary" onclick="planModalGrant()">Activar plan</button>
+    </div>
   </div>
 </div>
 
@@ -1840,6 +1880,7 @@ const VIEW_CFG = {
   'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
   'admin-users': {title:'Usuarios', sub:'Directorio de estudiantes y equipo', action:null},
   'admin-metrics': {title:'Métricas', sub:'Salud del producto de un vistazo', action:null},
+  'admin-progress': {title:'Progreso', sub:'XP, simulacros y precisión por estudiante', action:null},
   'admin-plans': {title:'Planes y pagos', sub:'Activar o revocar acceso tras verificar el pago', action:null},
   'admin-announ': {title:'Anuncios', sub:'Banners para los estudiantes', action:null},
   'admin-logs': {title:'Logs', sub:'Auditoría de acciones administrativas', action:null},
@@ -2353,6 +2394,7 @@ function renderCurrent() {
   else if (currentView === 'admin-announ') renderAdminAnnoun()
   else if (currentView === 'admin-logs') renderAdminLogs()
   else if (currentView === 'admin-plans') renderAdminPlans()
+  else if (currentView === 'admin-progress') renderAdminProgress()
   updateUrgBadge()
 }
 
@@ -2964,8 +3006,9 @@ function renderAdminUsersList(){
           : '<span class="u-plan free">free</span>'
     const team = u.role === 'admin' && u.admin_role ? `<span class="u-team">${esc(ROLE_LABELS[u.admin_role] || u.admin_role)}</span>` : ''
     const expB = isExpired ? '<span class="u-exp vencido">vencido</span>' : soon ? '<span class="u-exp pronto">vence pronto</span>' : ''
-    const em = (u.email || '').replace(/'/g, '')
+    const em = (u.email || '').replace(/'/g, ''), nm = (u.name || '').replace(/'/g, '')
     const acts = []
+    if (can('plans.manage') && u.role !== 'admin') acts.push(`<button class="btn btn-primary btn-sm" onclick="openPlanModal('${em}','${nm}')">Plan</button>`)
     if (can('roles.manage') && u.id !== profile.id) {
       acts.push(u.role === 'admin'
         ? `<button class="btn btn-ghost btn-sm" onclick="userTeamRole('${em}')">Rol equipo</button><button class="btn btn-ghost btn-sm" onclick="userSetRole('${em}','user')">Quitar staff</button>`
@@ -3019,7 +3062,7 @@ async function renderAdminMetrics(){
   const box = document.getElementById('admMetrics'); if (!box) return
   if (!can('stats.view')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para ver métricas.</p></div>'; return }
   box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
-  const { data, error } = await sb.from('profiles').select('role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at').limit(5000)
+  const { data, error } = await sb.from('profiles').select('role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at,country').limit(5000)
   if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
   const us = data || []
   const now = new Date(), d7 = new Date(now - 7 * 864e5), d30 = new Date(now - 30 * 864e5)
@@ -3050,8 +3093,18 @@ async function renderAdminMetrics(){
     ${card(m.nuevos7, 'Nuevos · 7 días')}
     ${card(m.nuevos30, 'Nuevos · 30 días')}
     ${card(m.equipo, 'Equipo')}
-  </div>
+  </div>${countriesBlock(us)}
   <p class="modal-hint" style="margin-top:.8rem">Datos en vivo desde la base. Para el funnel completo (visitas → registro → pago) usá PostHog.</p>`
+}
+function countriesBlock(us){
+  const paises = {}
+  for (const u of us) if (u.country) paises[u.country] = (paises[u.country] || 0) + 1
+  const top = Object.entries(paises).sort((a, b) => b[1] - a[1]).slice(0, 12)
+  if (!top.length) return ''
+  const max = top[0][1]
+  return `<div class="adm-subhd">Usuarios por país</div>` + top.map(([c, n]) =>
+    `<div class="geo-row"><span class="geo-name">${esc(c)}</span><span class="geo-bar"><span style="width:${Math.round(n / max * 100)}%"></span></span><span class="geo-n">${n}</span></div>`
+  ).join('')
 }
 
 // Registro de auditoría (best-effort; nunca bloquea la acción)
@@ -3080,31 +3133,66 @@ async function renderAdminPlans(){
 function renderPlansView(){
   const box = document.getElementById('admPlans'); if (!box) return
   const now = new Date()
-  const opts = PLAN_OPTS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
-  const form = `<div class="ann-form">
-    <div class="adm-subhd" style="margin-top:0">Activar acceso · confirmá solo si verificaste el pago</div>
-    <div class="ann-row">
-      <input id="grantEmail" class="adm-search" placeholder="correo@usuario.com" autocomplete="off" style="flex:1;min-width:200px">
-      <select id="grantPlan" class="pref-sel">${opts}</select>
-    </div>
-    <div class="ann-row" style="margin-top:.4rem">
-      <input id="grantNote" class="adm-search" placeholder="Nota interna: PayPal · $XX · fecha" autocomplete="off" style="flex:1;min-width:200px">
-      <button class="btn btn-primary btn-sm" onclick="grantPlan()">Activar plan</button>
-    </div>
-  </div>`
+  const info = `<p class="modal-hint">Para activar un plan, tocá <strong>Plan</strong> en el usuario (en esta lista o en <strong>Usuarios</strong>) y elegí el plan — sin escribir el correo.</p>`
   const rows = _planUsers.map(u => {
     const parciales = [u.plan_p1 && 'P1', u.plan_p2 && 'P2', u.plan_p3 && 'P3'].filter(Boolean)
     const plan = u.plan_full ? 'Full' : parciales.length === 3 ? 'P1+P2+P3' : parciales.join('+')
     const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
     const expired = exp && exp < now
-    const em = (u.email || '').replace(/'/g, '')
+    const em = (u.email || '').replace(/'/g, ''), nm = (u.name || '').replace(/'/g, '')
     return `<div class="adm-card ${expired ? 'status-pendiente' : 'status-resuelto'}">
       <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-plan full">${plan}</span>${expired ? '<span class="u-exp vencido">vencido</span>' : ''}
-      <span class="ann-acts" style="float:right"><button class="btn btn-ghost btn-sm" onclick="revokePlan('${em}')">Revocar</button></span>
+      <span class="ann-acts" style="float:right"><button class="btn btn-primary btn-sm" onclick="openPlanModal('${em}','${nm}')">Plan</button></span>
       <div class="adm-meta">${esc(u.email || '')}${exp ? ' · vence ' + exp.toLocaleDateString('es-CR') : ''}${u.last_payment_at ? ' · últ. pago ' + new Date(u.last_payment_at).toLocaleDateString('es-CR') : ''}</div>
     </div>`
-  }).join('') || '<div class="empty"><p>Sin usuarios con plan activo.</p></div>'
-  box.innerHTML = form + `<div class="adm-subhd">Usuarios con plan activo (${_planUsers.length})</div>` + rows
+  }).join('') || '<div class="empty"><p>Sin usuarios con plan activo. Activá uno desde Usuarios → botón Plan.</p></div>'
+  box.innerHTML = info + `<div class="adm-subhd">Usuarios con plan activo (${_planUsers.length})</div>` + rows
+}
+// Modal de plan por-usuario (sin escribir el correo)
+let _planTarget = null
+function openPlanModal(email, name){
+  _planTarget = email
+  document.getElementById('planWho').textContent = (name ? name + ' · ' : '') + email
+  document.getElementById('planPick').innerHTML = PLAN_OPTS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
+  document.getElementById('planNote2').value = ''
+  openModal('planModal')
+}
+function _afterPlan(){ if (currentView === 'admin-plans') renderAdminPlans(); else if (currentView === 'admin-users') renderAdminUsers() }
+async function planModalGrant(){
+  const email = _planTarget, plan = document.getElementById('planPick').value, note = document.getElementById('planNote2').value.trim()
+  if (!email) return
+  if (!confirm(`¿Activar ${PLAN_LBL[plan] || plan} para ${email}?\nConfirmá solo si verificaste que el pago llegó.`)) return
+  try { await _grantPlanDB(email, plan); admLog('plan.activate', 'plans', `Plan "${PLAN_LBL[plan] || plan}" activado para ${email}${note ? ' · ' + note : ''}`, 'user', email); toast('✅ Plan activado'); closeModal('planModal'); _afterPlan() }
+  catch (e) { toast('⚠ ' + (e.message || e), true) }
+}
+async function planModalRevoke(){
+  const email = _planTarget; if (!email) return
+  if (!confirm(`¿Revocar TODOS los planes de ${email}?\nLe quita el acceso premium de inmediato.`)) return
+  try { await _grantPlanDB(email, 'revoke'); admLog('plan.revoke', 'plans', `Planes revocados para ${email}`, 'user', email); toast('Planes revocados'); closeModal('planModal'); _afterPlan() }
+  catch (e) { toast('⚠ ' + (e.message || e), true) }
+}
+// Progreso por estudiante (XP, simulacros, precisión)
+let _prog = []
+async function renderAdminProgress(){
+  const box = document.getElementById('admProgress'); if (!box) return
+  if (!can('stats.view')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para ver progreso.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  const [{ data: prog }, { data: profs }] = await Promise.all([
+    sb.from('user_progress').select('user_id,data,updated_at').limit(2000),
+    sb.from('profiles').select('id,name,email').limit(3000)
+  ])
+  const pmap = {}; for (const p of (profs || [])) pmap[p.id] = p
+  _prog = (prog || []).map(r => { const s = r.data?.stats || {}; return { name: pmap[r.user_id]?.name || '—', email: pmap[r.user_id]?.email || '', xp: +(s.xp || 0), sims: +(s.simsDone || s.sims_done || 0), acc: (s.accuracy != null ? Math.round(+s.accuracy) : null), upd: r.updated_at } }).sort((a, b) => b.xp - a.xp)
+  renderProgTable()
+}
+function renderProgTable(){
+  const box = document.getElementById('admProgress'); if (!box) return
+  const q = (document.getElementById('admProgSearch')?.value || '').toLowerCase().trim()
+  let list = _prog
+  if (q) list = list.filter(r => r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q))
+  if (!list.length) { box.innerHTML = '<div class="empty"><p>Sin datos de progreso.</p></div>'; return }
+  const rows = list.map((r, i) => `<tr><td class="pg-rank">${i + 1}</td><td><strong>${esc(r.name)}</strong><div class="pg-em">${esc(r.email)}</div></td><td class="pg-num">${r.xp.toLocaleString('es-CR')}</td><td class="pg-num">${r.sims}</td><td class="pg-num">${r.acc != null ? r.acc + '%' : '—'}</td><td class="pg-when">${r.upd ? new Date(r.upd).toLocaleDateString('es-CR') : '—'}</td></tr>`).join('')
+  box.innerHTML = `<div class="pg-wrap"><table class="pg-table"><thead><tr><th>#</th><th>Estudiante</th><th>XP</th><th>Simulacros</th><th>Precisión</th><th>Últ. actividad</th></tr></thead><tbody>${rows}</tbody></table></div>`
 }
 async function _grantPlanDB(email, plan){
   const { data: t, error: fe } = await sb.from('profiles').select('id,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at').eq('email', email).single()
