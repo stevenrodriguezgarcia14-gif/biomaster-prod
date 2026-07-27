@@ -1818,7 +1818,8 @@ let calCursor = new Date()     // fecha de referencia
 // ─── Roles y permisos (sistema admin_role; ver docs/ADMIN_ROLES.md) ───
 const ROLE_LABELS = {
   superadmin: 'Súper Admin ✦', admin: 'Admin', editor: 'Editor',
-  moderator: 'Moderación', support: 'Soporte'
+  moderator: 'Moderación', support: 'Soporte',
+  marketing: 'Marketing', diseno: 'Diseño', contenido: 'Contenido', profesor: 'Profesor'
 }
 function can(perm) {
   if (!Array.isArray(access.permissions)) return true  // legacy: acceso completo
@@ -3085,7 +3086,7 @@ function renderAdminUsersList(){
 }
 // Acciones sensibles de usuario (roles + borrado). Reutilizan los RPC/Edge
 // Function existentes; protegidas por capacidad + confirmación.
-const TEAM_ROLES = ['superadmin','admin','editor','moderator','support']
+const TEAM_ROLES = ['superadmin','admin','marketing','diseno','contenido','profesor','moderator','support','editor']
 async function userSetRole(email, newRole){
   if (!confirm(newRole === 'admin' ? `¿Dar acceso de staff a ${email}? Entra con rol mínimo (Soporte).` : `¿Quitar el acceso de staff a ${email}?`)) return
   const { data, error } = await sb.rpc('admin_set_role', { target_email: email, new_role: newRole })
@@ -3378,7 +3379,7 @@ const CAP_LABELS = {
   'content.manage':'Contenido y anuncios', 'stats.view':'Métricas y progreso', 'logs.view':'Ver logs',
   'system.config':'Configuración del sistema', 'progress.reset':'Resetear progreso'
 }
-const ROLES_ORDER = ['superadmin','admin','editor','moderator','support']
+const ROLES_ORDER = ['superadmin','admin','marketing','diseno','contenido','profesor','moderator','support','editor']
 async function renderAdminRoles(){
   const box = document.getElementById('admRoles'); if (!box) return
   if (!can('roles.manage')) { box.innerHTML = '<div class="empty"><p>Solo quien gestiona roles ve esta matriz.</p></div>'; return }
