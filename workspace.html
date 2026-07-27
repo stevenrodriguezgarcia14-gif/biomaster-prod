@@ -66,7 +66,11 @@ body{height:100%;display:flex;flex-direction:column;overflow:hidden}
 
 .sb-nav{flex:1;padding:.4rem 0;overflow-y:auto;scrollbar-width:none}
 .sb-nav::-webkit-scrollbar{display:none}
-.nav-label{font-size:.63rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;padding:.75rem 1rem .25rem}
+.nav-label{font-size:.63rem;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;padding:.75rem 1rem .25rem;
+  display:flex;align-items:center;justify-content:space-between;gap:.4rem;cursor:pointer;user-select:none;transition:color var(--t)}
+.nav-label:hover{color:var(--muted)}
+.nl-chev{font-size:.55rem;opacity:.5;transition:transform var(--t)}
+.nav-label.collapsed .nl-chev{transform:rotate(-90deg)}
 .nav-item{
   display:flex;align-items:center;gap:.65rem;padding:.52rem 1rem;
   margin:0 .35rem;border-radius:var(--rs);cursor:pointer;
@@ -2362,6 +2366,39 @@ function initNav() {
     el.addEventListener('click', () => renderView(el.dataset.view))
   })
   applyNavGating()
+  initNavGroups()
+}
+// Grupos colapsables del menú: tocá un título de grupo para plegar/desplegar.
+// Se desactiva en modo iconos (móvil). Memoria en localStorage.
+function initNavGroups(){
+  const nav = document.querySelector('.sb-nav'); if (!nav) return
+  let collapsed = {}; try { collapsed = JSON.parse(localStorage.getItem('ws_nav_groups') || '{}') } catch (_) {}
+  const groups = []
+  nav.querySelectorAll('.nav-label').forEach(lbl => {
+    const key = lbl.dataset.g || lbl.textContent.trim()
+    lbl.dataset.g = key
+    if (!lbl.querySelector('.nl-chev')) lbl.innerHTML = `<span>${esc(key)}</span><span class="nl-chev" aria-hidden="true">▾</span>`
+    if (key === 'Administración' && collapsed[key] === undefined) collapsed[key] = true
+    const items = []; let el = lbl.nextElementSibling
+    while (el && !el.classList.contains('nav-label')) { if (el.classList.contains('nav-item')) items.push(el); el = el.nextElementSibling }
+    groups.push({ lbl, key, items })
+    lbl.addEventListener('click', () => {
+      collapsed[key] = !collapsed[key]
+      try { localStorage.setItem('ws_nav_groups', JSON.stringify(collapsed)) } catch (_) {}
+      applyGroups()
+    })
+  })
+  function applyGroups(){
+    const iconMode = groups.length && getComputedStyle(groups[0].lbl).display === 'none'
+    groups.forEach(g => {
+      const isC = !iconMode && !!collapsed[g.key]
+      g.lbl.classList.toggle('collapsed', isC)
+      g.items.forEach(it => { it.style.display = isC ? 'none' : '' })
+    })
+  }
+  window.addEventListener('resize', applyGroups)
+  applyGroups()
+  window._applyNavGroups = applyGroups
 }
 // Muestra los ítems de Administración solo según las capacidades del rol.
 function applyNavGating() {
