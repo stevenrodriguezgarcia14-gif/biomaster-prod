@@ -911,6 +911,9 @@ select option{background:var(--bg1)}
 .poll-meta{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.55rem;font-size:.68rem;color:var(--dim)}
 .poll-close-btn,.poll-who-btn{background:none;border:none;color:var(--green-b);cursor:pointer;font-size:.68rem;font-family:inherit;padding:0}
 .poll-close-btn:hover,.poll-who-btn:hover{text-decoration:underline}
+.pref-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+.pref-label{font-size:.82rem;color:var(--text)}
+.pref-sel{padding:.38rem .55rem;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.76rem;cursor:pointer}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1075,7 +1078,7 @@ select option{background:var(--bg1)}
             <span class="bell-badge" id="bellBadge">0</span>
           </button>
           <div class="notif-panel" id="notifPanel">
-            <div class="notif-hd"><strong>Notificaciones</strong><button onclick="markAllNotifsRead()">Marcar leídas</button></div>
+            <div class="notif-hd"><strong>Notificaciones</strong><span style="display:flex;gap:.7rem"><button onclick="openNotifPrefs()" title="Preferencias de notificación">Preferencias</button><button onclick="markAllNotifsRead()">Marcar leídas</button></span></div>
             <div class="notif-list" id="notifList"></div>
           </div>
         </div>
@@ -1363,6 +1366,22 @@ select option{background:var(--bg1)}
       <button class="modal-close" onclick="closeModal('membersModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
     </div>
     <div id="membersBody"></div>
+  </div>
+</div>
+
+<!-- PREFERENCIAS DE NOTIFICACIÓN -->
+<div class="modal" id="notifPrefsModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Preferencias de notificación</span>
+      <button class="modal-close" onclick="closeModal('notifPrefsModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <p class="modal-hint">Elegí cómo querés enterarte de cada cosa. "Solo app" muestra la campana sin enviarte correo; "Silenciar" no avisa.</p>
+    <div id="notifPrefsBody"></div>
+    <div class="form-acts">
+      <button type="button" class="btn btn-ghost" onclick="closeModal('notifPrefsModal')">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="saveNotifPrefs()">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -1970,6 +1989,34 @@ async function loadNotifications() {
   const { data } = await sb.from('workspace_notifications').select('*')
     .eq('recipient_id', profile.id).order('created_at', {ascending:false}).limit(40)
   notifications = data || []
+}
+// ─── Preferencias de notificación (ws_notif_prefs) ───
+const NOTIF_PREF_ROWS = [
+  ['mention', 'Menciones (@ vos)'],
+  ['task', 'Tareas asignadas o actualizadas'],
+  ['dm', 'Mensajes directos'],
+  ['poll', 'Votaciones']
+]
+async function openNotifPrefs(){
+  document.getElementById('notifPanel')?.classList.remove('open')
+  let prefs
+  try { const { data } = await sb.from('ws_notif_prefs').select('*').eq('user_id', profile.id).maybeSingle(); prefs = data } catch (_) {}
+  prefs = prefs || { mention:'email', task:'email', dm:'email', poll:'inapp' }
+  document.getElementById('notifPrefsBody').innerHTML = NOTIF_PREF_ROWS.map(([k, label]) => `
+    <div class="pref-row"><span class="pref-label">${label}</span>
+      <select id="pref-${k}" class="pref-sel">
+        <option value="email"${prefs[k] === 'email' ? ' selected' : ''}>Email + app</option>
+        <option value="inapp"${prefs[k] === 'inapp' ? ' selected' : ''}>Solo app</option>
+        <option value="off"${prefs[k] === 'off' ? ' selected' : ''}>Silenciar</option>
+      </select></div>`).join('')
+  openModal('notifPrefsModal')
+}
+async function saveNotifPrefs(){
+  const patch = { user_id: profile.id, updated_at: new Date().toISOString() }
+  for (const [k] of NOTIF_PREF_ROWS) patch[k] = document.getElementById('pref-' + k).value
+  const { error } = await sb.from('ws_notif_prefs').upsert(patch, { onConflict: 'user_id' })
+  if (error) return toast('Error: ' + error.message, true)
+  closeModal('notifPrefsModal'); toast('Preferencias guardadas')
 }
 async function loadAdmins() {
   const { data } = await sb.from('profiles').select('id, name').eq('role', 'admin').order('name')
