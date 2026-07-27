@@ -1111,6 +1111,10 @@ select option{background:var(--bg1)}
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 01-5.8-1.6"/></svg>
         <span>Anuncios</span>
       </div>
+      <div class="nav-item" data-view="admin-plans" data-perm="plans.manage" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" stroke-linecap="round"/><line x1="2" y1="10" x2="22" y2="10" stroke-linecap="round"/></svg>
+        <span>Planes y pagos</span>
+      </div>
       <div class="nav-item" data-view="admin-logs" data-perm="logs.view" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6M9 13h6M9 17h4"/></svg>
         <span>Logs</span>
@@ -1314,6 +1318,11 @@ select option{background:var(--bg1)}
     <!-- ADMIN · MÉTRICAS -->
     <div id="view-admin-metrics" class="view-body" hidden>
       <div id="admMetrics"></div>
+    </div>
+
+    <!-- ADMIN · PLANES Y PAGOS -->
+    <div id="view-admin-plans" class="view-body" hidden>
+      <div id="admPlans"></div>
     </div>
 
     <!-- ADMIN · ANUNCIOS -->
@@ -1830,6 +1839,7 @@ const VIEW_CFG = {
   'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
   'admin-users': {title:'Usuarios', sub:'Directorio de estudiantes y equipo', action:null},
   'admin-metrics': {title:'Métricas', sub:'Salud del producto de un vistazo', action:null},
+  'admin-plans': {title:'Planes y pagos', sub:'Activar o revocar acceso tras verificar el pago', action:null},
   'admin-announ': {title:'Anuncios', sub:'Banners para los estudiantes', action:null},
   'admin-logs': {title:'Logs', sub:'Auditoría de acciones administrativas', action:null},
 }
@@ -2341,6 +2351,7 @@ function renderCurrent() {
   else if (currentView === 'admin-metrics') renderAdminMetrics()
   else if (currentView === 'admin-announ') renderAdminAnnoun()
   else if (currentView === 'admin-logs') renderAdminLogs()
+  else if (currentView === 'admin-plans') renderAdminPlans()
   updateUrgBadge()
 }
 
@@ -3005,6 +3016,104 @@ async function renderAdminMetrics(){
 // Registro de auditoría (best-effort; nunca bloquea la acción)
 async function admLog(action, category, description, targetType, targetId){
   try { await sb.from('admin_logs').insert({ admin_id: profile.id, action, category: category || 'general', description, target_type: targetType || null, target_id: targetId ? String(targetId) : null, metadata: {} }) } catch (_) {}
+}
+
+// ── Planes y pagos (activar/revocar acceso; protegido por plans.manage) ──
+// Escribe directo en profiles (mismo camino que usa app.html). El trigger
+// trg_enforce_profile_privileges exige plans.manage. Reversible. NO cambia
+// montos ni la config de PayPal.
+const PLAN_DUR = { p1:60, p2:60, p3:60, full:180, mensual:30 }
+const PLAN_LBL = { p1:'Pase P1', p2:'Pase P2', p3:'Pase P3', full:'Semestre', mensual:'Mensual' }
+const PLAN_OPTS = [['p1','Pase P1 · 60 días'],['p2','Pase P2 · 60 días'],['p3','Pase P3 · 60 días'],['full','Semestre · 6 meses'],['mensual','Mensual · 30 días']]
+let _planUsers = []
+async function renderAdminPlans(){
+  const box = document.getElementById('admPlans'); if (!box) return
+  if (!can('plans.manage')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para gestionar planes.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  const { data, error } = await sb.from('profiles').select('id,name,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at').limit(1000)
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  _planUsers = (data || []).filter(u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3)
+    .sort((a, b) => (b.last_payment_at || '').localeCompare(a.last_payment_at || ''))
+  renderPlansView()
+}
+function renderPlansView(){
+  const box = document.getElementById('admPlans'); if (!box) return
+  const now = new Date()
+  const opts = PLAN_OPTS.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
+  const form = `<div class="ann-form">
+    <div class="adm-subhd" style="margin-top:0">Activar acceso · confirmá solo si verificaste el pago</div>
+    <div class="ann-row">
+      <input id="grantEmail" class="adm-search" placeholder="correo@usuario.com" autocomplete="off" style="flex:1;min-width:200px">
+      <select id="grantPlan" class="pref-sel">${opts}</select>
+    </div>
+    <div class="ann-row" style="margin-top:.4rem">
+      <input id="grantNote" class="adm-search" placeholder="Nota interna: PayPal · $XX · fecha" autocomplete="off" style="flex:1;min-width:200px">
+      <button class="btn btn-primary btn-sm" onclick="grantPlan()">Activar plan</button>
+    </div>
+  </div>`
+  const rows = _planUsers.map(u => {
+    const parciales = [u.plan_p1 && 'P1', u.plan_p2 && 'P2', u.plan_p3 && 'P3'].filter(Boolean)
+    const plan = u.plan_full ? 'Full' : parciales.length === 3 ? 'P1+P2+P3' : parciales.join('+')
+    const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
+    const expired = exp && exp < now
+    const em = (u.email || '').replace(/'/g, '')
+    return `<div class="adm-card ${expired ? 'status-pendiente' : 'status-resuelto'}">
+      <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-plan full">${plan}</span>${expired ? '<span class="u-exp vencido">vencido</span>' : ''}
+      <span class="ann-acts" style="float:right"><button class="btn btn-ghost btn-sm" onclick="revokePlan('${em}')">Revocar</button></span>
+      <div class="adm-meta">${esc(u.email || '')}${exp ? ' · vence ' + exp.toLocaleDateString('es-CR') : ''}${u.last_payment_at ? ' · últ. pago ' + new Date(u.last_payment_at).toLocaleDateString('es-CR') : ''}</div>
+    </div>`
+  }).join('') || '<div class="empty"><p>Sin usuarios con plan activo.</p></div>'
+  box.innerHTML = form + `<div class="adm-subhd">Usuarios con plan activo (${_planUsers.length})</div>` + rows
+}
+async function _grantPlanDB(email, plan){
+  const { data: t, error: fe } = await sb.from('profiles').select('id,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at').eq('email', email).single()
+  if (fe || !t) throw new Error('Usuario no encontrado: ' + email)
+  let updates = {}
+  if (plan === 'revoke') {
+    updates = { plan_p1:false, plan_p2:false, plan_p3:false, plan_full:false, plan_expires_at: new Date().toISOString() }
+  } else {
+    const days = PLAN_DUR[plan]; if (!days) throw new Error('Plan inválido: ' + plan)
+    const expiresAt = new Date(Date.now() + days * 86400000)
+    const hasActiveFull = t.plan_full && (!t.plan_expires_at || new Date(t.plan_expires_at) > new Date())
+    if (hasActiveFull && plan !== 'full' && plan !== 'mensual') {
+      const cur = t.plan_expires_at ? new Date(t.plan_expires_at) : new Date(0)
+      updates.plan_expires_at = (expiresAt > cur ? expiresAt : cur).toISOString()
+    } else if (plan === 'full' || plan === 'mensual') {
+      updates = { plan_p1:true, plan_p2:true, plan_p3:true, plan_full:true, plan_expires_at: expiresAt.toISOString() }
+    } else {
+      updates.plan_p1 = plan === 'p1' ? true : (t.plan_p1 || false)
+      updates.plan_p2 = plan === 'p2' ? true : (t.plan_p2 || false)
+      updates.plan_p3 = plan === 'p3' ? true : (t.plan_p3 || false)
+      updates.plan_full = (updates.plan_p1 && updates.plan_p2 && updates.plan_p3) ? true : (t.plan_full || false)
+      updates.plan_expires_at = expiresAt.toISOString()
+    }
+    updates.last_payment_at = new Date().toISOString()
+  }
+  const { error: ue } = await sb.from('profiles').update(updates).eq('id', t.id)
+  if (ue) throw new Error(ue.message)
+}
+async function grantPlan(){
+  const email = document.getElementById('grantEmail').value.trim()
+  const plan = document.getElementById('grantPlan').value
+  const note = document.getElementById('grantNote').value.trim()
+  if (!email) return toast('Pegá el correo del usuario', true)
+  if (!confirm(`¿Activar ${PLAN_LBL[plan] || plan} para ${email}?\nConfirmá solo si verificaste que el pago llegó.`)) return
+  try {
+    await _grantPlanDB(email, plan)
+    admLog('plan.activate', 'plans', `Plan "${PLAN_LBL[plan] || plan}" activado para ${email}${note ? ' · ' + note : ''}`, 'user', email)
+    toast('✅ Plan activado para ' + email)
+    document.getElementById('grantEmail').value = ''; document.getElementById('grantNote').value = ''
+    renderAdminPlans()
+  } catch (e) { toast('⚠ ' + (e.message || e), true) }
+}
+async function revokePlan(email){
+  if (!confirm(`¿Revocar TODOS los planes de ${email}?\nLe quita el acceso premium de inmediato.`)) return
+  try {
+    await _grantPlanDB(email, 'revoke')
+    admLog('plan.revoke', 'plans', `Planes revocados para ${email}`, 'user', email)
+    toast('Planes revocados para ' + email)
+    renderAdminPlans()
+  } catch (e) { toast('⚠ ' + (e.message || e), true) }
 }
 
 // ── Anuncios (banners para estudiantes) ──
