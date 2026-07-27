@@ -961,6 +961,7 @@ select option{background:var(--bg1)}
 .ann-acts{display:flex;gap:.3rem;flex-shrink:0}
 .log-item{padding:.5rem .2rem;border-bottom:1px solid var(--border)}
 .log-desc{font-size:.82rem;color:var(--text)}
+.u-del:hover{color:var(--red);border-color:var(--red)}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -2963,14 +2964,54 @@ function renderAdminUsersList(){
           : '<span class="u-plan free">free</span>'
     const team = u.role === 'admin' && u.admin_role ? `<span class="u-team">${esc(ROLE_LABELS[u.admin_role] || u.admin_role)}</span>` : ''
     const expB = isExpired ? '<span class="u-exp vencido">vencido</span>' : soon ? '<span class="u-exp pronto">vence pronto</span>' : ''
+    const em = (u.email || '').replace(/'/g, '')
+    const acts = []
+    if (can('roles.manage') && u.id !== profile.id) {
+      acts.push(u.role === 'admin'
+        ? `<button class="btn btn-ghost btn-sm" onclick="userTeamRole('${em}')">Rol equipo</button><button class="btn btn-ghost btn-sm" onclick="userSetRole('${em}','user')">Quitar staff</button>`
+        : `<button class="btn btn-ghost btn-sm" onclick="userSetRole('${em}','admin')">Hacer staff</button>`)
+    }
+    if (can('users.delete') && u.id !== profile.id) acts.push(`<button class="btn btn-ghost btn-sm u-del" onclick="userDelete('${em}')">Borrar</button>`)
+    const actsHtml = acts.length ? `<div class="adm-acts">${acts.join('')}</div>` : ''
     return `<div class="adm-card ${isExpired ? 'status-pendiente' : ''}">
       <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-role ${u.role === 'admin' ? 'staff' : ''}">${esc(u.role)}</span>${team} ${plan}${expB}
       <div class="adm-meta">${esc(u.email || '—')} · registro ${new Date(u.created_at).toLocaleDateString('es-CR')}${exp ? ' · vence ' + exp.toLocaleDateString('es-CR') : ''}</div>
+      ${actsHtml}
     </div>`
   }
   const section = (t, arr) => arr.length ? `<div class="adm-subhd">${t} (${arr.length})</div>${arr.map(row).join('')}` : ''
   if (!list.length) { box.innerHTML = stats + '<div class="empty"><p>Sin resultados.</p></div>'; return }
   box.innerHTML = stats + section('Equipo', staff) + section('Con plan', pagados) + section('Free', free)
+}
+// Acciones sensibles de usuario (roles + borrado). Reutilizan los RPC/Edge
+// Function existentes; protegidas por capacidad + confirmación.
+const TEAM_ROLES = ['superadmin','admin','editor','moderator','support']
+async function userSetRole(email, newRole){
+  if (!confirm(newRole === 'admin' ? `¿Dar acceso de staff a ${email}? Entra con rol mínimo (Soporte).` : `¿Quitar el acceso de staff a ${email}?`)) return
+  const { data, error } = await sb.rpc('admin_set_role', { target_email: email, new_role: newRole })
+  if (error || data?.error) return toast('⚠ ' + (error?.message || data?.error), true)
+  admLog('role.change', 'users', `${email} → ${newRole}`, 'user', email)
+  toast('Rol actualizado'); renderAdminUsers()
+}
+async function userTeamRole(email){
+  const pick = prompt(`Rol de equipo para ${email} — escribí el número:\n` + TEAM_ROLES.map((r, i) => `${i + 1}. ${ROLE_LABELS[r] || r}`).join('\n'))
+  if (!pick) return
+  const idx = parseInt(pick, 10) - 1
+  if (isNaN(idx) || !TEAM_ROLES[idx]) return toast('Opción inválida', true)
+  const { data, error } = await sb.rpc('admin_set_admin_role', { target_email: email, new_admin_role: TEAM_ROLES[idx] })
+  if (error || data?.error) return toast('⚠ ' + (error?.message || data?.error), true)
+  admLog('role.team', 'users', `Rol de equipo de ${email} → ${TEAM_ROLES[idx]}`, 'user', email)
+  toast('Rol de equipo actualizado'); renderAdminUsers()
+}
+async function userDelete(email){
+  if (!confirm(`¿BORRAR a ${email}?\nElimina su perfil, progreso, feedback y cuenta de auth. Es IRREVERSIBLE.`)) return
+  if (!confirm(`Última confirmación: ${email} se borra para SIEMPRE. ¿Continuar?`)) return
+  try {
+    const r = await sb.functions.invoke('delete_user', { body: { target_email: email } })
+    if (r.error || r.data?.error) return toast('⚠ ' + (r.error?.message || r.data?.error), true)
+    admLog('user.delete', 'users', `Usuario borrado: ${email}`, 'user', email)
+    toast('Usuario eliminado'); renderAdminUsers()
+  } catch (e) { toast('⚠ ' + (e.message || e), true) }
 }
 
 // ── Métricas (derivadas de profiles; sin exponer vistas agregadas) ──
