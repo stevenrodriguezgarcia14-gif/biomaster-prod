@@ -1177,9 +1177,8 @@ select option{background:var(--bg1)}
             <select id="postType" onchange="document.getElementById('pollOptsWrap').classList.toggle('show', this.value==='encuesta')" aria-label="Tipo de publicación">
               <option value="actualizacion">Actualización</option>
               <option value="anuncio">📣 Anuncio</option>
-              <option value="encuesta">🗳 Votación</option>
             </select>
-            <span class="composer-hint">Escribí @ para mencionar — la persona recibe notificación y correo.</span>
+            <span class="composer-hint">Para votaciones usá el 🗳 del chat. Escribí @ para mencionar.</span>
             <button class="btn btn-primary btn-sm" onclick="submitPost()">Publicar</button>
           </div>
           <div class="mention-note" id="postMentionNote"></div>
