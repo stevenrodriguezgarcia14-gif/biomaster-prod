@@ -953,6 +953,14 @@ select option{background:var(--bg1)}
 .m-val{font-size:1.7rem;font-weight:800;color:var(--text);line-height:1}
 .m-card.accent .m-val{color:var(--green-b)}
 .m-lbl{font-size:.72rem;color:var(--dim);margin-top:.35rem}
+.ann-form{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:.85rem;margin-bottom:1rem}
+.adm-ta{width:100%;min-height:60px;padding:.5rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.83rem;resize:vertical;margin-bottom:.4rem}
+.ann-row{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.ann-hd{display:flex;justify-content:space-between;gap:.5rem;align-items:center;flex-wrap:wrap}
+.ann-hd strong{font-size:.86rem;color:var(--text)}
+.ann-acts{display:flex;gap:.3rem;flex-shrink:0}
+.log-item{padding:.5rem .2rem;border-bottom:1px solid var(--border)}
+.log-desc{font-size:.82rem;color:var(--text)}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1098,6 +1106,14 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="admin-metrics" data-perm="stats.view" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M18 9l-5 5-3-3-4 4"/></svg>
         <span>Métricas</span>
+      </div>
+      <div class="nav-item" data-view="admin-announ" data-perm="content.manage" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l18-5v12L3 14v-3zM11.6 16.8a3 3 0 01-5.8-1.6"/></svg>
+        <span>Anuncios</span>
+      </div>
+      <div class="nav-item" data-view="admin-logs" data-perm="logs.view" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6M9 13h6M9 17h4"/></svg>
+        <span>Logs</span>
       </div>
     </nav>
 
@@ -1298,6 +1314,16 @@ select option{background:var(--bg1)}
     <!-- ADMIN · MÉTRICAS -->
     <div id="view-admin-metrics" class="view-body" hidden>
       <div id="admMetrics"></div>
+    </div>
+
+    <!-- ADMIN · ANUNCIOS -->
+    <div id="view-admin-announ" class="view-body" hidden>
+      <div id="admAnnoun"></div>
+    </div>
+
+    <!-- ADMIN · LOGS -->
+    <div id="view-admin-logs" class="view-body" hidden>
+      <div id="admLogs"></div>
     </div>
 
   </main>
@@ -1804,6 +1830,8 @@ const VIEW_CFG = {
   'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
   'admin-users': {title:'Usuarios', sub:'Directorio de estudiantes y equipo', action:null},
   'admin-metrics': {title:'Métricas', sub:'Salud del producto de un vistazo', action:null},
+  'admin-announ': {title:'Anuncios', sub:'Banners para los estudiantes', action:null},
+  'admin-logs': {title:'Logs', sub:'Auditoría de acciones administrativas', action:null},
 }
 
 // ─── Comunicación / Wiki: estado ───
@@ -2311,6 +2339,8 @@ function renderCurrent() {
   else if (currentView === 'admin-feedback') renderAdminFeedback()
   else if (currentView === 'admin-users') renderAdminUsers()
   else if (currentView === 'admin-metrics') renderAdminMetrics()
+  else if (currentView === 'admin-announ') renderAdminAnnoun()
+  else if (currentView === 'admin-logs') renderAdminLogs()
   updateUrgBadge()
 }
 
@@ -2970,6 +3000,97 @@ async function renderAdminMetrics(){
     ${card(m.equipo, 'Equipo')}
   </div>
   <p class="modal-hint" style="margin-top:.8rem">Datos en vivo desde la base. Para el funnel completo (visitas → registro → pago) usá PostHog.</p>`
+}
+
+// Registro de auditoría (best-effort; nunca bloquea la acción)
+async function admLog(action, category, description, targetType, targetId){
+  try { await sb.from('admin_logs').insert({ admin_id: profile.id, action, category: category || 'general', description, target_type: targetType || null, target_id: targetId ? String(targetId) : null, metadata: {} }) } catch (_) {}
+}
+
+// ── Anuncios (banners para estudiantes) ──
+let _annList = []
+const ANN_ICO = { info:'ℹ️', warning:'⚠️', update:'✅', event:'🎉' }
+async function renderAdminAnnoun(){
+  const box = document.getElementById('admAnnoun'); if (!box) return
+  if (!can('content.manage')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para gestionar anuncios.</p></div>'; return }
+  const { data, error } = await sb.from('announcements').select('id,title,content,type,target_plan,end_at,is_active,created_at,profiles(name)').order('created_at', { ascending:false })
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  _annList = data || []
+  renderAnnoun()
+}
+function renderAnnoun(){
+  const box = document.getElementById('admAnnoun'); if (!box) return
+  const now = new Date(), tgt = { all:'Todos', pro:'Solo Pro', free:'Solo Free' }
+  const cards = _annList.map(a => {
+    const expired = a.end_at && new Date(a.end_at) < now
+    const on = a.is_active && !expired
+    return `<div class="adm-card ${on ? 'status-resuelto' : ''}">
+      <div class="ann-hd"><strong>${ANN_ICO[a.type] || '📣'} ${esc(a.title)}</strong>
+        <span class="ann-acts"><button class="btn btn-ghost btn-sm" onclick="annToggle('${a.id}',${!a.is_active})">${a.is_active ? 'Desactivar' : 'Activar'}</button><button class="btn btn-ghost btn-sm" onclick="annDelete('${a.id}')">Borrar</button></span>
+      </div>
+      <div class="adm-body">${esc(a.content)}</div>
+      <div class="adm-meta">Para ${tgt[a.target_plan] || a.target_plan} · ${a.end_at ? 'expira ' + new Date(a.end_at).toLocaleDateString('es-CR') : 'sin expiración'} · ${esc(a.profiles?.name || 'Admin')}${on ? '' : ' · inactivo'}</div>
+    </div>`
+  }).join('') || '<div class="empty"><p>Sin anuncios creados.</p></div>'
+  box.innerHTML = `
+    <div class="ann-form">
+      <div class="adm-subhd" style="margin-top:0">Publicar nuevo anuncio</div>
+      <input id="annTitle" class="adm-search" style="max-width:none;margin-bottom:.4rem;width:100%" placeholder="Título del anuncio" autocomplete="off">
+      <textarea id="annContent" class="adm-ta" placeholder="Mensaje para los estudiantes…"></textarea>
+      <div class="ann-row">
+        <select id="annType" class="pref-sel"><option value="info">ℹ️ Info</option><option value="update">✅ Actualización</option><option value="warning">⚠️ Advertencia</option><option value="event">🎉 Evento</option></select>
+        <select id="annTarget" class="pref-sel"><option value="all">Todos</option><option value="pro">Solo Pro</option><option value="free">Solo Free</option></select>
+        <input id="annEndAt" type="datetime-local" class="pref-sel" title="Expiración (opcional)">
+        <button class="btn btn-primary btn-sm" onclick="annCreate()">Publicar</button>
+      </div>
+    </div>
+    <div class="adm-subhd">Anuncios actuales</div>${cards}`
+}
+async function annCreate(){
+  const title = document.getElementById('annTitle').value.trim()
+  const content = document.getElementById('annContent').value.trim()
+  if (!title || !content) return toast('Completá título y mensaje', true)
+  const type = document.getElementById('annType').value
+  const target_plan = document.getElementById('annTarget').value
+  const endRaw = document.getElementById('annEndAt').value
+  const { error } = await sb.from('announcements').insert({ title, content, type, target_plan, end_at: endRaw ? new Date(endRaw).toISOString() : null, created_by: profile.id, is_active: true })
+  if (error) return toast('Error: ' + error.message, true)
+  admLog('ann.create', 'announcements', `Anuncio publicado: "${title}"`, 'announcement', null)
+  toast('📣 Anuncio publicado'); renderAdminAnnoun()
+}
+async function annToggle(id, newState){
+  const { error } = await sb.from('announcements').update({ is_active: newState }).eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  admLog('ann.toggle', 'announcements', `Anuncio ${newState ? 'activado' : 'desactivado'}`, 'announcement', id)
+  renderAdminAnnoun()
+}
+async function annDelete(id){
+  if (!confirm('¿Borrar este anuncio permanentemente?')) return
+  const { error } = await sb.from('announcements').delete().eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  admLog('ann.delete', 'announcements', 'Anuncio borrado', 'announcement', id)
+  renderAdminAnnoun()
+}
+
+// ── Logs administrativos (solo lectura) ──
+let _logsFilter = 'all'
+async function renderAdminLogs(){
+  const box = document.getElementById('admLogs'); if (!box) return
+  if (!can('logs.view')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para ver logs.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  let q = sb.from('admin_logs').select('id,action,category,description,target_id,created_at,profiles(name,email)').order('created_at', { ascending:false }).limit(200)
+  if (_logsFilter !== 'all') q = q.eq('category', _logsFilter)
+  const { data, error } = await q
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  const cats = ['all','plans','feedback','users','config','events','announcements','debug']
+  const lbl = { all:'Todos', plans:'Planes', feedback:'Feedback', users:'Usuarios', config:'Config', events:'Eventos', announcements:'Anuncios', debug:'Debug' }
+  const bar = cats.map(c => `<button class="fb-chip ${_logsFilter === c ? 'on' : ''}" onclick="_logsFilter='${c}';renderAdminLogs()">${lbl[c]}</button>`).join('')
+  const items = (data || []).map(l => {
+    const when = new Date(l.created_at).toLocaleString('es-CR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' })
+    const who = l.profiles?.name || l.profiles?.email || 'Admin'
+    return `<div class="log-item"><div class="log-desc">${esc(l.description || l.action)}</div><div class="adm-meta">${esc(who)} · ${when}${l.target_id ? ' · ' + esc(l.target_id) : ''}</div></div>`
+  }).join('') || '<div class="empty"><p>Sin logs aún. Se generan con cada acción administrativa.</p></div>'
+  box.innerHTML = `<div class="fb-filters">${bar}</div>${items}`
 }
 
 function renderRoadmap() {
