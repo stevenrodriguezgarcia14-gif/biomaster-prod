@@ -3045,7 +3045,7 @@ function pollCardHtml(m){
     const c = votes.filter(v => v.option_id === o.id).length
     const pct = voters ? Math.round(c / voters * 100) : 0
     const mine = myVotes.includes(o.id)
-    return `<button class="poll-opt ${mine ? 'mine' : ''}" ${closed ? 'disabled' : ''} onclick="votePoll('${poll.id}','${o.id}','${poll.kind}')">
+    return `<button class="poll-opt ${mine ? 'mine' : ''}" ${closed ? 'disabled' : ''} onclick="chatVote('${poll.id}','${o.id}','${poll.kind}')">
       <span class="po-bar" style="width:${pct}%"></span>
       <span class="po-label">${mine ? '✓ ' : ''}${esc(o.label)}</span>
       <span class="po-count">${c}</span>
@@ -3063,11 +3063,11 @@ function pollCardHtml(m){
     <div class="poll-opts">${opts}</div>
     <div class="poll-meta"><span>${meta}</span>
       ${!poll.anonymous && voters ? `<button class="poll-who-btn" onclick="showVoters('${poll.id}')">Ver quién votó</button>` : ''}
-      ${canClose ? `<button class="poll-close-btn" onclick="closePoll('${poll.id}')">Cerrar</button>` : ''}
+      ${canClose ? `<button class="poll-close-btn" onclick="chatClosePoll('${poll.id}')">Cerrar</button>` : ''}
     </div>
   </div>`
 }
-async function votePoll(pid, oid, kind){
+async function chatVote(pid, oid, kind){
   const pd = chatPolls[pid]; if (!pd || pd.poll.closed) return
   const mine = pd.votes.some(v => v.user_id === profile.id && v.option_id === oid)
   try {
@@ -3081,7 +3081,7 @@ async function votePoll(pid, oid, kind){
   } catch (_) { return toast('No se pudo registrar el voto', true) }
   await loadPolls(); renderChatMsgs(true)
 }
-async function closePoll(pid){
+async function chatClosePoll(pid){
   if (!confirm('¿Cerrar la votación? Ya no se podrá votar.')) return
   await sb.from('ws_poll').update({ closed: true }).eq('id', pid)
   await loadPolls(); renderChatMsgs(true)
