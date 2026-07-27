@@ -975,6 +975,14 @@ select option{background:var(--bg1)}
 .geo-bar{flex:1;height:8px;background:var(--bg3);border-radius:5px;overflow:hidden}
 .geo-bar span{display:block;height:100%;background:var(--green)}
 .geo-n{font-size:.74rem;color:var(--muted);width:32px;text-align:right}
+.rl-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:560px}
+.rl-table th{padding:.5rem;border-bottom:1px solid var(--border);text-align:center;font-size:.64rem;color:var(--dim);text-transform:uppercase;letter-spacing:.04em}
+.rl-table th:first-child{text-align:left}
+.rl-cap{padding:.5rem;border-bottom:1px solid var(--border);color:var(--text)}
+.rl-cell{text-align:center;border-bottom:1px solid var(--border)}
+.rl-yes{color:var(--green-b);font-weight:800}
+.rl-no{color:var(--dim)}
+.rl-col{white-space:nowrap}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1136,6 +1144,10 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="admin-logs" data-perm="logs.view" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 2v6h6M9 13h6M9 17h4"/></svg>
         <span>Logs</span>
+      </div>
+      <div class="nav-item" data-view="admin-roles" data-perm="roles.manage" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"/></svg>
+        <span>Roles y permisos</span>
       </div>
     </nav>
 
@@ -1340,6 +1352,7 @@ select option{background:var(--bg1)}
 
     <!-- ADMIN · PLANES Y PAGOS -->
     <div id="view-admin-plans" class="view-body" hidden>
+      <div class="adm-toolbar"><input id="planSearch" class="adm-search" placeholder="Buscar usuario para darle o cambiarle el plan…" oninput="renderPlansView()" autocomplete="off"></div>
       <div id="admPlans"></div>
     </div>
 
@@ -1357,6 +1370,11 @@ select option{background:var(--bg1)}
     <!-- ADMIN · LOGS -->
     <div id="view-admin-logs" class="view-body" hidden>
       <div id="admLogs"></div>
+    </div>
+
+    <!-- ADMIN · ROLES Y PERMISOS -->
+    <div id="view-admin-roles" class="view-body" hidden>
+      <div id="admRoles"></div>
     </div>
 
   </main>
@@ -1884,6 +1902,7 @@ const VIEW_CFG = {
   'admin-plans': {title:'Planes y pagos', sub:'Activar o revocar acceso tras verificar el pago', action:null},
   'admin-announ': {title:'Anuncios', sub:'Banners para los estudiantes', action:null},
   'admin-logs': {title:'Logs', sub:'Auditoría de acciones administrativas', action:null},
+  'admin-roles': {title:'Roles y permisos', sub:'Qué puede hacer cada rol del equipo', action:null},
 }
 
 // ─── Comunicación / Wiki: estado ───
@@ -2395,6 +2414,7 @@ function renderCurrent() {
   else if (currentView === 'admin-logs') renderAdminLogs()
   else if (currentView === 'admin-plans') renderAdminPlans()
   else if (currentView === 'admin-progress') renderAdminProgress()
+  else if (currentView === 'admin-roles') renderAdminRoles()
   updateUrgBadge()
 }
 
@@ -3119,34 +3139,38 @@ async function admLog(action, category, description, targetType, targetId){
 const PLAN_DUR = { p1:60, p2:60, p3:60, full:180, mensual:30 }
 const PLAN_LBL = { p1:'Pase P1', p2:'Pase P2', p3:'Pase P3', full:'Semestre', mensual:'Mensual' }
 const PLAN_OPTS = [['p1','Pase P1 · 60 días'],['p2','Pase P2 · 60 días'],['p3','Pase P3 · 60 días'],['full','Semestre · 6 meses'],['mensual','Mensual · 30 días']]
-let _planUsers = []
+let _planUsers = [], _planAll = []
 async function renderAdminPlans(){
   const box = document.getElementById('admPlans'); if (!box) return
   if (!can('plans.manage')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para gestionar planes.</p></div>'; return }
   box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
-  const { data, error } = await sb.from('profiles').select('id,name,email,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at').limit(1000)
+  const { data, error } = await sb.from('profiles').select('id,name,email,role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,last_payment_at').limit(2000)
   if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
-  _planUsers = (data || []).filter(u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3)
+  _planAll = (data || []).filter(u => u.role !== 'admin')
+  _planUsers = _planAll.filter(u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3)
     .sort((a, b) => (b.last_payment_at || '').localeCompare(a.last_payment_at || ''))
   renderPlansView()
 }
 function renderPlansView(){
   const box = document.getElementById('admPlans'); if (!box) return
   const now = new Date()
-  const info = `<p class="modal-hint">Para activar un plan, tocá <strong>Plan</strong> en el usuario (en esta lista o en <strong>Usuarios</strong>) y elegí el plan — sin escribir el correo.</p>`
-  const rows = _planUsers.map(u => {
+  const q = (document.getElementById('planSearch')?.value || '').toLowerCase().trim()
+  const list = q ? _planAll.filter(u => (u.name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q)) : _planUsers
+  const rows = list.map(u => {
     const parciales = [u.plan_p1 && 'P1', u.plan_p2 && 'P2', u.plan_p3 && 'P3'].filter(Boolean)
-    const plan = u.plan_full ? 'Full' : parciales.length === 3 ? 'P1+P2+P3' : parciales.join('+')
+    const has = u.plan_full || parciales.length
+    const plan = u.plan_full ? 'Full' : parciales.length === 3 ? 'P1+P2+P3' : parciales.length ? parciales.join('+') : 'free'
     const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
     const expired = exp && exp < now
     const em = (u.email || '').replace(/'/g, ''), nm = (u.name || '').replace(/'/g, '')
-    return `<div class="adm-card ${expired ? 'status-pendiente' : 'status-resuelto'}">
-      <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-plan full">${plan}</span>${expired ? '<span class="u-exp vencido">vencido</span>' : ''}
+    return `<div class="adm-card ${has ? (expired ? 'status-pendiente' : 'status-resuelto') : ''}">
+      <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-plan ${u.plan_full ? 'full' : parciales.length ? 'part' : 'free'}">${plan}</span>${expired ? '<span class="u-exp vencido">vencido</span>' : ''}
       <span class="ann-acts" style="float:right"><button class="btn btn-primary btn-sm" onclick="openPlanModal('${em}','${nm}')">Plan</button></span>
       <div class="adm-meta">${esc(u.email || '')}${exp ? ' · vence ' + exp.toLocaleDateString('es-CR') : ''}${u.last_payment_at ? ' · últ. pago ' + new Date(u.last_payment_at).toLocaleDateString('es-CR') : ''}</div>
     </div>`
-  }).join('') || '<div class="empty"><p>Sin usuarios con plan activo. Activá uno desde Usuarios → botón Plan.</p></div>'
-  box.innerHTML = info + `<div class="adm-subhd">Usuarios con plan activo (${_planUsers.length})</div>` + rows
+  }).join('') || `<div class="empty"><p>${q ? 'Sin resultados.' : 'Nadie con plan activo aún. Buscá un usuario arriba para darle un plan.'}</p></div>`
+  const hd = q ? `Resultados (${list.length})` : `Usuarios con plan activo (${_planUsers.length}) · buscá arriba para dar un plan nuevo`
+  box.innerHTML = `<div class="adm-subhd" style="margin-top:0">${hd}</div>${rows}`
 }
 // Modal de plan por-usuario (sin escribir el correo)
 let _planTarget = null
@@ -3308,6 +3332,32 @@ async function annDelete(id){
   if (error) return toast('Error: ' + error.message, true)
   admLog('ann.delete', 'announcements', 'Anuncio borrado', 'announcement', id)
   renderAdminAnnoun()
+}
+
+// ── Roles y permisos: matriz de qué puede hacer cada rol ──
+const CAP_LABELS = {
+  'users.view':'Ver usuarios', 'users.delete':'Borrar usuarios', 'roles.manage':'Gestionar roles',
+  'plans.manage':'Planes y pagos', 'feedback.moderate':'Moderar feedback', 'missions.manage':'Misiones y eventos',
+  'content.manage':'Contenido y anuncios', 'stats.view':'Métricas y progreso', 'logs.view':'Ver logs',
+  'system.config':'Configuración del sistema', 'progress.reset':'Resetear progreso'
+}
+const ROLES_ORDER = ['superadmin','admin','editor','moderator','support']
+async function renderAdminRoles(){
+  const box = document.getElementById('admRoles'); if (!box) return
+  if (!can('roles.manage')) { box.innerHTML = '<div class="empty"><p>Solo quien gestiona roles ve esta matriz.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  const [{ data: perms, error: pe }, { data: team }] = await Promise.all([
+    sb.from('admin_role_permissions').select('role,permission'),
+    sb.from('profiles').select('name,email,admin_role').eq('role', 'admin').order('admin_role')
+  ])
+  if (pe) { box.innerHTML = `<div class="empty"><p>Error: ${esc(pe.message)}</p></div>`; return }
+  const grid = {}; for (const p of (perms || [])) (grid[p.role] = grid[p.role] || new Set()).add(p.permission)
+  const caps = Object.keys(CAP_LABELS)
+  const head = `<tr><th>Permiso</th>${ROLES_ORDER.map(r => `<th class="rl-col">${esc((ROLE_LABELS[r] || r).replace(' ✦', ''))}</th>`).join('')}</tr>`
+  const rows = caps.map(c => `<tr><td class="rl-cap">${esc(CAP_LABELS[c])}</td>${ROLES_ORDER.map(r => `<td class="rl-cell">${grid[r]?.has(c) ? '<span class="rl-yes">✓</span>' : '<span class="rl-no">·</span>'}</td>`).join('')}</tr>`).join('')
+  const matrix = `<div class="pg-wrap"><table class="rl-table"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`
+  const teamHtml = (team || []).map(t => `<div class="adm-card"><strong>${esc(t.name || '—')}</strong> <span class="u-team">${esc(ROLE_LABELS[t.admin_role] || t.admin_role || 'sin rol')}</span><div class="adm-meta">${esc(t.email)}</div></div>`).join('') || '<div class="empty"><p>Sin miembros de equipo.</p></div>'
+  box.innerHTML = `<p class="modal-hint">Qué puede hacer cada rol. Para cambiar el rol de alguien: <strong>Usuarios → Rol equipo</strong>.</p>${matrix}<div class="adm-subhd">Equipo actual y su rol</div>${teamHtml}`
 }
 
 // ── Logs administrativos (solo lectura) ──
