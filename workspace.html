@@ -895,6 +895,22 @@ select option{background:var(--bg1)}
 .mem-x{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.74rem}
 .mem-x:hover{color:var(--red)}
 .dm-av.grp-av{background:var(--bg3);color:var(--muted)}
+/* Votaciones en el chat */
+.poll-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.7rem .8rem;margin-top:.3rem;max-width:470px}
+.poll-q{font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:.55rem;line-height:1.35}
+.poll-closed{font-size:.66rem;color:var(--dim);font-weight:600}
+.poll-opts{display:flex;flex-direction:column;gap:.35rem}
+.poll-opt{position:relative;display:flex;align-items:center;gap:.5rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:.45rem .6rem;cursor:pointer;font-family:inherit;overflow:hidden;text-align:left;width:100%}
+.poll-opt:hover:not(:disabled){border-color:var(--green)}
+.poll-opt:disabled{cursor:default}
+.poll-opt.mine{border-color:var(--green)}
+.po-bar{position:absolute;left:0;top:0;bottom:0;background:var(--green-s);z-index:0;transition:width .35s ease}
+.po-label{position:relative;z-index:1;flex:1;font-size:.8rem;color:var(--text)}
+.po-count{position:relative;z-index:1;font-size:.72rem;color:var(--muted);font-weight:700}
+.poll-meta{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-top:.55rem;font-size:.68rem;color:var(--dim)}
+.poll-close-btn,.poll-who-btn{background:none;border:none;color:var(--green-b);cursor:pointer;font-size:.68rem;font-family:inherit;padding:0}
+.poll-close-btn:hover,.poll-who-btn:hover{text-decoration:underline}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1138,6 +1154,7 @@ select option{background:var(--bg1)}
             <div class="chat-attach-row" id="chatAttachRow" hidden></div>
             <div class="chat-input-row">
               <button class="chat-attach-btn" onclick="document.getElementById('chatFile').click()" title="Adjuntar archivo" aria-label="Adjuntar archivo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button>
+              <button class="chat-attach-btn" onclick="openPoll()" title="Crear votación" aria-label="Crear votación"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20V10M12 20V4M17 20v-6"/></svg></button>
               <textarea id="chatInput" placeholder="Mensaje para el canal… (@ menciona, Enter envía, Shift+Enter salto)" maxlength="2000" aria-label="Escribir mensaje"></textarea>
               <button class="chat-send-btn" onclick="sendChatMsg()" title="Enviar" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
             </div>
@@ -1347,6 +1364,28 @@ select option{background:var(--bg1)}
       <button class="modal-close" onclick="closeModal('membersModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
     </div>
     <div id="membersBody"></div>
+  </div>
+</div>
+
+<!-- NUEVA VOTACIÓN -->
+<div class="modal" id="pollModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Nueva votación</span>
+      <button class="modal-close" onclick="closeModal('pollModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <p class="modal-hint">La votación se publica en el canal abierto y todos pueden votar en tiempo real.</p>
+    <div class="fg"><label>Pregunta *</label><input id="pollQ" maxlength="200" placeholder="¿Qué decidimos?" autocomplete="off"></div>
+    <div class="fg"><label>Opciones (una por línea, 2 a 6)</label><textarea id="pollOptions" style="min-height:90px" placeholder="Opción A&#10;Opción B&#10;Opción C"></textarea></div>
+    <div class="form-row">
+      <div class="fg"><label>Tipo</label><select id="pollKind"><option value="single">Elegir una</option><option value="multi">Elegir varias</option></select></div>
+      <div class="fg"><label>Cierra (opcional)</label><input id="pollCloses" type="datetime-local"></div>
+    </div>
+    <div class="fg"><label class="seg" style="flex-direction:row"><input type="checkbox" id="pollAnon"> Votación anónima (no se ve quién votó qué)</label></div>
+    <div class="form-acts">
+      <button type="button" class="btn btn-ghost" onclick="closeModal('pollModal')">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="createPoll()">Publicar votación</button>
+    </div>
   </div>
 </div>
 
@@ -2829,7 +2868,7 @@ async function deleteNote(id) {
 //     respuestas (hilo), reacciones, edición, adjuntos y realtime. ═══
 let channels = [], dms = [], groups = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
 let myMembership = {}, chanLatest = {}, chanUnreadN = {}, chanMembers = {}, chanMemberIds = {}
-let msgReactions = {}, chatReplyTo = null, editingMsg = null, pendingAttach = []
+let msgReactions = {}, chatPolls = {}, chatReplyTo = null, editingMsg = null, pendingAttach = []
 let _typingCh = null, _typingThrottle = null, _typingHideTimer = null
 const CHAT_REACTIONS = ['👍','❤️','😂','🎉','🙌','👀']
 
@@ -2881,7 +2920,7 @@ async function loadChatMsgs(reset = true){
   chatMsgs = reset ? batch : [...batch, ...chatMsgs]
   chatOldest = chatMsgs[0]?.created_at || null
   _chatHasMore = (data || []).length === 60
-  await loadReactions()
+  await Promise.all([loadReactions(), loadPolls()])
 }
 async function loadReactions(){
   const ids = chatMsgs.map(m => m.id)
@@ -2889,6 +2928,19 @@ async function loadReactions(){
   if (!ids.length) return
   const { data } = await sb.from('ws_reaction').select('message_id,emoji,user_id').in('message_id', ids)
   for (const r of (data || [])) (msgReactions[r.message_id] = msgReactions[r.message_id] || []).push(r)
+}
+async function loadPolls(){
+  const pids = chatMsgs.filter(m => m.poll_id).map(m => m.poll_id)
+  chatPolls = {}
+  if (!pids.length) return
+  const [{ data: polls }, { data: opts }, { data: votes }] = await Promise.all([
+    sb.from('ws_poll').select('*').in('id', pids),
+    sb.from('ws_poll_option').select('*').in('poll_id', pids).order('position'),
+    sb.from('ws_vote').select('*').in('poll_id', pids)
+  ])
+  for (const p of (polls || [])) chatPolls[p.id] = { poll: p, options: [], votes: [] }
+  for (const o of (opts || [])) chatPolls[o.poll_id]?.options.push(o)
+  for (const v of (votes || [])) chatPolls[v.poll_id]?.votes.push(v)
 }
 
 function linkifyChat(s){
@@ -2979,8 +3031,98 @@ function msgTextHtml(m){
       <div class="me-acts"><button class="btn btn-ghost btn-xs" onclick="editingMsg=null;renderChatMsgs(true)">Cancelar</button>
       <button class="btn btn-primary btn-xs" onclick="saveEdit('${m.id}')">Guardar</button></div></div>`
   }
+  if (m.poll_id) return pollCardHtml(m) + reactionsHtml(m)
   const txt = m.body ? `<div class="msg-txt">${linkifyChat(highlightMentions(esc(m.body)))}${m.edited_at ? ' <span class="edited">(editado)</span>' : ''}</div>` : ''
   return replyQuoteHtml(m) + txt + attachHtml(m) + reactionsHtml(m)
+}
+function pollCardHtml(m){
+  const pd = chatPolls[m.poll_id]
+  if (!pd) return `<div class="msg-txt">${esc(m.body || 'Votación')}</div>`
+  const { poll, options, votes } = pd
+  const closed = poll.closed || (poll.closes_at && new Date(poll.closes_at) < new Date())
+  const myVotes = votes.filter(v => v.user_id === profile.id).map(v => v.option_id)
+  const voters = new Set(votes.map(v => v.user_id)).size
+  const opts = options.map(o => {
+    const c = votes.filter(v => v.option_id === o.id).length
+    const pct = voters ? Math.round(c / voters * 100) : 0
+    const mine = myVotes.includes(o.id)
+    return `<button class="poll-opt ${mine ? 'mine' : ''}" ${closed ? 'disabled' : ''} onclick="votePoll('${poll.id}','${o.id}','${poll.kind}')">
+      <span class="po-bar" style="width:${pct}%"></span>
+      <span class="po-label">${mine ? '✓ ' : ''}${esc(o.label)}</span>
+      <span class="po-count">${c}</span>
+    </button>`
+  }).join('')
+  const canClose = (poll.created_by === profile.id || can('roles.manage')) && !closed
+  const meta = [
+    `${voters} ${voters === 1 ? 'voto' : 'votos'}`,
+    poll.kind === 'multi' ? 'elección múltiple' : null,
+    poll.anonymous ? 'anónima' : null,
+    (poll.closes_at && !poll.closed) ? `cierra ${new Date(poll.closes_at).toLocaleString('es-CR', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}` : null
+  ].filter(Boolean).join(' · ')
+  return `<div class="poll-card">
+    <div class="poll-q">🗳 ${esc(poll.question)}${closed ? ' <span class="poll-closed">· cerrada</span>' : ''}</div>
+    <div class="poll-opts">${opts}</div>
+    <div class="poll-meta"><span>${meta}</span>
+      ${!poll.anonymous && voters ? `<button class="poll-who-btn" onclick="showVoters('${poll.id}')">Ver quién votó</button>` : ''}
+      ${canClose ? `<button class="poll-close-btn" onclick="closePoll('${poll.id}')">Cerrar</button>` : ''}
+    </div>
+  </div>`
+}
+async function votePoll(pid, oid, kind){
+  const pd = chatPolls[pid]; if (!pd || pd.poll.closed) return
+  const mine = pd.votes.some(v => v.user_id === profile.id && v.option_id === oid)
+  try {
+    if (kind === 'single') {
+      await sb.from('ws_vote').delete().eq('poll_id', pid).eq('user_id', profile.id)
+      if (!mine) await sb.from('ws_vote').insert({ poll_id: pid, option_id: oid, user_id: profile.id })
+    } else {
+      if (mine) await sb.from('ws_vote').delete().eq('poll_id', pid).eq('option_id', oid).eq('user_id', profile.id)
+      else await sb.from('ws_vote').insert({ poll_id: pid, option_id: oid, user_id: profile.id })
+    }
+  } catch (_) { return toast('No se pudo registrar el voto', true) }
+  await loadPolls(); renderChatMsgs(true)
+}
+async function closePoll(pid){
+  if (!confirm('¿Cerrar la votación? Ya no se podrá votar.')) return
+  await sb.from('ws_poll').update({ closed: true }).eq('id', pid)
+  await loadPolls(); renderChatMsgs(true)
+}
+function showVoters(pid){
+  const pd = chatPolls[pid]; if (!pd) return
+  document.getElementById('membersTitle').textContent = 'Votos'
+  document.getElementById('membersBody').innerHTML = pd.options.map(o => {
+    const names = pd.votes.filter(v => v.option_id === o.id).map(v => (admins.find(a => a.id === v.user_id) || {}).name).filter(Boolean)
+    return `<div class="mem-row"><span class="pk-name"><strong>${esc(o.label)}</strong></span><span class="mem-role">${names.length}</span></div>` +
+      (names.map(n => `<div class="mem-row" style="padding-left:1.4rem"><span class="dm-av">${esc(n.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(n)}</span></div>`).join('') || '<div class="chan-empty" style="padding-left:1.4rem">Sin votos</div>')
+  }).join('')
+  openModal('membersModal')
+}
+function openPoll(){
+  if (!chatSel) return toast('Abrí un canal primero', true)
+  document.getElementById('pollQ').value = ''
+  document.getElementById('pollOptions').value = ''
+  document.getElementById('pollKind').value = 'single'
+  document.getElementById('pollAnon').checked = false
+  document.getElementById('pollCloses').value = ''
+  openModal('pollModal')
+}
+async function createPoll(){
+  const q = document.getElementById('pollQ').value.trim().slice(0, 200)
+  const options = document.getElementById('pollOptions').value.split('\n').map(s => s.trim()).filter(Boolean).slice(0, 6)
+  if (!q) return toast('Escribí la pregunta', true)
+  if (options.length < 2) return toast('Poné al menos 2 opciones', true)
+  const kind = document.getElementById('pollKind').value
+  const anonymous = document.getElementById('pollAnon').checked
+  const closesRaw = document.getElementById('pollCloses').value
+  const closes_at = closesRaw ? new Date(closesRaw).toISOString() : null
+  const { data: poll, error } = await sb.from('ws_poll').insert({
+    channel_id: chatSel, question: q, kind, anonymous, closes_at, created_by: profile.id, created_by_name: profile.name
+  }).select('id').single()
+  if (error) return toast('Error: ' + error.message, true)
+  await sb.from('ws_poll_option').insert(options.map((label, i) => ({ poll_id: poll.id, label, position: i })))
+  await sb.from('ws_message').insert({ channel_id: chatSel, author_id: profile.id, author_name: profile.name, body: '🗳 ' + q, poll_id: poll.id })
+  closeModal('pollModal')
+  await loadChatMsgs(true); renderChatMsgs(true); markChanRead(chatSel)
 }
 function renderChatMsgs(keepScroll){
   const box = document.getElementById('chatMsgs')
@@ -4010,7 +4152,7 @@ function initRealtime() {
         if (m.deleted_at) return
         chanLatest[m.channel_id] = m.created_at
         if (currentView === 'chat' && m.channel_id === chatSel) {
-          if (!chatMsgs.some(x => x.id === m.id)) { chatMsgs.push(m); renderChatMsgs(true) }
+          if (!chatMsgs.some(x => x.id === m.id)) { chatMsgs.push(m); if (m.poll_id) loadPolls().then(() => renderChatMsgs(true)); else renderChatMsgs(true) }
           const t = document.getElementById('chatTyping'); if (t) t.textContent = ''
           markChanRead(chatSel)
         } else {
@@ -4028,6 +4170,12 @@ function initRealtime() {
     })
     .on('postgres_changes', {event:'*', schema:'public', table:'ws_reaction'}, async () => {
       if (currentView === 'chat') { await loadReactions(); renderChatMsgs(true) }
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_vote'}, async () => {
+      if (currentView === 'chat') { await loadPolls(); renderChatMsgs(true) }
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_poll'}, async () => {
+      if (currentView === 'chat') { await loadPolls(); renderChatMsgs(true) }
     })
     .on('postgres_changes', {event:'*', schema:'public', table:'ws_channel'}, async () => {
       await loadChannels()
