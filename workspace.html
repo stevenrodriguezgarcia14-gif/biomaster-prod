@@ -932,6 +932,21 @@ select option{background:var(--bg1)}
 .fb-stars{color:#f5b417;letter-spacing:1px}
 .adm-meta{font-size:.7rem;color:var(--dim);margin-top:.35rem}
 .adm-acts{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.55rem}
+.adm-toolbar{margin-bottom:.8rem}
+.adm-search{width:100%;max-width:360px;padding:.5rem .7rem;border-radius:10px;border:1px solid var(--border);background:var(--bg1);color:var(--text);font-family:inherit;font-size:.82rem}
+.adm-stats{display:flex;gap:1.2rem;margin-bottom:.9rem;font-size:.74rem;color:var(--dim)}
+.adm-stats b{color:var(--text);font-size:.95rem}
+.adm-subhd{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin:.9rem 0 .45rem}
+.u-role{font-size:.66rem;background:var(--bg3);color:var(--muted);padding:.08rem .45rem;border-radius:6px;text-transform:capitalize}
+.u-role.staff{background:var(--green-s);color:var(--green-b);font-weight:700}
+.u-team{font-size:.66rem;background:var(--green-s);color:var(--green-b);padding:.08rem .45rem;border-radius:6px}
+.u-plan{font-size:.66rem;padding:.08rem .45rem;border-radius:6px;font-weight:700}
+.u-plan.full{background:var(--green-s);color:var(--green-b)}
+.u-plan.part{background:rgba(43,110,163,.16);color:#5b9bd0}
+.u-plan.free{background:var(--bg3);color:var(--dim)}
+.u-exp{font-size:.64rem;padding:.08rem .4rem;border-radius:5px;font-weight:700;margin-left:.2rem}
+.u-exp.vencido{background:var(--red-s);color:var(--red)}
+.u-exp.pronto{background:rgba(196,106,47,.16);color:#c46a2f}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1069,6 +1084,10 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="admin-feedback" data-perm="feedback.moderate" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
         <span>Feedback</span>
+      </div>
+      <div class="nav-item" data-view="admin-users" data-perm="users.view" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Usuarios</span>
       </div>
     </nav>
 
@@ -1258,6 +1277,12 @@ select option{background:var(--bg1)}
     <!-- ADMIN · FEEDBACK -->
     <div id="view-admin-feedback" class="view-body" hidden>
       <div id="admFeedback"></div>
+    </div>
+
+    <!-- ADMIN · USUARIOS (solo lectura) -->
+    <div id="view-admin-users" class="view-body" hidden>
+      <div class="adm-toolbar"><input id="admUserSearch" class="adm-search" placeholder="Buscar por nombre o correo…" oninput="renderAdminUsersList()" autocomplete="off"></div>
+      <div id="admUsers"></div>
     </div>
 
   </main>
@@ -1762,6 +1787,7 @@ const VIEW_CFG = {
   activity:  {title:'Actividad',     sub:'Historial completo y auditable',       action:null},
   roadmap:   {title:'Roadmap',       sub:'Planificación del proyecto',           action:'Nueva Tarea'},
   'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
+  'admin-users': {title:'Usuarios', sub:'Directorio de estudiantes y equipo', action:null},
 }
 
 // ─── Comunicación / Wiki: estado ───
@@ -2267,6 +2293,7 @@ function renderCurrent() {
   else if (currentView === 'activity') renderActivity()
   else if (currentView === 'roadmap') renderRoadmap()
   else if (currentView === 'admin-feedback') renderAdminFeedback()
+  else if (currentView === 'admin-users') renderAdminUsers()
   updateUrgBadge()
 }
 
@@ -2839,6 +2866,53 @@ async function admFbPublic(id, makePublic){
   if (!data || !data.length) return toast('No se actualizó (0 filas; revisá permisos de UPDATE en feedback)', true)
   const f = _admFb.find(x => x.id === id); if (f) f.is_public = makePublic
   renderAdminFbList(); toast(makePublic ? '📢 Testimonio aprobado' : '🔒 Ya no es público')
+}
+
+// ── Usuarios (solo lectura; las acciones sensibles van en la fase final) ──
+let _admUsers = []
+async function renderAdminUsers(){
+  const box = document.getElementById('admUsers'); if (!box) return
+  if (!can('users.view')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para ver usuarios.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  let { data, error } = await sb.from('profiles')
+    .select('id,name,email,role,admin_role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at')
+    .order('created_at', { ascending:false }).limit(500)
+  if (error && /admin_role/.test(error.message || '')) {
+    ({ data, error } = await sb.from('profiles').select('id,name,email,role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at').order('created_at', { ascending:false }).limit(500))
+  }
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  _admUsers = data || []
+  renderAdminUsersList()
+}
+function renderAdminUsersList(){
+  const box = document.getElementById('admUsers'); if (!box) return
+  const q = (document.getElementById('admUserSearch')?.value || '').toLowerCase().trim()
+  const now = new Date(), in7d = new Date(now.getTime() + 7 * 86400000)
+  let list = _admUsers
+  if (q) list = list.filter(u => (u.name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q))
+  const withPlan = u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3
+  const staff = list.filter(u => u.role === 'admin')
+  const pagados = list.filter(u => u.role !== 'admin' && withPlan(u))
+  const free = list.filter(u => u.role !== 'admin' && !withPlan(u))
+  const stats = `<div class="adm-stats"><span><b>${_admUsers.length}</b> total</span><span><b>${_admUsers.filter(u => u.role === 'admin').length}</b> equipo</span><span><b>${_admUsers.filter(u => u.role !== 'admin' && withPlan(u)).length}</b> con plan</span></div>`
+  const row = u => {
+    const exp = u.plan_expires_at ? new Date(u.plan_expires_at) : null
+    const isExpired = exp && exp < now, soon = exp && exp >= now && exp < in7d
+    const parciales = [u.plan_p1 && 'P1', u.plan_p2 && 'P2', u.plan_p3 && 'P3'].filter(Boolean)
+    const plan = u.plan_full ? '<span class="u-plan full">Full</span>'
+      : parciales.length === 3 ? '<span class="u-plan full">P1+P2+P3</span>'
+        : parciales.length ? `<span class="u-plan part">${parciales.join('+')}</span>`
+          : '<span class="u-plan free">free</span>'
+    const team = u.role === 'admin' && u.admin_role ? `<span class="u-team">${esc(ROLE_LABELS[u.admin_role] || u.admin_role)}</span>` : ''
+    const expB = isExpired ? '<span class="u-exp vencido">vencido</span>' : soon ? '<span class="u-exp pronto">vence pronto</span>' : ''
+    return `<div class="adm-card ${isExpired ? 'status-pendiente' : ''}">
+      <strong>${esc(u.name || '(sin nombre)')}</strong> <span class="u-role ${u.role === 'admin' ? 'staff' : ''}">${esc(u.role)}</span>${team} ${plan}${expB}
+      <div class="adm-meta">${esc(u.email || '—')} · registro ${new Date(u.created_at).toLocaleDateString('es-CR')}${exp ? ' · vence ' + exp.toLocaleDateString('es-CR') : ''}</div>
+    </div>`
+  }
+  const section = (t, arr) => arr.length ? `<div class="adm-subhd">${t} (${arr.length})</div>${arr.map(row).join('')}` : ''
+  if (!list.length) { box.innerHTML = stats + '<div class="empty"><p>Sin resultados.</p></div>'; return }
+  box.innerHTML = stats + section('Equipo', staff) + section('Con plan', pagados) + section('Free', free)
 }
 
 function renderRoadmap() {
