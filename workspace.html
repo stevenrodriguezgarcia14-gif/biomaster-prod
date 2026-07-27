@@ -820,6 +820,11 @@ select option{background:var(--bg1)}
 .chat-load-more:hover{text-decoration:underline}
 
 /* ─── CHAT v2 ─── */
+.chan-sec{font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);padding:.7rem .6rem .25rem}
+.chan-empty{font-size:.68rem;color:var(--dim);padding:.2rem .6rem .3rem}
+.dm-av{width:20px;height:20px;border-radius:50%;background:var(--green-s);color:var(--green-b);
+  display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0}
+.ch-title strong{display:flex;align-items:center;gap:.4rem}
 .ch-title{display:flex;flex-direction:column;min-width:0;flex:1}
 .ch-members{font-size:.66rem;color:var(--dim);white-space:nowrap}
 .ch-mute{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.7;padding:2px;line-height:1}
@@ -911,9 +916,11 @@ select option{background:var(--bg1)}
   .wiki-nav{position:static;max-height:none}
   .cmt.reply{margin-left:.9rem}
   .chat-wrap{grid-template-columns:1fr;height:calc(100vh - 120px);grid-template-rows:auto 1fr}
-  .chat-chans{display:flex;gap:.3rem;overflow-x:auto;overflow-y:hidden;padding:.4rem;white-space:nowrap}
+  .chat-chans{display:flex;gap:.3rem;overflow-x:auto;overflow-y:hidden;padding:.4rem;white-space:nowrap;align-items:center}
   .chan-item{width:auto;flex-shrink:0}
   .chan-add{width:auto;margin-top:0;flex-shrink:0}
+  .chan-sec{padding:.2rem .35rem;flex-shrink:0}
+  .chan-empty{display:none}
   /* En táctil no hay hover: acciones de mensaje siempre visibles y desplazables */
   .msg-acts{position:static;opacity:1;pointer-events:auto;box-shadow:none;margin-top:.3rem;
     overflow-x:auto;max-width:100%;background:transparent;border:none;padding:0}
@@ -2751,8 +2758,8 @@ async function deleteNote(id) {
 // ═══ CHAT v2 (comms v2: ws_channel / ws_channel_member / ws_message /
 //     ws_reaction). Canales con membresía, no-leídos server-side,
 //     respuestas (hilo), reacciones, edición, adjuntos y realtime. ═══
-let channels = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
-let myMembership = {}, chanLatest = {}, chanUnreadN = {}, chanMembers = {}
+let channels = [], dms = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
+let myMembership = {}, chanLatest = {}, chanUnreadN = {}, chanMembers = {}, chanMemberIds = {}
 let msgReactions = {}, chatReplyTo = null, editingMsg = null, pendingAttach = []
 let _typingCh = null, _typingThrottle = null, _typingHideTimer = null
 const CHAT_REACTIONS = ['👍','❤️','😂','🎉','🙌','👀']
@@ -2760,21 +2767,24 @@ const CHAT_REACTIONS = ['👍','❤️','😂','🎉','🙌','👀']
 async function loadChannels(){
   try {
     const { data } = await sb.from('ws_channel').select('*').is('archived_at', null).order('created_at')
-    channels = (data || []).filter(c => c.kind === 'channel')   // F2: canales públicos; DMs/privados en F3
+    const all = data || []
+    channels = all.filter(c => c.kind === 'channel')
+    dms = all.filter(c => c.kind === 'dm')
     const { data: mems } = await sb.from('ws_channel_member').select('channel_id,last_read_at,muted,role').eq('user_id', profile.id)
     myMembership = {}; for (const m of (mems || [])) myMembership[m.channel_id] = m
-    const { data: allMems } = await sb.from('ws_channel_member').select('channel_id')
-    chanMembers = {}; for (const m of (allMems || [])) chanMembers[m.channel_id] = (chanMembers[m.channel_id] || 0) + 1
+    const { data: allMems } = await sb.from('ws_channel_member').select('channel_id,user_id')
+    chanMembers = {}; chanMemberIds = {}
+    for (const m of (allMems || [])) { chanMembers[m.channel_id] = (chanMembers[m.channel_id] || 0) + 1; (chanMemberIds[m.channel_id] = chanMemberIds[m.channel_id] || []).push(m.user_id) }
     const { data: latest } = await sb.from('ws_message').select('channel_id,created_at,author_id')
       .is('deleted_at', null).order('created_at', { ascending:false }).limit(500)
     chanLatest = {}; chanUnreadN = {}
     for (const m of (latest || [])) if (!chanLatest[m.channel_id]) chanLatest[m.channel_id] = m.created_at
-    for (const c of channels) {
+    for (const c of [...channels, ...dms]) {
       const lr = myMembership[c.id]?.last_read_at || '1970-01-01'
       chanUnreadN[c.id] = (latest || []).filter(m => m.channel_id === c.id && m.created_at > lr && m.author_id !== profile.id).length
     }
     if (!chatSel && channels.length) chatSel = (channels.find(c => c.slug === 'general') || channels[0]).id
-  } catch (_) { channels = [] }
+  } catch (_) { channels = []; dms = [] }
   updateChatBadge()
 }
 async function markChanRead(id){
@@ -2815,23 +2825,42 @@ function linkifyChat(s){
   return s.replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>')
 }
 function chanIcon(c){ return c.slug === 'anuncios' ? '📣' : '#' }
+function dmName(c){
+  const other = (chanMemberIds[c.id] || []).find(id => id !== profile.id)
+  const a = admins.find(x => x.id === other)
+  return a ? a.name : (c.name === 'DM' ? 'Directo' : (c.name || 'Directo'))
+}
+function chanItemHtml(c, isDM){
+  const u = c.id !== chatSel ? (chanUnreadN[c.id] || 0) : 0
+  const label = isDM ? dmName(c) : c.name
+  const icon = isDM
+    ? `<span class="dm-av">${esc((label || '?').charAt(0).toUpperCase())}</span>`
+    : `<span class="hash">${chanIcon(c)}</span>`
+  return `<button class="chan-item ${c.id === chatSel ? 'on' : ''} ${myMembership[c.id]?.muted ? 'muted' : ''}" onclick="chatOpen('${c.id}')">
+    ${icon}<span class="c-name">${esc(label)}</span>
+    ${u ? `<span class="chan-unread">${u > 99 ? '99+' : u}</span>` : ''}
+  </button>`
+}
 function renderChat(){
   const chansEl = document.getElementById('chatChans')
   if (!chansEl) return
-  chansEl.innerHTML = channels.map(c => {
-    const u = c.id !== chatSel ? (chanUnreadN[c.id] || 0) : 0
-    return `<button class="chan-item ${c.id === chatSel ? 'on' : ''} ${myMembership[c.id]?.muted ? 'muted' : ''}" onclick="chatOpen('${c.id}')">
-      <span class="hash">${chanIcon(c)}</span><span class="c-name">${esc(c.name)}</span>
-      ${u ? `<span class="chan-unread">${u > 99 ? '99+' : u}</span>` : ''}
-    </button>`
-  }).join('') + `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>`
-  const c = channels.find(x => x.id === chatSel)
-  const isOwner = c && (c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage'))
-  document.getElementById('chatHd').innerHTML = c ? `
+  chansEl.innerHTML =
+    `<div class="chan-sec">Canales</div>` +
+    channels.map(c => chanItemHtml(c, false)).join('') +
+    `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>` +
+    `<div class="chan-sec">Directos</div>` +
+    (dms.length ? dms.map(c => chanItemHtml(c, true)).join('') : `<div class="chan-empty">Sin mensajes directos</div>`) +
+    `<button class="chan-add" onclick="startDM()">+ Mensaje directo</button>`
+  const c = [...channels, ...dms].find(x => x.id === chatSel)
+  const isDM = !!c && c.kind === 'dm'
+  const isOwner = c && !isDM && (c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage'))
+  document.getElementById('chatHd').innerHTML = !c ? '' : (isDM ? `
+    <div class="ch-title"><strong><span class="dm-av">${esc((dmName(c) || '?').charAt(0).toUpperCase())}</span> ${esc(dmName(c))}</strong><span class="c-desc">Mensaje directo · privado</span></div>
+    <button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>` : `
     <div class="ch-title"><strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}</span></div>
     <span class="ch-members">${chanMembers[c.id] || 0} ${(chanMembers[c.id] || 0) === 1 ? 'miembro' : 'miembros'}</span>
     <button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar canal'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>
-    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}` : ''
+    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}`)
   renderChatMsgs()
 }
 function replyQuoteHtml(m){
@@ -2995,6 +3024,17 @@ function renderAttachRow(){
   row.innerHTML = pendingAttach.map((a, i) =>
     `<span class="att-chip">${a.kind === 'image' ? '🖼' : '📎'} ${esc(a.name)} <button onclick="pendingAttach.splice(${i},1);renderAttachRow()" aria-label="Quitar">✕</button></span>`
   ).join('')
+}
+async function startDM(){
+  const others = admins.filter(a => a.id !== profile.id)
+  if (!others.length) return toast('No hay otros miembros del equipo todavía')
+  const pick = prompt('Mensaje directo con:\n' + others.map((a, i) => `${i + 1}. ${a.name}`).join('\n') + '\n\nEscribí el número:')
+  if (pick == null) return
+  const idx = parseInt(pick, 10) - 1
+  if (isNaN(idx) || !others[idx]) return toast('Opción inválida', true)
+  const { data, error } = await sb.rpc('ws_get_dm', { p_other: others[idx].id })
+  if (error) return toast('Error: ' + error.message, true)
+  await loadChannels(); chatOpen(data)
 }
 async function newChannel(){
   const raw = (prompt('Nombre del canal (ej: Marketing):') || '').trim()
@@ -3812,6 +3852,10 @@ function initRealtime() {
       if (currentView === 'chat') { await loadReactions(); renderChatMsgs(true) }
     })
     .on('postgres_changes', {event:'*', schema:'public', table:'ws_channel'}, async () => {
+      await loadChannels()
+      if (currentView === 'chat') renderChat()
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_channel_member', filter:`user_id=eq.${profile.id}`}, async () => {
       await loadChannels()
       if (currentView === 'chat') renderChat()
     })
