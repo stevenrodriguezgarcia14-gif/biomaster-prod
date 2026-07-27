@@ -877,6 +877,22 @@ select option{background:var(--bg1)}
 .chat-send-btn{background:var(--green);color:#fff;border-color:var(--green)}
 .chat-send-btn:hover{background:#25753e}
 .chat-send-btn svg,.chat-attach-btn svg{width:18px;height:18px}
+.modal-hint{font-size:.75rem;color:var(--dim);margin:-.2rem 0 .7rem}
+.picker-list{display:flex;flex-direction:column;gap:.15rem;max-height:250px;overflow-y:auto;
+  border:1px solid var(--border);border-radius:10px;padding:.35rem;scrollbar-width:thin}
+.picker-row{display:flex;align-items:center;gap:.6rem;padding:.42rem .5rem;border-radius:8px;cursor:pointer;transition:background var(--t)}
+.picker-row:hover{background:var(--bg3)}
+.picker-row .pk-name{flex:1;font-size:.82rem;color:var(--text)}
+.picker-row input{width:16px;height:16px;accent-color:var(--green);cursor:pointer}
+.seg{display:flex;flex-direction:column;gap:.4rem}
+.seg label{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--muted);cursor:pointer}
+.seg input{accent-color:var(--green)}
+.mem-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .3rem;border-bottom:1px solid var(--border)}
+.mem-row .pk-name{flex:1;font-size:.82rem;color:var(--text)}
+.mem-role{font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+.mem-x{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.74rem}
+.mem-x:hover{color:var(--red)}
+.dm-av.grp-av{background:var(--bg3);color:var(--muted)}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1278,6 +1294,57 @@ select option{background:var(--bg1)}
         <button type="submit" class="btn btn-primary" id="taskSubmitBtn">Crear Tarea</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- NUEVA CONVERSACIÓN (DM / grupo) -->
+<div class="modal" id="convoModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Nueva conversación</span>
+      <button class="modal-close" onclick="closeModal('convoModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <p class="modal-hint">Elegí una persona para un mensaje directo, o varias para crear un grupo privado.</p>
+    <div class="picker-list" id="convoPicker"></div>
+    <div class="fg" id="convoNameFg" hidden style="margin-top:.6rem"><label>Nombre del grupo (opcional)</label><input id="convoName" maxlength="40" placeholder="Ej: Equipo Marketing" autocomplete="off"></div>
+    <div class="form-acts">
+      <button type="button" class="btn btn-ghost" onclick="closeModal('convoModal')">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="createConvo()">Abrir conversación</button>
+    </div>
+  </div>
+</div>
+
+<!-- NUEVO CANAL -->
+<div class="modal" id="chanModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title">Nuevo canal</span>
+      <button class="modal-close" onclick="closeModal('chanModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="fg"><label>Nombre *</label><input id="chanName" maxlength="40" placeholder="Ej: Marketing" autocomplete="off"></div>
+    <div class="fg"><label>Descripción (opcional)</label><input id="chanDesc" maxlength="140" placeholder="¿De qué se habla acá?" autocomplete="off"></div>
+    <div class="fg"><label>Visibilidad</label>
+      <div class="seg">
+        <label><input type="radio" name="chanVis" value="public" checked onchange="toggleChanMembers()"> Público — lo ve todo el equipo</label>
+        <label><input type="radio" name="chanVis" value="private" onchange="toggleChanMembers()"> Privado — solo los invitados</label>
+      </div>
+    </div>
+    <div class="fg" id="chanMembersFg" hidden><label>Invitar a</label><div class="picker-list" id="chanPicker"></div></div>
+    <div class="form-acts">
+      <button type="button" class="btn btn-ghost" onclick="closeModal('chanModal')">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="createChannel()">Crear canal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MIEMBROS -->
+<div class="modal" id="membersModal">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <span class="modal-title" id="membersTitle">Miembros</span>
+      <button class="modal-close" onclick="closeModal('membersModal')" aria-label="Cerrar"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-linecap="round"/><line x1="6" y1="6" x2="18" y2="18" stroke-linecap="round"/></svg></button>
+    </div>
+    <div id="membersBody"></div>
   </div>
 </div>
 
@@ -2758,7 +2825,7 @@ async function deleteNote(id) {
 // ═══ CHAT v2 (comms v2: ws_channel / ws_channel_member / ws_message /
 //     ws_reaction). Canales con membresía, no-leídos server-side,
 //     respuestas (hilo), reacciones, edición, adjuntos y realtime. ═══
-let channels = [], dms = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
+let channels = [], dms = [], groups = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
 let myMembership = {}, chanLatest = {}, chanUnreadN = {}, chanMembers = {}, chanMemberIds = {}
 let msgReactions = {}, chatReplyTo = null, editingMsg = null, pendingAttach = []
 let _typingCh = null, _typingThrottle = null, _typingHideTimer = null
@@ -2770,6 +2837,7 @@ async function loadChannels(){
     const all = data || []
     channels = all.filter(c => c.kind === 'channel')
     dms = all.filter(c => c.kind === 'dm')
+    groups = all.filter(c => c.kind === 'group')
     const { data: mems } = await sb.from('ws_channel_member').select('channel_id,last_read_at,muted,role').eq('user_id', profile.id)
     myMembership = {}; for (const m of (mems || [])) myMembership[m.channel_id] = m
     const { data: allMems } = await sb.from('ws_channel_member').select('channel_id,user_id')
@@ -2779,12 +2847,12 @@ async function loadChannels(){
       .is('deleted_at', null).order('created_at', { ascending:false }).limit(500)
     chanLatest = {}; chanUnreadN = {}
     for (const m of (latest || [])) if (!chanLatest[m.channel_id]) chanLatest[m.channel_id] = m.created_at
-    for (const c of [...channels, ...dms]) {
+    for (const c of [...channels, ...dms, ...groups]) {
       const lr = myMembership[c.id]?.last_read_at || '1970-01-01'
       chanUnreadN[c.id] = (latest || []).filter(m => m.channel_id === c.id && m.created_at > lr && m.author_id !== profile.id).length
     }
     if (!chatSel && channels.length) chatSel = (channels.find(c => c.slug === 'general') || channels[0]).id
-  } catch (_) { channels = []; dms = [] }
+  } catch (_) { channels = []; dms = []; groups = [] }
   updateChatBadge()
 }
 async function markChanRead(id){
@@ -2830,37 +2898,53 @@ function dmName(c){
   const a = admins.find(x => x.id === other)
   return a ? a.name : (c.name === 'DM' ? 'Directo' : (c.name || 'Directo'))
 }
-function chanItemHtml(c, isDM){
+function convoName(c){
+  if (c.kind === 'dm') return dmName(c)
+  if (c.name && !['DM','Grupo'].includes(c.name)) return c.name
+  const names = (chanMemberIds[c.id] || []).filter(id => id !== profile.id)
+    .map(id => (admins.find(a => a.id === id) || {}).name).filter(Boolean).map(n => n.split(' ')[0])
+  return names.join(', ') || 'Grupo'
+}
+function chanItemHtml(c){
   const u = c.id !== chatSel ? (chanUnreadN[c.id] || 0) : 0
-  const label = isDM ? dmName(c) : c.name
-  const icon = isDM
-    ? `<span class="dm-av">${esc((label || '?').charAt(0).toUpperCase())}</span>`
-    : `<span class="hash">${chanIcon(c)}</span>`
+  let label, icon
+  if (c.kind === 'dm') { label = dmName(c); icon = `<span class="dm-av">${esc((label || '?').charAt(0).toUpperCase())}</span>` }
+  else if (c.kind === 'group') { label = convoName(c); icon = `<span class="dm-av grp-av">${esc((label || 'G').charAt(0).toUpperCase())}</span>` }
+  else { label = c.name; icon = `<span class="hash">${chanIcon(c)}</span>` }
   return `<button class="chan-item ${c.id === chatSel ? 'on' : ''} ${myMembership[c.id]?.muted ? 'muted' : ''}" onclick="chatOpen('${c.id}')">
     ${icon}<span class="c-name">${esc(label)}</span>
     ${u ? `<span class="chan-unread">${u > 99 ? '99+' : u}</span>` : ''}
   </button>`
 }
+function chatHeaderHtml(c){
+  if (!c) return ''
+  const muteBtn = `<button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>`
+  const isOwner = c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage')
+  if (c.kind === 'dm') return `
+    <div class="ch-title"><strong><span class="dm-av">${esc((dmName(c) || '?').charAt(0).toUpperCase())}</span> ${esc(dmName(c))}</strong><span class="c-desc">Mensaje directo · privado</span></div>${muteBtn}`
+  if (c.kind === 'group') return `
+    <div class="ch-title"><strong><span class="dm-av grp-av">${esc((convoName(c) || 'G').charAt(0).toUpperCase())}</span> ${esc(convoName(c))}</strong><span class="c-desc">Grupo privado · ${chanMembers[c.id] || 0} miembros</span></div>
+    <button class="post-link-btn" onclick="openMembers('${c.id}')">Miembros</button>${muteBtn}
+    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : `<button class="post-link-btn" onclick="leaveChannel('${c.id}')">Salir</button>`}`
+  return `
+    <div class="ch-title"><strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}${c.visibility === 'private' ? ' · privado' : ''}</span></div>
+    <span class="ch-members">${chanMembers[c.id] || 0} ${(chanMembers[c.id] || 0) === 1 ? 'miembro' : 'miembros'}</span>
+    ${c.visibility === 'private' ? `<button class="post-link-btn" onclick="openMembers('${c.id}')">Miembros</button>` : ''}${muteBtn}
+    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}`
+}
 function renderChat(){
   const chansEl = document.getElementById('chatChans')
   if (!chansEl) return
+  const directos = [...dms, ...groups]
   chansEl.innerHTML =
     `<div class="chan-sec">Canales</div>` +
-    channels.map(c => chanItemHtml(c, false)).join('') +
+    channels.map(chanItemHtml).join('') +
     `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>` +
     `<div class="chan-sec">Directos</div>` +
-    (dms.length ? dms.map(c => chanItemHtml(c, true)).join('') : `<div class="chan-empty">Sin mensajes directos</div>`) +
-    `<button class="chan-add" onclick="startDM()">+ Mensaje directo</button>`
-  const c = [...channels, ...dms].find(x => x.id === chatSel)
-  const isDM = !!c && c.kind === 'dm'
-  const isOwner = c && !isDM && (c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage'))
-  document.getElementById('chatHd').innerHTML = !c ? '' : (isDM ? `
-    <div class="ch-title"><strong><span class="dm-av">${esc((dmName(c) || '?').charAt(0).toUpperCase())}</span> ${esc(dmName(c))}</strong><span class="c-desc">Mensaje directo · privado</span></div>
-    <button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>` : `
-    <div class="ch-title"><strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}</span></div>
-    <span class="ch-members">${chanMembers[c.id] || 0} ${(chanMembers[c.id] || 0) === 1 ? 'miembro' : 'miembros'}</span>
-    <button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar canal'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>
-    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}`)
+    (directos.length ? directos.map(chanItemHtml).join('') : `<div class="chan-empty">Sin conversaciones</div>`) +
+    `<button class="chan-add" onclick="startDM()">+ Nueva conversación</button>`
+  const c = [...channels, ...dms, ...groups].find(x => x.id === chatSel)
+  document.getElementById('chatHd').innerHTML = chatHeaderHtml(c)
   renderChatMsgs()
 }
 function replyQuoteHtml(m){
@@ -3025,30 +3109,113 @@ function renderAttachRow(){
     `<span class="att-chip">${a.kind === 'image' ? '🖼' : '📎'} ${esc(a.name)} <button onclick="pendingAttach.splice(${i},1);renderAttachRow()" aria-label="Quitar">✕</button></span>`
   ).join('')
 }
-async function startDM(){
+// ── Picker de miembros reutilizable ──
+function renderPicker(id, multi){
+  const box = document.getElementById(id); if (!box) return
   const others = admins.filter(a => a.id !== profile.id)
-  if (!others.length) return toast('No hay otros miembros del equipo todavía')
-  const pick = prompt('Mensaje directo con:\n' + others.map((a, i) => `${i + 1}. ${a.name}`).join('\n') + '\n\nEscribí el número:')
-  if (pick == null) return
-  const idx = parseInt(pick, 10) - 1
-  if (isNaN(idx) || !others[idx]) return toast('Opción inválida', true)
-  const { data, error } = await sb.rpc('ws_get_dm', { p_other: others[idx].id })
-  if (error) return toast('Error: ' + error.message, true)
-  await loadChannels(); chatOpen(data)
+  box.innerHTML = others.map(a => `
+    <label class="picker-row">
+      <span class="dm-av">${esc(a.name.charAt(0).toUpperCase())}</span>
+      <span class="pk-name">${esc(a.name)}</span>
+      <input type="${multi ? 'checkbox' : 'radio'}" name="pk-${id}" value="${a.id}">
+    </label>`).join('') || '<div class="chan-empty">No hay más miembros del equipo</div>'
 }
-async function newChannel(){
-  const raw = (prompt('Nombre del canal (ej: Marketing):') || '').trim()
-  const name = raw.slice(0, 40); if (!name) return
-  const slug = (name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '').slice(0, 30)) || null
-  const description = (prompt('Descripción corta (opcional):') || '').trim().slice(0, 140) || null
+function pickerValues(id){ return [...document.querySelectorAll(`#${id} input:checked`)].map(i => i.value) }
+
+// ── Nueva conversación (DM 1:1 o grupo privado) ──
+function startDM(){
+  renderPicker('convoPicker', true)
+  const nf = document.getElementById('convoNameFg'); if (nf) nf.hidden = true
+  const nm = document.getElementById('convoName'); if (nm) nm.value = ''
+  const box = document.getElementById('convoPicker')
+  if (box) box.onchange = () => { const n = pickerValues('convoPicker').length; document.getElementById('convoNameFg').hidden = n < 2 }
+  openModal('convoModal')
+}
+async function createConvo(){
+  const ids = pickerValues('convoPicker')
+  if (!ids.length) return toast('Elegí al menos una persona', true)
+  if (ids.length === 1) {
+    const { data, error } = await sb.rpc('ws_get_dm', { p_other: ids[0] })
+    if (error) return toast('Error: ' + error.message, true)
+    closeModal('convoModal'); await loadChannels(); chatOpen(data)
+  } else {
+    const nm = (document.getElementById('convoName').value || '').trim().slice(0, 40) || null
+    const { data, error } = await sb.from('ws_channel').insert({
+      name: nm || 'Grupo', kind: 'group', visibility: 'private', created_by: profile.id, created_by_name: profile.name
+    }).select('id').single()
+    if (error) return toast('Error: ' + error.message, true)
+    const rows = [{ channel_id: data.id, user_id: profile.id, role: 'owner' }, ...ids.map(uid => ({ channel_id: data.id, user_id: uid, role: 'member' }))]
+    await sb.from('ws_channel_member').insert(rows)
+    await log('creó un grupo', 'chat', nm || 'Grupo', data.id)
+    closeModal('convoModal'); await loadChannels(); chatOpen(data.id)
+  }
+}
+
+// ── Nuevo canal (público o privado) ──
+function newChannel(){
+  document.getElementById('chanName').value = ''
+  document.getElementById('chanDesc').value = ''
+  const pub = document.querySelector('input[name=chanVis][value=public]'); if (pub) pub.checked = true
+  document.getElementById('chanMembersFg').hidden = true
+  renderPicker('chanPicker', true)
+  openModal('chanModal')
+}
+function toggleChanMembers(){
+  const priv = document.querySelector('input[name=chanVis]:checked')?.value === 'private'
+  document.getElementById('chanMembersFg').hidden = !priv
+}
+async function createChannel(){
+  const name = (document.getElementById('chanName').value || '').trim().slice(0, 40)
+  if (!name) return toast('Poné un nombre al canal', true)
+  const description = (document.getElementById('chanDesc').value || '').trim().slice(0, 140) || null
+  const vis = document.querySelector('input[name=chanVis]:checked')?.value || 'public'
+  const slug = vis === 'public' ? (name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '').slice(0, 30) || null) : null
   const { data, error } = await sb.from('ws_channel').insert({
-    slug, name, description, kind: 'channel', visibility: 'public', created_by: profile.id, created_by_name: profile.name
+    slug, name, description, kind: 'channel', visibility: vis, created_by: profile.id, created_by_name: profile.name
   }).select('id').single()
   if (error) return toast(/duplicate|unique/i.test(error.message) ? 'Ya existe un canal con ese nombre' : 'Error: ' + error.message, true)
-  try { await sb.from('ws_channel_member').insert({ channel_id: data.id, user_id: profile.id, role: 'owner' }) } catch (_) {}
-  await log('creó el canal', 'chat', '#' + name, data?.id)
+  const rows = [{ channel_id: data.id, user_id: profile.id, role: 'owner' }]
+  if (vis === 'private') for (const uid of pickerValues('chanPicker')) rows.push({ channel_id: data.id, user_id: uid, role: 'member' })
+  await sb.from('ws_channel_member').insert(rows)
+  await log('creó el canal', 'chat', '#' + name, data.id)
+  closeModal('chanModal'); await loadChannels(); chatOpen(data.id)
+}
+
+// ── Gestión de miembros de un canal/grupo privado ──
+function openMembers(cid){
+  const c = [...channels, ...dms, ...groups].find(x => x.id === cid); if (!c) return
+  const ids = chanMemberIds[cid] || []
+  const isOwner = c.created_by === profile.id || myMembership[cid]?.role === 'owner' || can('roles.manage')
+  document.getElementById('membersTitle').textContent = 'Miembros · ' + (c.kind === 'group' ? convoName(c) : c.name)
+  const rows = ids.map(uid => {
+    const a = admins.find(x => x.id === uid); const nm = a ? a.name : '—'; const me = uid === profile.id
+    return `<div class="mem-row"><span class="dm-av">${esc(nm.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(nm)}${me ? ' (vos)' : ''}</span>${uid === c.created_by ? '<span class="mem-role">dueño</span>' : ''}${isOwner && !me && uid !== c.created_by ? `<button class="mem-x" onclick="removeMember('${cid}','${uid}')">Quitar</button>` : ''}</div>`
+  }).join('')
+  const nonMembers = admins.filter(a => !ids.includes(a.id))
+  const addHtml = (isOwner && c.visibility === 'private' && nonMembers.length)
+    ? `<div class="fg" style="margin-top:.7rem"><label>Agregar personas</label><div class="picker-list" id="addMemPicker">${nonMembers.map(a => `<label class="picker-row"><span class="dm-av">${esc(a.name.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(a.name)}</span><input type="checkbox" value="${a.id}"></label>`).join('')}</div><div class="form-acts"><button class="btn btn-primary btn-sm" onclick="addMembers('${cid}')">Agregar</button></div></div>`
+    : ''
+  document.getElementById('membersBody').innerHTML = rows + addHtml
+  openModal('membersModal')
+}
+async function addMembers(cid){
+  const ids = [...document.querySelectorAll('#addMemPicker input:checked')].map(i => i.value)
+  if (!ids.length) return
+  const { error } = await sb.from('ws_channel_member').insert(ids.map(uid => ({ channel_id: cid, user_id: uid, role: 'member' })))
+  if (error) return toast('Error: ' + error.message, true)
+  await loadChannels(); openMembers(cid); renderChat()
+}
+async function removeMember(cid, uid){
+  if (!confirm('¿Quitar a esta persona de la conversación?')) return
+  await sb.from('ws_channel_member').delete().eq('channel_id', cid).eq('user_id', uid)
+  await loadChannels(); openMembers(cid); renderChat()
+}
+async function leaveChannel(cid){
+  if (!confirm('¿Salir de esta conversación?')) return
+  await sb.from('ws_channel_member').delete().eq('channel_id', cid).eq('user_id', profile.id)
+  chatSel = null; chatMsgs = []
   await loadChannels()
-  chatOpen(data.id)
+  if (channels.length) await chatOpen(channels[0].id); else renderChat()
 }
 async function deleteChannel(id){
   const c = channels.find(x => x.id === id)
