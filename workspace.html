@@ -914,6 +914,24 @@ select option{background:var(--bg1)}
 .pref-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
 .pref-label{font-size:.82rem;color:var(--text)}
 .pref-sel{padding:.38rem .55rem;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-family:inherit;font-size:.76rem;cursor:pointer}
+/* ─── Administración (F6) ─── */
+.fb-filters{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.8rem}
+.fb-chip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:.25rem .7rem;font-size:.72rem;color:var(--muted);cursor:pointer;font-family:inherit;transition:all var(--t)}
+.fb-chip:hover{border-color:var(--green)}
+.fb-chip.on{background:var(--green-s);border-color:var(--green);color:var(--green-b)}
+.adm-card{background:var(--bg1);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:10px;padding:.7rem .85rem;margin-bottom:.6rem}
+.adm-card.status-pendiente{border-left-color:#c46a2f}
+.adm-card.status-resuelto{border-left-color:var(--green)}
+.adm-card-hd{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.68rem;color:var(--dim)}
+.adm-card-hd time{margin-left:auto}
+.adm-tag{background:var(--bg3);color:var(--muted);padding:.1rem .5rem;border-radius:6px;font-weight:700;text-transform:capitalize}
+.adm-status{color:var(--muted);text-transform:capitalize}
+.adm-pub{background:var(--green-s);color:var(--green-b);padding:.05rem .45rem;border-radius:6px;font-weight:700}
+.adm-body{margin:.5rem 0;padding:.5rem .65rem;background:var(--bg2);border-radius:8px;font-size:.83rem;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.adm-exp{margin:.35rem 0;padding:.45rem .65rem;background:var(--green-s);border-left:2px solid var(--green);border-radius:6px;font-size:.82rem;color:var(--text)}
+.fb-stars{color:#f5b417;letter-spacing:1px}
+.adm-meta{font-size:.7rem;color:var(--dim);margin-top:.35rem}
+.adm-acts{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.55rem}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1046,6 +1064,11 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="roadmap" tabindex="0">
         <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12" stroke-linecap="round"/><line x1="3" y1="6" x2="15" y2="6" stroke-linecap="round"/><line x1="3" y1="18" x2="18" y2="18" stroke-linecap="round"/></svg>
         <span>Roadmap</span>
+      </div>
+      <div class="nav-label" id="navLabelAdmin" hidden>Administración</div>
+      <div class="nav-item" data-view="admin-feedback" data-perm="feedback.moderate" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 11.5a8.38 8.38 0 01-8.5 8.5 8.5 8.5 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 018.5-8.5 8.38 8.38 0 018.5 8.5z"/></svg>
+        <span>Feedback</span>
       </div>
     </nav>
 
@@ -1230,6 +1253,11 @@ select option{background:var(--bg1)}
     <!-- ROADMAP -->
     <div id="view-roadmap" class="view-body" hidden>
       <div id="rmContent"></div>
+    </div>
+
+    <!-- ADMIN · FEEDBACK -->
+    <div id="view-admin-feedback" class="view-body" hidden>
+      <div id="admFeedback"></div>
     </div>
 
   </main>
@@ -1733,6 +1761,7 @@ const VIEW_CFG = {
   guide:     {title:'¿Qué puedo hacer?', sub:'Guía de trabajo por disciplina',   action:null},
   activity:  {title:'Actividad',     sub:'Historial completo y auditable',       action:null},
   roadmap:   {title:'Roadmap',       sub:'Planificación del proyecto',           action:'Nueva Tarea'},
+  'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
 }
 
 // ─── Comunicación / Wiki: estado ───
@@ -2191,6 +2220,13 @@ function initNav() {
   document.querySelectorAll('.nav-item[data-view]').forEach(el => {
     el.addEventListener('click', () => renderView(el.dataset.view))
   })
+  applyNavGating()
+}
+// Muestra los ítems de Administración solo según las capacidades del rol.
+function applyNavGating() {
+  document.querySelectorAll('.nav-item[data-perm]').forEach(el => { el.hidden = !can(el.dataset.perm) })
+  const anyAdmin = [...document.querySelectorAll('.nav-item[data-view^="admin-"]')].some(el => !el.hidden)
+  const lbl = document.getElementById('navLabelAdmin'); if (lbl) lbl.hidden = !anyAdmin
 }
 
 function renderView(name) {
@@ -2230,6 +2266,7 @@ function renderCurrent() {
   else if (currentView === 'notes') renderNotes()
   else if (currentView === 'activity') renderActivity()
   else if (currentView === 'roadmap') renderRoadmap()
+  else if (currentView === 'admin-feedback') renderAdminFeedback()
   updateUrgBadge()
 }
 
@@ -2740,6 +2777,70 @@ function actHtml(a) {
 }
 
 // ─── ROADMAP ───
+// ═══ ADMINISTRACIÓN (F6) — módulos del panel admin dentro del Workspace.
+//     Reutiliza los datos/RLS existentes; re-estilizado a los tokens del
+//     Workspace. Cada módulo gateado por su capacidad. ═══
+let _admFb = [], _admFbFilter = 'todos'
+const FB_TIPOS = ['todos','testimonio','sugerencia','error','duda','pago-acceso','contenido','biovisual']
+const FB_LBL = { todos:'Todos', testimonio:'Testimonios', sugerencia:'Sugerencias', error:'Errores', duda:'Dudas', 'pago-acceso':'Pagos/Acceso', contenido:'Contenido', biovisual:'BioVisual' }
+async function renderAdminFeedback(){
+  const box = document.getElementById('admFeedback'); if (!box) return
+  if (!can('feedback.moderate')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para moderar feedback.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  const { data, error } = await sb.from('feedback')
+    .select('id,type,text,status,created_at,experience_text,is_public,rating,profiles(name,email)')
+    .order('created_at', { ascending:false }).limit(200)
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  _admFb = data || []
+  renderAdminFbList()
+}
+function renderAdminFbList(){
+  const box = document.getElementById('admFeedback'); if (!box) return
+  const tipos = {}; for (const f of _admFb) tipos[f.type] = (tipos[f.type] || 0) + 1
+  let list = _admFbFilter === 'todos' ? _admFb : _admFb.filter(f => f.type === _admFbFilter)
+  list = [...list.filter(f => f.status === 'pendiente'), ...list.filter(f => f.status !== 'pendiente')]
+  const bar = FB_TIPOS.map(t => {
+    const n = t === 'todos' ? _admFb.length : (tipos[t] || 0)
+    if (t !== 'todos' && !n) return ''
+    return `<button class="fb-chip ${_admFbFilter === t ? 'on' : ''}" onclick="_admFbFilter='${t}';renderAdminFbList()">${FB_LBL[t] || t} (${n})</button>`
+  }).filter(Boolean).join('')
+  const cards = list.map(f => {
+    const isTest = f.type === 'testimonio'
+    const stars = (f.rating >= 1 && f.rating <= 5) ? `<span class="fb-stars">${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}</span>` : ''
+    const pubBtn = (f.experience_text || isTest)
+      ? (f.is_public
+          ? `<button class="btn btn-ghost btn-sm" onclick="admFbPublic(${f.id},false)">Quitar público</button>`
+          : `<button class="btn btn-primary btn-sm" onclick="admFbPublic(${f.id},true)">${isTest ? 'Aprobar testimonio' : 'Hacer público'}</button>`)
+      : ''
+    return `<div class="adm-card status-${esc(f.status)}">
+      <div class="adm-card-hd"><span class="adm-tag">${esc(f.type)}</span><span class="adm-status">${esc(f.status)}</span>${f.is_public ? '<span class="adm-pub">público</span>' : ''}<time>${new Date(f.created_at).toLocaleString('es-CR')}</time></div>
+      <div class="adm-body">${esc(f.text || '')}</div>
+      ${f.experience_text ? `<div class="adm-exp">${stars} ${esc(f.experience_text)}</div>` : (isTest && stars ? `<div class="adm-exp">${stars}</div>` : '')}
+      <div class="adm-meta">${esc(f.profiles?.name || '—')} · ${esc(f.profiles?.email || '—')}</div>
+      <div class="adm-acts">${pubBtn}
+        <button class="btn btn-ghost btn-sm" onclick="admFbStatus(${f.id},'leido')">Leído</button>
+        <button class="btn btn-ghost btn-sm" onclick="admFbStatus(${f.id},'resuelto')">Resuelto</button>
+        <button class="btn btn-ghost btn-sm" onclick="admFbStatus(${f.id},'descartado')">Descartar</button>
+      </div>
+    </div>`
+  }).join('') || '<div class="empty"><p>Sin feedback con ese filtro.</p></div>'
+  box.innerHTML = `<div class="fb-filters">${bar}</div>${cards}`
+}
+async function admFbStatus(id, status){
+  const { error } = await sb.from('feedback').update({ status }).eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
+  const f = _admFb.find(x => x.id === id); if (f) f.status = status
+  renderAdminFbList(); toast('Feedback actualizado')
+}
+async function admFbPublic(id, makePublic){
+  if (makePublic && !confirm('¿Hacer pública esta experiencia? Aparecerá en la landing con el nombre del usuario.')) return
+  const { data, error } = await sb.from('feedback').update({ is_public: makePublic }).eq('id', id).select('id')
+  if (error) return toast('Error: ' + error.message, true)
+  if (!data || !data.length) return toast('No se actualizó (0 filas; revisá permisos de UPDATE en feedback)', true)
+  const f = _admFb.find(x => x.id === id); if (f) f.is_public = makePublic
+  renderAdminFbList(); toast(makePublic ? '📢 Testimonio aprobado' : '🔒 Ya no es público')
+}
+
 function renderRoadmap() {
   const groups = [
     {k:'in_progress',label:'🚀 En Progreso'},
