@@ -826,7 +826,9 @@ select option{background:var(--bg1)}
   display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;flex-shrink:0}
 .ch-title strong{display:flex;align-items:center;gap:.4rem}
 .ch-title{display:flex;flex-direction:column;min-width:0;flex:1}
-.ch-members{font-size:.66rem;color:var(--dim);white-space:nowrap}
+.ch-members{font-size:.66rem;color:var(--muted);white-space:nowrap;background:none;border:1px solid var(--border);
+  border-radius:8px;padding:.28rem .55rem;cursor:pointer;font-family:inherit;transition:all var(--t)}
+.ch-members:hover{border-color:var(--green);color:var(--green-b)}
 .ch-mute{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.7;padding:2px;line-height:1}
 .ch-mute:hover{opacity:1}
 .chan-item.muted{opacity:.55}
@@ -2918,19 +2920,21 @@ function chanItemHtml(c){
 }
 function chatHeaderHtml(c){
   if (!c) return ''
-  const muteBtn = `<button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>`
+  const mute = `<button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>`
   const isOwner = c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage')
   if (c.kind === 'dm') return `
-    <div class="ch-title"><strong><span class="dm-av">${esc((dmName(c) || '?').charAt(0).toUpperCase())}</span> ${esc(dmName(c))}</strong><span class="c-desc">Mensaje directo · privado</span></div>${muteBtn}`
-  if (c.kind === 'group') return `
-    <div class="ch-title"><strong><span class="dm-av grp-av">${esc((convoName(c) || 'G').charAt(0).toUpperCase())}</span> ${esc(convoName(c))}</strong><span class="c-desc">Grupo privado · ${chanMembers[c.id] || 0} miembros</span></div>
-    <button class="post-link-btn" onclick="openMembers('${c.id}')">Miembros</button>${muteBtn}
-    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : `<button class="post-link-btn" onclick="leaveChannel('${c.id}')">Salir</button>`}`
-  return `
-    <div class="ch-title"><strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}${c.visibility === 'private' ? ' · privado' : ''}</span></div>
-    <span class="ch-members">${chanMembers[c.id] || 0} ${(chanMembers[c.id] || 0) === 1 ? 'miembro' : 'miembros'}</span>
-    ${c.visibility === 'private' ? `<button class="post-link-btn" onclick="openMembers('${c.id}')">Miembros</button>` : ''}${muteBtn}
-    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}`
+    <div class="ch-title"><strong><span class="dm-av">${esc((dmName(c) || '?').charAt(0).toUpperCase())}</span> ${esc(dmName(c))}</strong><span class="c-desc">Mensaje directo · privado</span></div>
+    <button class="ch-members" onclick="openMembers('${c.id}')" title="Ver detalles">2 personas</button>${mute}`
+  const isPublic = c.kind === 'channel' && c.visibility === 'public'
+  const mc = isPublic ? admins.length : (chanMembers[c.id] || 0)
+  const title = c.kind === 'group'
+    ? `<strong><span class="dm-av grp-av">${esc((convoName(c) || 'G').charAt(0).toUpperCase())}</span> ${esc(convoName(c))}</strong><span class="c-desc">Grupo privado</span>`
+    : `<strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}${c.visibility === 'private' ? ' · privado' : ''}</span>`
+  const memBtn = `<button class="ch-members" onclick="openMembers('${c.id}')" title="Ver miembros">${mc} ${mc === 1 ? 'miembro' : 'miembros'}</button>`
+  const leaveOrDel = isOwner
+    ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>`
+    : (c.kind === 'group' ? `<button class="post-link-btn" onclick="leaveChannel('${c.id}')">Salir</button>` : '')
+  return `<div class="ch-title">${title}</div>${memBtn}${mute}${leaveOrDel}`
 }
 function renderChat(){
   const chansEl = document.getElementById('chatChans')
@@ -3184,18 +3188,25 @@ async function createChannel(){
 // ── Gestión de miembros de un canal/grupo privado ──
 function openMembers(cid){
   const c = [...channels, ...dms, ...groups].find(x => x.id === cid); if (!c) return
-  const ids = chanMemberIds[cid] || []
+  const isPublic = c.kind === 'channel' && c.visibility === 'public'
+  // Canal público = todo el equipo; privado/grupo/DM = la membresía real
+  const ids = isPublic ? admins.map(a => a.id) : (chanMemberIds[cid] || [])
   const isOwner = c.created_by === profile.id || myMembership[cid]?.role === 'owner' || can('roles.manage')
-  document.getElementById('membersTitle').textContent = 'Miembros · ' + (c.kind === 'group' ? convoName(c) : c.name)
+  const nombre = c.kind === 'dm' ? dmName(c) : (c.kind === 'group' ? convoName(c) : c.name)
+  document.getElementById('membersTitle').textContent = 'Miembros · ' + nombre
   const rows = ids.map(uid => {
     const a = admins.find(x => x.id === uid); const nm = a ? a.name : '—'; const me = uid === profile.id
-    return `<div class="mem-row"><span class="dm-av">${esc(nm.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(nm)}${me ? ' (vos)' : ''}</span>${uid === c.created_by ? '<span class="mem-role">dueño</span>' : ''}${isOwner && !me && uid !== c.created_by ? `<button class="mem-x" onclick="removeMember('${cid}','${uid}')">Quitar</button>` : ''}</div>`
-  }).join('')
+    const canRemove = isOwner && !isPublic && c.kind !== 'dm' && !me && uid !== c.created_by
+    return `<div class="mem-row"><span class="dm-av">${esc(nm.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(nm)}${me ? ' (vos)' : ''}</span>${uid === c.created_by && c.kind !== 'dm' ? '<span class="mem-role">dueño</span>' : ''}${canRemove ? `<button class="mem-x" onclick="removeMember('${cid}','${uid}')">Quitar</button>` : ''}</div>`
+  }).join('') || '<div class="chan-empty">Sin miembros todavía</div>'
   const nonMembers = admins.filter(a => !ids.includes(a.id))
-  const addHtml = (isOwner && c.visibility === 'private' && nonMembers.length)
-    ? `<div class="fg" style="margin-top:.7rem"><label>Agregar personas</label><div class="picker-list" id="addMemPicker">${nonMembers.map(a => `<label class="picker-row"><span class="dm-av">${esc(a.name.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(a.name)}</span><input type="checkbox" value="${a.id}"></label>`).join('')}</div><div class="form-acts"><button class="btn btn-primary btn-sm" onclick="addMembers('${cid}')">Agregar</button></div></div>`
-    : ''
-  document.getElementById('membersBody').innerHTML = rows + addHtml
+  let extra = ''
+  if (isPublic) {
+    extra = `<p class="modal-hint" style="margin-top:.7rem">Este canal es público: todo el equipo puede verlo y participar.</p>`
+  } else if (isOwner && c.kind !== 'dm' && nonMembers.length) {
+    extra = `<div class="fg" style="margin-top:.7rem"><label>Agregar personas</label><div class="picker-list" id="addMemPicker">${nonMembers.map(a => `<label class="picker-row"><span class="dm-av">${esc(a.name.charAt(0).toUpperCase())}</span><span class="pk-name">${esc(a.name)}</span><input type="checkbox" value="${a.id}"></label>`).join('')}</div><div class="form-acts"><button class="btn btn-primary btn-sm" onclick="addMembers('${cid}')">Agregar</button></div></div>`
+  }
+  document.getElementById('membersBody').innerHTML = rows + extra
   openModal('membersModal')
 }
 async function addMembers(cid){
