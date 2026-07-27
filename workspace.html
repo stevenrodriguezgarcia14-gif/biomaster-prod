@@ -819,6 +819,60 @@ select option{background:var(--bg1)}
 .chat-load-more{text-align:center;font-size:.7rem;color:var(--green-b);cursor:pointer;padding:.4rem;font-weight:600}
 .chat-load-more:hover{text-decoration:underline}
 
+/* ─── CHAT v2 ─── */
+.ch-title{display:flex;flex-direction:column;min-width:0;flex:1}
+.ch-members{font-size:.66rem;color:var(--dim);white-space:nowrap}
+.ch-mute{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.7;padding:2px;line-height:1}
+.ch-mute:hover{opacity:1}
+.chan-item.muted{opacity:.55}
+.chan-item .chan-unread{background:var(--green);color:#fff}
+.msg{align-items:flex-start}
+.msg-acts{position:absolute;top:-.55rem;right:.5rem;display:flex;gap:1px;background:var(--bg1);
+  border:1px solid var(--border);border-radius:9px;padding:2px;opacity:0;pointer-events:none;
+  transition:opacity var(--t);box-shadow:0 2px 10px rgba(0,0,0,.35);z-index:2}
+.msg:hover .msg-acts{opacity:1;pointer-events:auto}
+.msg-acts button{background:none;border:none;cursor:pointer;font-size:.82rem;padding:2px 4px;border-radius:6px;line-height:1}
+.msg-acts button:hover{background:var(--bg3)}
+.msg-acts .ma-btn{color:var(--dim);font-size:.76rem}
+.msg-acts .ma-btn.danger:hover{color:var(--red)}
+.msg-quote{border-left:2px solid var(--green);padding:.12rem .55rem;margin:.15rem 0 .3rem;
+  font-size:.72rem;color:var(--dim);background:var(--bg2);border-radius:0 6px 6px 0;max-width:440px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-quote .q-au{color:var(--green-b);font-weight:700}
+.edited{font-size:.62rem;color:var(--dim);font-style:italic}
+.msg-rx{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.32rem}
+.rx{background:var(--bg3);border:1px solid var(--border);border-radius:11px;font-size:.72rem;
+  padding:1px 8px;cursor:pointer;color:var(--muted);transition:all var(--t);font-family:inherit}
+.rx:hover{border-color:var(--green)}
+.rx.mine{background:var(--green-s);border-color:var(--green);color:var(--green-b)}
+.msg-att{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.38rem}
+.att-img{max-width:230px;max-height:200px;border-radius:10px;cursor:pointer;border:1px solid var(--border);object-fit:cover}
+.att-file{display:inline-flex;align-items:center;gap:.35rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:.32rem .6rem;font-size:.74rem;color:var(--muted);cursor:pointer;font-family:inherit}
+.att-file:hover{border-color:var(--green);color:var(--green-b)}
+.msg-edit textarea{width:100%;min-height:44px;background:var(--bg2);border:1px solid var(--green);border-radius:8px;
+  color:var(--text);font-family:inherit;font-size:.81rem;padding:.4rem .5rem;resize:vertical}
+.me-acts{display:flex;gap:.4rem;justify-content:flex-end;margin-top:.3rem}
+.btn-xs{font-size:.68rem;padding:.25rem .65rem}
+.chat-reply-bar{display:flex;align-items:center;gap:.5rem;background:var(--bg2);border-left:2px solid var(--green);
+  border-radius:0 8px 8px 0;padding:.35rem .6rem;margin-bottom:.45rem}
+.rb-q{display:flex;flex-direction:column;min-width:0;flex:1}
+.rb-to{font-size:.66rem;color:var(--green-b);font-weight:700}
+.rb-txt{font-size:.72rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rb-x{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.82rem}
+.chat-attach-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.45rem}
+.att-chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:.2rem .55rem;font-size:.72rem;color:var(--muted)}
+.att-chip button{background:none;border:none;color:var(--dim);cursor:pointer;font-size:.72rem}
+.chat-input-row{display:flex;align-items:flex-end;gap:.5rem}
+.chat-input-row textarea{flex:1}
+.chat-attach-btn,.chat-send-btn{flex-shrink:0;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+  background:var(--bg2);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--t)}
+.chat-attach-btn:hover{color:var(--green-b);border-color:var(--green)}
+.chat-send-btn{background:var(--green);color:#fff;border-color:var(--green)}
+.chat-send-btn:hover{background:#25753e}
+.chat-send-btn svg,.chat-attach-btn svg{width:18px;height:18px}
+
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
@@ -860,6 +914,10 @@ select option{background:var(--bg1)}
   .chat-chans{display:flex;gap:.3rem;overflow-x:auto;overflow-y:hidden;padding:.4rem;white-space:nowrap}
   .chan-item{width:auto;flex-shrink:0}
   .chan-add{width:auto;margin-top:0;flex-shrink:0}
+  /* En táctil no hay hover: acciones de mensaje siempre visibles y desplazables */
+  .msg-acts{position:static;opacity:1;pointer-events:auto;box-shadow:none;margin-top:.3rem;
+    overflow-x:auto;max-width:100%;background:transparent;border:none;padding:0}
+  .att-img{max-width:100%}
 }
 </style>
 </head>
@@ -1051,7 +1109,14 @@ select option{background:var(--bg1)}
           <div class="chat-msgs" id="chatMsgs" aria-live="polite"></div>
           <div class="chat-typing" id="chatTyping"></div>
           <div class="chat-composer">
-            <textarea id="chatInput" placeholder="Mensaje para el canal… (@ para mencionar, Enter envía, Shift+Enter salto de línea)" maxlength="2000" aria-label="Escribir mensaje"></textarea>
+            <div class="chat-reply-bar" id="chatReplyBar" hidden></div>
+            <div class="chat-attach-row" id="chatAttachRow" hidden></div>
+            <div class="chat-input-row">
+              <button class="chat-attach-btn" onclick="document.getElementById('chatFile').click()" title="Adjuntar archivo" aria-label="Adjuntar archivo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a5 5 0 01-7.07-7.07l9.19-9.19a3.5 3.5 0 014.95 4.95l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button>
+              <textarea id="chatInput" placeholder="Mensaje para el canal… (@ menciona, Enter envía, Shift+Enter salto)" maxlength="2000" aria-label="Escribir mensaje"></textarea>
+              <button class="chat-send-btn" onclick="sendChatMsg()" title="Enviar" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+            </div>
+            <input type="file" id="chatFile" hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.csv,.txt,.md" onchange="chatAttachFile(this.files[0])">
             <div class="mention-note" id="chatMentionNote"></div>
           </div>
         </div>
@@ -2683,41 +2748,52 @@ async function deleteNote(id) {
 // mensajes agrupados, día separador, no-leídos por canal, "está escribiendo…"
 // (broadcast, sin tocar la DB) y @menciones que notifican + correo.
 // Los mensajes normales NO generan correo: el chat es conversación, no inbox.
+// ═══ CHAT v2 (comms v2: ws_channel / ws_channel_member / ws_message /
+//     ws_reaction). Canales con membresía, no-leídos server-side,
+//     respuestas (hilo), reacciones, edición, adjuntos y realtime. ═══
 let channels = [], chatSel = null, chatMsgs = [], chatOldest = null, _chatHasMore = false
-let chanLatest = {}
+let myMembership = {}, chanLatest = {}, chanUnreadN = {}, chanMembers = {}
+let msgReactions = {}, chatReplyTo = null, editingMsg = null, pendingAttach = []
 let _typingCh = null, _typingThrottle = null, _typingHideTimer = null
+const CHAT_REACTIONS = ['👍','❤️','😂','🎉','🙌','👀']
 
 async function loadChannels(){
   try {
-    const { data } = await sb.from('workspace_channels').select('*').order('created_at')
-    channels = data || []
-    if (!chatSel && channels.length) chatSel = channels[0].id
-    const { data: latest } = await sb.from('workspace_messages')
-      .select('channel_id, created_at').order('created_at', {ascending:false}).limit(300)
-    chanLatest = {}
+    const { data } = await sb.from('ws_channel').select('*').is('archived_at', null).order('created_at')
+    channels = (data || []).filter(c => c.kind === 'channel')   // F2: canales públicos; DMs/privados en F3
+    const { data: mems } = await sb.from('ws_channel_member').select('channel_id,last_read_at,muted,role').eq('user_id', profile.id)
+    myMembership = {}; for (const m of (mems || [])) myMembership[m.channel_id] = m
+    const { data: allMems } = await sb.from('ws_channel_member').select('channel_id')
+    chanMembers = {}; for (const m of (allMems || [])) chanMembers[m.channel_id] = (chanMembers[m.channel_id] || 0) + 1
+    const { data: latest } = await sb.from('ws_message').select('channel_id,created_at,author_id')
+      .is('deleted_at', null).order('created_at', { ascending:false }).limit(500)
+    chanLatest = {}; chanUnreadN = {}
     for (const m of (latest || [])) if (!chanLatest[m.channel_id]) chanLatest[m.channel_id] = m.created_at
+    for (const c of channels) {
+      const lr = myMembership[c.id]?.last_read_at || '1970-01-01'
+      chanUnreadN[c.id] = (latest || []).filter(m => m.channel_id === c.id && m.created_at > lr && m.author_id !== profile.id).length
+    }
+    if (!chatSel && channels.length) chatSel = (channels.find(c => c.slug === 'general') || channels[0]).id
   } catch (_) { channels = [] }
   updateChatBadge()
 }
-function chatReadMap(){ try { return JSON.parse(localStorage.getItem('ws_chat_read') || '{}') } catch (_) { return {} } }
-function markChanRead(id){
-  const m = chatReadMap(); m[id] = new Date().toISOString()
-  try { localStorage.setItem('ws_chat_read', JSON.stringify(m)) } catch (_) {}
+async function markChanRead(id){
+  const now = new Date().toISOString()
+  myMembership[id] = { ...(myMembership[id] || { muted:false, role:'member' }), last_read_at: now }
+  chanUnreadN[id] = 0
   updateChatBadge()
+  try { await sb.from('ws_channel_member').upsert({ channel_id:id, user_id:profile.id, last_read_at:now }, { onConflict:'channel_id,user_id' }) } catch (_) {}
 }
-function chanUnread(id){
-  const last = chatReadMap()[id] || ''
-  return !!chanLatest[id] && chanLatest[id] > last
-}
+function chanUnread(id){ return (chanUnreadN[id] || 0) > 0 }
 function updateChatBadge(){
-  const n = channels.filter(c => chanUnread(c.id)).length
+  const n = channels.reduce((a, c) => a + (myMembership[c.id]?.muted ? 0 : (chanUnreadN[c.id] || 0)), 0)
   const b = document.getElementById('chatBadge')
-  if (b) { b.hidden = n === 0; b.textContent = String(n) }
+  if (b) { b.hidden = n === 0; b.textContent = n > 99 ? '99+' : String(n) }
 }
 
 async function loadChatMsgs(reset = true){
   if (!chatSel) return
-  let q = sb.from('workspace_messages').select('*').eq('channel_id', chatSel)
+  let q = sb.from('ws_message').select('*').eq('channel_id', chatSel).is('deleted_at', null)
     .order('created_at', {ascending:false}).limit(60)
   if (!reset && chatOldest) q = q.lt('created_at', chatOldest)
   const { data } = await q
@@ -2725,26 +2801,69 @@ async function loadChatMsgs(reset = true){
   chatMsgs = reset ? batch : [...batch, ...chatMsgs]
   chatOldest = chatMsgs[0]?.created_at || null
   _chatHasMore = (data || []).length === 60
+  await loadReactions()
+}
+async function loadReactions(){
+  const ids = chatMsgs.map(m => m.id)
+  msgReactions = {}
+  if (!ids.length) return
+  const { data } = await sb.from('ws_reaction').select('message_id,emoji,user_id').in('message_id', ids)
+  for (const r of (data || [])) (msgReactions[r.message_id] = msgReactions[r.message_id] || []).push(r)
 }
 
 function linkifyChat(s){
   return s.replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>')
 }
+function chanIcon(c){ return c.slug === 'anuncios' ? '📣' : '#' }
 function renderChat(){
   const chansEl = document.getElementById('chatChans')
   if (!chansEl) return
-  chansEl.innerHTML = channels.map(c => `
-    <button class="chan-item ${c.id === chatSel ? 'on' : ''}" onclick="chatOpen('${c.id}')">
-      <span class="hash">#</span><span class="c-name">${esc(c.name)}</span>
-      ${chanUnread(c.id) && c.id !== chatSel ? '<span class="chan-unread">●</span>' : ''}
-    </button>`).join('') +
-    `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>`
+  chansEl.innerHTML = channels.map(c => {
+    const u = c.id !== chatSel ? (chanUnreadN[c.id] || 0) : 0
+    return `<button class="chan-item ${c.id === chatSel ? 'on' : ''} ${myMembership[c.id]?.muted ? 'muted' : ''}" onclick="chatOpen('${c.id}')">
+      <span class="hash">${chanIcon(c)}</span><span class="c-name">${esc(c.name)}</span>
+      ${u ? `<span class="chan-unread">${u > 99 ? '99+' : u}</span>` : ''}
+    </button>`
+  }).join('') + `<button class="chan-add" onclick="newChannel()">+ Nuevo canal</button>`
   const c = channels.find(x => x.id === chatSel)
+  const isOwner = c && (c.created_by === profile.id || myMembership[c.id]?.role === 'owner' || can('roles.manage'))
   document.getElementById('chatHd').innerHTML = c ? `
-    <strong>#${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}</span>
-    ${(c.created_by === profile.id || can('roles.manage')) && channels.length > 1
-      ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar canal</button>` : ''}` : ''
+    <div class="ch-title"><strong>${chanIcon(c)} ${esc(c.name)}</strong><span class="c-desc">${esc(c.description || '')}</span></div>
+    <span class="ch-members">${chanMembers[c.id] || 0} ${(chanMembers[c.id] || 0) === 1 ? 'miembro' : 'miembros'}</span>
+    <button class="ch-mute" onclick="toggleMute('${c.id}')" title="${myMembership[c.id]?.muted ? 'Reactivar avisos' : 'Silenciar canal'}" aria-label="Silenciar">${myMembership[c.id]?.muted ? '🔕' : '🔔'}</button>
+    ${isOwner ? `<button class="post-link-btn" onclick="deleteChannel('${c.id}')">Eliminar</button>` : ''}` : ''
   renderChatMsgs()
+}
+function replyQuoteHtml(m){
+  if (!m.parent_id) return ''
+  const p = chatMsgs.find(x => x.id === m.parent_id)
+  return `<div class="msg-quote">${p ? `<span class="q-au">${esc(p.author_name)}</span> ${esc((p.body || '📎 adjunto').slice(0, 90))}` : '↩︎ respuesta'}</div>`
+}
+function attachHtml(m){
+  const at = m.attachments || []
+  if (!at.length) return ''
+  return `<div class="msg-att">` + at.map(a =>
+    a.kind === 'image'
+      ? `<img class="att-img" data-path="${esc(a.path)}" alt="${esc(a.name)}" onclick="openAttach('${esc(a.path)}')">`
+      : `<button class="att-file" onclick="openAttach('${esc(a.path)}')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/><path stroke-linejoin="round" d="M14 3H6v18h12V8z"/></svg>${esc(a.name)}</button>`
+  ).join('') + `</div>`
+}
+function reactionsHtml(m){
+  const rs = msgReactions[m.id] || []
+  if (!rs.length) return ''
+  const by = {}; for (const r of rs) (by[r.emoji] = by[r.emoji] || []).push(r.user_id)
+  return `<div class="msg-rx">` + Object.entries(by).map(([e, us]) =>
+    `<button class="rx ${us.includes(profile.id) ? 'mine' : ''}" onclick="toggleReaction('${m.id}','${e}')">${e} ${us.length}</button>`
+  ).join('') + `</div>`
+}
+function msgTextHtml(m){
+  if (m.id === editingMsg) {
+    return `<div class="msg-edit"><textarea id="edit-${m.id}" rows="2">${esc(m.body || '')}</textarea>
+      <div class="me-acts"><button class="btn btn-ghost btn-xs" onclick="editingMsg=null;renderChatMsgs(true)">Cancelar</button>
+      <button class="btn btn-primary btn-xs" onclick="saveEdit('${m.id}')">Guardar</button></div></div>`
+  }
+  const txt = m.body ? `<div class="msg-txt">${linkifyChat(highlightMentions(esc(m.body)))}${m.edited_at ? ' <span class="edited">(editado)</span>' : ''}</div>` : ''
+  return replyQuoteHtml(m) + txt + attachHtml(m) + reactionsHtml(m)
 }
 function renderChatMsgs(keepScroll){
   const box = document.getElementById('chatMsgs')
@@ -2756,25 +2875,39 @@ function renderChatMsgs(keepScroll){
     const dt = new Date(m.created_at)
     const day = dt.toLocaleDateString('es-CR', { weekday:'long', day:'numeric', month:'long' })
     if (day !== lastDay) { html += `<div class="msg-day">${day}</div>`; lastDay = day; lastAuthor = '' }
-    const grouped = m.author_id === lastAuthor && (dt - lastTime) < 5 * 60000
+    const grouped = m.author_id === lastAuthor && !m.parent_id && (dt - lastTime) < 5 * 60000
+    const canEdit = m.author_id === profile.id
+    const canDel = m.author_id === profile.id || can('roles.manage')
     html += `
-      <div class="msg ${grouped ? 'grouped' : ''}">
+      <div class="msg ${grouped ? 'grouped' : ''}" id="m-${m.id}">
         <div class="act-av">${esc((m.author_name || 'A').charAt(0).toUpperCase())}</div>
         <div class="msg-body">
           ${grouped ? '' : `<div class="msg-meta"><strong>${esc(m.author_name)}</strong><time>${dt.toLocaleTimeString('es-CR', { hour:'2-digit', minute:'2-digit' })}</time></div>`}
-          <div class="msg-txt">${linkifyChat(highlightMentions(esc(m.body)))}</div>
+          ${msgTextHtml(m)}
         </div>
-        ${m.author_id === profile.id || can('roles.manage')
-          ? `<button class="msg-del" onclick="deleteChatMsg('${m.id}')">Eliminar</button>` : ''}
+        <div class="msg-acts">
+          ${CHAT_REACTIONS.map(e => `<button class="ma-rx" onclick="toggleReaction('${m.id}','${e}')" title="Reaccionar">${e}</button>`).join('')}
+          <button class="ma-btn" onclick="setReply('${m.id}')" title="Responder">↩︎</button>
+          ${canEdit ? `<button class="ma-btn" onclick="startEdit('${m.id}')" title="Editar">✎</button>` : ''}
+          ${canDel ? `<button class="ma-btn danger" onclick="deleteChatMsg('${m.id}')" title="Eliminar">🗑</button>` : ''}
+        </div>
       </div>`
     lastAuthor = m.author_id; lastTime = dt
   }
   box.innerHTML = html || '<div class="empty"><p>Canal nuevo. Escribí el primer mensaje.</p></div>'
   if (stick) box.scrollTop = box.scrollHeight
+  loadAttachPreviews()
+}
+function loadAttachPreviews(){
+  document.querySelectorAll('.att-img[data-path]').forEach(async img => {
+    const p = img.getAttribute('data-path'); img.removeAttribute('data-path')
+    try { const { data } = await sb.storage.from('workspace-files').createSignedUrl(p, 3600); if (data?.signedUrl) img.src = data.signedUrl } catch (_) {}
+  })
 }
 
 async function chatOpen(id){
   chatSel = id
+  editingMsg = null; cancelReply()
   await loadChatMsgs(true)
   markChanRead(id)
   renderChat()
@@ -2785,47 +2918,107 @@ async function chatLoadMore(){ await loadChatMsgs(false); renderChatMsgs(true) }
 async function sendChatMsg(){
   const input = document.getElementById('chatInput')
   const body = (input.value || '').trim()
-  if (!body || !chatSel) return
-  input.value = ''
+  if ((!body && !pendingAttach.length) || !chatSel) return
+  const attach = pendingAttach.slice(); const parent = chatReplyTo?.id || null
+  input.value = ''; pendingAttach = []; cancelReply(); renderAttachRow()
   updateMentionNote(input, 'chatMentionNote')
   const c = channels.find(x => x.id === chatSel)
-  const { data: created, error } = await sb.from('workspace_messages').insert({
-    channel_id: chatSel, author_id: profile.id, author_name: profile.name, body
+  const { data: created, error } = await sb.from('ws_message').insert({
+    channel_id: chatSel, author_id: profile.id, author_name: profile.name,
+    body: body || null, parent_id: parent, attachments: attach
   }).select('*').single()
   if (error) { input.value = body; return toast('Error: ' + error.message, true) }
   // Render optimista (realtime lo traería igual, pero sin esperar)
   if (created && !chatMsgs.some(m => m.id === created.id)) { chatMsgs.push(created); renderChatMsgs(true) }
   chanLatest[chatSel] = created?.created_at || new Date().toISOString()
   markChanRead(chatSel)
-  await notifyMentions(body, `${profile.name} te mencionó en #${c?.name || 'chat'}`, 'chat', chatSel)
+  if (body) await notifyMentions(body, `${profile.name} te mencionó en #${c?.name || 'chat'}`, 'message', chatSel)
+}
+function startEdit(mid){ editingMsg = mid; renderChatMsgs(true); document.getElementById('edit-' + mid)?.focus() }
+async function saveEdit(mid){
+  const ta = document.getElementById('edit-' + mid); if (!ta) return
+  const body = (ta.value || '').trim(); if (!body) return
+  const now = new Date().toISOString()
+  const { error } = await sb.from('ws_message').update({ body, edited_at: now }).eq('id', mid)
+  if (error) return toast('Error: ' + error.message, true)
+  const m = chatMsgs.find(x => x.id === mid); if (m) { m.body = body; m.edited_at = now }
+  editingMsg = null; renderChatMsgs(true)
 }
 async function deleteChatMsg(id){
   if (!confirm('¿Eliminar este mensaje?')) return
-  await sb.from('workspace_messages').delete().eq('id', id)
+  await sb.from('ws_message').update({ deleted_at: new Date().toISOString() }).eq('id', id)
   chatMsgs = chatMsgs.filter(m => m.id !== id)
   renderChatMsgs(true)
 }
+async function toggleReaction(mid, emoji){
+  const rs = msgReactions[mid] || []
+  const mine = rs.some(r => r.user_id === profile.id && r.emoji === emoji)
+  try {
+    if (mine) await sb.from('ws_reaction').delete().eq('message_id', mid).eq('user_id', profile.id).eq('emoji', emoji)
+    else await sb.from('ws_reaction').insert({ message_id: mid, user_id: profile.id, emoji })
+  } catch (_) {}
+  await loadReactions(); renderChatMsgs(true)
+}
+function setReply(mid){
+  const m = chatMsgs.find(x => x.id === mid); if (!m) return
+  chatReplyTo = { id: m.id, author_name: m.author_name }
+  const bar = document.getElementById('chatReplyBar')
+  bar.hidden = false
+  bar.innerHTML = `<div class="rb-q"><span class="rb-to">Respondiendo a ${esc(m.author_name)}</span><span class="rb-txt">${esc((m.body || '📎 adjunto').slice(0, 100))}</span></div><button class="rb-x" onclick="cancelReply()" aria-label="Cancelar">✕</button>`
+  document.getElementById('chatInput')?.focus()
+}
+function cancelReply(){ chatReplyTo = null; const b = document.getElementById('chatReplyBar'); if (b) { b.hidden = true; b.innerHTML = '' } }
+async function toggleMute(id){
+  const muted = !(myMembership[id]?.muted)
+  myMembership[id] = { ...(myMembership[id] || { last_read_at: new Date().toISOString(), role:'member' }), muted }
+  try { await sb.from('ws_channel_member').upsert({ channel_id:id, user_id:profile.id, muted }, { onConflict:'channel_id,user_id' }) } catch (_) {}
+  updateChatBadge(); renderChat()
+}
+async function openAttach(path){
+  try { const { data } = await sb.storage.from('workspace-files').createSignedUrl(path, 3600); if (data?.signedUrl) window.open(data.signedUrl, '_blank', 'noopener') } catch (_) { toast('No se pudo abrir el archivo', true) }
+}
+async function chatAttachFile(file){
+  if (!file || !chatSel) return
+  if (file.size > 50 * 1048576) return toast('El archivo supera los 50 MB', true)
+  toast('Subiendo…')
+  const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
+  const path = `chat/${chatSel}/${Date.now()}_${safe}`
+  const { error } = await sb.storage.from('workspace-files').upload(path, file)
+  const fi = document.getElementById('chatFile'); if (fi) fi.value = ''
+  if (error) return toast('Error al subir: ' + error.message, true)
+  pendingAttach.push({ path, name: file.name, mime: file.type, size: file.size, kind: (file.type || '').startsWith('image/') ? 'image' : 'file' })
+  renderAttachRow()
+}
+function renderAttachRow(){
+  const row = document.getElementById('chatAttachRow'); if (!row) return
+  row.hidden = !pendingAttach.length
+  row.innerHTML = pendingAttach.map((a, i) =>
+    `<span class="att-chip">${a.kind === 'image' ? '🖼' : '📎'} ${esc(a.name)} <button onclick="pendingAttach.splice(${i},1);renderAttachRow()" aria-label="Quitar">✕</button></span>`
+  ).join('')
+}
 async function newChannel(){
-  const raw = (prompt('Nombre del canal (sin #, ej: marketing):') || '').trim()
-  const name = raw.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-áéíóúñ]/g, '').slice(0, 30)
-  if (!name) return
+  const raw = (prompt('Nombre del canal (ej: Marketing):') || '').trim()
+  const name = raw.slice(0, 40); if (!name) return
+  const slug = (name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '').slice(0, 30)) || null
   const description = (prompt('Descripción corta (opcional):') || '').trim().slice(0, 140) || null
-  const { data, error } = await sb.from('workspace_channels').insert({
-    name, description, created_by: profile.id, created_by_name: profile.name
+  const { data, error } = await sb.from('ws_channel').insert({
+    slug, name, description, kind: 'channel', visibility: 'public', created_by: profile.id, created_by_name: profile.name
   }).select('id').single()
   if (error) return toast(/duplicate|unique/i.test(error.message) ? 'Ya existe un canal con ese nombre' : 'Error: ' + error.message, true)
+  try { await sb.from('ws_channel_member').insert({ channel_id: data.id, user_id: profile.id, role: 'owner' }) } catch (_) {}
   await log('creó el canal', 'chat', '#' + name, data?.id)
   await loadChannels()
   chatOpen(data.id)
 }
 async function deleteChannel(id){
   const c = channels.find(x => x.id === id)
-  if (!confirm(`¿Eliminar el canal #${c?.name} y TODOS sus mensajes? No se puede deshacer.`)) return
-  await sb.from('workspace_channels').delete().eq('id', id)
+  if (!confirm(`¿Eliminar el canal ${c?.name} y TODOS sus mensajes? No se puede deshacer.`)) return
+  const { error } = await sb.from('ws_channel').delete().eq('id', id)
+  if (error) return toast('Error: ' + error.message, true)
   await log('eliminó el canal', 'chat', '#' + (c?.name || ''), id)
   chatSel = null; chatMsgs = []
   await loadChannels()
-  if (chatSel) await chatOpen(chatSel)
+  if (channels.length) await chatOpen(channels[0].id)
   else renderChat()
 }
 
@@ -3593,24 +3786,32 @@ function initRealtime() {
       await loadWiki()
       if (currentView === 'wiki' && !wikiEditing) renderWiki()
     })
-    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_messages'}, payload => {
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_message'}, payload => {
       if (payload.eventType === 'INSERT') {
         const m = payload.new
+        if (m.deleted_at) return
         chanLatest[m.channel_id] = m.created_at
         if (currentView === 'chat' && m.channel_id === chatSel) {
           if (!chatMsgs.some(x => x.id === m.id)) { chatMsgs.push(m); renderChatMsgs(true) }
-          document.getElementById('chatTyping').textContent = ''
+          const t = document.getElementById('chatTyping'); if (t) t.textContent = ''
           markChanRead(chatSel)
         } else {
+          if (m.author_id !== profile.id) chanUnreadN[m.channel_id] = (chanUnreadN[m.channel_id] || 0) + 1
           updateChatBadge()
           if (currentView === 'chat') renderChat()
         }
+      } else if (payload.eventType === 'UPDATE') {
+        const m = payload.new; const i = chatMsgs.findIndex(x => x.id === m.id)
+        if (i >= 0) { if (m.deleted_at) chatMsgs.splice(i, 1); else chatMsgs[i] = m; if (currentView === 'chat') renderChatMsgs(true) }
       } else if (payload.eventType === 'DELETE') {
         chatMsgs = chatMsgs.filter(x => x.id !== payload.old?.id)
         if (currentView === 'chat') renderChatMsgs(true)
       }
     })
-    .on('postgres_changes', {event:'*', schema:'public', table:'workspace_channels'}, async () => {
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_reaction'}, async () => {
+      if (currentView === 'chat') { await loadReactions(); renderChatMsgs(true) }
+    })
+    .on('postgres_changes', {event:'*', schema:'public', table:'ws_channel'}, async () => {
       await loadChannels()
       if (currentView === 'chat') renderChat()
     })
