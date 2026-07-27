@@ -947,6 +947,12 @@ select option{background:var(--bg1)}
 .u-exp{font-size:.64rem;padding:.08rem .4rem;border-radius:5px;font-weight:700;margin-left:.2rem}
 .u-exp.vencido{background:var(--red-s);color:var(--red)}
 .u-exp.pronto{background:rgba(196,106,47,.16);color:#c46a2f}
+.m-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem}
+.m-card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.m-card.accent{border-color:var(--green);background:var(--green-s)}
+.m-val{font-size:1.7rem;font-weight:800;color:var(--text);line-height:1}
+.m-card.accent .m-val{color:var(--green-b)}
+.m-lbl{font-size:.72rem;color:var(--dim);margin-top:.35rem}
 
 /* ─── ANIMATIONS ─── */
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1088,6 +1094,10 @@ select option{background:var(--bg1)}
       <div class="nav-item" data-view="admin-users" data-perm="users.view" tabindex="0" hidden>
         <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         <span>Usuarios</span>
+      </div>
+      <div class="nav-item" data-view="admin-metrics" data-perm="stats.view" tabindex="0" hidden>
+        <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M18 9l-5 5-3-3-4 4"/></svg>
+        <span>Métricas</span>
       </div>
     </nav>
 
@@ -1283,6 +1293,11 @@ select option{background:var(--bg1)}
     <div id="view-admin-users" class="view-body" hidden>
       <div class="adm-toolbar"><input id="admUserSearch" class="adm-search" placeholder="Buscar por nombre o correo…" oninput="renderAdminUsersList()" autocomplete="off"></div>
       <div id="admUsers"></div>
+    </div>
+
+    <!-- ADMIN · MÉTRICAS -->
+    <div id="view-admin-metrics" class="view-body" hidden>
+      <div id="admMetrics"></div>
     </div>
 
   </main>
@@ -1788,6 +1803,7 @@ const VIEW_CFG = {
   roadmap:   {title:'Roadmap',       sub:'Planificación del proyecto',           action:'Nueva Tarea'},
   'admin-feedback': {title:'Feedback', sub:'Moderá el feedback y aprobá testimonios', action:null},
   'admin-users': {title:'Usuarios', sub:'Directorio de estudiantes y equipo', action:null},
+  'admin-metrics': {title:'Métricas', sub:'Salud del producto de un vistazo', action:null},
 }
 
 // ─── Comunicación / Wiki: estado ───
@@ -2294,6 +2310,7 @@ function renderCurrent() {
   else if (currentView === 'roadmap') renderRoadmap()
   else if (currentView === 'admin-feedback') renderAdminFeedback()
   else if (currentView === 'admin-users') renderAdminUsers()
+  else if (currentView === 'admin-metrics') renderAdminMetrics()
   updateUrgBadge()
 }
 
@@ -2913,6 +2930,46 @@ function renderAdminUsersList(){
   const section = (t, arr) => arr.length ? `<div class="adm-subhd">${t} (${arr.length})</div>${arr.map(row).join('')}` : ''
   if (!list.length) { box.innerHTML = stats + '<div class="empty"><p>Sin resultados.</p></div>'; return }
   box.innerHTML = stats + section('Equipo', staff) + section('Con plan', pagados) + section('Free', free)
+}
+
+// ── Métricas (derivadas de profiles; sin exponer vistas agregadas) ──
+async function renderAdminMetrics(){
+  const box = document.getElementById('admMetrics'); if (!box) return
+  if (!can('stats.view')) { box.innerHTML = '<div class="empty"><p>No tenés permiso para ver métricas.</p></div>'; return }
+  box.innerHTML = '<div class="empty"><p>Cargando…</p></div>'
+  const { data, error } = await sb.from('profiles').select('role,plan_p1,plan_p2,plan_p3,plan_full,plan_expires_at,created_at').limit(5000)
+  if (error) { box.innerHTML = `<div class="empty"><p>Error: ${esc(error.message)}</p></div>`; return }
+  const us = data || []
+  const now = new Date(), d7 = new Date(now - 7 * 864e5), d30 = new Date(now - 30 * 864e5)
+  const withPlan = u => u.plan_full || u.plan_p1 || u.plan_p2 || u.plan_p3
+  const noStaff = us.filter(u => u.role !== 'admin')
+  const conPlan = noStaff.filter(withPlan).length
+  const m = {
+    total: us.length,
+    conPlan,
+    free: noStaff.length - conPlan,
+    full: us.filter(u => u.plan_full).length,
+    parcial: us.filter(u => !u.plan_full && (u.plan_p1 || u.plan_p2 || u.plan_p3)).length,
+    vencidos: us.filter(u => u.plan_expires_at && new Date(u.plan_expires_at) < now).length,
+    nuevos7: us.filter(u => new Date(u.created_at) >= d7).length,
+    nuevos30: us.filter(u => new Date(u.created_at) >= d30).length,
+    equipo: us.filter(u => u.role === 'admin').length
+  }
+  const conv = noStaff.length ? Math.round(conPlan / noStaff.length * 100) : 0
+  const card = (v, l, accent) => `<div class="m-card${accent ? ' accent' : ''}"><div class="m-val">${v}</div><div class="m-lbl">${l}</div></div>`
+  box.innerHTML = `<div class="m-grid">
+    ${card(m.total, 'Usuarios totales')}
+    ${card(m.conPlan, 'Con plan activo', true)}
+    ${card(conv + '%', 'Conversión a pago', true)}
+    ${card(m.free, 'Free')}
+    ${card(m.full, 'Plan Full')}
+    ${card(m.parcial, 'Pases parciales')}
+    ${card(m.vencidos, 'Planes vencidos')}
+    ${card(m.nuevos7, 'Nuevos · 7 días')}
+    ${card(m.nuevos30, 'Nuevos · 30 días')}
+    ${card(m.equipo, 'Equipo')}
+  </div>
+  <p class="modal-hint" style="margin-top:.8rem">Datos en vivo desde la base. Para el funnel completo (visitas → registro → pago) usá PostHog.</p>`
 }
 
 function renderRoadmap() {
